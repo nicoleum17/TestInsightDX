@@ -25,14 +25,7 @@
           <span aria-hidden="true"></span>
         </a>
       </div>
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <a href="/inicio_aspirante" class="navbar-item button is-danger">
-            Aspirante
-          </a>
-          <a href="/inicio_psicologa" class="navbar-item"> Psicóloga </a>
-        </div>
-      </div>
+      <div class="navbar-end"></div>
     </nav>
     <section class="section">
       <div class="container">
@@ -57,7 +50,12 @@
           id="password"
           name="password" />
         <br />
-        <button class="button m-5">Iniciar sesión</button>
+        <button class="button m-5 is-danger">
+          <a href="/inicio_aspirante"> Iniciar sesión (aspirante) </a>
+        </button>
+        <button href="/inicio_psicóloga" class="button m-5 is-danger">
+          Iniciar sesión (psicóloga)
+        </button>
       </form>
     </section>
   </body>
