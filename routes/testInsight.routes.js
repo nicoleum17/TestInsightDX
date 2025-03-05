@@ -29,4 +29,8 @@ router.get("/instrucciones_prueba", (request, response, next) => {
   response.render("instrucciones_prueba");
 });
 
+router.get("/preguntas_prueba", (request, response, next) => {
+  response.render("preguntas_prueba");
+});
+
 module.exports = router;

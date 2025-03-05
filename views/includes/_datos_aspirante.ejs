@@ -1,65 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    
+
 <section class="section">
     <div class="container">
-      <div class="test1 columns is-vcentered ml-5">
-        <div class="column">
-<form method="POST" class="p-5">
-    <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
-    <input
-      class="input"
-      type="text"
-      placeholder="López"
-      id="apellidoPaterno"
-      name="apellidoPaterno" />
-      </div>
-      <div class="column">
-      <label for="apellidoMaterno" class="label">Apellido Materno:</label>
-      <input
-        class="input"
-        type="text"
-        placeholder="Luna"
-        id="apellidoMaterno"
-        name="apellidoMaterno" />
-    </div>
-    <br />
-    <div class="column">
-    <label for="name" class="label">Nombre(s)</label>
-    <input
-      class="input"
-      type="text"
-      placeholder="Juan"
-      id="name"
-      name="name" />
-    <br />
-</div>
-<div class="column">
-<label for="age" class="label">Edad:</label>
-</div>
-<br>
-<div class="select is-danger">
-    <select>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-      <option>11</option>
-      <option>12</option>
-      <option>13</option>
-      <option>14</option>
-      <option>15</option>
-      <option>16</option>
-      <option>17</option>
-    </select>
-  </div>
-
-    <button class="button m-5 is-danger">
-      <a href="/inicio_aspirante"> Iniciar sesión (aspirante) </a>
-    </button>
-    <button href="/inicio_psicóloga" class="button m-5 is-danger">
-      Iniciar sesión (psicóloga)
-    </button>
-  </form>
+        <div class="test1 columns is-vcentered ml-5">
+            <div class="column">
+                <form method="POST" class="p-5">
+                    <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+                    <input
+                    class="input"
+                    type="text"
+                    placeholder="López"
+                    id="apellidoPaterno"
+                    name="apellidoPaterno" />
+            </div>
+            <div class="column">
+                <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Luna"
+                    id="apellidoMaterno"
+                    name="apellidoMaterno" />
+            </div>
+                <br />
+            <div class="column">
+                <label for="name" class="label">Nombre(s)</label>
+                <input
+                class="input"
+                type="text"
+                placeholder="Juan"
+                id="name"
+                name="name" />
+                <br />
+            </div>
+        </div>
+        <div class="edad columns is-vcentered ml-5">
+            <div class="column">
+                    <label for="age" class="label">Edad:</label>
+                    <br>
+                    <div class="select is-danger">
+                        <select>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p>Una vez que des click en 'Siguiente', comenzarán a correr tus 30 minutos</p>
+                    </div>
+            </div>
+            <div class="columns is-vcentered ">
+                    <button class="column is-narrow button "><a href="/instrucciones_prueba">Regresar</a ></button> 
+                <a href="/">
+                <button class=" column is-narrow button">Siguiente</button></a>
+            </div>
+            </form>
         </div>
       </div>
     </div>
