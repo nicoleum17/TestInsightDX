@@ -35,6 +35,8 @@ router.get("/preguntas_prueba", (request, response, next) => {
   response.render("preguntas_prueba");
 });
 
+router.get("/inicio_psicologa", testInsightController.inicio_psicologa);
+
 router.get("/consulta_aspirante", testInsightController.get_aspirantes);
 
 module.exports = router;
