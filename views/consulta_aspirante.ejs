@@ -1,4 +1,48 @@
 <%- include('includes/_header')%>
+<head>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 18px;
+      text-align: left;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
 <section>
   <h1>Aspirantes</h1>
   <img
@@ -26,16 +70,64 @@
         <th>29:35 min</th>
         <th>Completada</th>
         <th>
-          <button class="image-button" onclick="/consulta/respuestas">
-            <img
-              src="https://img.icons8.com/ios7/512/plus.png"
-              alt=""
-              style="width: 10%"
-            />
-          </button>
+          <a href="/consulta/respuestas">
+            <button class="image-button">
+              <img
+                src="https://img.icons8.com/ios7/512/plus.png"
+                alt=""
+                style="width: 10%"
+              /></button
+          ></a>
         </th>
       </tr>
-      <tr></tr>
+      <tr>
+        <th>Prueba TERMAN</th>
+        <th>27/02/2025</th>
+        <th>-</th>
+        <th>Pendiente</th>
+        <th>
+          <a href="/consulta/respuestas">
+            <button class="image-button">
+              <img
+                src="https://img.icons8.com/ios7/512/plus.png"
+                alt=""
+                style="width: 10%"
+              /></button
+          ></a>
+        </th>
+      </tr>
+      <tr>
+        <th>Test de los colores de Lusher</th>
+        <th>27/02/2025</th>
+        <th>-</th>
+        <th>Pendiente</th>
+        <th>
+          <a href="/consulta/respuestas">
+            <button class="image-button">
+              <img
+                src="https://img.icons8.com/ios7/512/plus.png"
+                alt=""
+                style="width: 10%"
+              /></button
+          ></a>
+        </th>
+      </tr>
+      <tr>
+        <th>Personalidad 16 Factores</th>
+        <th>27/02/2025</th>
+        <th>-</th>
+        <th>Pendiente</th>
+        <th>
+          <a href="/consulta/respuestas">
+            <button class="image-button">
+              <img
+                src="https://img.icons8.com/ios7/512/plus.png"
+                alt=""
+                style="width: 10%"
+              /></button
+          ></a>
+        </th>
+      </tr>
     </tbody>
   </table>
 </section>
