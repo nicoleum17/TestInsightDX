@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const testInsightController = require("../controllers/testInsight.controllers");
+
 router.get("/", (request, response, next) => {
   response.render("login");
 });
@@ -31,6 +33,10 @@ router.get("/instrucciones_prueba", (request, response, next) => {
 
 router.get("/preguntas_prueba", (request, response, next) => {
   response.render("preguntas_prueba");
+});
+
+router.get("/consulta_aspirante", (request, response, next) => {
+  response.render("consulta_aspirante");
 });
 
 module.exports = router;
