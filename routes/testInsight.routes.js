@@ -33,4 +33,8 @@ router.get("/preguntas_prueba", (request, response, next) => {
   response.render("preguntas_prueba");
 });
 
+router.get("/formato_entrevista", (request, response, next) => {
+  response.render("formato_entrevista");
+});
+
 module.exports = router;

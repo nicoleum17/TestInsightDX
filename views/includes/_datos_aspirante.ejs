@@ -7,7 +7,7 @@
     <div class="container">
         <div class="test1 columns is-vcentered ml-5">
             <div class="column">
-                <form method="POST" class="p-5">
+                <form id="personalInformation" method="POST" class="p-5">
                     <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
                     <input
                     class="input"
@@ -39,23 +39,11 @@
         </div>
         <div class="edad columns is-vcentered ml-5">
             <div class="column">
-                    <label for="age" class="label">Edad:</label>
+                    <label for="selectAge" class="label">Edad:</label>
                     <br>
                     <div class="select is-danger">
-                        <select>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                        <option>13</option>
-                        <option>14</option>
-                        <option>15</option>
-                        <option>16</option>
-                        <option>17</option>
+                        <select id="selectAgePI" for="selectAge">
+
                         </select>
                     </div>
                     <div>
@@ -63,13 +51,21 @@
                     </div>
             </div>
             <div class="columns is-vcentered ">
-                    <button class="column is-narrow button "><a href="/instrucciones_prueba">Regresar</a ></button> 
-                <button class=" column is-narrow button"><a href="/preguntas_prueba">Siguiente</a ></button>
+                <button class="column is-narrow button "><a href="/instrucciones_prueba">Regresar</a ></button> 
+                <button class="column is-narrow button"><a href="/preguntas_prueba">Siguiente</a ></button>
             </div>
             </form>
         </div>
       </div>
     </div>
   </section>
+  <script>
+        const dropdown = document.getElementById('selectAgePI');
+        for (let i = 5; i <= 100; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            dropdown.appendChild(option);}
+  </script>
 </body>
 </html>
