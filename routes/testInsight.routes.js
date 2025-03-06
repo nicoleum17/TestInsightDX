@@ -7,33 +7,19 @@ router.get("/", (request, response, next) => {
   response.render("login");
 });
 
-router.get("/inicio_aspirante", (request, response, next) => {
-  response.render("inicio_aspirante");
-});
+router.get("/inicio_aspirante", testInsightController.get_login);
 
-router.get("/notificaciones_aspirante", (request, response, next) => {
-  response.render("notificaciones_aspirante");
-});
+router.get("/notificaciones_aspirante", testInsightController.get_notificacionA);
 
-router.get("/documentos_aspirante", (request, response, next) => {
-  response.render("documentos_aspirante");
-});
+router.get("/documentos_aspirante", testInsightController.get_documentosA);
 
-router.get("/calendario_aspirante", (request, response, next) => {
-  response.render("calendario_aspirante");
-});
+router.get("/calendario_aspirante", testInsightController.get_calendarioA);
 
-router.get("/datos_aspirante", (request, response, next) => {
-  response.render("datos_aspirante");
-});
+router.get("/datos_aspirante", testInsightController.get_datosA);
 
-router.get("/instrucciones_prueba", (request, response, next) => {
-  response.render("instrucciones_prueba");
-});
+router.get("/instrucciones_prueba", testInsightController.get_instrucciones);
 
-router.get("/preguntas_prueba", (request, response, next) => {
-  response.render("preguntas_prueba");
-});
+router.get("/preguntas_prueba", testInsightController.get_preguntasPrueba);
 
 router.get("/inicio_psicologa", testInsightController.inicio_psicologa);
 
