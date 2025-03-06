@@ -48,4 +48,15 @@ router.get("/consulta_grupo", testInsightController.get_grupo);
 
 router.get("/consulta_respuestas_grupo", testInsightController.get_respuestasG);
 
+router.get("/crear_grupo", testInsightController.crear_grupo);
+
+router.get("/sesion_grupal", testInsightController.sesion_grupal);
+
+router.get("/sesion_individual", testInsightController.sesion_individual);
+
+router.get(
+  "/confirmar_creacion_grupo",
+  testInsightController.confirmar_creacion_grupo
+);
+
 module.exports = router;
