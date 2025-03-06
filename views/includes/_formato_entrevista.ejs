@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<section class="section">
+    <div class="container">
+        <h1 class="title is-3">Formato de entrevista</h1>
+        <div class="interviewFormat columns is-vcentered ml-5">
+            <div class="column is-one-quarter is-offset-8">
+                <form method="POST" class="p-5">
+                    <label for="date" class="label">Fecha:</label>
+                    <p id="timeStamp"></p>
+            </div>
+        </div>
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="García"
+                    id="apellidoPaterno"
+                    name="apellidoPaterno" />
+            </div>
+            <div class="column is-one-third">
+                <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+                <input class="input"
+                type="text"
+                placeholder="López"
+                id="apellidoMaterno"
+                name="apellidoMaterno"/>
+            </div>
+            <div class="column is-one-third">
+                <label for="name" class="label">Nombre:</label>
+                <input class="input"
+                type="text"
+                placeholder="Arturo"
+                id="name"
+                name="name"/>
+            </div>
+        </div>
+        <br />
+        <div class="columns ml-5">
+            <div class="column is-one-quarter">
+                <label for="birthdate" class="label">Fecha de nacimiento:</label>
+                <input
+                class="input"
+                type="date"
+                id="birthdate"
+                name="birthdate" />
+                <br />
+            </div>
+            <div class="column is-offset-5">
+                <label for="age" class="label">Edad (años cumplidos):</label>
+            
+                <div class="select is-danger">
+                    <select id="selectAgeIF" class="m-0">
+
+                    </select>
+                </div>
+        </div>
+        </div>
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="nationality" class="label">Nacionalidad:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Mexicana"
+                    id="nationality"
+                    name="nationality" />
+            </div>
+            <div class="column is-one-third">
+                <label for="origin" class="label">Originario de:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Guerrero"
+                    id="origin"
+                    name="origin" />
+            </div>
+        </div>
+        <button class=" column is-narrow button mt-3"><a href="/inicio_aspirante">Siguiente</a ></button>
+        </form> 
+      </div>
+    </div>
+  </section>
+  <script>
+    const dropdown = document.getElementById('selectAgeIF');
+        for (let i = 5; i <= 100; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            dropdown.appendChild(option);
+        }
+        const date = new Date();
+        const formattedDate = date.toLocaleString();
+        document.getElementById('timeStamp').textContent = formattedDate;
+
+  </script>
+</body>
+</html>

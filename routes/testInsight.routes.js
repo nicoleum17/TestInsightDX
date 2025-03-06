@@ -59,4 +59,8 @@ router.get(
   testInsightController.confirmar_creacion_grupo
 );
 
+router.get("/formato_entrevista", (request, response, next) => {
+  response.render("formato_entrevista");
+});
+
 module.exports = router;
