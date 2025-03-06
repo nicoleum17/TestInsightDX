@@ -39,4 +39,13 @@ router.get("/inicio_psicologa", testInsightController.inicio_psicologa);
 
 router.get("/consulta_aspirante", testInsightController.get_aspirantes);
 
+router.get(
+  "/consulta_respuestas_aspirante",
+  testInsightController.get_respuestasA
+);
+
+router.get("/consulta_grupo", testInsightController.get_grupo);
+
+router.get("/consulta_respuestas_grupo", testInsightController.get_respuestasG);
+
 module.exports = router;
