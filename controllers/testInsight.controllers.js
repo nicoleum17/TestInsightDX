@@ -63,6 +63,11 @@ exports.sesion_individual = (request, response, next) => {
 exports.confirmar_creacion_grupo = (request, response, next) => {
   response.render("confirmar_creacion_grupo");
 };
+
+exports.formato_entrevista= (request, response, next) => {
+  response.render("formato_entrevista");
+};
+
 /*
 {
     isLoggedIn: request.session.isLoggedIn || false,
