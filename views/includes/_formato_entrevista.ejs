@@ -1,5 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    .person {
+        border: 1px solid black;
+        padding: 10px;
+        min-width: 150px;
+        background-color: #FFFFFF;
+        display: inline-block;
+    }
+    .person div {
+        text-align: center;
+    }
+    .person .name {
+        font-size: 16px;
+    }
+    .person .parentDrop, .person .spouseDrop, .person .childDrop {
+        width: auto;
+        min-width: 80px;
+        min-height: 80px;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        padding-top: 15px;
+    }
+    .person .parentDrop>span,
+    .person .spouseDrop>span,
+    .person .childDrop>span {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        font-weight: bold;
+    }
+    .parentDrop>.person,
+    .spouseDrop>.person,
+    .childDrop>.person {
+        margin-top: 20px;
+    }
+    .tree ul {
+        padding-top: 20px;
+        position: relative;
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+    }
+    .tree li {
+        display: table-cell;
+        text-align: center;
+        list-style-type: none;
+        position: relative;
+        padding: 20px 5px 0 5px;
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+    }
+    .tree li::before, .tree li::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        border-top: 1px solid #ccc;
+        width: 50%;
+        height: 20px;
+    }
+    .tree li::after {
+        right: auto;
+        left: 50%;
+        border-left: 1px solid #ccc;
+    }
+    .tree li:only-child::after, .tree li:only-child::before {
+        display: none;
+    }
+    .tree li:only-child {
+        padding-top: 0;
+    }
+    .tree li:first-child::before, .tree li:last-child::after {
+        border: 0 none;
+    }
+    .tree li:last-child::before {
+        border-right: 1px solid #ccc;
+        border-radius: 0 5px 0 0;
+        -webkit-border-radius: 0 5px 0 0;
+        -moz-border-radius: 0 5px 0 0;
+    }  
+    .tree li:first-child::after {
+        border-radius: 5px 0 0 0;
+        -webkit-border-radius: 5px 0 0 0;
+        -moz-border-radius: 5px 0 0 0;
+    }
+    .tree ul ul::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        border-left: 1px solid #ccc;
+        width: 0;
+        height: 20px;
+    }
+    .tree li .parent {
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        margin-top: 10px;
+    }
+    .tree li .parent::before {
+        content: '';
+        position: absolute;
+        top: 45px;
+        left: 50%;
+        border-left: 1px solid #ccc;
+        width: 3px;
+        height: 10px;
+    }
+    .tree li .family {
+        position: relative;
+    }
+    .tree li .family .spouse {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: 95px;
+    }
+    .tree li .family .spouse::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        width: 20px;
+        height: 3px;
+    }
+</style>
+
 <body>
 <section class="section">
     <div class="container">
@@ -11,6 +143,8 @@
                     <p id="timeStamp"></p>
             </div>
         </div>
+        <br><br>
+        <h3 class="title is-4">Datos Personales</h3>
         <div class="columns is-vcentered ml-5">
             <div class="column is-one-third">
                 <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
@@ -47,7 +181,6 @@
                 type="date"
                 id="birthdate"
                 name="birthdate" />
-                <br />
             </div>
             <div class="column is-offset-5">
                 <label for="age" class="label">Edad (años cumplidos):</label>
@@ -59,6 +192,7 @@
                 </div>
         </div>
         </div>
+        <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-one-third">
                 <label for="nationality" class="label">Nacionalidad:</label>
@@ -78,15 +212,567 @@
                     id="origin"
                     name="origin" />
             </div>
+            <div class="column is-one-third">
+                <label for="gender" class="label">Género:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Mujer"
+                    id="gender"
+                    name="gender" />
+            </div>
         </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="maritalStatus" class="label">Estado Civil:</label>
+                <div class="select is-danger">
+                    <select name="maritalStatus" id="maritalStatus">
+                        <option disabled hidden selected>Seleccione una opción</option>
+                        <option value="soltero">Soltero/a</option>
+                        <option value="casado">Casado/a</option>
+                        <option value="divorviado">Divorciado/a</option>
+                        <option value="separado">Separado/a</option>
+                        <option value="viudo">Viudo/a</option>
+                        <option value="unionLibre">Unión libre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="column is-two-thirds">
+                <label for="address" class="label">Dirección Actual:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Calle del Mármol #32"
+                    id="address"
+                    name="address" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="cellphone" class="label">Celular:</label>
+                <input
+                    class="input"
+                    type="tel"
+                    placeholder="123 456 7890"
+                    id="cellphone"
+                    name="cellphone" />
+            </div>
+            <div class="column is-one-third">
+                <label for="phone" class="label">Teléfono(s):</label>
+                <input
+                    class="input"
+                    type="tel"
+                    placeholder="123 456 7890"
+                    id="phone"
+                    name="phone" />
+            </div>
+            <div class="column is-one-third">
+                <label for="email" class="label">Correo:</label>
+                <input
+                    class="input"
+                    type="email"
+                    placeholder="ejemplo@gmail.com"
+                    id="email"
+                    name="email" />
+            </div>
+        </div>
+        </div>
+        <br /><br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="description" class="label">Realice una descripción amplia de su persona:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="description"
+                    name="description" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="mood" class="label">Describa su estado de ánimo cotidiano:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="mood"
+                    name="mood" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="pressure" class="label">Describa su estado de ánimo en situaciones de presión:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="pressure"
+                    name="pressure" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="critic" class="label">Describa su estado de ánimo en situaciones críticas:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="critic"
+                    name="critic" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="health" class="label">¿Cómo considera que es su estado de salud?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="health"
+                    name="health" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="freetime" class="label">¿A qué dedica sus tiempos libres?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="freetime"
+                    name="freetime" />
+            </div>
+        </div>
+
+
+        <br><br><br><br>
+        <h3 class="title is-4">Datos Familiares</h3>
+        <div class="columns is-vcentered ml-5">
+            <div class="tree">
+                <ul>
+                <li>
+                    <div class="family">
+                        <div class="person">
+                            <div class="name">Abuelo Materno</div>
+                        </div>
+                        <div class="parent">
+                            <div class="person spouse">
+                                <div class="name">Abuela materna</div>
+                            </div>
+                            <ul>
+                            <li>
+                            <div class="family" style="width: 172px">
+                                <div class="person child">
+                                    <div class="name">Tío(a)</div>
+                                </div>
+                            </div>
+                            </li>
+                            <li>
+                                <div class="family" style="width: 172px">
+                                    <div class="person child">
+                                        <div class="name">Tío(a)</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                            <div class="family" style="width: 172px">
+                                <div class="person child">
+                                    <div class="name">Tío(a)</div>
+                                </div>
+                            </div>
+                            </li>
+                            <li>
+                            <div class="family" style="width: 344px">
+                                <div class="person">
+                                    <div class="name">Madre</div>
+                                </div>
+
+                                <div class="parent">
+                                    <div class="person spouse">
+                                        <div class="name">Padre</div>
+                                    </div>
+                                <ul>
+                                    <li>
+                                        <div class="person child">
+                                            <div class="name">Hermano(a)</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                    <div class="person child">
+                                        <div class="name">Aspirante</div>
+                                    </div>
+                                    <div class="person spouse">
+                                        <div class="name">Pareja del Aspirante</div>
+                                    </div>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                </li>
+                </ul>
+                </div>
+            </div>
+
+
+        <br><br><br><br>
+        <h3 class="title is-4">Académicos</h3>
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="mayor" class="label">Nombre de la Licenciatura:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Licenciatura en Economía"
+                    id="mayor"
+                    name="mayor" />
+            </div>
+            <div class="column is-one-third">
+                <label for="procedence" class="label">Institución de Procedencia:</label>
+                <input class="input"
+                type="text"
+                placeholder="Universidad Autónoma de Guanajuato"
+                id="procedence"
+                name="procedence"/>
+            </div>
+            <div class="column is-one-third">
+                <label for="grade" class="label">Promedio de egreso:</label>
+                <input class="input"
+                min = 50
+                max = 100
+                type="number"
+                placeholder="85"
+                id="grade"
+                name="grade"/>
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="generation" class="label">Generación:</label>
+                <input
+                    class="input"
+                    type="number"
+                    placeholder="2023"
+                    id="generation"
+                    name="generation" />
+            </div>
+            <div class="column is-one-third">
+                <label for="studies" class="label">Grado máximo de estudios:</label>
+                <input class="input"
+                type="text"
+                placeholder="Licenciatura"
+                id="studies"
+                name="studies"/>
+            </div>
+            <div class="column is-one-third">
+                <label for="master" class="label">Maestría o especialidad (en caso de tener):</label>
+                <input class="input"
+                type="text"
+                placeholder="Dirección Financiera"
+                id="master"
+                name="master"/>
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="masterUni" class="label">Institución donde curso la Maestría:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Universidad Tecnológica de Querétaro"
+                    id="masterUni"
+                    name="masterUni" />
+            </div>
+            <div class="column is-one-third">
+                <label for="masterGrade" class="label">Promedio de egreso de la Maestría:</label>
+                <input class="input"
+                min = 50
+                max = 100
+                type="number"
+                placeholder="93"
+                id="masterGrade"
+                name="masterGrade"/>
+            </div>
+            <div class="column is-one-third">
+                <label for="diploma" class="label">Cursos y Diplomados (Escribir los de los últimos tres años):</label>
+                <input class="input"
+                type="text"
+                placeholder="Marketing Digital, Diseño Gráfico"
+                id="diploma"
+                name="diploma"/>
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="languages" class="label">Idiomas que domina:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Inglés, alemám"
+                    id="languages"
+                    name="languages" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="performance" class="label">¿Cómo considera que ha sido su desempeño académico hasta llegar a este posgrado?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="performance"
+                    name="performance" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="developmentTools" class="label">¿Cuáles han sido los cursos de actualización, los seminarios o congresos a los que ha asistido que le han brindado mayores herramientas en su desarrollo profesional o personal?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="developmentTools"
+                    name="developmentTools" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="interest" class="label">¿Cómo surge el interés en este este programa de posgrado?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="interest"
+                    name="interest" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="purpose" class="label">¿Cuál es la finalidad de estudiar este posgrado y como se integrará en sus experiencias personales y/o profesionales?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="purpose"
+                    name="purpose" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="expectations" class="label">¿Cuáles son sus expectativas acerca de las aportaciones que le pueda hacer este posgrado?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="expectations"
+                    name="expectations" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="vision" class="label">Explique su visión respecto a su desarrollo profesional en años posteriores a su egreso de este posgrado:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="vision"
+                    name="vision" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="residency" class="label">¿Está dispuesto a cambiar de residencia?</label>
+                <div class="select is-danger">
+                    <select name="residency" id="residency">
+                        <option disabled hidden selected>Seleccione una opción</option>
+                        <option value="Si">Si</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <br><br><br><br>
+        <h3 class="title is-4">Datos Laborales</h3>
+        <h4 class="title is-6">Escriba el último trabajo en el que se desempeñó</h4>
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="workAddess" class="label">Lugar donde trabaja:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Lugar de trabajo"
+                    id="workAddess"
+                    name="workAddess" />
+            </div>
+            <div class="column is-one-third">
+                <label for="company" class="label">Nombre de la empresa:</label>
+                <input class="input"
+                type="text"
+                placeholder="SoftSync"
+                id="company"
+                name="company"/>
+            </div>
+            <div class="column is-one-third">
+                <label for="position" class="label">Puesto:</label>
+                <input class="input"
+                type="text"
+                placeholder="Gerente General"
+                id="position"
+                name="position"/>
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-one-third">
+                <label for="companyTime" class="label">Años en la empresa:</label>
+                <input
+                    class="input"
+                    type="number"
+                    placeholder="2"
+                    id="companyTime"
+                    name="companyTime" />
+            </div>
+            <div class="column is-one-third">
+                <label for="salary" class="label">Sueldo mensual:</label>
+                <input class="input"
+                type="number"
+                placeholder="10000"
+                id="salary"
+                name="salary"/>
+            </div>
+            <div class="column is-one-third">
+                <label for="incharge" class="label">Tiene personal a su cargo:</label>
+                    <div class="select is-danger">
+                        <select name="incharge" id="incharge">
+                            <option disabled hidden selected>Seleccione una opción</option>
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-two-thirds">
+                <label for="activities" class="label">Actividades que realiza:</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="activities"
+                    name="activities" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="bossRelation" class="label">¿Cómo considera que es la relación que tiene con su jefe inmediato?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="bossRelation"
+                    name="bossRelation" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="staffRelation" class="label">¿Cuál es la relación que tiene con el personal a su cargo?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="staffRelation"
+                    name="staffRelation" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="challenge" class="label">¿Cuál es el mayor reto que se ha encontrado en los trabajos que ha tenido y como lo ha resuelto? </label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="challenge"
+                    name="challenge" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="companyAwareness" class="label">La empresa en la que trabaja está enterada de sus intereses académicos</label>
+                    <div class="select is-danger">
+                        <select name="companyAwareness" id="companyAwareness">
+                            <option disabled hidden selected>Seleccione una opción</option>
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="companyReaction" class="label">¿Cuál ha sido la reacción de la empresa ante estos intereses?</label>
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Escribe aquí tu respuesta..."
+                    id="companyReaction"
+                    name="companyReaction" />
+            </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="activitiesCombination" class="label">¿Considera combinar sus actividades profesionales con las académicas?</label>
+                    <div class="select is-danger">
+                        <select name="activitiesCombination" id="activitiesCombination">
+                            <option disabled hidden selected>Seleccione una opción</option>
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+            </div>
+        </div>
+
+
         <button class=" column is-narrow button mt-3"><a href="/inicio_aspirante">Siguiente</a ></button>
         </form> 
       </div>
     </div>
+
+
+
   </section>
   <script>
     const dropdown = document.getElementById('selectAgeIF');
-        for (let i = 5; i <= 100; i++) {
+        for (let i = 18; i <= 100; i++) {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
@@ -95,7 +781,6 @@
         const date = new Date();
         const formattedDate = date.toLocaleString();
         document.getElementById('timeStamp').textContent = formattedDate;
-
   </script>
 </body>
 </html>
