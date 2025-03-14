@@ -231,6 +231,10 @@
                         <option disabled hidden selected>Seleccione una opción</option>
                         <option value="soltero">Soltero/a</option>
                         <option value="casado">Casado/a</option>
+                        <option value="divorviado">Divorciado/a</option>
+                        <option value="separado">Separado/a</option>
+                        <option value="viudo">Viudo/a</option>
+                        <option value="unionLibre">Unión libre</option>
                     </select>
                 </div>
             </div>
@@ -768,7 +772,7 @@
   </section>
   <script>
     const dropdown = document.getElementById('selectAgeIF');
-        for (let i = 5; i <= 100; i++) {
+        for (let i = 18; i <= 100; i++) {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
