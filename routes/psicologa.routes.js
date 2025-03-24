@@ -23,6 +23,9 @@ router.get(
   psicologaController.confirmar_creacion_grupo
 );
 
-router.get("/formato_entrevista", psicologaController.formato_entrevista);
+router.get("/sesion_grupal", psicologaController.sesion_grupal);
+
+router.get("/sesion_individual", psicologaController.sesion_individual);
+
 
 module.exports = router;

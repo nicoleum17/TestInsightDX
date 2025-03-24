@@ -27,3 +27,7 @@ exports.get_login=(request, response, next) => {
   exports.get_preguntasPrueba = (request, response, next) => {
     response.render("preguntas_prueba");
   };
+
+  exports.formato_entrevista= (request, response, next) => {
+    response.render("formato_entrevista");
+  };

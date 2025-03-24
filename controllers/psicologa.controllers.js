@@ -28,7 +28,11 @@ exports.inicio_psicologa = (request, response, next) => {
     response.render("confirmar_creacion_grupo");
   };
   
-  exports.formato_entrevista= (request, response, next) => {
-    response.render("formato_entrevista");
+  exports.sesion_grupal = (request, response, next) => {
+    response.render("sesion_grupal");
+  };
+  
+  exports.sesion_individual = (request, response, next) => {
+    response.render("sesion_individual");
   };
   

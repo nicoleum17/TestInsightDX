@@ -17,4 +17,6 @@ router.get("/instrucciones_prueba", aspiranteController.get_instrucciones);
 
 router.get("/preguntas_prueba", aspiranteController.get_preguntasPrueba);
 
+router.get("/formato_entrevista", aspiranteController.formato_entrevista);
+
 module.exports = router;
