@@ -1,14 +1,72 @@
-<%- include('includes/_header')%>
-<section>
-  <h1>Crear Grupo</h1>
-  <a href="sesion_grupal"
-    ><button class="button m-5 is-danger">Sesion Grupal</button></a
-  >
-  <a href="sesion_individual"
-    ><button class="button m-5 is-danger">Sesion Individual</button></a
-  >
-  <a href="confirmar_creacion_grupo"
-    ><button class="button m-5 is-danger">Confirmar</button></a
-  >
-</section>
-<%- include('includes/_footer')%>
+<%- include('includes/_header') %>
+
+<div class="container">
+  <!-- Título -->
+  <h2 class="title is-3">Crear Grupo</h2>
+
+  <!-- Subir archivo y fecha límite -->
+  <div class="columns">
+    <div class="column">
+      <label class="label">Subir Archivo</label>
+      <div class="file">
+        <label class="file-label">
+          <input class="file-input" type="file" name="resume" />
+          <span class="file-cta">
+            <span class="file-label"> Selecciona un archivo </span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="column">
+      <label class="label">Fecha Límite:</label>
+      <input type="date" class="input" name="fechaLimite" value="2025-01-01" />
+    </div>
+  </div>
+
+  <!-- Batería de Pruebas -->
+  <div class="box">
+    <div class="is-flex is-align-items-center mb-3">
+      <strong class="mr-auto">Batería de Pruebas</strong>
+      <button>
+        <img
+          src="https://img.icons8.com/m_rounded/512/plus.png"
+          width="30"
+          height="30"
+        />
+      </button>
+    </div>
+
+    <!-- Lista de pruebas -->
+    <div class="box has-background-link">
+      <div class="columns">
+        <div class="column">
+          <div class="select is-fullwidth">
+            <select name="prueba">
+              <option>Selecciona una opción</option>
+              <option>Prueba 1</option>
+              <option>Prueba 2</option>
+            </select>
+          </div>
+        </div>
+        <div class="column is-1">
+          <button>
+            <img
+              src="https://static.thenounproject.com/png/2456540-200.png"
+              width="30"
+              height="30"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="buttons is-centered">
+    <a href="sesion_grupal" class="button is-link">Sesión Grupal</a>
+    <a href="sesion_individual" class="button is-link">Sesión Individual</a>
+    <a href="confirmar_creacion_grupo" class="button is-link">Confirmar</a>
+  </div>
+</div>
+
+<%- include('includes/_footer') %>
