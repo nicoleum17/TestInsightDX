@@ -34,7 +34,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: fileStorage }).single("archivo"));
 
 const testInsightRoutes = require("./routes/testInsight.routes");
+const aspiranteRoutes = require("./routes/aspirante.routes");
+const psicologaRoutes = require("./routes/psicologa.routes");
 
+app.use("/psicologa", psicologaRoutes);
+app.use("/aspirante", aspiranteRoutes);
 app.use("/", testInsightRoutes);
 
 app.use((request, response, next) => {
