@@ -14,7 +14,7 @@ exports.get_login = (request, response, next) => {
 
   response.render("login.ejs", {
     isLoggedIn: request.session.isLoggedIn || false,
-    username: request.session.username || "",
+    usuario: request.session.usuario || "",
     isNew: false,
     info: mensaje,
     warning: warning,
@@ -23,22 +23,23 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-  Usuario.fetchOne(request.body.username)
+  Usuario.fetchOne(request.body.usuario)
     .then(([rows, fieldData]) => {
       if (rows.length > 0) {
         const bcrypt = require("bcryptjs");
         bcrypt
-          .compare(request.body.password, rows[0].password)
+          .compare(request.body.contraseña, rows[0].contraseña)
           .then((doMatch) => {
             if (doMatch) {
               request.session.isLoggedIn = true;
-              request.session.username = request.body.username;
+              request.session.usuario = request.body.usuario;
               return request.session.save((error) => {
-                response.redirect("/inicio_aspirante");
+                response.redirect("/aspirante/inicio_aspirante");
               });
             } else {
               request.session.warning = `Usuario y/o contraseña incorrectos`;
               response.redirect("/login");
+              console.log("Usuario y/o contraseña incorrectos-");
             }
           })
           .catch((error) => {
