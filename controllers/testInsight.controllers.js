@@ -39,7 +39,6 @@ exports.post_login = (request, response, next) => {
             } else {
               request.session.warning = `Usuario y/o contraseña incorrectos`;
               response.redirect("/login");
-              console.log("Usuario y/o contraseña incorrectos-");
             }
           })
           .catch((error) => {
