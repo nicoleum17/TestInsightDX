@@ -6,6 +6,17 @@ const bodyParser = require("body-parser");
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+const session = require("express-session");
+
+app.use(
+  session({
+    secret:
+      "mi string secreto que debe ser un string aleatorio muy largo, no como éste",
+    resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió
+    saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
+  })
+);
+
 app.use((request, response, next) => {
   next();
 });
@@ -26,6 +37,10 @@ const fileStorage = multer.diskStorage({
 
 //Idealmente registramos multer después de bodyParser (la siguiente línea ya debería existir)
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const csrf = require("csurf");
+const csrfProtection = csrf();
+app.use(csrfProtection);
 
 //En el registro, pasamos la constante de configuración y
 //usamos single porque es un sólo archivo el que vamos a subir,

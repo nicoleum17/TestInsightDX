@@ -76,10 +76,13 @@
             class="loginTitle title is-2 has-text-weight-normal has-text-centered pt-5">
             Inicia sesión
           </h2>
-          <form method="POST" class="p-5">
+            
+          <form action="/login"
+            method="POST" class="p-5">
             <div class="columns ">
               <div class="column is-two-thirds">
                 <label for="userName" class="label">Nombre de usuario</label>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                 <input
                   class="input"
                   type="text"
