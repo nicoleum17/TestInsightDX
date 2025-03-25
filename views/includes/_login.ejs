@@ -10,6 +10,8 @@
     <style>
       body {
         background-color: #fffcf8;
+        margin: 0;
+        padding: 0;
       }
       .loginShapeContainer {
         width: 92%;
@@ -50,10 +52,13 @@
         background-color: #DDDDDC;
         color: black;
       }
+      .fullHeight{
+        min-height: 100vh;
+      }
     </style>
   </head>
-  <body>
-    <section class="section pt-5">
+  <body >
+    <section class="section pt-5 fullHeight">
       <div class="container">
         <h1
           class="mainTitle title is-size-1-mobile has-text-centered has-text-weight-normal">
@@ -66,7 +71,7 @@
           <figure class="logoPsicodxContainer image mt-6">
             <img src="/images/logoPsicodx.png" alt="logoPsicodx" class="logoPsicodx" />
           </figure>
-          <h1 class="welcomeTitle title has-text-centered has-text-weight-normal">¡Bienvenido!</h1>
+          <h1 class="welcomeTitle title is-size-1-mobile has-text-centered has-text-weight-normal">¡Bienvenido!</h1>
         </div>
         <div class="column is-half">
           <figure class="loginShapeContainer image is-pulled-right mr-5 mt-3">
@@ -76,40 +81,40 @@
             class="loginTitle title is-2 has-text-weight-normal has-text-centered pt-5">
             Inicia sesión
           </h2>
-          <form method="POST" class="p-5">
+          <% if (info != '') { %>
+            <div class="notification is-info"><%= info %></div>
+            <% } %> <% if (warning != '') { %>
+            <div class="notification is-warning"><%= warning %></div>
+            <% } %>
+          <form action="/login"
+            method="POST" class="p-5">
             <div class="columns ">
               <div class="column is-two-thirds">
-                <label for="userName" class="label">Nombre de usuario</label>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <label for="usuario" class="label">Nombre de usuario</label>
                 <input
                   class="input"
                   type="text"
                   placeholder="AALF031220MMCNRA8"
-                  id="userName"
-                  name="userName" />
+                  id="usuario"
+                  name="usuario" />
                 </div>
             </div>
                 <br />
                 <div class="columns">
                 <div class="column is-two-thirds">
-                <label for="password" class="label">Contraseña</label>
+                <label for="contraseña" class="label">Contraseña</label>
                 <input
                   class="input"
                   type="password"
                   placeholder="*********"
-                  id="password"
-                  name="password" />
+                  id="contraseña"
+                  name="contraseña" />
                 <br />
               </div>
               </div>
-            <button class="button m-5">
-              <a href="aspirante/inicio_aspirante"> Iniciar sesión (aspirante) </a>
-            </button>
-            <button class="button m-5">
-              <a href="psicologa/inicio_psicologa">Iniciar sesión (psicóloga)</a>
-            </button>
+              <input class="button" type="submit" value="Iniciar sesión" />
           </div>
         </div>
       </form>
-    </section>
-  </body>
-</html>
+
