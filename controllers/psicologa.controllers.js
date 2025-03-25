@@ -1,6 +1,6 @@
 const { response } = require("express");
 
-const Pruebas = require("../models/prueba.model");
+const Pruebas = require("../model/prueba.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   response.render("inicio_psicologa");
