@@ -49,3 +49,7 @@ exports.sesion_grupal = (request, response, next) => {
 exports.sesion_individual = (request, response, next) => {
   response.render("sesion_individual");
 };
+
+exports.registra_reporte_grupo = (request, response, next) => {
+  response.render("registrar_reporte_grupo");
+};

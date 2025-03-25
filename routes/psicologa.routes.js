@@ -29,4 +29,9 @@ router.get("/sesion_individual", psicologaController.sesion_individual);
 
 router.get("/consulta_prueba", psicologaController.get_prueba);
 
+router.get(
+  "/registra_reporte_grupo",
+  psicologaController.registra_reporte_grupo
+);
+
 module.exports = router;

@@ -1,0 +1,40 @@
+<%- include('includes/_header')%>
+
+<section>
+  <div class="container">
+    <div class="title">Subir Reporte - Grupo</div>
+    <div class="columns is-mobile">
+      <div class="column">
+        <div class="has-text-weight-bold">Grupo:</div>
+        <div class="has-text-weight-bold">Generación:</div>
+        <div class="has-text-weight-bold">Total aspirantes:</div>
+      </div>
+      <div class="column">
+        <div class="has-text-weight-bold">Subir Archivo</div>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          <div class="file is-boxed">
+            <label class="file-label">
+              <input
+                class="file-input"
+                type="file"
+                name="resume"
+                accept=".pdf"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <img
+                    src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
+                    alt=""
+                  />
+                </span>
+                <span class="file-label"> Elige un archivo </span>
+              </span>
+            </label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('includes/_footer')%>
