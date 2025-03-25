@@ -8,6 +8,17 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <style>
+      :root {
+      --bulma-primary-h: 227deg;
+      --bulma-primary-s: 54%;
+      --bulma-primary-l: 44%;
+      --bulma-link-h: 224deg;
+      --bulma-link-s: 84%;
+      --bulma-link-l: 20%;
+      --bulma-info-h: 216deg;
+      --bulma-info-l: 91%;
+      --bulma-success-h: 175deg;
+}
       body {
         background-color: #fffcf8;
         margin: 0;
@@ -71,7 +82,7 @@
           <figure class="logoPsicodxContainer image mt-6">
             <img src="/images/logoPsicodx.png" alt="logoPsicodx" class="logoPsicodx" />
           </figure>
-          <h1 class="welcomeTitle title is-size-1-mobile has-text-centered has-text-weight-normal">¡Bienvenido!</h1>
+          <div class="typewriter welcomeTitle title is-size-1-mobile has-text-centered has-text-weight-normal" id="typewriter-text">¡Bienvenido!</div>
         </div>
         <div class="column is-half">
           <figure class="loginShapeContainer image is-pulled-right mr-5 mt-3">
@@ -81,11 +92,6 @@
             class="loginTitle title is-2 has-text-weight-normal has-text-centered pt-5">
             Inicia sesión
           </h2>
-          <% if (info != '') { %>
-            <div class="notification is-info"><%= info %></div>
-            <% } %> <% if (warning != '') { %>
-            <div class="notification is-warning"><%= warning %></div>
-            <% } %>
           <form action="/login"
             method="POST" class="p-5">
             <div class="columns ">
@@ -114,6 +120,12 @@
               </div>
               </div>
               <input class="button" type="submit" value="Iniciar sesión" />
+              <br><br>
+              <% if (info != '') { %>
+                <div class="notification has-text-centered is-info"><%= info %></div>
+                <% } %> <% if (warning != '') { %>
+                <div class="notification has-text-centered is-info"><%= warning %></div>
+                <% } %>
           </div>
         </div>
       </form>
