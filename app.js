@@ -41,11 +41,12 @@ app.use("/psicologa", psicologaRoutes);
 app.use("/aspirante", aspiranteRoutes);
 app.use("/", testInsightRoutes);
 
+app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "ejs");
+
 app.use((request, response, next) => {
   response.statusCode = 404;
   response.send("No se encuentra el recurso que estás buscando");
 });
-
-app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(3001);

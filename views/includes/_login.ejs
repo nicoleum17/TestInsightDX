@@ -6,64 +6,109 @@
     <title>TestInsight DX</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css"
-    />
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+      body {
+        background-color: #fffcf8;
+      }
+      .loginShapeContainer {
+        width: 92%;
+        position: relative;
+      }
+      .mainTitle {
+        color: #081f5c;
+        font-size: 4rem;
+      }
+      .shapeLogin {
+        position: absolute;
+        z-index: 0;
+      }
+      .loginTitle {
+        color: #FFF9F0;
+        position: relative;
+        margin-left: 17%;
+        margin-top: 10%;
+      }
+      .logoPsicodxContainer{
+        width: 55%;
+        margin-left: 22%;
+      }
+      .welcomeTitle{
+        font-size: 5.5rem;
+      }
+      form{
+        position: relative;
+        margin-left: 19%;
+      }
+      input, label{
+        margin-left: 17%;
+      }
+      .label{
+        color: #FFF9F0;
+      }
+      .button{
+        background-color: #DDDDDC;
+        color: black;
+      }
+    </style>
   </head>
-  <body class="has-background-danger-95">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <h1 class="title p-5 is-centered">Login</h1>
-
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-      <div class="navbar-end"></div>
-    </nav>
-    <section class="section">
+  <body>
+    <section class="section pt-5">
       <div class="container">
-        <h1 class="title">TestInsight DX</h1>
-        <br />
-        <h4>Ingrese sus credenciales</h4>
+        <h1
+          class="mainTitle title is-size-1-mobile has-text-centered has-text-weight-normal">
+          TestInsight DX
+        </h1>
       </div>
-      <form method="POST" class="p-5">
-        <label for="userName" class="label">Nombre de usuario</label>
-        <input
-          class="input"
-          type="text"
-          placeholder="AALF031220MMCNRA8"
-          id="userName"
-          name="userName"
-        />
-        <br />
-        <label for="password" class="label">Contraseña</label>
-        <input
-          class="input"
-          type="password"
-          placeholder="*********"
-          id="password"
-          name="password"
-        />
-        <br />
-        <button class="button m-5 is-danger">
-          <a href="aspirante/inicio_aspirante"> Iniciar sesión (aspirante) </a>
-        </button>
-        <button class="button m-5 is-danger">
-          <a href="psicologa/inicio_psicologa">Iniciar sesión (psicóloga)</a>
-        </button>
+      <div class="columns ">
+        <div class="column is-half ">
+          <br><br><br><br>
+          <figure class="logoPsicodxContainer image mt-6">
+            <img src="/images/logoPsicodx.png" alt="logoPsicodx" class="logoPsicodx" />
+          </figure>
+          <h1 class="welcomeTitle title has-text-centered has-text-weight-normal">¡Bienvenido!</h1>
+        </div>
+        <div class="column is-half">
+          <figure class="loginShapeContainer image is-pulled-right mr-5 mt-3">
+            <img src="/images/shapeLogin.png" alt="shapeLogin" class="shapeLogin" />
+          </figure>
+          <h2
+            class="loginTitle title is-2 has-text-weight-normal has-text-centered pt-5">
+            Inicia sesión
+          </h2>
+          <form method="POST" class="p-5">
+            <div class="columns ">
+              <div class="column is-two-thirds">
+                <label for="userName" class="label">Nombre de usuario</label>
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="AALF031220MMCNRA8"
+                  id="userName"
+                  name="userName" />
+                </div>
+            </div>
+                <br />
+                <div class="columns">
+                <div class="column is-two-thirds">
+                <label for="password" class="label">Contraseña</label>
+                <input
+                  class="input"
+                  type="password"
+                  placeholder="*********"
+                  id="password"
+                  name="password" />
+                <br />
+              </div>
+              </div>
+            <button class="button m-5">
+              <a href="aspirante/inicio_aspirante"> Iniciar sesión (aspirante) </a>
+            </button>
+            <button class="button m-5">
+              <a href="psicologa/inicio_psicologa">Iniciar sesión (psicóloga)</a>
+            </button>
+          </div>
+        </div>
       </form>
     </section>
   </body>
