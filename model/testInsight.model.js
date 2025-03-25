@@ -12,7 +12,7 @@ module.exports = class Usuario {
   }
 
   static fetchOne(usuario) {
-    return db.execute("SELECT * FROM usuario WHERE usuario = ?", [usuario]);
+    return db.execute("SELECT * FROM usuarios WHERE usuario = ?", [usuario]);
   }
 
   static fetch(usuario) {
