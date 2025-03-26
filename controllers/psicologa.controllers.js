@@ -1,21 +1,20 @@
 const { response } = require("express");
 
-const Pruebas = require("../model/prueba.model");
+const Prueba = require("../model/prueba.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   response.render("inicio_psicologa");
 };
 
 exports.get_prueba = (request, response, next) => {
-  /* Pruebas.fetchAll()
-    .then(([Pruebas, fieldData]) => {*/
-  response.render("consulta_prueba"); //, {
-  /*  Pruebas: Pruebas,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });*/
+  response.render("consulta_prueba");
+  /*
+  Prueba.fetchAll().then(([rows]) => {
+    response.render("consulta_prueba", {
+      pruebas: rows,
+    });
+  });
+  */
 };
 
 exports.get_aspirantes = (request, response, next) => {
@@ -35,7 +34,12 @@ exports.get_respuestasG = (request, response, next) => {
 };
 
 exports.crear_grupo = (request, response, next) => {
-  response.render("crear_grupo");
+  //response.render("crear_grupo");
+  Prueba.fetchAll().then(([rows]) => {
+    response.render("crear_grupo", {
+      pruebas: rows,
+    });
+  });
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {

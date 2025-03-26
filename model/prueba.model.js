@@ -18,7 +18,13 @@ module.exports = class Prueba {
   }
 
   //Este método servirá para devolver los objetos del almacenamiento persistente.
-  static fetchAll(nombre) {
-    return db.execute(`SELECT * FROM Pruebas WHERE nombre = ?`, [nombre]);
+  static fetchOne(nombrePrueba) {
+    return db.execute("SELECT * FROM Pruebas WHERE nombrePrueba = ?", [
+      nombrePrueba,
+    ]);
+  }
+
+  static fetchAll() {
+    return db.execute("SELECT * FROM Pruebas");
   }
 };
