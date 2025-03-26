@@ -2,27 +2,29 @@
 
 <section>
   <div class="container">
-    <div class="title">Prueba OTIS</div>
-    <br /><br />
-    <div class="subtitle">Instrucciones:</div>
-    <br />
-    <div class="instructions">
-      <ol>
-        <li>Son 75 preguntas de opción múltiple.</li>
-        <li>Tienes 30 minutos para contestarla.</li>
-        <li>
-          Durante esta prueba NO tienes permitido abrir otras pestañas,
-          navegadores o aplicaciones.
-        </li>
-        <li>Tu pantalla se estará grabando durante la prueba.</li>
-      </ol>
-    </div>
-    <p>Duración: 30min</p>
+    <br>
+    <h1 class="title"> Lista de Pruebas</h1>
+
+    <% pruebas.forEach(prueba => { %>
+      <div class="box">
+        <div class="title"><%= prueba.nombrePrueba %></div>
+        <br />
+        <div class="subtitle">Instrucciones:</div>
+        <br />
+        <div class="instructions">
+            <%= prueba.instrucciones %>
+        </div>
+        <br>
+        <p>Duración: <%= prueba.duracion %> min</p>
+
+      </div>
+    <% }) %>
+
   </div>
 
-  <a href="inicio_psicologa"
-    ><button class="button m-5 is-primary has-text-white">Regresar</button></a
-  >
+  <a href="inicio_psicologa">
+    <button class="button m-5 is-primary has-text-white">Regresar</button>
+  </a>
 </section>
 
 <%- include('includes/_footer')%>

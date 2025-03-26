@@ -1,4 +1,5 @@
 const { response } = require("express");
+const db = require("../util/database");
 
 const Prueba = require("../model/prueba.model");
 
@@ -12,14 +13,11 @@ exports.calendario_psicologa = (request, response, next) => {
   response.render("calendario_psicologa");
 };
 exports.get_prueba = (request, response, next) => {
-  response.render("consulta_prueba");
-  /*
   Prueba.fetchAll().then(([rows]) => {
     response.render("consulta_prueba", {
       pruebas: rows,
     });
   });
-  */
 };
 
 exports.get_aspirantes = (request, response, next) => {
