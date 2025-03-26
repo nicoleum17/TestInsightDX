@@ -5,6 +5,13 @@ const psicologaController = require("../controllers/psicologa.controllers");
 
 router.get("/inicio_psicologa", psicologaController.inicio_psicologa);
 
+router.get(
+  "/notificaciones_psicologa",
+  psicologaController.notificaciones_psicologa
+);
+
+router.get("/calendario_psicologa", psicologaController.calendario_psicologa);
+
 router.get("/consulta_aspirante", psicologaController.get_aspirantes);
 
 router.get(
