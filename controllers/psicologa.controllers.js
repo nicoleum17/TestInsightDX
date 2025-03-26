@@ -5,7 +5,12 @@ const Pruebas = require("../model/prueba.model");
 exports.inicio_psicologa = (request, response, next) => {
   response.render("inicio_psicologa");
 };
-
+exports.notificaciones_psicologa = (request, response, next) => {
+  response.render("notificaciones_psicologa");
+};
+exports.calendario_psicologa = (request, response, next) => {
+  response.render("calendario_psicologa");
+};
 exports.get_prueba = (request, response, next) => {
   /* Pruebas.fetchAll()
     .then(([Pruebas, fieldData]) => {*/
