@@ -26,7 +26,26 @@
                 width: 70px;
                 margin-left: 0;
             }
+            .titleTD, .customDiv{
+              display: none;
+            }
+            .titleTD2{
+              display: block;
+            }
+            .customDiv2 {
+              width: 200px;
+            }
         }
+      @media (min-width: 770px){
+         .titleTD2{
+          display: none;
+        }
+        .customDiv, .customDiv2 {
+        width:400px;
+      }
+      }
+
+
     </style>
   </head>
   <body class="has-background-warning">
@@ -41,11 +60,13 @@
             style="max-height: 100px" 
             class="navbarLogo "/>
           </a>
-          <div style="margin-left: auto;">
-            <h1 class=" title has-text-link is-size-5-mobile is-1 p-5 ml-6 has-text-weight-normal">TestInsight DX</h1>
+          <div class="customDiv2">
+            <h1 class="titleTD2 title has-text-link is-size-5-mobile ml-5  has-text-weight-normal">TestInsight DX</h1>
           </div>
         </div>
-
+        <div class="customDiv">
+          <h1 class="titleTD title has-text-link is-1 pt-5 has-text-weight-normal">TestInsight DX</h1>
+        </div>
 
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
           <span aria-hidden="true"></span>
