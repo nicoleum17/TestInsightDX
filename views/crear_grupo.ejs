@@ -27,7 +27,7 @@
   <div class="box">
     <div class="is-flex is-align-items-center mb-3">
       <strong class="mr-auto">Batería de Pruebas</strong>
-      <button>
+      <button id="button-agregar">
         <img
           src="https://img.icons8.com/m_rounded/512/plus.png"
           width="30"
@@ -61,16 +61,99 @@
     </div>
   </div>
 
+  <br /><br />
+
   <!-- Botones de acción -->
-  <div class="buttons is-centered">
-    <a href="sesion_grupal" class="button is-link">Sesión Grupal</a>
-    <a href="sesion_individual" class="button is-link">Sesión Individual</a>
-    <a href="confirmar_creacion_grupo" class="button is-link">Confirmar</a>
-  </div>
+  <section id="SesionGrupal">
+    <div class="title">Sesión Grupal</div>
+    <div class="columns is-mobile">
+      <div class="column">
+        <div class="field">
+          <label class="label">Fecha</label>
+          <div class="control">
+            <input
+              class="input"
+              type="date"
+              name="fechaPruebaGrupal"
+              value="2025-01-01"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Hora</label>
+          <div class="control">
+            <input class="input" type="time" name="horaPruebaGrupal" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="field">
+        <label class="label">Link</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            name="linkPruebaGrupal"
+            value="ingresa un link"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <br /><br />
+
+  <section id="SesionIndividual">
+    <div class="title">Sesión Individual</div>
+    <div class="columns is-mobile">
+      <div class="column">
+        <div class="field">
+          <label class="label">Fecha</label>
+          <div class="control">
+            <input
+              class="input"
+              type="date"
+              name="fechaPruebaIndividual"
+              value="2025-01-01"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Hora</label>
+          <div class="control">
+            <input class="input" type="time" name="horaPruebaIndividual" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="field">
+        <label class="label">Link</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            name="linkPruebaIndividual"
+            value="ingresa un link"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<a href="inicio_psicologa"
-  ><button class="button m-5 is-primary has-text-white">Regresar</button></a
->
+<div class="buttons is-centered">
+  <a href="inicio_psicologa"
+    ><button class="button m-5 is-primary has-text-white">Regresar</button></a
+  >
+  <a href="confirmar_creacion_grupo"
+    ><button class="button m-5 is-primary has-text-white">Confirmar</button></a
+  >
+</div>
 
 <%- include('includes/_footer') %>
