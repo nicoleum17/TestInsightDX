@@ -9,16 +9,16 @@
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <style>
       :root {
-      --bulma-primary-h: 227deg;
-      --bulma-primary-s: 54%;
-      --bulma-primary-l: 44%;
-      --bulma-link-h: 224deg;
-      --bulma-link-s: 84%;
-      --bulma-link-l: 20%;
-      --bulma-info-h: 216deg;
-      --bulma-info-l: 91%;
-      --bulma-success-h: 175deg;
-}
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+      }
       body {
         background-color: #fffcf8;
         margin: 0;
@@ -37,38 +37,39 @@
         z-index: 0;
       }
       .loginTitle {
-        color: #FFF9F0;
+        color: #fff9f0;
         position: relative;
         margin-left: 17%;
         margin-top: 10%;
       }
-      .logoPsicodxContainer{
+      .logoPsicodxContainer {
         width: 55%;
         margin-left: 22%;
       }
-      .welcomeTitle{
+      .welcomeTitle {
         font-size: 5.5rem;
       }
-      form{
+      form {
         position: relative;
         margin-left: 19%;
       }
-      input, label{
+      input,
+      label {
         margin-left: 17%;
       }
-      .label{
-        color: #FFF9F0;
+      .label {
+        color: #fff9f0;
       }
-      .button{
-        background-color: #DDDDDC;
+      .button {
+        background-color: #dddddc;
         color: black;
       }
-      .fullHeight{
+      .fullHeight {
         min-height: 100vh;
       }
     </style>
   </head>
-  <body >
+  <body>
     <section class="section pt-5 fullHeight">
       <div class="container">
         <h1
@@ -76,25 +77,34 @@
           TestInsight DX
         </h1>
       </div>
-      <div class="columns ">
-        <div class="column is-half ">
-          <br><br><br><br>
+      <div class="columns">
+        <div class="column is-half">
+          <br /><br /><br /><br />
           <figure class="logoPsicodxContainer image mt-6">
-            <img src="/images/logoPsicodx.png" alt="logoPsicodx" class="logoPsicodx" />
+            <img
+              src="/images/logoPsicodx.png"
+              alt="logoPsicodx"
+              class="logoPsicodx" />
           </figure>
-          <div class="typewriter welcomeTitle title is-size-1-mobile has-text-centered has-text-weight-normal" id="typewriter-text">¡Bienvenido!</div>
+          <div
+            class="typewriter welcomeTitle title is-size-1-mobile has-text-centered has-text-weight-normal"
+            id="typewriter-text">
+            ¡Bienvenido!
+          </div>
         </div>
         <div class="column is-half">
           <figure class="loginShapeContainer image is-pulled-right mr-5 mt-3">
-            <img src="/images/shapeLogin.png" alt="shapeLogin" class="shapeLogin" />
+            <img
+              src="/images/shapeLogin.png"
+              alt="shapeLogin"
+              class="shapeLogin" />
           </figure>
           <h2
             class="loginTitle title is-2 has-text-weight-normal has-text-centered pt-5">
             Inicia sesión
           </h2>
-          <form action="/login"
-            method="POST" class="p-5">
-            <div class="columns ">
+          <form action="/login" method="POST" class="p-5">
+            <div class="columns">
               <div class="column is-two-thirds">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                 <label for="usuario" class="label">Nombre de usuario</label>
@@ -104,11 +114,11 @@
                   placeholder="AALF031220MMCNRA8"
                   id="usuario"
                   name="usuario" />
-                </div>
+              </div>
             </div>
-                <br />
-                <div class="columns">
-                <div class="column is-two-thirds">
+            <br />
+            <div class="columns">
+              <div class="column is-two-thirds">
                 <label for="contraseña" class="label">Contraseña</label>
                 <input
                   class="input"
@@ -118,15 +128,21 @@
                   name="contraseña" />
                 <br />
               </div>
-              </div>
-              <input class="button" type="submit" value="Iniciar sesión" />
-              <br><br>
-              <% if (info != '') { %>
-                <div class="notification has-text-centered is-info"><%= info %></div>
-                <% } %> <% if (warning != '') { %>
-                <div class="notification has-text-centered is-info"><%= warning %></div>
-                <% } %>
-          </div>
+            </div>
+            <input class="button" type="submit" value="Iniciar sesión" />
+            <br /><br />
+            <% if (info != '') { %>
+            <div class="notification has-text-centered is-info">
+              <%= info %>
+            </div>
+            <% } %> <% if (warning != '') { %>
+            <div class="notification has-text-centered is-info">
+              <%= warning %>
+            </div>
+            <% } %>
+          </form>
         </div>
-      </form>
-
+      </div>
+    </section>
+  </body>
+</html>

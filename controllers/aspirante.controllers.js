@@ -1,7 +1,11 @@
 const { response } = require("express");
 
 exports.get_root = (request, response, next) => {
-  response.render("inicio_aspirante");
+  response.render("inicio_aspirante"),
+    {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+    };
 };
 
 exports.get_notificacionA = (request, response, next) => {
