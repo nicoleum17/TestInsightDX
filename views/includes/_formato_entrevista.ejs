@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 <style>
     .person {
-        border: 1px solid black;
-        padding: 10px;
-        min-width: 150px;
-        background-color: #FFFFFF;
-        display: inline-block;
+      border: 1px solid black;
+      padding: 10px;
+      min-width: 150px;
+      background-color: #FFFFFF;
+      display: inline-block;
     }
     .person div {
         text-align: center;
@@ -19,7 +17,6 @@
         min-width: 80px;
         min-height: 80px;
         display: inline-block;
-        vertical-align: top;
         position: relative;
         padding-top: 15px;
     }
@@ -35,6 +32,10 @@
     .spouseDrop>.person,
     .childDrop>.person {
         margin-top: 20px;
+    }
+    .tree {
+        transform: scale(0.8);
+        transform-origin: top left;
     }
     .tree ul {
         padding-top: 20px;
@@ -53,6 +54,7 @@
         -webkit-transition: all 0.5s;
         -moz-transition: all 0.5s;
     }
+    
     .tree li::before, .tree li::after {
         content: '';
         position: absolute;
@@ -121,18 +123,29 @@
         margin-left: 95px;
     }
     .tree li .family .spouse::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: -20px;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-        width: 20px;
-        height: 3px;
+      display: none;
     }
-</style>
+    .input.superior {
+      margin: 0;
+      margin-bottom:-10px;
+      font-size: 10px;
+    }
 
-<body>
+    .input.inferior {
+      margin: 0;
+      margin-top:-5px;
+      font-size: 10px;
+    }
+
+    .select.is-danger.familiar {
+      margin: 0;
+      margin-top: 5px;
+      font-size: 10px;
+    }
+
+    
+  </style>
+  
 <section class="section">
     <div class="container">
         <h1 class="title is-3">Formato de entrevista</h1>
@@ -231,7 +244,7 @@
                         <option disabled hidden selected>Seleccione una opción</option>
                         <option value="soltero">Soltero/a</option>
                         <option value="casado">Casado/a</option>
-                        <option value="divorviado">Divorciado/a</option>
+                        <option value="divorciado">Divorciado/a</option>
                         <option value="separado">Separado/a</option>
                         <option value="viudo">Viudo/a</option>
                         <option value="unionLibre">Unión libre</option>
@@ -355,78 +368,161 @@
 
         <br><br><br><br>
         <h3 class="title is-4">Datos Familiares</h3>
+        <div class="select is-danger familiar">
+            <select id="maternalUncleCount">
+                <option disabled hidden selected>Elige el número de Tío(a)s Materno(a)s</option>
+                <option value="0">0 Tío(a)s Materno(a)s</option>
+                <option value="1">1 Tío(a) Materno(a)</option>
+                <option value="2">2 Tío(a)s Materno(a)s</option>
+                <option value="3">3 Tío(a)s Materno(a)s</option>
+            </select>
+        </div>
+        <div class="select is-danger familiar">
+            <select id="paternalUncleCount">
+                <option disabled hidden selected>Elige el número de Tío(a)s Paterno(a)s</option>
+                <option value="0">0 Tío(a)s</option>
+                <option value="1">1 Tío(a)</option>
+                <option value="2">2 Tío(a)s</option>
+                <option value="3">3 Tío(a)s</option>
+            </select>
+        </div>
+        <div class="select is-danger familiar">
+            <select id="uncleCount">
+                <option disabled hidden selected>Elige el número de Hermano(a)s</option>
+                <option value="0">0 Hermano(a)s</option>
+                <option value="1">1 Hermano(a)</option>
+                <option value="2">2 Hermano(a)s</option>
+                <option value="3">3 Hermano(a)s</option>
+            </select>
+        </div>
+        <div class="select is-danger familiar">
+            <select id="uncleCount">
+                <option disabled hidden selected>Elige el número de Hijo(a)s</option>
+                <option value="0">0 Hijo(a)s</option>
+                <option value="1">1 Hijo(a)s</option>
+                <option value="2">2 Hijo(a)s</option>
+                <option value="3">3 Hijo(a)s</option>
+            </select>
+        </div>
         <div class="columns is-vcentered ml-5">
             <div class="tree">
-                <ul>
-                <li>
-                    <div class="family">
-                        <div class="person">
-                            <div class="name">Abuelo Materno</div>
+    <ul>
+        <li>
+            <div class="family">
+                <div class="person">
+                    <div class="name">Abuelo Materno</div>
+                    <div class="column is-two-thirds">
+                        <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                    </div>
+                    <div class="select is-danger familiar">
+                        <select class="age-select">
+                            <option disabled hidden selected>Edad</option>
+                        </select>
+                    </div><br>
+                    <div class="select is-danger familiar">
+                        <select class="gender">
+                            <option disabled hidden selected>Género</option>
+                        </select>
+                    </div><br>
+                    <div class="select is-danger familiar">
+                        <select class="maritalStatus">
+                            <option disabled hidden selected>Estado Civil</option>
+                        </select>
+                    </div>
+                    <div class="column is-three-thirds">
+                        <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                    </div>
+                </div>
+                <div class="parent">
+                    <div class="person spouse">
+                        <div class="name">Abuela Materna</div>
+                        <div class="column is-two-thirds">
+                            <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
                         </div>
-                        <div class="parent">
-                            <div class="person spouse">
-                                <div class="name">Abuela materna</div>
-                            </div>
-                            <ul>
-                            <li>
-                            <div class="family" style="width: 172px">
-                                <div class="person child">
-                                    <div class="name">Tío(a)</div>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                                <div class="family" style="width: 172px">
-                                    <div class="person child">
-                                        <div class="name">Tío(a)</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                            <div class="family" style="width: 172px">
-                                <div class="person child">
-                                    <div class="name">Tío(a)</div>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div class="family" style="width: 344px">
-                                <div class="person">
-                                    <div class="name">Madre</div>
-                                </div>
-
-                                <div class="parent">
-                                    <div class="person spouse">
-                                        <div class="name">Padre</div>
-                                    </div>
-                                <ul>
-                                    <li>
-                                        <div class="person child">
-                                            <div class="name">Hermano(a)</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                    <div class="person child">
-                                        <div class="name">Aspirante</div>
-                                    </div>
-                                    <div class="person spouse">
-                                        <div class="name">Pareja del Aspirante</div>
-                                    </div>
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </li>
-                        </ul>
+                        <div class="select is-danger familiar">
+                            <select class="age-select">
+                                <option disabled hidden selected>Edad</option>
+                            </select>
+                        </div><br>
+                        <div class="select is-danger familiar">
+                            <select class="gender">
+                                <option disabled hidden selected>Género</option>
+                            </select>
+                        </div><br>
+                        <div class="select is-danger familiar">
+                            <select class="maritalStatus">
+                                <option disabled hidden selected>Estado Civil</option>
+                            </select>
+                        </div>
+                        <div class="column is-three-thirds">
+                            <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
                         </div>
                     </div>
-                </li>
-                </ul>
+                    <ul>
+                    </ul>
                 </div>
             </div>
-
-
-        <br><br><br><br>
+        </li>
+        <li>
+            <div class="family">
+                <div class="person">
+                    <div class="name">Abuelo Paterno</div>
+                    <div class="column is-two-thirds">
+                        <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                    </div>
+                    <div class="select is-danger familiar">
+                        <select class="age-select">
+                            <option disabled hidden selected>Edad</option>
+                        </select>
+                    </div><br>
+                    <div class="select is-danger familiar">
+                        <select class="gender">
+                            <option disabled hidden selected>Género</option>
+                        </select>
+                    </div><br>
+                    <div class="select is-danger familiar">
+                        <select class="maritalStatus">
+                            <option disabled hidden selected>Estado Civil</option>
+                        </select>
+                    </div>
+                    <div class="column is-three-thirds">
+                        <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                    </div>
+                </div>
+                <div class="parent paternalGrand">
+                    <div class="person spouse">
+                        <div class="name">Abuela Paterna</div>
+                        <div class="column is-two-thirds">
+                            <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                        </div>
+                        <div class="select is-danger familiar">
+                            <select class="age-select">
+                                <option disabled hidden selected>Edad</option>
+                            </select>
+                        </div><br>
+                        <div class="select is-danger familiar">
+                            <select class="gender">
+                                <option disabled hidden selected>Género</option>
+                            </select>
+                        </div><br>
+                        <div class="select is-danger familiar">
+                            <select class="maritalStatus">
+                                <option disabled hidden selected>Estado Civil</option>
+                            </select>
+                        </div>
+                        <div class="column is-three-thirds">
+                            <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                        </div>
+                    </div>
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</div>
+<div>
         <h3 class="title is-4">Académicos</h3>
         <div class="columns is-vcentered ml-5">
             <div class="column is-one-third">
@@ -767,8 +863,6 @@
       </div>
     </div>
 
-
-
   </section>
   <script>
     const dropdown = document.getElementById('selectAgeIF');
@@ -781,6 +875,322 @@
         const date = new Date();
         const formattedDate = date.toLocaleString();
         document.getElementById('timeStamp').textContent = formattedDate;
-  </script>
+
+    function populate() {
+    const edades = document.querySelectorAll('.age-select');
+    edades.forEach(selectElement => {
+        for (let i = 30; i <= 110; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            selectElement.appendChild(option);
+        }
+    });
+
+    const gender = document.querySelectorAll('.gender');
+
+    gender.forEach(selectElement => {
+        let option = document.createElement('option');
+        option.value = "mujer";
+        option.textContent = "Mujer";
+        selectElement.appendChild(option);
+
+        option = document.createElement('option');
+        option.value = "hombre";
+        option.textContent = "Hombre";
+        selectElement.appendChild(option);
+    });
+    const maritalStatus = document.querySelectorAll('.maritalStatus');
+
+    maritalStatus.forEach(selectElement => {
+        let option = document.createElement('option');
+        option.value = "soltero";
+        option.textContent = "Soltero/a";
+        selectElement.appendChild(option);
+
+        option = document.createElement('option');
+        option.value = "casado";
+        option.textContent = "Casado/a";
+        selectElement.appendChild(option);
+
+        option = document.createElement('option');
+        option.value = "divorciado";
+        option.textContent = "Divorciado/a";
+        selectElement.appendChild(option);
+
+        option = document.createElement('option');
+        option.value = "separado";
+        option.textContent = "Separado/a";
+        selectElement.appendChild(option);
+
+        option = document.createElement('option');
+        option.value = "viudo";
+        option.textContent = "Viudo/a";
+        selectElement.appendChild(option);
+
+        option = document.createElement('option');
+        option.value = "unionLibre";
+        option.textContent = "Unión Libre";
+        selectElement.appendChild(option);
+});
+}
+
+    document.getElementById('maternalUncleCount').addEventListener('change', function() {
+    const maternalUncleCount = this.value;
+    const maternaUncleContainer = document.querySelector('.parent > ul');
+    maternaUncleContainer.innerHTML = '';
+    for (let i = 0; i < maternalUncleCount; i++) {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="person child">
+                <div class="name">Tío(a)</div>
+                <div class="column is-two-thirds">
+                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                </div>
+                <div class="select is-danger familiar">
+                    <select class="age-select">
+                        <option disabled hidden selected>Edad</option>
+                    </select>
+                </div><br>
+                <div class="select is-danger familiar">
+                    <select class="gender">
+                        <option disabled hidden selected>Género</option>
+                    </select>
+                </div><br>
+                <div class="select is-danger familiar">
+                    <select class="maritalStatus">
+                        <option disabled hidden selected>Estado Civil</option>
+                    </select>
+                </div>
+                <div class="column is-three-thirds">
+                    <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                </div>
+            </div>
+        `;
+        maternaUncleContainer.appendChild(li);
+    }
+    const mom = document.createElement('li');
+    mom.innerHTML = `
+            <div class="family" style="width: 344px">
+                <div class="person">
+                    <div class="name">Madre</div>
+                    <div class="column is-two-thirds">
+                        <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                    </div>
+                    <div class="select is-danger familiar">
+                        <select class="age-select">
+                            <option disabled hidden selected>Edad</option>
+                        </select>
+                    </div><br>
+                    <div class="select is-danger familiar">
+                        <select class="gender">
+                            <option disabled hidden selected>Género</option>
+                        </select>
+                    </div><br>
+                    <div class="select is-danger familiar">
+                        <select class="maritalStatus">
+                            <option disabled hidden selected>Estado Civil</option>
+                        </select>
+                    </div>
+                    <div class="column is-three-thirds">
+                        <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                    </div>
+                </div>
+                <div class="parent">
+                    <div class="person spouse">
+                        <div class="name">Padre</div>
+                        <div class="column is-two-thirds">
+                            <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                        </div>
+                        <div class="select is-danger familiar">
+                            <select class="age-select">
+                                <option disabled hidden selected>Edad</option>
+                            </select>
+                        </div><br>
+                        <div class="select is-danger familiar">
+                            <select class="gender">
+                                <option disabled hidden selected>Género</option>
+                            </select>
+                        </div><br>
+                        <div class="select is-danger familiar">
+                            <select class="maritalStatus">
+                                <option disabled hidden selected>Estado Civil</option>
+                            </select>
+                        </div>
+                        <div class="column is-three-thirds">
+                            <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                        </div>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="person child">
+                                <div class="name">Hermano(a)</div>
+                                <div class="column is-two-thirds">
+                                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                                </div>
+                                <div class="select is-danger familiar">
+                                    <select class="age-select">
+                                        <option disabled hidden selected>Edad</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="gender">
+                                        <option disabled hidden selected>Género</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="maritalStatus">
+                                        <option disabled hidden selected>Estado Civil</option>
+                                    </select>
+                                </div>
+                                <div class="column is-three-thirds">
+                                    <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="person child">
+                                <div class="name">Hermano(a)</div>
+                                <div class="column is-two-thirds">
+                                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                                </div>
+                                <div class="select is-danger familiar">
+                                    <select class="age-select">
+                                        <option disabled hidden selected>Edad</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="gender">
+                                        <option disabled hidden selected>Género</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="maritalStatus">
+                                        <option disabled hidden selected>Estado Civil</option>
+                                    </select>
+                                </div>
+                                <div class="column is-three-thirds">
+                                    <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="person child">
+                                <div class="name">Hermano(a)</div>
+                                <div class="column is-two-thirds">
+                                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                                </div>
+                                <div class="select is-danger familiar">
+                                    <select class="age-select">
+                                        <option disabled hidden selected>Edad</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="gender">
+                                        <option disabled hidden selected>Género</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="maritalStatus">
+                                        <option disabled hidden selected>Estado Civil</option>
+                                    </select>
+                                </div>
+                                <div class="column is-three-thirds">
+                                    <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="person">
+                                <div class="name">Aspirante</div>
+                                <div class="column is-two-thirds">
+                                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                                </div>
+                                <div class="select is-danger familiar">
+                                    <select class="age-select">
+                                        <option disabled hidden selected>Edad</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="gender">
+                                        <option disabled hidden selected>Género</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="maritalStatus">
+                                        <option disabled hidden selected>Estado Civil</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="person spouse">
+                                <div class="name">Pareja del Aspirante</div>
+                                <div class="column is-two-thirds">
+                                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                                </div>
+                                <div class="select is-danger familiar">
+                                    <select class="age-select">
+                                        <option disabled hidden selected>Edad</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="gender">
+                                        <option disabled hidden selected>Género</option>
+                                    </select>
+                                </div><br>
+                                <div class="select is-danger familiar">
+                                    <select class="maritalStatus">
+                                        <option disabled hidden selected>Estado Civil</option>
+                                    </select>
+                                </div>
+                                <div class="column is-three-thirds">
+                                    <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        maternaUncleContainer.appendChild(mom);
+        populate();
+});
+
+    document.getElementById('paternalUncleCount').addEventListener('change', function() {
+    const paternalUncleCount = this.value;
+    const paternalUncleContainer = document.querySelector('.parent.paternalGrand > ul');
+    paternalUncleContainer.innerHTML = '';
+    for (let i = 0; i < paternalUncleCount; i++) {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="person child">
+                <div class="name">Tío(a)</div>
+                <div class="column is-two-thirds">
+                    <input class="input superior" type="text" placeholder="Nombre" id="freetime" name="freetime" />
+                </div>
+                <div class="select is-danger familiar">
+                    <select class="age-select">
+                        <option disabled hidden selected>Edad</option>
+                    </select>
+                </div><br>
+                <div class="select is-danger familiar">
+                    <select class="gender">
+                        <option disabled hidden selected>Género</option>
+                    </select>
+                </div><br>
+                <div class="select is-danger familiar">
+                    <select class="maritalStatus">
+                        <option disabled hidden selected>Estado Civil</option>
+                    </select>
+                </div>
+                <div class="column is-three-thirds">
+                    <input class="input inferior" type="text" placeholder="Relacion con el aspirante" id="freetime" name="freetime" />
+                </div>
+            </div>
+        `;
+        paternalUncleContainer.appendChild(li);
+    }
+    });
+</script>
+
 </body>
 </html>
