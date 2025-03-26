@@ -39,8 +39,8 @@
       .loginTitle {
         color: #fff9f0;
         position: relative;
-        margin-left: 17%;
-        margin-top: 10%;
+        margin-left: 13%;
+        margin-top: 8%;
       }
       .logoPsicodxContainer {
         width: 55%;
@@ -67,6 +67,52 @@
       .fullHeight {
         min-height: 100vh;
       }
+      @media (min-width: 821px) {
+        .hasMarginTopDesktop {
+          margin-top: 165px !important;
+        }
+        .formLogin {
+          padding: 1.5rem;
+        }
+        .button {
+          margin-top: 23px;
+          margin-left: 150px;
+        }
+        .contraseña {
+          margin-top: 25px;
+        }
+      }
+      @media (max-width: 820px) {
+        .loginTitle {
+          margin-left: 0;
+          margin-top: 2%;
+        }
+        .formLogin {
+          padding: 0;
+        }
+        .label,
+        .input {
+          margin-left: 10px;
+        }
+        .input {
+          width: 195px;
+          height: 35px;
+        }
+        .label {
+          font-size: small;
+        }
+        .contraseña,
+        .label {
+          margin-top: 0;
+        }
+        .usuario {
+          margin-bottom: 0;
+        }
+        .button {
+          margin-top: 40px;
+          background-color: #d0e3ff;
+        }
+      }
     </style>
   </head>
   <body>
@@ -79,15 +125,14 @@
       </div>
       <div class="columns">
         <div class="column is-half">
-          <br /><br /><br /><br />
-          <figure class="logoPsicodxContainer image mt-6">
+          <figure class="logoPsicodxContainer image mt-6 hasMarginTopDesktop">
             <img
               src="/images/logoPsicodx.png"
               alt="logoPsicodx"
               class="logoPsicodx" />
           </figure>
           <div
-            class="typewriter welcomeTitle title is-size-1-mobile has-text-centered has-text-weight-normal"
+            class="welcomeTitle title is-size-2-mobile is-size-2-tablet-only has-text-centered has-text-weight-normal"
             id="typewriter-text">
             ¡Bienvenido!
           </div>
@@ -100,12 +145,12 @@
               class="shapeLogin" />
           </figure>
           <h2
-            class="loginTitle title is-2 has-text-weight-normal has-text-centered pt-5">
+            class="loginTitle title is-size-4-mobile is-size-4-tablet-only is-2 has-text-weight-normal has-text-centered pt-5">
             Inicia sesión
           </h2>
-          <form action="/login" method="POST" class="p-5">
-            <div class="columns">
-              <div class="column is-two-thirds">
+          <form action="/login" method="POST" class="formLogin">
+            <div class="columns usuario">
+              <div class="column usuarioColumn is-two-thirds">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                 <label for="usuario" class="label">Nombre de usuario</label>
                 <input
@@ -116,8 +161,8 @@
                   name="usuario" />
               </div>
             </div>
-            <br />
-            <div class="columns">
+
+            <div class="columns contraseña">
               <div class="column is-two-thirds">
                 <label for="contraseña" class="label">Contraseña</label>
                 <input

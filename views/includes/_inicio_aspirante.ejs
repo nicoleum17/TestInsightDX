@@ -1,6 +1,34 @@
+<style>
+      :root {
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+        --bulma-warning-h: 34deg;
+        --bulma-warning-l: 99%;
+      }
+  .notification{
+    width: 350px;
+    position: fixed;
+    top: 20%;
+    right: 3%;
+  }
+  .fullHeight {
+        min-height: 100vh;
+      }
 
-    <section class="section">
+</style>
+    
+    <section class="section fullHeight">
       <div class="container">
+        <div class="notification is-info">
+          ¡Tienes <strong>7 días</strong> para realizar tus pruebas y cargar tu documentación!
+        </div>
         <h1 class="title">¡Bienvenido Arturo!</h1>
         <br />
         <div class="test1 columns is-vcentered ml-5">
@@ -12,7 +40,7 @@
           </div>
           <div class="column">
             <a href="instrucciones_prueba">
-              <button class="button">Comenzar</button>
+              <button class="button is-primary has-text-warning " disabled>Comenzar</button>
             </a>
           </div>
         </div>
@@ -25,7 +53,7 @@
           </div>
           <div class="column">
             <a href="instrucciones_prueba">
-              <button class="button">Comenzar</button>
+              <button class="button is-primary has-text-warning">Comenzar</button>
             </a>
           </div>
         </div>
@@ -38,7 +66,7 @@
           </div>
           <div class="column">
             <a href="instrucciones_prueba">
-              <button class="button">Comenzar</button>
+              <button class="button is-primary has-text-warning">Comenzar</button>
             </a>
           </div>
         </div>
@@ -51,7 +79,7 @@
           </div>
           <div class="column">
             <a href="instrucciones_prueba">
-              <button class="button">Comenzar</button>
+              <button class="button is-primary has-text-warning">Comenzar</button>
             </a>
           </div>
         </div>
@@ -64,7 +92,7 @@
           </div>
           <div class="column">
             <a href="instrucciones_prueba">
-              <button class="button">Comenzar</button>
+              <button class="button is-primary has-text-warning">Comenzar</button>
             </a>
           </div>
         </div>
