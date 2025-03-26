@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TestInsight DX</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+      :root {
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+        --bulma-warning-h: 34deg;
+        --bulma-warning-l: 99%;
+      }
+      @media (max-width: 768px) {
+            .navbarLogo {
+                width: 70px;
+                margin-left: 0;
+            }
+            .titleTD, .customDiv{
+              display: none;
+            }
+            .titleTD2{
+              display: block;
+            }
+            .customDiv2 {
+              width: 200px;
+            }
+        }
+      @media (min-width: 770px){
+         .titleTD2{
+          display: none;
+        }
+        .customDiv, .customDiv2 {
+        width:400px;
+      }
+      }
+
+
+    </style>
+  </head>
+  <body class="has-background-warning">
+    <nav class="navbar has-background-info">
+      <div class="container">
+      <div class="navbar-brand">
+        <div class="logoContainer navbar-item " href="#">
+          <a href="/aspirante/inicio_aspirante">
+          <img
+            src="/images/logoPsicodx2.png"
+            alt="logoPsicodx"
+            style="max-height: 100px" 
+            class="navbarLogo "/>
+          </a>
+          <div class="customDiv2">
+            <h1 class="titleTD2 title has-text-link is-size-5-mobile ml-5  has-text-weight-normal">TestInsight DX</h1>
+          </div>
+        </div>
+        <div class="customDiv">
+          <h1 class="titleTD title has-text-link is-1 pt-5 has-text-weight-normal">TestInsight DX</h1>
+        </div>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navMenu" class="navbar-menu">
+        
+        <div class="navbar-end">
+
+          <a
+            href="notificaciones_aspirante"
+            class="navbar-item ">
+            <img
+              src="/images/bell.png"
+              alt="Notificaciones"
+              style="max-height: 50px" />
+          </a>
+          <a href="documentos_aspirante" class="navbar-item">
+            <img
+              src="/images/folder.png"
+              alt="Documentos"
+              style="max-height: 45px" />
+          </a>
+          <a href="calendario_aspirante" class="navbar-item">
+            <img
+              src="/images/calendario.png"
+              alt="Calendario"
+              style="max-height: 45px" />
+          </a>
+        </div>
+      </div>
+    </nav>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+        });
+      });
+
+      });
+    </script>

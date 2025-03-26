@@ -1,4 +1,4 @@
-<%- include('includes/_header')%>
+<%- include('includes/_navbarP')%>
 <section>
   <h1>Confirmar Creación de Grupo</h1>
   <p>
@@ -7,9 +7,17 @@
     Generación: Ene-Jun 2025 <br />
     Total de aspirantes: 8
   </p>
-  <a href="crear_grupo"
-    ><button class="button m-5 is-danger">Confirmar</button></a
-  >
+
+  <div class="buttons is-centered">
+    <a href="crear_grupo"
+      ><button class="button m-5 is-primary has-text-white">Regresar</button></a
+    >
+    <a href="inicio_psicologa"
+      ><button class="button m-5 is-primary has-text-white">
+        Confirmar
+      </button></a
+    >
+  </div>
 </section>
 
 <%- include('includes/_footer')%>

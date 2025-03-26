@@ -1,4 +1,4 @@
-<%- include('includes/_header') %>
+<%- include('includes/_navbarP') %>
 
 <div class="container">
   <!-- Título -->
@@ -27,46 +27,205 @@
   <div class="box">
     <div class="is-flex is-align-items-center mb-3">
       <strong class="mr-auto">Batería de Pruebas</strong>
-      <button>
+      <button onclick="agregarPrueba()" id="button-agregar">
         <img
           src="https://img.icons8.com/m_rounded/512/plus.png"
           width="30"
-          height="30"
-        />
+          height="30" />
       </button>
     </div>
 
     <!-- Lista de pruebas -->
-    <div class="box has-background-link">
+    <div class="box has-background-primary">
       <div class="columns">
         <div class="column">
           <div class="select is-fullwidth">
-            <select name="prueba">
-              <option>Selecciona una opción</option>
-              <option>Prueba 1</option>
-              <option>Prueba 2</option>
+            <select name="pruebasOpcion">
+              <option value="" selected disabled>Selecciona una prueba</option>
+              <% pruebas.forEach(prueba => {%>
+              <option value="<%= prueba.idPrueba%>">
+                <%= prueba.nombrePrueba%>
+              </option>
+              <%})%>
             </select>
           </div>
         </div>
-        <div class="column is-1" style="text-align: center; margin-top: 5px">
-          <button>
-            <img
-              src="https://static.thenounproject.com/png/2456540-200.png"
-              width="30"
-              height="30"
-            />
-          </button>
-        </div>
+        <div
+          class="column is-1"
+          style="text-align: center; margin-top: 5px"></div>
       </div>
     </div>
   </div>
 
+  <br /><br />
+
   <!-- Botones de acción -->
-  <div class="buttons is-centered">
-    <a href="sesion_grupal" class="button is-link">Sesión Grupal</a>
-    <a href="sesion_individual" class="button is-link">Sesión Individual</a>
-    <a href="confirmar_creacion_grupo" class="button is-link">Confirmar</a>
-  </div>
+  <section id="SesionGrupal">
+    <div class="title">Sesión Grupal</div>
+    <div class="columns is-mobile">
+      <div class="column">
+        <div class="field">
+          <label class="label">Fecha</label>
+          <div class="control">
+            <input
+              class="input"
+              type="date"
+              name="fechaPruebaGrupal"
+              value="2025-01-01" />
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Hora</label>
+          <div class="control">
+            <input class="input" type="time" name="horaPruebaGrupal" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="field">
+        <label class="label">Link</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            name="linkPruebaGrupal"
+            value="ingresa un link" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <br /><br />
+
+  <section id="SesionIndividual">
+    <div class="title">Sesión Individual</div>
+
+    <!-- Botón para agregar sesiones individuales -->
+    <div class="is-flex is-align-items-center mb-3">
+      <button onclick="agregarSesionIndividual()" id="button-agregar-sesion">
+        <img
+          src="https://img.icons8.com/m_rounded/512/plus.png"
+          width="30"
+          height="30" />
+      </button>
+    </div>
+
+    <!-- Contenedor donde se agregarán las sesiones individuales -->
+    <div class="box has-background-info" id="contenedorSesionesIndividuales">
+      <!-- Las sesiones individuales se agregarán aquí dinámicamente -->
+    </div>
+  </section>
 </div>
+
+<div class="buttons is-centered">
+  <a href="inicio_psicologa"
+    ><button class="button m-5 is-primary has-text-white">Regresar</button></a
+  >
+  <a href="confirmar_creacion_grupo"
+    ><button class="button m-5 is-primary has-text-white">Confirmar</button></a
+  >
+</div>
+
+<script>
+  function agregarPrueba() {
+    const contenedor = document.querySelector(".box.has-background-link");
+    const nuevaPrueba = document.createElement("div");
+    nuevaPrueba.classList.add("columns", "mt-2");
+
+    nuevaPrueba.innerHTML = `
+      <div class="column">
+        <div class="select is-fullwidth">
+          <select name="prueba">
+            <option>Selecciona una opción</option>
+            <option>Prueba 1</option>
+            <option>Prueba 2</option>
+            <option>Prueba 3</option>
+          </select>
+        </div>
+      </div>
+      <div class="column is-1" style="text-align: center; margin-top: 5px">
+        <button onclick="eliminarPrueba(this)">
+          <img src="https://static.thenounproject.com/png/2456540-200.png" width="30" height="30" />
+        </button>
+      </div>
+    `;
+
+    //Se agrega la prueba al contenedor
+    contenedor.appendChild(nuevaPrueba);
+  }
+
+  function eliminarPrueba(boton) {
+    boton.closest(".columns").remove();
+  }
+
+  function agregarSesionIndividual() {
+    const contenedor = document.getElementById(
+      "contenedorSesionesIndividuales"
+    );
+
+    const nuevaSesion = document.createElement("div");
+    nuevaSesion.classList.add("tarjeta", "mt-3");
+
+    nuevaSesion.innerHTML = `
+      <div class="columns is-mobile">
+        <div class="column">
+          <div class="field">
+            <label class="label">Aspirante</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="aspirante">
+                  <option>Selecciona una opción</option>
+                  <option>Joanna Nicole</option>
+                  <option>Frida Arcadia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-mobile">
+        <div class="column">
+          <div class="field">
+            <label class="label">Fecha</label>
+            <div class="control">
+              <input class="input" type="date" name="fechaSesionIndividual" />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Hora</label>
+            <div class="control">
+              <input class="input" type="time" name="horaSesionIndividual" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Link</label>
+        <div class="control">
+          <input class="input" type="text" name="linkSesionIndividual" placeholder="Ingresa un link" />
+        </div>
+      </div>
+
+      <div class="has-text-right">
+        <button class="button" onclick="eliminarSesionIndividual(this)">
+          <img src="https://static.thenounproject.com/png/2456540-200.png" width="20" height="20" />
+        </button>
+      </div>
+    `;
+
+    contenedor.appendChild(nuevaSesion);
+  }
+
+  function eliminarSesionIndividual(boton) {
+    boton.closest(".tarjeta").remove();
+  }
+</script>
 
 <%- include('includes/_footer') %>
