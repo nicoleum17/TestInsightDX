@@ -131,20 +131,22 @@
 
 <script>
   function agregarPrueba() {
-    const contenedor = document.querySelector(".box.has-background-link");
+    const contenedor = document.querySelector(".box.has-background-primary");
     const nuevaPrueba = document.createElement("div");
     nuevaPrueba.classList.add("columns", "mt-2");
 
     nuevaPrueba.innerHTML = `
       <div class="column">
-        <div class="select is-fullwidth">
-          <select name="prueba">
-            <option>Selecciona una opción</option>
-            <option>Prueba 1</option>
-            <option>Prueba 2</option>
-            <option>Prueba 3</option>
-          </select>
-        </div>
+          <div class="select is-fullwidth">
+            <select name="pruebasOpcion">
+              <option value="" selected disabled>Selecciona una prueba</option>
+              <% pruebas.forEach(prueba => {%>
+              <option value="<%= prueba.idPrueba%>">
+                <%= prueba.nombrePrueba%>
+              </option>
+              <%})%>
+            </select>
+          </div>
       </div>
       <div class="column is-1" style="text-align: center; margin-top: 5px">
         <button onclick="eliminarPrueba(this)">
