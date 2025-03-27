@@ -19,9 +19,13 @@ router.get(
   psicologaController.get_respuestasA
 );
 
-router.get("/consulta_grupo", psicologaController.get_grupo);
-
 router.get("/consulta_respuestas_grupo", psicologaController.get_respuestasG);
+
+router.get("/sesion_grupal", psicologaController.sesion_grupal);
+
+router.get("/sesion_individual", psicologaController.sesion_individual);
+
+router.get("/consulta_prueba", psicologaController.get_prueba);
 
 router.get("/crear_grupo", psicologaController.crear_grupo);
 
@@ -30,11 +34,9 @@ router.get(
   psicologaController.confirmar_creacion_grupo
 );
 
-router.get("/sesion_grupal", psicologaController.sesion_grupal);
+router.get("/elegir_grupo", psicologaController.elegir_grupo);
 
-router.get("/sesion_individual", psicologaController.sesion_individual);
-
-router.get("/consulta_prueba", psicologaController.get_prueba);
+router.get("/consulta_grupo", psicologaController.get_grupo);
 
 router.get(
   "/registra_reporte_grupo",
