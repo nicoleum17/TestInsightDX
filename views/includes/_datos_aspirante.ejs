@@ -5,52 +5,42 @@ min-height: 100vh;
   </style>
 <section class="section fullHeight">
     <div class="container">
+        <div class="columns">
+            <div class="column">
+                <p class="subtitle is-3">Verifica tus datos</p>
+            </div>
+        </div>
         <div class="test1 columns is-vcentered ml-5">
             <div class="column">
                 <form id="personalInformation" method="POST" class="p-5">
                     <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
-                    <input
-                    class="input"
-                    type="text"
-                    placeholder="López"
-                    id="apellidoPaterno"
-                    name="apellidoPaterno" />
+                    <p>Rodríguez</p>
             </div>
             <div class="column">
                 <label for="apellidoMaterno" class="label">Apellido Materno:</label>
-                <input
-                    class="input"
-                    type="text"
-                    placeholder="Luna"
-                    id="apellidoMaterno"
-                    name="apellidoMaterno" />
+                <p>López</p>
             </div>
                 <br />
             <div class="column">
                 <label for="name" class="label">Nombre(s)</label>
-                <input
-                class="input"
-                type="text"
-                placeholder="Juan"
-                id="name"
-                name="name" />
+                <p>Juan</p>
                 <br />
             </div>
         </div>
         <div class="edad columns is-vcentered ml-5">
             <div class="column">
                     <label for="selectAge" class="label">Edad:</label>
-                    <br>
-                    <div class="select is-primary">
-                        <select id="selectAgePI" for="selectAge">
 
-                        </select>
+                    <div class=" is-primary">
+                        <p>25</p>
                     </div>
                     <div>
+                        <br>
                         <p>Una vez que des click en 'Siguiente', comenzarán a correr tus 30 minutos</p>
                     </div>
             </div>
             <div class="columns is-vcentered ">
+                <br><br>
                 <button class="column is-narrow button is-info has-text-warning  "><a href="instrucciones_prueba">Regresar</a ></button> 
                 <button class="column is-narrow button is-info has-text-warning ml-4"><a href="preguntas_prueba">Siguiente</a ></button>
             </div>
@@ -59,11 +49,4 @@ min-height: 100vh;
       </div>
     </div>
   </section>
-  <script>
-        const dropdown = document.getElementById('selectAgePI');
-        for (let i = 5; i <= 100; i++) {
-            const option = document.createElement('option');
-            option.value = i;
-            option.textContent = i;
-            dropdown.appendChild(option);}
-  </script>
+
