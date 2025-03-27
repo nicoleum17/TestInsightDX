@@ -1,6 +1,9 @@
 <%- include('includes/_navbarP')%>
 <head>
   <style>
+    .fullHeight {
+      min-height: 100vh;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -43,98 +46,100 @@
     }
   </style>
 </head>
-<section>
-  <h1>Grupo</h1>
-  <img
-    src="https://cdn-icons-png.flaticon.com/512/25/25337.png"
-    style="width: 5%" />
-  <a href="registra_reporte_grupo">
-    <button class="image-button">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/1828/1828031.png"
-        alt=""
-        style="width: 10%" /></button
-  ></a>
-</section>
+<body class="fullHeight">
+  <section class="section">
+    <h1>Grupo</h1>
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/25/25337.png"
+      style="width: 5%" />
+    <a href="registra_reporte_grupo">
+      <button class="image-button">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1828/1828031.png"
+          alt=""
+          style="width: 10%" /></button
+    ></a>
+  </section>
 
-<section>
-  <table>
-    <thead>
-      <tr>
-        <th>Prueba</th>
-        <th>Fecha Límite</th>
-        <th>Tiempo Promedio</th>
-        <th>Estatus</th>
-        <th>Respuestas</th>
-      </tr>
-    </thead>
+  <section>
+    <table>
+      <thead>
+        <tr>
+          <th>Prueba</th>
+          <th>Fecha Límite</th>
+          <th>Tiempo Promedio</th>
+          <th>Estatus</th>
+          <th>Respuestas</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr>
-        <th>Prueba OTIS</th>
-        <th>21/02/2025</th>
-        <th>29:35 min</th>
-        <th>2/8</th>
-        <th>
-          <a href="consulta_respuestas_grupo">
-            <button class="image-button">
-              <img
-                src="https://img.icons8.com/ios7/512/plus.png"
-                alt=""
-                style="width: 10%" /></button
-          ></a>
-        </th>
-      </tr>
-      <tr>
-        <th>Prueba TERMAN</th>
-        <th>27/02/2025</th>
-        <th>10:22 min</th>
-        <th>7/8</th>
-        <th>
-          <a href="consulta_respuestas_grupo">
-            <button class="image-button">
-              <img
-                src="https://img.icons8.com/ios7/512/plus.png"
-                alt=""
-                style="width: 10%" /></button
-          ></a>
-        </th>
-      </tr>
-      <tr>
-        <th>Test de los colores de Lusher</th>
-        <th>27/02/2025</th>
-        <th>9:56 min</th>
-        <th>1/8</th>
-        <th>
-          <a href="consulta_respuestas_grupo">
-            <button class="image-button">
-              <img
-                src="https://img.icons8.com/ios7/512/plus.png"
-                alt=""
-                style="width: 10%" /></button
-          ></a>
-        </th>
-      </tr>
-      <tr>
-        <th>Personalidad 16 Factores</th>
-        <th>27/02/2025</th>
-        <th>18:44 min</th>
-        <th>3/8</th>
-        <th>
-          <a href="consulta_respuestas_grupo">
-            <button class="image-button">
-              <img
-                src="https://img.icons8.com/ios7/512/plus.png"
-                alt=""
-                style="width: 10%" /></button
-          ></a>
-        </th>
-      </tr>
-    </tbody>
-  </table>
-  <a href="inicio_psicologa"
-    ><button class="button m-5 is-primary has-text-white">Regresar</button></a
-  >
-</section>
+      <tbody>
+        <tr>
+          <th>Prueba OTIS</th>
+          <th>21/02/2025</th>
+          <th>29:35 min</th>
+          <th>2/8</th>
+          <th>
+            <a href="consulta_respuestas_grupo">
+              <button class="image-button">
+                <img
+                  src="https://img.icons8.com/ios7/512/plus.png"
+                  alt=""
+                  style="width: 10%" /></button
+            ></a>
+          </th>
+        </tr>
+        <tr>
+          <th>Prueba TERMAN</th>
+          <th>27/02/2025</th>
+          <th>10:22 min</th>
+          <th>7/8</th>
+          <th>
+            <a href="consulta_respuestas_grupo">
+              <button class="image-button">
+                <img
+                  src="https://img.icons8.com/ios7/512/plus.png"
+                  alt=""
+                  style="width: 10%" /></button
+            ></a>
+          </th>
+        </tr>
+        <tr>
+          <th>Test de los colores de Lusher</th>
+          <th>27/02/2025</th>
+          <th>9:56 min</th>
+          <th>1/8</th>
+          <th>
+            <a href="consulta_respuestas_grupo">
+              <button class="image-button">
+                <img
+                  src="https://img.icons8.com/ios7/512/plus.png"
+                  alt=""
+                  style="width: 10%" /></button
+            ></a>
+          </th>
+        </tr>
+        <tr>
+          <th>Personalidad 16 Factores</th>
+          <th>27/02/2025</th>
+          <th>18:44 min</th>
+          <th>3/8</th>
+          <th>
+            <a href="consulta_respuestas_grupo">
+              <button class="image-button">
+                <img
+                  src="https://img.icons8.com/ios7/512/plus.png"
+                  alt=""
+                  style="width: 10%" /></button
+            ></a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+    <a href="inicio_psicologa"
+      ><button class="button m-5 is-primary has-text-white">Regresar</button></a
+    >
+  </section>
 
-<%- include('includes/_footer')%>
+  <%- include('includes/_footer')%>
+</body>

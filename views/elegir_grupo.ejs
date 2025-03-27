@@ -1,35 +1,50 @@
 <%- include('includes/_navbarP')%>
-
-
-
-<section>
-  <div class="container"> <br>
+<style>
+  .fullHeight {
+    min-height: 100vh;
+  }
+  .container {
+    min-height: 60vh;
+  }
+  .button {
+    margin-left: 9%;
+  }
+</style>
+<section class="section fullHeight">
+  <div class="container">
+    <br />
     <section>
-        <div class="title">Elegir Grupo</div> <br>
-        <div class="subtitle">Selecciona el grupo a consultar</div> <br>
+      <div class="title">Elegir Grupo</div>
+      <br />
+      <div class="subtitle">Selecciona el grupo a consultar</div>
+      <br />
     </section>
     <div class="select is-fullwidth">
-        <div class="subtitle">Posgrado</div>
-        <select name="elegirGrupo">
-            <option value="" selected disabled>Selecciona un grupo</option>
-            <% grupos.forEach(grupo => {%>
-                <option value="<%= grupo.posgrado %>"><%= grupo.posgrado %></option>
-            <%})%>
-        </select>
-        <br>
-        <div class="subtitle">Generación</div>
-        <select name="elegirGrupo">
-            <option value="" selected disabled>Selecciona un grupo</option>
-            <% grupos.forEach(grupo => {%>
-                <option value="<%= grupo.generacion %>"><%= grupo.generacion %></option>
-            <%})%>
-        </select>
+      <div class="subtitle">Posgrado</div>
+      <select name="elegirGrupo">
+        <option value="" selected disabled>Selecciona un grupo</option>
+        <% grupos.forEach(grupo => {%>
+        <option value="<%= grupo.posgrado %>"><%= grupo.posgrado %></option>
+        <%})%>
+      </select>
+      <br />
+      <div class="subtitle">Generación</div>
+      <select name="elegirGrupo">
+        <option value="" selected disabled>Selecciona un grupo</option>
+        <% grupos.forEach(grupo => {%>
+        <option value="<%= grupo.generacion %>"><%= grupo.generacion %></option>
+        <%})%>
+      </select>
     </div>
-    <div>
-        <a href="consulta_grupo"
-        ><button class="button m-5 is-primary has-text-white">Consultar</button></a>
+  </div>
+  <div class="columns">
+    <div class="column buttonColumn">
+      <a href="consulta_grupo"
+        ><button class="button is-primary mt-3 has-text-white">
+          Consultar
+        </button></a
+      >
     </div>
-    
   </div>
 </section>
 
