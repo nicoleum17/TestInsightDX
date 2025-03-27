@@ -1,11 +1,14 @@
 const { response } = require("express");
+const Prueba = require("../model/prueba.model");
 
 exports.get_root = (request, response, next) => {
-  response.render("inicio_aspirante"),
-    {
-      isLoggedIn: request.session.isLoggedIn || false,
+  Prueba.fetchAll().then(([rows]) => {
+    response.render("inicio_aspirante", {
+      pruebas: rows,
+      sLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-    };
+    });
+  });
 };
 
 exports.get_notificacionA = (request, response, next) => {

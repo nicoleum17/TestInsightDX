@@ -31,72 +31,23 @@
         </div>
         <h1 class="title">¡Bienvenido Arturo!</h1>
         <br />
+        <% pruebas.forEach(prueba => { %>
         <div class="test1 columns is-vcentered ml-5">
-          <div class="column">
-            <h3 class="subtitle is-4">Prueba OTIS</h3>
+            <div class="column">
+              <h3 class="subtitle is-4"><%=prueba.nombrePrueba%></h3>
+            </div>
+            <div class="column is-centered">
+              <p>Estatus</p>
+            </div>
+            <div class="column">
+              <a href="instrucciones_prueba">
+                <button class="button is-primary has-text-warning">Comenzar</button>
+              </a>
+            </div>
           </div>
-          <div class="column is-centered">
-            <p>Estatus</p>
-          </div>
-          <div class="column">
-            <a href="instrucciones_prueba">
-              <button class="button is-primary has-text-warning " disabled>Comenzar</button>
-            </a>
-          </div>
-        </div>
-        <div class="test2 columns is-vcentered ml-5">
-          <div class="column">
-            <h3 class="subtitle is-4">Prueba TERMAN</h3>
-          </div>
-          <div class="column is-centered">
-            <p>Estatus</p>
-          </div>
-          <div class="column">
-            <a href="instrucciones_prueba">
-              <button class="button is-primary has-text-warning">Comenzar</button>
-            </a>
-          </div>
-        </div>
-        <div class="test3 columns is-vcentered ml-5">
-          <div class="column">
-            <h3 class="subtitle is-4">Test de los Colores de Luscher</h3>
-          </div>
-          <div class="column is-centered">
-            <p>Estatus</p>
-          </div>
-          <div class="column">
-            <a href="instrucciones_prueba">
-              <button class="button is-primary has-text-warning">Comenzar</button>
-            </a>
-          </div>
-        </div>
-        <div class="test4 columns is-vcentered ml-5">
-          <div class="column">
-            <h3 class="subtitle is-4">Personalidad 16 Factores (16 PF)</h3>
-          </div>
-          <div class="column is-centered">
-            <p>Estatus</p>
-          </div>
-          <div class="column">
-            <a href="instrucciones_prueba">
-              <button class="button is-primary has-text-warning">Comenzar</button>
-            </a>
-          </div>
-        </div>
-        <div class="test1 columns is-vcentered ml-5">
-          <div class="column">
-            <h3 class="subtitle is-4">El inventario de Percepción Kotick</h3>
-          </div>
-          <div class="column is-centered">
-            <p>Estatus</p>
-          </div>
-          <div class="column">
-            <a href="instrucciones_prueba">
-              <button class="button is-primary has-text-warning">Comenzar</button>
-            </a>
-          </div>
-        </div>
-      </div>
+          <%});%>
+          
+       
     </section>
   </body>
 </html>

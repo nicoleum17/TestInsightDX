@@ -1,0 +1,45 @@
+const db = require("../util/database");
+const bcrypt = require("bcryptjs");
+
+module.exports = class Aspirante {
+  constructor(
+    mi_codigoIdentidad,
+    mi_idUsuario,
+    mi_nombres,
+    mi_apellidoPaterno,
+    mi_apellidoMaterno,
+    mi_numTelefono,
+    mi_lugarOrigen,
+    mi_correo,
+    mi_universidadOrigen
+  ) {
+    this.codigoIdentidad = mi_codigoIdentidad;
+    this.idUsuario = mi_idUsuario;
+    this.nombres = mi_nombres;
+    this.apellidoPaterno = mi_apellidoPaterno;
+    this.apellidoMaterno = mi_apellidoMaterno;
+    this.numTelefono = mi_numTelefono;
+    this.lugarOrigen = mi_lugarOrigen;
+    this.correo = mi_correo;
+    this.universidadOrigen = mi_universidadOrigen;
+  }
+
+  static fetchAll() {
+    return db.execute("SELECT * FROM aspirantes");
+  }
+
+  static fetchOne(codigoIdentidad) {
+    return db.execute("SELECT * FROM aspirantes WHERE codigoIdentidad = ?", [
+      codigoIdentidad,
+    ]);
+  }
+
+  static fetchOne(idUsuario) {
+    return db.execute("SELECT * FROM aspirantes WHERE idUsuario = ?", [
+      idUsuario,
+    ]);
+  }
+  static fetchOne(nombres) {
+    return db.execute("SELECT * FROM aspirantes WHERE nombres = ?", [nombres]);
+  }
+};

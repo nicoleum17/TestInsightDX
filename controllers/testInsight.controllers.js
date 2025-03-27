@@ -14,7 +14,7 @@ exports.get_login = (request, response, next) => {
 
   response.render("login.ejs", {
     isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
+    username: request.session.usuario || "",
     isNew: false,
     info: mensaje,
     warning: warning,
