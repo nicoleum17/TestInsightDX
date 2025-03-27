@@ -4,7 +4,7 @@ const router = express.Router();
 const aspiranteController = require("../controllers/aspirante.controllers");
 const isAuth = require("../util/is_auth");
 
-router.get("/inicio_aspirante", isAuth, aspiranteController.get_root);
+router.get("/inicio", isAuth, aspiranteController.get_root);
 
 router.get(
   "/notificaciones_aspirante",

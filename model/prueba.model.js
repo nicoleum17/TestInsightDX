@@ -22,6 +22,9 @@ module.exports = class Prueba {
     return db.execute("SELECT * FROM Pruebas WHERE idPrueba = ?", [idPrueba]);
   }
 
+  static fetchOne(nombrePrueba) {
+    return db.execute("SELECT * FROM Pruebas WHERE nombre = ?", [nombrePrueba]);
+  }
   static fetchAll() {
     return db.execute("SELECT * FROM Pruebas");
   }
