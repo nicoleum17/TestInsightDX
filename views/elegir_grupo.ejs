@@ -1,7 +1,7 @@
 <%- include('includes/_navbarP')%>
 <style>
   .fullHeight {
-    min-height: 100vh;
+    min-height: 76.5vh;
   }
   .container {
     min-height: 60vh;
@@ -24,8 +24,10 @@
       <select name="elegirGrupo">
         <option value="" selected disabled>Selecciona un grupo</option>
         <% grupos.forEach(grupo => {%>
-            <option value="<%= grupo.posgrado %>"><%= grupo.posgrado %> - <%=grupo.generacion%></option>
-            <%})%>
+        <option value="<%= grupo.posgrado %>">
+          <%= grupo.posgrado %> - <%=grupo.generacion%>
+        </option>
+        <%})%>
       </select>
     </div>
   </div>
