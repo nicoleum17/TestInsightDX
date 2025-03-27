@@ -62,26 +62,11 @@ exports.elegir_grupo = (request, response, next) => {
       grupos: rows,
     });
   });
-
-  /*
-  try {
-    // Obtener todos los grupos de la base de datos
-
-    // Verifica si grupos está vacío o no definido
-    if (!grupos || grupos.length === 0) {
-      return res.status(404).send("No hay grupos disponibles");
-    }
-
-    // Renderizar la vista y pasar los datos
-    response.render("elegir_grupo", { grupos });
-  } catch (err) {
-    next(err); // Manejo de errores
-  }
-    */
 };
 
 exports.get_grupo = (request, response, next) => {
-  response.render("consulta_grupo");
+  const numGrupo = request.query.grupoSeleccionado;
+  response.render("consulta_grupo", { numGrupo });
 };
 
 exports.registra_reporte_grupo = (request, response, next) => {

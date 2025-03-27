@@ -19,25 +19,28 @@
       <div class="subtitle">Selecciona el grupo a consultar</div>
       <br />
     </section>
-    <div class="select is-fullwidth">
-      <div class="subtitle">Grupos</div>
-      <select name="elegirGrupo">
-        <option value="" selected disabled>Selecciona un grupo</option>
-        <% grupos.forEach(grupo => {%>
-            <option value="<%= grupo.posgrado %>"><%= grupo.posgrado %> - <%=grupo.generacion%></option>
-            <%})%>
-      </select>
-    </div>
-  </div>
-  <div class="columns">
-    <div class="column buttonColumn">
-      <a href="consulta_grupo"
-        ><button class="button is-primary mt-3 has-text-white">
-          Consultar
-        </button></a
-      >
-    </div>
-  </div>
+    <form action="/psicologa/consulta_grupo" method="GET">
+        <div class="select is-fullwidth">
+            <div class="subtitle">Grupos</div>
+            <select name="grupoSeleccionado" required>
+                <option value="" selected disabled>Selecciona un grupo</option>
+                <% grupos.forEach(grupo => {%>
+                    <option value="<%= grupo.idGrupo%>">
+                        <%= grupo.posgrado %> - <%=grupo.generacion%></option>
+                    <%})%>
+            </select>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column buttonColumn">
+            <a href="consulta_grupo"
+                ><button class="button is-primary mt-3 has-text-white">
+                Consultar
+                </button></a
+            >
+            </div>
+        </div>
+    </form>
 </section>
 
 <%- include('includes/_footer')%>
