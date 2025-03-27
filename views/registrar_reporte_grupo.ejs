@@ -11,14 +11,13 @@
       <div class="column">
         <div class="has-text-weight-bold">Grupo:</div>
         <div class="has-text-weight-bold">Generación:</div>
-        <div class="has-text-weight-bold">Total aspirantes:</div>
         <br /><br /><br />
-        <a href="consulta_grupo"
+        <a href=":id"
           ><button class="button m-5 is-primary has-text-white">
             Regresar
           </button></a
         >
-        <a href="consulta_grupo"
+        <a href=":id"
           ><button class="button m-5 is-primary has-text-white" method="POST">
             Confirmar
           </button></a
@@ -28,7 +27,7 @@
         <div class="has-text-weight-bold">Subir Archivos</div>
         <br />
         <div>PDF</div>
-        <form action="/upload" method="post" enctype="multipart/form-data">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
           <div class="file is-boxed">
             <label class="file-label">
               <input

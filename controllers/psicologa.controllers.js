@@ -54,9 +54,6 @@ exports.confirmar_creacion_grupo = (request, response, next) => {
 };
 
 exports.elegir_grupo = (request, response, next) => {
-  //response.render("elegir_grupo");
-  const grupos = Grupo.fetchAll();
-
   Grupo.fetchAll().then(([rows]) => {
     response.render("elegir_grupo", {
       grupos: rows,
@@ -70,5 +67,10 @@ exports.get_grupo = (request, response, next) => {
 };
 
 exports.registra_reporte_grupo = (request, response, next) => {
-  response.render("registrar_reporte_grupo");
+  const numGrupo = request.params.id;
+  //response.render("registrar_reporte_grupo");
+
+  Grupo.fetchOne(numGrupo).then(([rows]) => {
+    response.render("registrar_reporte_grupo", { grupo: rows });
+  });
 };
