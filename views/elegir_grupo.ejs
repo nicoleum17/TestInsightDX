@@ -20,20 +20,12 @@
       <br />
     </section>
     <div class="select is-fullwidth">
-      <div class="subtitle">Posgrado</div>
+      <div class="subtitle">Grupos</div>
       <select name="elegirGrupo">
         <option value="" selected disabled>Selecciona un grupo</option>
         <% grupos.forEach(grupo => {%>
-        <option value="<%= grupo.posgrado %>"><%= grupo.posgrado %></option>
-        <%})%>
-      </select>
-      <br />
-      <div class="subtitle">Generación</div>
-      <select name="elegirGrupo">
-        <option value="" selected disabled>Selecciona un grupo</option>
-        <% grupos.forEach(grupo => {%>
-        <option value="<%= grupo.generacion %>"><%= grupo.generacion %></option>
-        <%})%>
+            <option value="<%= grupo.posgrado %>"><%= grupo.posgrado %> - <%=grupo.generacion%></option>
+            <%})%>
       </select>
     </div>
   </div>
