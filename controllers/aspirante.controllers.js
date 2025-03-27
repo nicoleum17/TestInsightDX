@@ -28,7 +28,13 @@ exports.get_datosA = (request, response, next) => {
 };
 
 exports.get_instrucciones = (request, response, next) => {
-  response.render("instrucciones_prueba");
+  Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
+    response.render("instrucciones_prueba", {
+      sLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      prueba: rows[0],
+    });
+  });
 };
 
 exports.get_preguntasPrueba = (request, response, next) => {

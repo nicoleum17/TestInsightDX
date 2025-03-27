@@ -27,7 +27,7 @@ router.get(
 router.get("/datos_aspirante", isAuth, aspiranteController.get_datosA);
 
 router.get(
-  "/instrucciones_prueba",
+  "/instrucciones_prueba/:idPrueba",
   isAuth,
   aspiranteController.get_instrucciones
 );

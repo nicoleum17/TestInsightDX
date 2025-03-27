@@ -1,22 +1,18 @@
 <style>
   .fullHeight {
-    min-height: 100vh;
+    min-height: 76.5vh;
   }
 </style>
-<body class="has-background-danger-95 fullHeight">
-  <section class="section">
+<body class="has-background-danger-95">
+  <section class="section fullHeight">
     <div class="container">
-      <h1 class="title is-1">Prueba</h1>
+      <% if (prueba) { %>
+      <h1 class="title is-1"><%=prueba.nombrePrueba%></h1>
       <br />
       <div class="is-centered ml-5">
         <h2 class="title is-2">Instrucciones</h2>
         <br />
-        <li class="subtitle is-4">Son 75 preguntas de opción múltiple</li>
-        <li class="subtitle is-4">Tienes 30 minutos para contestarla</li>
-        <li class="subtitle is-4">
-          Durante esta prueba no tienes permitido abrir otras pestañas,
-          navegadores o aplicaciones.
-        </li>
+        <li class="subtitle is-4"><%=prueba.instrucciones%></li>
         <br />
         <br />
         <div class="columns is-vcentered">
@@ -33,6 +29,7 @@
           >
         </div>
       </div>
+      <%};%>
     </div>
   </section>
 </body>
