@@ -67,10 +67,12 @@ exports.get_grupo = (request, response, next) => {
 };
 
 exports.registra_reporte_grupo = (request, response, next) => {
-  const numGrupo = request.params.id;
-  //response.render("registrar_reporte_grupo");
-
+  console.log(request.params.id);
+  //const numGrupo = request.params.id;
+  response.render("registrar_reporte_grupo");
+  /*
   Grupo.fetchOne(numGrupo).then(([rows]) => {
-    response.render("registrar_reporte_grupo", { grupo: rows });
+    response.render("registrar_reporte_grupo", { grupo: rows[0] });
   });
+  */
 };

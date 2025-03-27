@@ -1,140 +1,118 @@
 <%- include('includes/_navbarP')%>
 
-<head>
-  <style>
-    .fullHeight {
-      min-height: 76.5vh;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 18px;
-      text-align: left;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: is-link;
-      color: white;
-      text-transform: uppercase;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-    tr:hover {
-      background-color: #ddd;
-    }
-
-    @media (max-width: 768px) {
-      table {
-        font-size: 14px;
-      }
-      th,
-      td {
-        padding: 10px;
-      }
-    }
-  </style>
-</head>
 <body class="fullHeight">
-  <section>
-    <h1>Aspirantes</h1>
-    <img
-      src="https://cdn-icons-png.flaticon.com/512/25/25337.png"
-      style="width: 5%"
-    />
+  <section class="section">
+    <div class="title">Aspirante</div>
+
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column is-1">
+        <a href="registra_reporte/:id">
+          <button class="image-button" method="GET">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1828/1828031.png"
+              alt=""
+              width="20px"
+            /></button
+        ></a>
+      </div>
+      <div class="column is-1">
+        <a href="modifica_grupo">
+          <button class="image-button">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
+              alt=""
+              width="20px"
+            /></button
+        ></a>
+      </div>
+    </div>
   </section>
 
   <section>
-    <table>
-      <thead>
-        <tr>
-          <th>Prueba</th>
-          <th>Fecha</th>
-          <th>Tiempo</th>
-          <th>Estatus</th>
-          <th>Respuestas</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <th>Prueba OTIS</th>
-          <th>21/02/2025</th>
-          <th>29:35 min</th>
-          <th>Completada</th>
-          <th>
-            <a href="consulta_respuestas_aspirante">
-              <button class="image-button">
-                <img
-                  src="https://img.icons8.com/ios7/512/plus.png"
-                  alt=""
-                  style="width: 10%"
-                /></button
-            ></a>
-          </th>
-        </tr>
-        <tr>
-          <th>Prueba TERMAN</th>
-          <th>27/02/2025</th>
-          <th>-</th>
-          <th>Pendiente</th>
-          <th>
-            <a href="consulta_respuestas_aspirante">
-              <button class="image-button">
-                <img
-                  src="https://img.icons8.com/ios7/512/plus.png"
-                  alt=""
-                  style="width: 10%"
-                /></button
-            ></a>
-          </th>
-        </tr>
-        <tr>
-          <th>Test de los colores de Lusher</th>
-          <th>27/02/2025</th>
-          <th>-</th>
-          <th>Pendiente</th>
-          <th>
-            <a href="consulta_respuestas_aspirante">
-              <button class="image-button">
-                <img
-                  src="https://img.icons8.com/ios7/512/plus.png"
-                  alt=""
-                  style="width: 10%"
-                /></button
-            ></a>
-          </th>
-        </tr>
-        <tr>
-          <th>Personalidad 16 Factores</th>
-          <th>27/02/2025</th>
-          <th>-</th>
-          <th>Pendiente</th>
-          <th>
-            <a href="consulta_respuestas_aspirante">
-              <button class="image-button">
-                <img
-                  src="https://img.icons8.com/ios7/512/plus.png"
-                  alt=""
-                  style="width: 10%"
-                /></button
-            ></a>
-          </th>
-        </tr>
-      </tbody>
-    </table>
+    <div class="container is-align-items-center">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Prueba</th>
+            <th>Fecha</th>
+            <th>Tiempo</th>
+            <th>Estatus</th>
+            <th>Respuestas</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr>
+            <th>Prueba OTIS</td>
+            <td>21/02/2025</td>
+            <td>29:35 min</td>
+            <td>Completada</td>
+            <td>
+              <a href="consulta_respuestas_aspirante">
+                <button class="image-button">
+                  <img
+                    src="https://img.icons8.com/ios7/512/plus.png"
+                    alt=""
+                    width="25px"
+                  /></button
+              ></a>
+            </td>
+          </tr>
+          <tr>
+            <th>Prueba TERMAN</th>
+            <td>27/02/2025</td>
+            <td>-</td>
+            <td>Pendiente</td>
+            <td>
+              <a href="consulta_respuestas_aspirante">
+                <button class="image-button">
+                  <img
+                    src="https://img.icons8.com/ios7/512/plus.png"
+                    alt=""
+                    width="25px"
+                  /></button
+              ></a>
+            </td>
+          </tr>
+          <tr>
+            <th>Test de los colores de Lusher</td>
+            <td>27/02/2025</td>
+            <td>-</td>
+            <td>Pendiente</td>
+            <td>
+              <a href="consulta_respuestas_aspirante">
+                <button class="image-button">
+                  <img
+                    src="https://img.icons8.com/ios7/512/plus.png"
+                    alt=""
+                    width="25px"
+                  /></button
+              ></a>
+            </ttdh>
+          </tr>
+          <tr>
+            <th>Personalidad 16 Factores</td>
+            <td>27/02/2025</td>
+            <td>-</td>
+            <td>Pendiente</td>
+            <td>
+              <a href="consulta_respuestas_aspirante">
+                <button class="image-button">
+                  <img
+                    src="https://img.icons8.com/ios7/512/plus.png"
+                    alt=""
+                    width="25px"
+                  /></button
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <%- include('includes/_footer')%>

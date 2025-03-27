@@ -25,7 +25,7 @@ router.get("/sesion_grupal", psicologaController.sesion_grupal);
 
 router.get("/sesion_individual", psicologaController.sesion_individual);
 
-router.get("/consulta_prueba", psicologaController.get_prueba);
+router.get("/pruebas", psicologaController.get_prueba);
 
 router.get("/crear_grupo", psicologaController.crear_grupo);
 
@@ -37,7 +37,7 @@ router.get(
 router.get("/grupo/elegir", psicologaController.elegir_grupo);
 
 router.get(
-  "/grupo/registra_reporte/:id",
+  "/grupo/registra_reporte",
   psicologaController.registra_reporte_grupo
 );
 
