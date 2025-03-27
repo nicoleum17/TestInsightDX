@@ -3,7 +3,7 @@ const router = express.Router();
 
 const psicologaController = require("../controllers/psicologa.controllers");
 
-router.get("/inicio_psicologa", psicologaController.inicio_psicologa);
+router.get("/inicio", psicologaController.inicio_psicologa);
 
 router.get(
   "/notificaciones_psicologa",
@@ -34,13 +34,15 @@ router.get(
   psicologaController.confirmar_creacion_grupo
 );
 
-router.get("/elegir_grupo", psicologaController.elegir_grupo);
-
-router.get("/consulta_grupo", psicologaController.get_grupo);
+router.get("/grupo/elegir", psicologaController.elegir_grupo);
 
 router.get(
-  "/registra_reporte_grupo",
+  "/grupo/registra_reporte/:id",
   psicologaController.registra_reporte_grupo
 );
+
+//router.get("/grupo", psicologaController.get_grupo);
+
+router.get("/grupo/:id", psicologaController.get_grupo);
 
 module.exports = router;

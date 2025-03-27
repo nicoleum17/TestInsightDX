@@ -17,8 +17,8 @@ module.exports = class Grupo {
   }
 
   //Este método servirá para devolver los objetos del almacenamiento persistente.
-  static fetchOne(nombrePrueba) {
-    return db.execute("SELECT * FROM Grupos WHERE posgrado = ?", [posgrado]);
+  static fetchOne(idGrupo) {
+    return db.execute("SELECT * FROM Grupos WHERE idGrupo = ?", [idGrupo]);
   }
 
   static fetchAll() {

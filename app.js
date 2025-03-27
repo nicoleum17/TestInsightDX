@@ -17,10 +17,6 @@ app.use(
   })
 );
 
-app.use((request, response, next) => {
-  next();
-});
-
 //fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
 const multer = require("multer");
 const fileStorage = multer.diskStorage({
@@ -54,10 +50,8 @@ const psicologaRoutes = require("./routes/psicologa.routes");
 
 app.use("/psicologa", psicologaRoutes);
 app.use("/aspirante", aspiranteRoutes);
-app.use("/", testInsightRoutes);
-
 app.use(express.static(path.join(__dirname, "public")));
-app.set("view engine", "ejs");
+app.use("/", testInsightRoutes);
 
 app.use((request, response, next) => {
   response.statusCode = 404;
