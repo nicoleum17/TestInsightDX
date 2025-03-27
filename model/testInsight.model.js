@@ -22,4 +22,16 @@ module.exports = class Usuario {
       return this.fetchAll();
     }
   }
+
+  static getPrivilegios(usuario) {
+    console.log(usuario);
+    return db.execute(
+      `
+      SELECT DISTINCT p.permiso
+      FROM permisos p, tienepermiso tp, roles r, usuarios u
+      WHERE p.idPermiso = tp.idPermiso AND tp.idRol = r.idRol AND r.idRol = u.idRol AND u.usuario=?
+      `,
+      [usuario]
+    );
+  }
 };
