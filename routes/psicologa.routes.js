@@ -3,8 +3,21 @@ const router = express.Router();
 
 const psicologaController = require("../controllers/psicologa.controllers");
 const isAuth = require("../util/is_auth");
+const inicioPsicologa = require("../util/inicioPsicologa");
+const consultarPruebas = require("../util/puedeConsultarPruebas");
+const crearGrupo = require("../util/puedeCrearGrupo");
+const consultarCalendario = require("../util/puedeConsultarCalendario");
+const consultarFE = require("../util/puedeConsultarFormatoEntrevista");
+const consultarAspirante = require("../util/puedeConsultarAspirante");
+const consultarRespuestasAspirante = require("../util/puedeConsultarRespuestasAspirante");
+const confirmarCrearGrupo = require("../util/puedeConfirmarCrearGrupo");
 
-router.get("/inicio", isAuth, psicologaController.inicio_psicologa);
+router.get(
+  "/inicio",
+  isAuth,
+  inicioPsicologa,
+  psicologaController.inicio_psicologa
+);
 
 router.get(
   "/notificaciones_psicologa",
@@ -15,14 +28,21 @@ router.get(
 router.get(
   "/calendario_psicologa",
   isAuth,
+  consultarCalendario,
   psicologaController.calendario_psicologa
 );
 
-router.get("/consulta_aspirante", isAuth, psicologaController.get_aspirantes);
+router.get(
+  "/consulta_aspirante",
+  isAuth,
+  consultarAspirante,
+  psicologaController.get_aspirantes
+);
 
 router.get(
   "/consulta_respuestas_aspirante",
   isAuth,
+  consultarRespuestasAspirante,
   psicologaController.get_respuestasA
 );
 
@@ -36,13 +56,19 @@ router.get("/sesion_grupal", isAuth, psicologaController.sesion_grupal);
 
 router.get("/sesion_individual", isAuth, psicologaController.sesion_individual);
 
-router.get("/pruebas", isAuth, psicologaController.get_prueba);
+router.get(
+  "/pruebas",
+  isAuth,
+  consultarPruebas,
+  psicologaController.get_prueba
+);
 
-router.get("/crear_grupo", isAuth, psicologaController.crear_grupo);
+router.get("/crear_grupo", isAuth, crearGrupo, psicologaController.crear_grupo);
 
 router.get(
   "/confirmar_creacion_grupo",
   isAuth,
+  confirmarCrearGrupo,
   psicologaController.confirmar_creacion_grupo
 );
 
