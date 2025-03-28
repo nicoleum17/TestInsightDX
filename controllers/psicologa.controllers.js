@@ -119,29 +119,29 @@ exports.elegir_grupo = (request, response, next) => {
 };
 
 exports.get_grupo = (request, response, next) => {
-  const numGrupo = request.query.grupoSeleccionado;
-  response.render("consulta_grupo", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-    numGrupo,
+  const numGrupo = request.params.id;
+  Grupo.fetchOne(numGrupo).then(([rows]) => {
+    response.render("consulta_grupo", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupo: rows[0],
+    });
   });
 };
 
 exports.registra_reporte_grupo = (request, response, next) => {
-  console.log(request.params.id);
-  //const numGrupo = request.params.id;
-  response.render("registrar_reporte_grupo");
-  /*
+  console.log(request.params.idGrupo);
+  const numGrupo = request.params.id;
+
   Grupo.fetchOne(numGrupo).then(([rows]) => {
     response.render("registrar_reporte_grupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
-      grupo: rows,
+      grupo: rows[0],
     });
   });
-  */
 };

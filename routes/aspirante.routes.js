@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const aspiranteController = require("../controllers/aspirante.controllers");
 const isAuth = require("../util/is_auth");
 const inicioAspirante = require("../util/inicioAspirante");
@@ -58,5 +57,24 @@ router.get(
   registrarRespuestasFE,
   aspiranteController.formato_entrevista
 );
+
+router.post(
+  "/formato_entrevista",
+  isAuth,
+  aspiranteController.post_formato_entrevista
+);
+
+router.get(
+  "/formato_entrevista_preguntasP",
+  isAuth,
+  aspiranteController.formato_entrevista_preguntasP
+
+)
+
+router.post(
+  "/post_formato_entrevista_preguntasP",
+  isAuth,
+  aspiranteController.post_formato_entrevista_preguntasP
+)
 
 module.exports = router;
