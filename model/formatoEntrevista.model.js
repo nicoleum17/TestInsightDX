@@ -16,7 +16,8 @@ module.exports = class formatoEntrevista{
         mi_direccionA,
         mi_celular,
         mi_telefono,
-        mi_correo
+        mi_correo,
+        mi_estatus
     ){
         this.idFormato = uuidv4();
         this.nombre = mi_nombre;
@@ -32,13 +33,14 @@ module.exports = class formatoEntrevista{
         this.celular = mi_celular;
         this.telefono = mi_telefono;
         this.correo = mi_correo;
+        this.estatus= mi_estatus;
     }
     
     save(){
-        return db.execute("INSERT INTO formatoentrevista(idFormato, nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, estadoCivil, origen, telefono, celular, correo, direccionA, codigoIdentidad) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        return db.execute("INSERT INTO formatoentrevista(idFormato, nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, estadoCivil, origen, telefono, celular, correo, direccionA, codigoIdentidad, estatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             [this.idFormato,this.nombre, this.apellidoP, this.apellidoM,
             this.fechaNacimiento, this.genero, this.nacionalidad, this.edad, this.estadoCivil, this.origen, this.telefono,
-            this.celular, this.correo, this.direccionA,"aa"]).then(([result]) => {
+            this.celular, this.correo, this.direccionA,"aa","Empezado"]).then(([result]) => {
                 return this.idFormato
             });
     }
