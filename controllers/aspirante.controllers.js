@@ -68,7 +68,20 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
 
 exports.post_formato_entrevista_preguntasP = (request, response, next)=>{
   console.log(request.body);
+  let numPregunta = 1;
   for (const a in request.body){
-    const newPregunta = new preguntasFormato("AAA")
+    if (a=='_csrf'){
+      continue
+    }
+    const newPregunta = new preguntasFormato(request.body[a],numPregunta,(request.session.idFormato||''));
+    numPregunta+=1;
+    newPregunta.save()
+  .then(()=>{
+    response.redirect('inicio_aspirante');
+    console.log("Pregunta_Guardada");
+  }) 
+  .catch((error)=>{
+    console.log(error);
+  });
   }
 };
