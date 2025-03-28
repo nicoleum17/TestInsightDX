@@ -32,20 +32,13 @@ exports.post_login = (request, response, next) => {
           .compare(request.body.contraseña, rows[0].contraseña)
           .then((doMatch) => {
             if (doMatch) {
-              console.log(request.body.usuario);
-              Usuario.getPrivilegios(rows[0].usuario)
-                .then(([privilegios, fieldData]) => {
-                  request.session.attempts = 0;
-                  request.session.attempts1 = 0;
-                  request.session.isLoggedIn = true;
-                  request.session.usuario = request.body.usuario;
-                  return request.session.save((error) => {
-                    response.redirect("/aspirante/inicio_aspirante");
-                  });
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
+              request.session.attempts = 0;
+               request.session.attempts1 = 0;
+               request.session.isLoggedIn = true;
+               request.session.usuario = request.body.usuario;
+               return request.session.save((error) => {
+                 response.redirect("/aspirante/inicio_aspirante");
+               });
             } else {
               request.session.attempts = request.session.attempts + 1;
               console.log(request.session.attempts);

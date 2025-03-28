@@ -1,4 +1,4 @@
-<%- include('includes/_navbarP')%>
+<%- include('includes/_navbarP') %>
 
 <body class="fullHeight">
   <section class="section">
@@ -32,6 +32,66 @@
     </div>
   </section>
 
+  <!-- Sección de búsqueda de aspirantes -->
+  <section>
+    <div class="container is-align-items-center">
+      <h2 class="title">Buscar Aspirante</h2>
+      <form id="searchForm" action="/buscar-aspirante" method="GET">
+        <div class="field">
+          <label class="label">Nombre(s)</label>
+          <div class="control">
+            <input class="input" type="text" name="nombre" placeholder="Ingrese el nombre">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Apellido Paterno</label>
+          <div class="control">
+            <input class="input" type="text" name="apellidoPaterno" placeholder="Ingrese el apellido paterno">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Apellido Materno</label>
+          <div class="control">
+            <input class="input" type="text" name="apellidoMaterno" placeholder="Ingrese el apellido materno">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Código de Identidad</label>
+          <div class="control">
+            <input class="input" type="text" name="codigoIdentidad" placeholder="Ingrese el código de identidad">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Correo Electrónico</label>
+          <div class="control">
+            <input class="input" type="email" name="correo" placeholder="Ingrese el correo electrónico">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Número de Teléfono</label>
+          <div class="control">
+            <input class="input" type="tel" name="telefono" placeholder="Ingrese el número de teléfono">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Lugar de Origen</label>
+          <div class="control">
+            <input class="input" type="text" name="lugarOrigen" placeholder="Ingrese el lugar de origen">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Universidad de Procedencia</label>
+          <div class="control">
+            <input class="input" type="text" name="universidad" placeholder="Ingrese la universidad de procedencia">
+          </div>
+        </div>
+        <div class="control">
+          <button class="button is-primary" type="submit">Buscar</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
   <section>
     <div class="container is-align-items-center">
       <table class="table">
@@ -47,12 +107,12 @@
   
         <tbody>
           <tr>
-            <th>Prueba OTIS</td>
+            <th>Prueba OTIS</th>
             <td>21/02/2025</td>
             <td>29:35 min</td>
             <td>Completada</td>
             <td>
-              <a href="consulta_respuestas_aspirante">
+              <a href ="consulta_respuestas_aspirante">
                 <button class="image-button">
                   <img
                     src="https://img.icons8.com/ios7/512/plus.png"
@@ -79,7 +139,7 @@
             </td>
           </tr>
           <tr>
-            <th>Test de los colores de Lusher</td>
+            <th>Test de los colores de Lusher</th>
             <td>27/02/2025</td>
             <td>-</td>
             <td>Pendiente</td>
@@ -92,10 +152,10 @@
                     width="25px"
                   /></button
               ></a>
-            </ttdh>
+            </td>
           </tr>
           <tr>
-            <th>Personalidad 16 Factores</td>
+            <th>Personalidad 16 Factores</th>
             <td>27/02/2025</td>
             <td>-</td>
             <td>Pendiente</td>
@@ -115,5 +175,5 @@
     </div>
   </section>
 
-  <%- include('includes/_footer')%>
+  <%- include('includes/_footer') %>
 </body>
