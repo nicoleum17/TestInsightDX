@@ -134,7 +134,6 @@ exports.get_grupo = (request, response, next) => {
 exports.registra_reporte_grupo = (request, response, next) => {
   console.log(request.params.idGrupo);
   const numGrupo = request.params.id;
-  response.render("registrar_reporte_grupo");
 
   Grupo.fetchOne(numGrupo).then(([rows]) => {
     response.render("registrar_reporte_grupo", {
