@@ -2,7 +2,9 @@
 <head> </head>
 <body class="fullHeight">
   <section class="section">
-    <div class="title">Grupo <%= numGrupo %></div>
+    <div class="title">Grupo </div>
+
+    <div class="subtitle"><%= grupo.posgrado %> - <%= grupo.generacion %></div>
 
     <div class="columns">
       <div class="column"></div>
@@ -10,7 +12,7 @@
       <div class="column"></div>
       <div class="column"></div>
       <div class="column is-1">
-        <a href="registra_reporte">
+        <a href="registra_reporte/<%= grupo.idGrupo%>">
           <button class="image-button">
             <img
               src="https://cdn-icons-png.flaticon.com/512/1828/1828031.png"
