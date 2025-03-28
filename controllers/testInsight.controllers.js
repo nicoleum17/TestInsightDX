@@ -38,7 +38,7 @@ exports.post_login = (request, response, next) => {
                   request.session.attempts1 = 0;
                   request.session.isLoggedIn = true;
                   request.session.usuario = request.body.usuario;
-
+                  request.session.privilegios = privilegios;
                   if (rows[0].idRol === 1) {
                     response.redirect("/psicologa/inicio");
                   } else if (rows[0].idRol === 2) {

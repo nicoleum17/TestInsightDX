@@ -3,8 +3,14 @@ const router = express.Router();
 
 const aspiranteController = require("../controllers/aspirante.controllers");
 const isAuth = require("../util/is_auth");
+const inicioAspirante = require("../util/inicioAspirante");
+const consultarCalendario = require("../util/puedeConsultarCalendario");
+const cargarDocumentos = require("../util/puedeCargarDocumentos");
+const registrarRespuestasFE = require("../util/puedeRegistrarRespuestasFormatoEntrevista");
+const consultarPrueba = require("../util/puedeConsultarPrueba");
+const verificarDatosPersonales = require("../util/puedeVerificarDatosPersonales");
 
-router.get("/inicio", isAuth, aspiranteController.get_root);
+router.get("/inicio", isAuth, inicioAspirante, aspiranteController.get_root);
 
 router.get(
   "/notificaciones_aspirante",
@@ -15,20 +21,28 @@ router.get(
 router.get(
   "/documentos_aspirante",
   isAuth,
+  cargarDocumentos,
   aspiranteController.get_documentosA
 );
 
 router.get(
   "/calendario_aspirante",
   isAuth,
+  consultarCalendario,
   aspiranteController.get_calendarioA
 );
 
-router.get("/datos_aspirante", isAuth, aspiranteController.get_datosA);
+router.get(
+  "/datos_aspirante",
+  isAuth,
+  verificarDatosPersonales,
+  aspiranteController.get_datosA
+);
 
 router.get(
   "/instrucciones_prueba/:idPrueba",
   isAuth,
+  consultarPrueba,
   aspiranteController.get_instrucciones
 );
 
@@ -41,6 +55,7 @@ router.get(
 router.get(
   "/formato_entrevista",
   isAuth,
+  registrarRespuestasFE,
   aspiranteController.formato_entrevista
 );
 
