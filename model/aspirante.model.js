@@ -28,18 +28,9 @@ module.exports = class Aspirante {
     return db.execute("SELECT * FROM aspirantes");
   }
 
-  static fetchOne(codigoIdentidad) {
-    return db.execute("SELECT * FROM aspirantes WHERE codigoIdentidad = ?", [
-      codigoIdentidad,
-    ]);
-  }
-
   static fetchOne(idUsuario) {
     return db.execute("SELECT * FROM aspirantes WHERE idUsuario = ?", [
       idUsuario,
     ]);
-  }
-  static fetchOne(nombres) {
-    return db.execute("SELECT * FROM aspirantes WHERE nombres = ?", [nombres]);
   }
 };

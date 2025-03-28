@@ -24,18 +24,6 @@ module.exports = class Usuario {
     }
   }
 
-  static getRol(usuario) {
-    console.log(usuario);
-    return db.execute(
-      `
-      SELECT DISTINCT u.idRol
-      FROM usuarios u, roles r
-      WHERE r.idRol = u.idRol AND u.usuario=?
-      `,
-      [usuario]
-    );
-  }
-
   static getPrivilegios(usuario) {
     return db.execute(
       `
