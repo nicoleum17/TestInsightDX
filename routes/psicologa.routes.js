@@ -49,7 +49,7 @@ router.get(
 router.get("/grupo/elegir", isAuth, psicologaController.elegir_grupo);
 
 router.get(
-  "/grupo/registra_reporte",
+  "/grupo/registra_reporte/:id",
   isAuth,
   psicologaController.registra_reporte_grupo
 );
