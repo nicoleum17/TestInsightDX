@@ -116,7 +116,7 @@ exports.post_formato_entrevista_preguntasP = (request, response, next)=>{
     numPregunta+=1;
     newPregunta.save()
   .then(()=>{
-    response.redirect('inicio_aspirante');
+    response.redirect('inicio');
     console.log("Pregunta_Guardada");
   }) 
   .catch((error)=>{
