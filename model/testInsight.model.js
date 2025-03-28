@@ -24,13 +24,13 @@ module.exports = class Usuario {
     }
   }
 
-  static getRol(usuario) {
+  static getPrivilegios(usuario) {
     console.log(usuario);
     return db.execute(
       `
-      SELECT DISTINCT u.idRol
-      FROM usuarios u, roles r
-      WHERE r.idRol = u.idRol AND u.usuario=?
+      SELECT DISTINCT p.permiso
+      FROM permisos p, tienepermiso tp, roles r, usuarios u
+      WHERE p.idPermiso = tp.idPermiso AND tp.idRol = r.idRol AND r.idRol = u.idRol AND u.usuario=?
       `,
       [usuario]
     );

@@ -82,6 +82,23 @@ exports.formato_entrevista = (request, response, next) => {
 );
 };
 
+exports.post_formato_entrevista = (request, response, next) => {
+  console.log(request.body)
+  const newFormato = new formatoEntrevista(request.body.apellidoP,request.body.apellidoM, 
+    request.body.nombre,request.body.fechaNacimiento,request.body.genero,request.body.edad, 
+    request.body.nacionalidad, request.body.origen, request.body.estadoCivil,request.body.direccionA, request.body.celular,
+    request.body.telefono, request.body.correo);
+  newFormato.save()
+  .then(uuid=>{
+    request.session.idFormato=uuid;
+    response.redirect('formato_entrevista_preguntasP');
+    console.log("Formato guardado con id", uuid);
+  }) 
+  .catch((error)=>{
+    console.log(error);
+  });
+};
+
 exports.formato_entrevista_preguntasP = (request, response, next) => {
   response.render("formato_entrevista_preguntasP", {isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",

@@ -7,39 +7,47 @@ min-height: 76.5vh;
     <div class="container">
         <div class="columns">
             <div class="column">
-                <p class="subtitle is-3">Verifica tus datos</p>
+                <p class="subtitle is-3">Datos personales</p>
             </div>
         </div>
-        <div class="test1 columns is-vcentered ml-5">
+        <div class="columns">
             <div class="column">
-                <form id="personalInformation" method="POST" class="p-5">
+                <p>Verifica que tus datos sean correctos. En caso de que exista algún error, por favor contácta a los administradores</p>
+            </div>
+        </div>
+        <div class="test1 columns is-centered ml-5" style="max-width: 700px;">
+
+            <div class="column">
+                <form id="personalInformation" method="POST" >
                     <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
-                    <p>Rodríguez</p>
+                    <input class="input" type="text" placeholder="Rodríguez" disabled>
             </div>
             <div class="column">
                 <label for="apellidoMaterno" class="label">Apellido Materno:</label>
-                <p>López</p>
+                <input class="input" type="text" placeholder="López" disabled>
             </div>
                 <br />
             <div class="column">
                 <label for="name" class="label">Nombre(s)</label>
-                <p>Juan</p>
+                <input class="input" type="text" placeholder="Arturo" disabled>
                 <br />
             </div>
         </div>
         <div class="edad columns is-vcentered ml-5">
-            <div class="column">
+            <div class="column is-one-fifth">
                     <label for="selectAge" class="label">Edad:</label>
 
-                    <div class=" is-primary">
-                        <p>25</p>
-                    </div>
-                    <div>
-                        <br>
-                        <p>Una vez que des click en 'Siguiente', comenzarán a correr tus 30 minutos</p>
+                    <div class=" is-primary ">
+                        <input class="input" type="text" placeholder="25" disabled>
                     </div>
             </div>
-            <div class="columns is-vcentered ">
+            </div>
+            <div class="columns ml-5 mt-5">
+                <div>
+                    <p>Una vez que des click en 'Siguiente', comenzarán a correr tus 30 minutos</p>
+                </div>
+            </div>
+            <div class="columns is-vcentered ml-5 mt-5">
                 <br><br>
                 <button class="column is-narrow button is-info has-text-warning  "><a href="instrucciones_prueba">Regresar</a ></button> 
                 <button class="column is-narrow button is-info has-text-warning ml-4"><a href="preguntas_prueba">Siguiente</a ></button>
