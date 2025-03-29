@@ -47,11 +47,14 @@ min-height: 76.5vh;
                     <p>Una vez que des click en 'Siguiente', comenzarán a correr tus 30 minutos</p>
                 </div>
             </div>
+            <% if (prueba) { %>
             <div class="columns is-vcentered ml-5 mt-5">
                 <br><br>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                 <button class="column is-narrow button is-info has-text-warning  "><a href="instrucciones_prueba">Regresar</a ></button> 
-                <button class="column is-narrow button is-info has-text-warning ml-4"><a href="preguntas_prueba">Siguiente</a ></button>
+                <button class="column is-narrow button is-info has-text-warning ml-4"><a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>">Siguiente</a ></button>
             </div>
+            <%}%>
             </form>
         </div>
       </div>

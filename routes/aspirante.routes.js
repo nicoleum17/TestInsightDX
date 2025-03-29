@@ -32,7 +32,7 @@ router.get(
 );
 
 router.get(
-  "/datos_aspirante",
+  "/datos_aspirante/:idPrueba",
   isAuth,
   verificarDatosPersonales,
   aspiranteController.get_datosA
@@ -46,11 +46,23 @@ router.get(
 );
 
 router.get(
-  "/preguntas_prueba",
+  "/preguntas_prueba/:idPrueba'",
   isAuth,
   aspiranteController.get_preguntasPrueba
 );
 
+/*router.post(
+  "/preguntas_prueba/:idPrueba'",
+  isAuth,
+  aspiranteController.post_empezarPrueba
+);
+
+router.post(
+  "/siguientePregunta/:idPrueba",
+  isAuth,
+  aspiranteController.post_siguientePregunta
+);
+*/
 router.get(
   "/formato_entrevista",
   isAuth,
@@ -68,13 +80,12 @@ router.get(
   "/formato_entrevista_preguntasP",
   isAuth,
   aspiranteController.formato_entrevista_preguntasP
-
-)
+);
 
 router.post(
   "/post_formato_entrevista_preguntasP",
   isAuth,
   aspiranteController.post_formato_entrevista_preguntasP
-)
+);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const { response } = require("express");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
+const Pregunta16PF = require("../model/preguntas16pf.model");
 
 exports.get_root = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
@@ -43,33 +44,88 @@ exports.get_calendarioA = (request, response, next) => {
 };
 
 exports.get_datosA = (request, response, next) => {
-  response.render("datos_aspirante", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
+  Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
+    Pregunta16PF.fetchAll().then(([rows1]) => {
+      response.render("datos_aspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        prueba: rows[0],
+        pregunta: rows1[0],
+      });
+    });
   });
 };
 
 exports.get_instrucciones = (request, response, next) => {
-  console.log(request.params.idPrueba);
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
-    console.log(rows);
     response.render("instrucciones_prueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
       prueba: rows[0],
     });
   });
 };
 
 exports.get_preguntasPrueba = (request, response, next) => {
-  response.render("preguntas_prueba", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
+  console.log(request.params.idPrueba);
+  console.log(request.params.idPregunta16PF);
+  Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
+    Pregunta16PF.fetchAll().then(([rows1]) => {
+      response.render("preguntas_prueba", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        prueba: rows[0],
+        pregunta: rows1[0],
+      });
+    });
   });
+};
+exports.post_empezarPrueba = (request, response, next) => {
+  Prueba.fetchOne(request.params.idPrueba).then(([rows1]) => {
+    Pregunta16PF.fetchAll().then(([rows]) => {
+      request.session.preguntas = rows;
+      request.session.currentQuestionIndex = 0;
+      response.render("preguntas_prueba", {
+        prueba: rows1[0],
+        pregunta: rows[0],
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+      });
+    });
+  });
+};
+
+exports.post_siguientePregunta = (request, response, next) => {
+  const preguntas = request.session.preguntas;
+  const indice = request.session.currentQuestionIndex;
+  if (indice < preguntas.length - 1) {
+    request.session.currentQuestionIndex++;
+    const siguientePregunta = preguntas[request.session.currentQuestionIndex];
+    response.render("preguntas_prueba", {
+      prueba: rows1[0],
+      pregunta: rows[0],
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+    });
+  } else {
+    response.render("prueba_completada", {
+      prueba: rows1[0],
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+    });
+  }
 };
 
 exports.formato_entrevista = (request, response, next) => {
@@ -84,14 +140,13 @@ exports.formato_entrevista = (request, response, next) => {
 exports.post_formato_entrevista = (request, response, next) => {
   console.log(request.body);
   let correcto = true;
-  for(const a in request.body){
-    if (request.body[a]==undefined || request.body[a]==''){
+  for (const a in request.body) {
+    if (request.body[a] == undefined || request.body[a] == "") {
       correcto = false;
       response.redirect("formato_entrevista");
-      
     }
   }
-  if (correcto == true){
+  if (correcto == true) {
     const newFormato = new formatoEntrevista(
       request.body.apellidoP,
       request.body.apellidoM,
@@ -118,7 +173,6 @@ exports.post_formato_entrevista = (request, response, next) => {
         console.log(error);
       });
   }
-
 };
 
 exports.formato_entrevista_preguntasP = (request, response, next) => {
@@ -153,4 +207,3 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       });
   }
 };
-

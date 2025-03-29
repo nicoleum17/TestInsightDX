@@ -5,11 +5,13 @@ min-height: 76.5vh;
 </style>
   <body class="has-background-danger-95 fullHeight">
     <section class="section fullHeight">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <% if (prueba) { %>
       <div class="container">
-          <p class="subtitle is-2">Pregunta 1:
+        <% if(pregunta) { %>
+          <p class="subtitle is-2">Pregunta <%=pregunta.numeroPregunta16PF%>
           </p>
-        <p class="subtitle is-3">¿Cuál de las cinco palabras anotadas a continuación expresa lo que es una
-          manzana?
+        <p class="subtitle is-3"><%=pregunta.pregunta16pf%>
         </p>
         <div class="control">
           <label class="radio mx-5 subtitle is-4">
@@ -33,10 +35,14 @@ min-height: 76.5vh;
             Animal
           </label>
         </div>
-            <button class=" column is-narrow button mt-3"><a href="inicio">Siguiente</a ></button>
+          <form action="/siguiente_pregunta" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <button class=" column is-narrow button mt-3">Siguiente</button> </form>
           </div>
         </div>
+        <%};%>
       </div>
+      <%};%>
     </section>
   </body>
 </html>
