@@ -1,6 +1,6 @@
 <style>
     .fullHeight {
-min-height: 76.5vh;
+min-height: 80vh;
 }
   </style>
 <section class="section fullHeight">
@@ -44,18 +44,23 @@ min-height: 76.5vh;
             </div>
             <div class="columns ml-5 mt-5">
                 <div>
-                    <p>Una vez que des click en 'Siguiente', comenzarán a correr tus 30 minutos</p>
+                    <p>Una vez que des click en 'Comenzar', comenzarán a correr tus 30 minutos</p>
                 </div>
-            </div>
-            <% if (prueba) { %>
-            <div class="columns is-vcentered ml-5 mt-5">
-                <br><br>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                <button class="column is-narrow button is-info has-text-warning  "><a href="instrucciones_prueba">Regresar</a ></button> 
-                <button class="column is-narrow button is-info has-text-warning ml-4"><a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>">Siguiente</a ></button>
-            </div>
-            <%}%>
             </form>
+        </div>
+        <% if (prueba) { %>
+            <% if (pregunta) {%>
+        <div class="columns is-vcentered ml-5 mt-5">
+            <br><br>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>">
+            <button  class="button is-primary has-text-warning">Comenzar</button></a>
+            <a href="/aspirante/instrucciones_prueba">
+                <button  class="button is-primary has-text-warning">Regresar</button></a>
+
+        </div>
+        <%}%>
+        <%}%>
         </div>
       </div>
     </div>

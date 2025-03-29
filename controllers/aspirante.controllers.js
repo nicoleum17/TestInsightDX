@@ -71,10 +71,10 @@ exports.get_instrucciones = (request, response, next) => {
 };
 
 exports.get_preguntasPrueba = (request, response, next) => {
-  console.log(request.params.idPrueba);
-  console.log(request.params.idPregunta16PF);
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
     Pregunta16PF.fetchAll().then(([rows1]) => {
+      request.session.preguntas = rows;
+      request.session.currentQuestionIndex = 0;
       response.render("preguntas_prueba", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
@@ -92,40 +92,45 @@ exports.post_empezarPrueba = (request, response, next) => {
       request.session.preguntas = rows;
       request.session.currentQuestionIndex = 0;
       response.render("preguntas_prueba", {
-        prueba: rows1[0],
-        pregunta: rows[0],
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
         csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
+        prueba: rows1[0],
+        pregunta: rows[0],
       });
     });
   });
 };
 
 exports.post_siguientePregunta = (request, response, next) => {
-  const preguntas = request.session.preguntas;
-  const indice = request.session.currentQuestionIndex;
-  if (indice < preguntas.length - 1) {
-    request.session.currentQuestionIndex++;
-    const siguientePregunta = preguntas[request.session.currentQuestionIndex];
-    response.render("preguntas_prueba", {
-      prueba: rows1[0],
-      pregunta: rows[0],
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
+  Prueba.fetchOne(request.params.idPrueba).then(([rows1]) => {
+    Pregunta16PF.fetchAll().then(([rows]) => {
+      const preguntas = request.session.preguntas;
+      const indice = request.session.currentQuestionIndex;
+      if (indice < preguntas.length - 1) {
+        request.session.currentQuestionIndex++;
+        const siguientePregunta =
+          preguntas[request.session.currentQuestionIndex];
+        response.render("preguntas_prueba", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+          prueba: rows1[0],
+          pregunta: rows[0],
+        });
+      } else {
+        response.render("prueba_completada", {
+          prueba: rows1[0],
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+        });
+      }
     });
-  } else {
-    response.render("prueba_completada", {
-      prueba: rows1[0],
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-    });
-  }
+  });
 };
 
 exports.formato_entrevista = (request, response, next) => {
