@@ -1,6 +1,7 @@
 <style>
     .fullHeight {
-min-height: 90vh;
+    min-height: 90vh;
+    margin-top: 20px;
 }
   </style>
 <section class="section fullHeight">
@@ -54,7 +55,7 @@ min-height: 90vh;
             <br><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 
-            <a href="/aspirante/instrucciones_prueba">
+            <a href="/aspirante/instrucciones_prueba/<%=prueba.idPrueba%>">
                 <button  class="button is-primary has-text-warning">Regresar</button></a>
                 <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>">
                     <button  class="button is-primary has-text-warning ml-6">Comenzar</button></a>
