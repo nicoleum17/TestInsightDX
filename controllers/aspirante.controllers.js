@@ -212,3 +212,9 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       });
   }
 };
+
+exports.get_logout = (request, response, next) => {
+  request.session.destroy(() => {
+    response.redirect("/");
+  });
+};

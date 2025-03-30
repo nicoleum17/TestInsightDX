@@ -88,4 +88,6 @@ router.post(
   aspiranteController.post_formato_entrevista_preguntasP
 );
 
+router.get("/cerrar_sesion", aspiranteController.get_logout);
+
 module.exports = router;

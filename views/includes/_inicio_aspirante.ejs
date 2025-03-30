@@ -12,27 +12,39 @@
         --bulma-warning-h: 34deg;
         --bulma-warning-l: 99%;
       }
-  .notification{
-    width: 350px;
-    position: fixed;
-    top: 15%;
-    right: 3%;
-  }
+
   .fullHeight {
-        min-height: 80vh;
-      }
+        min-height: 90vh;
+        }
+      
 
 </style>
     
     <section class="section fullHeight">
-      <div class="container">
-        <div class="notification is-info">
-          ¡Tienes <strong>7 días</strong> para realizar tus pruebas y cargar tu documentación!
-        </div>
+      <div class="container mt-5">
+        <div class="columns">
+          <div class="column">
         <h1 class="title">¡Bienvenido Arturo!</h1>
-        <br />
+      </div>
+      <div class="column">
+<nav class="level-right">
+        <div class="level-right">
+          <article class="message ">
+            <div class="message-header has-background-info ">
+              <p class="has-text-link">¡Importante!</p>
+            <button class="delete" aria-label="delete"></button>
+
+            </div>
+            <div class="message-body">
+              Tienes <strong>7 días</strong> para realizar tus pruebas y cargar tu documentación.
+            </div>
+          </article>
+        </div>
+      </nav>
+    </div>
+    </div>
         <% pruebas.forEach(prueba => { %>
-        <div class="test1 columns is-vcentered ml-5">
+        <div class="test1 columns is-vcentered ml-5 mt-3">
             <div class="column">
               <h3 class="subtitle is-4"><%=prueba.nombrePrueba%></h3>
             </div>
@@ -49,5 +61,3 @@
           
        
     </section>
-  </body>
-</html>
