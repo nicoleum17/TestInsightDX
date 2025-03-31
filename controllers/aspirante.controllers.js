@@ -2,6 +2,7 @@ const { response } = require("express");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
+const formatoEntrevistaDA = require("../model/formatoEntrevistaDA.model");
 const Pregunta16PF = require("../model/preguntas16pf.model");
 
 exports.get_root = (request, response, next) => {
@@ -224,5 +225,29 @@ exports.formato_entrevista_DA = (request, response, next)=> {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
+  });
+};
+
+exports.post_formato_entrevista_DA = (request, response, next)=>{
+  console.log(request.body)
+  const newFormatoDA = new formatoEntrevistaDA(
+    request.session.idFormato,
+    request.body.nombreLicenciatura,
+    request.body.institucion,
+    request.body.promedio,
+    request.body.generacion,
+    request.body.gradoMax,
+    request.body.maestria,
+    request.body.institucionMaestria,
+    request.body.promedioMaestria,
+    request.body.cursos,
+    request.body.idiomas
+  )
+  newFormatoDA.save().then(()=>{
+    response.redirect("inicio");
+    console.log("Datos_academicos_Guardados");
+  })
+  .catch((error) => {
+    console.log(error);
   });
 };
