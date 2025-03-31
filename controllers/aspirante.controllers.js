@@ -242,3 +242,11 @@ exports.post_formato_entrevista_DA = (request, response, next)=>{
     console.log(error);
   });
 };
+
+exports.formato_entrevista_preguntasDA = (request, response, next)=>{
+  response.render("formato_entrevista_preguntasDA", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+  });
+};
