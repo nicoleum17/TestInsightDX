@@ -145,15 +145,7 @@ exports.formato_entrevista = (request, response, next) => {
 
 exports.post_formato_entrevista = (request, response, next) => {
   console.log(request.body);
-  let correcto = true;
-  for (const a in request.body) {
-    if (request.body[a] == undefined || request.body[a] == "") {
-      correcto = false;
-      response.redirect("formato_entrevista");
-    }
-  }
-  if (correcto == true) {
-    const newFormato = new formatoEntrevista(
+  const newFormato = new formatoEntrevista(
       request.body.apellidoP,
       request.body.apellidoM,
       request.body.nombre,
@@ -178,7 +170,6 @@ exports.post_formato_entrevista = (request, response, next) => {
       .catch((error) => {
         console.log(error);
       });
-  }
 };
 
 exports.formato_entrevista_preguntasP = (request, response, next) => {
