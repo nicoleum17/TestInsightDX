@@ -1,0 +1,296 @@
+<style>
+    :root {
+      --bulma-primary-h: 227deg;
+      --bulma-primary-s: 54%;
+      --bulma-primary-l: 44%;
+      --bulma-link-h: 224deg;
+      --bulma-link-s: 84%;
+      --bulma-link-l: 20%;
+      --bulma-info-h: 216deg;
+      --bulma-info-l: 91%;
+      --bulma-success-h: 175deg;
+    }
+    .person {
+      border: 1px solid black;
+      padding: 10px;
+      min-width: 150px;
+      background-color: #ffffff;
+      display: inline-block;
+    }
+    .person div {
+      text-align: center;
+    }
+    .person .name {
+      font-size: 16px;
+    }
+    .person .parentDrop,
+    .person .spouseDrop,
+    .person .childDrop {
+      width: auto;
+      min-width: 80px;
+      min-height: 90px;
+      display: inline-block;
+      position: relative;
+      padding-top: 15px;
+    }
+    .person .parentDrop > span,
+    .person .spouseDrop > span,
+    .person .childDrop > span {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-weight: bold;
+    }
+    .parentDrop > .person,
+    .spouseDrop > .person,
+    .childDrop > .person {
+      margin-top: 20px;
+    }
+    .tree {
+      transform: scale(0.8);
+      transform-origin: top left;
+    }
+    .tree ul {
+      padding-top: 20px;
+      position: relative;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+    }
+    .tree li {
+      display: table-cell;
+      text-align: center;
+      list-style-type: none;
+      position: relative;
+      padding: 20px 5px 0 5px;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+    }
+  
+    .tree li::before,
+    .tree li::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 1px solid #ccc;
+      width: 50%;
+      height: 20px;
+    }
+    .tree li::after {
+      right: auto;
+      left: 50%;
+      border-left: 1px solid #ccc;
+    }
+    .tree li:only-child::after,
+    .tree li:only-child::before {
+      display: none;
+    }
+    .tree li:only-child {
+      padding-top: 0;
+    }
+    .tree li:first-child::before,
+    .tree li:last-child::after {
+      border: 0 none;
+    }
+    .tree li:last-child::before {
+      border-right: 1px solid #ccc;
+      border-radius: 0 5px 0 0;
+      -webkit-border-radius: 0 5px 0 0;
+      -moz-border-radius: 0 5px 0 0;
+    }
+    .tree li:first-child::after {
+      border-radius: 5px 0 0 0;
+      -webkit-border-radius: 5px 0 0 0;
+      -moz-border-radius: 5px 0 0 0;
+    }
+    .tree ul ul::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      border-left: 1px solid #ccc;
+      width: 0;
+      height: 20px;
+    }
+    .tree li .parent {
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      margin-top: 10px;
+    }
+    .tree li .parent::before {
+      content: "";
+      position: absolute;
+      top: 45px;
+      left: 50%;
+      border-left: 1px solid #ccc;
+      width: 3px;
+      height: 10px;
+    }
+    .tree li .family {
+      position: relative;
+    }
+    .tree li .family .spouse {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      margin-left: 95px;
+    }
+    .tree li .family .spouse::before {
+      display: none;
+    }
+    .input.superior {
+      margin: 0;
+      margin-bottom: -10px;
+      font-size: 10px;
+    }
+  
+    .input.inferior {
+      margin: 0;
+      margin-top: -5px;
+      font-size: 10px;
+    }
+  
+    .select.is-danger.familiar {
+      margin: 0;
+      margin-top: 5px;
+      font-size: 10px;
+    }
+  </style>
+  
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-3">Formato de entrevista</h1>
+      <div class="interviewFormat columns is-vcentered ml-5"></div>
+      <br /><br />
+      <h3 class="title is-4">Datos Académicos</h3>
+      <form action="formato_entrevista_DA" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <div class="columns is-vcentered ml-5">
+          <div class="column">
+            <label for="licenciatura" class="label">Nombre de la Licenciatura:</label>
+            <input
+              class="input"
+              type="text"
+              placeholder="Cirujano Dentista"
+              id="licenciatura"
+              name="licenciatura" />
+          </div>
+          <div class="column">
+            <label for="instituto" class="label">Institución de Procedencia:</label>
+            <input
+              class="input"
+              type="text"
+              placeholder="López"
+              id="instituto"
+              name="instituto" />
+          </div>
+          <div class="column">
+            <label for="promedio" class="label">Promedio de egreso: </label>
+            <input
+              class="input"
+              type="text"
+              placeholder="8.5"
+              id="promedio"
+              name="promedio" />
+          </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+          <div class="column is-one-third">
+            <label for="generacion" class="label">Generación:</label>
+            <input
+              class="input"
+              type="text"
+              placeholder="2025"
+              id="generacion"
+              name="generacion" />
+          </div>
+          <div class="column is-one-third">
+            <label for="gradoMaximo" class="label">Grado máximo de estudios:</label>
+            <input
+              class="input"
+              type="text"
+              placeholder="Licenciatura"
+              id="gradoMaximo"
+              name="gradoMaximo" />
+          </div>
+          <div class="column is-one-third">
+            <label for="maestria" class="label">Maestría o especialidad (en caso de tener):</label>
+            <input
+              class="input"
+              type="text"
+              placeholder="Maestría en Fisioterapia Deportiva"
+              id="maestria"
+              name="maestria" />
+          </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+          <div class="column is-one-third">
+            <label for="maritalStatus" class="label">Institución donde curso la Maestría:</label>
+                <input
+                class="input"
+                type="text"
+                placeholder="..."
+                id="institucionMaestria"
+                name="institucionMaestria" />
+            </div>
+          </div>
+          <div class="column is-two-thirds">
+            <label for="promedioMaestria" class="label">Promedio de egreso de la Maestría:</label>
+            <input
+              class="input"
+              type="text"
+              placeholder="8.5"
+              id="promedioMaestria"
+              name="promedioMaestria" />
+          </div>
+        </div>
+        <br />
+        <div class="columns is-vcentered ml-5">
+          <div class="column is-one-third">
+            <label for="cursos" class="label">Cursos y Diplomados (Escribir los de los últimos tres años):</label>
+            <input
+              class="textarea"
+              type="text"
+              placeholder="Escribe aqui..."
+              id="cursos"
+              name="cursos" />
+          </div>
+          <div class="column is-one-third">
+            <label for="idiomas" class="label">Idiomas que domina:</label>
+            <input
+              class="textarea"
+              type="text"
+              placeholder="Escribe..."
+              id="idiomas"
+              name="idiomas" />
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <button
+              class="button has-background-primary has-text-warning ml-6"
+              type="submit">
+              Continuar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  <script>
+    const dropdown = document.getElementById("selectAgeIF");
+    for (let i = 18; i <= 100; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = i;
+      dropdown.appendChild(option);
+    }
+    const date = new Date();
+    const formattedDate = date.toLocaleString();
+  </script>
+  

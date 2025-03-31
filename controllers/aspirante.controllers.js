@@ -204,7 +204,7 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
     newPregunta
       .save()
       .then(() => {
-        response.redirect("inicio");
+        response.redirect("formato_entrevista_DA");
         console.log("Pregunta_Guardada");
       })
       .catch((error) => {
@@ -216,5 +216,13 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
     response.redirect("/");
+  });
+};
+
+exports.formato_entrevista_DA = (request, response, next)=> {
+  response.render("formato_entrevista_DA", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
   });
 };
