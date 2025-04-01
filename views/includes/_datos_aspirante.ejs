@@ -5,10 +5,10 @@
 }
   </style>
 <section class="section fullHeight">
-    <div class="container">
+    <div class="container is-max-tablet">
         <div class="columns">
             <div class="column">
-                <p class="subtitle is-3">Datos personales</p>
+                <p class="title is-2 has-text-weight-semibold">Datos personales</p>
             </div>
         </div>
         <div class="columns">
@@ -42,27 +42,52 @@
                         <input class="input" type="text" placeholder="25" disabled>
                     </div>
             </div>
+            <div class="column">
+                <label for="puestoSolicitado" class="label">Puesto solicitado:</label>
+                <input class="input" type="text" placeholder="Gerente de ventas" disabled>
+                <br />
             </div>
-            <div class="columns ml-5 mt-5">
-                <div>
-                    <p>Una vez que des click en 'Comenzar', comenzarán a correr tus 30 minutos</p>
-                </div>
+            </div>
+            <div class="columns ml-5 mt-5 is-centered">
+                <nav class="level-left">
+                    <div class="level-left">
+                      <article class="message ">
+                        <div class="message-header has-background-info ">
+                          <p class="has-text-link">¡Importante!</p>            
+                        </div>
+                        <div class="message-body">
+                          Una vez que des click en <strong>Comenzar</strong>, comenzará a correr tu tiempo.
+                        </div>
+                      </article>
+                    </div>
+                  </nav>
+                  </div>
             </form>
         </div>
-        <% if (prueba) { %>
+        <% if (prueba.idPrueba === 1) { %>
             <% if (pregunta) {%>
-        <div class="columns is-vcentered ml-5 mt-5">
+        <div class="columns is-centered ml-5 mt-6">
             <br><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-
             <a href="/aspirante/instrucciones_prueba/<%=prueba.idPrueba%>">
-                <button  class="button is-primary has-text-warning">Regresar</button></a>
-                <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>">
-                    <button  class="button is-primary has-text-warning ml-6">Comenzar</button></a>
-
+            <button  class="button is-primary has-text-warning">Regresar</button></a>
+            <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>/<%=pregunta.idPreguntaKostick%>">
+            <button  class="button is-primary has-text-warning ml-6">Comenzar</button></a>
         </div>
         <%}%>
-        <%}%>
+        <%} else if (prueba.idPrueba === 2) {%>
+            <% if (pregunta) {%>
+                <div class="columns is-centered ml-5 mt-6">
+                    <br><br>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        
+                    <a href="/aspirante/instrucciones_prueba/<%=prueba.idPrueba%>">
+                    <button  class="button is-primary has-text-warning">Regresar</button></a>
+                    <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>/<%=pregunta.idPregunta16PF%>">
+                    <button  class="button is-primary has-text-warning ml-6">Comenzar</button></a>
+                </div>
+                <%}%>
+            <%}%>
         </div>
       </div>
     </div>

@@ -144,11 +144,11 @@
     }
 </style>
 <h1 class="title is-3">Preguntas</h1>
-<form method="POST" action="post_formato_entrevista_preguntasP">
+<form method="POST" action="formato_entrevista_preguntasDA">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
     <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="description" class="label">Realice una descripción amplia de su persona:</label>
+                <label for="desempeño" class="label">¿Cómo considera que ha sido su desempeño académico hasta llegar a este posgrado?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -161,7 +161,8 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="mood" class="label">Describa su estado de ánimo cotidiano:</label>
+                <label for="cursos" class="label">¿Cuáles han sido los cursos de actualización, los seminarios o congresos
+                     a los que ha asistido que le han brindado mayores herramientas en su desarrollo profesional o personal?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -174,7 +175,7 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="pressure" class="label">Describa su estado de ánimo en situaciones de presión:</label>
+                <label for="interes" class="label">¿Cómo surge el interés en este este programa de posgrado?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -187,7 +188,8 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="critic" class="label">Describa su estado de ánimo en situaciones críticas:</label>
+                <label for="finalidad" class="label">¿Cuál es la finalidad de estudiar este posgrado y 
+                    como se integrará en sus experiencias personales y/o profesionales?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -200,7 +202,8 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="health" class="label">¿Cómo considera que es su estado de salud?</label>
+                <label for="expectativas" class="label">¿Cuáles son sus expectativas acerca de las aportaciones que
+                     le pueda hacer este posgrado?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -213,7 +216,8 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="freetime" class="label">¿A qué dedica sus tiempos libres?</label>
+                <label for="vision" class="label">Explique su visión respecto a su desarrollo profesional en años
+                     posteriores a su egreso de este posgrado:</label>
                 <input
                     class="textarea"
                     type="text"
@@ -221,6 +225,16 @@
                     id="respuesta6"
                     name="respuesta6"
                     required />
+            </div>
+        </div>
+        <div class="columns is-vcentered ml-5">
+            <div class="column is-three-thirds">
+                <label for="vision" class="label">¿Está dispuesto a cambiar de residencia?</label>
+                <select class="select" name="respuesta7" id="respuesta7" required>
+                    <option disabled hidden selected>Seleccione una opción</option>
+                    <option value="Si">Si</option>
+                    <option value="No">No</option>
+                </select>
             </div>
         </div>
         <button class="button"></a>Continuar</button>

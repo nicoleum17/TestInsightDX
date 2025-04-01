@@ -20,13 +20,13 @@ router.get(
 );
 
 router.get(
-  "/notificaciones_psicologa",
+  "/notificaciones",
   isAuth,
   psicologaController.notificaciones_psicologa
 );
 
 router.get(
-  "/calendario_psicologa",
+  "/calendario",
   isAuth,
   consultarCalendario,
   psicologaController.calendario_psicologa
@@ -80,9 +80,17 @@ router.get(
   psicologaController.registra_reporte_grupo
 );
 
+// router.post(
+//   "/grupo/registra_reporte/:id",
+//   isAuth,
+//   psicologaController.registra_reporte_grupo
+// );
+
 //router.get("/grupo", psicologaController.get_grupo);
 
 router.get("/grupo/:id", isAuth, psicologaController.get_grupo);
+
+router.post("/grupo/:id", isAuth, psicologaController.post_grupo);
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
 

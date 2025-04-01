@@ -11,9 +11,9 @@ module.exports = class Opcion16PF {
   static fetchAll() {
     return db.execute("SELECT * FROM opciones16PF");
   }
-  static fetchOne(idOpcion16PF) {
-    return db.execute("SELECT * FROM opciones16PF WHERE idOpcion16PF = ?", [
-      idOpcion16PF,
+  static fetchOne(idPregunta16PF) {
+    return db.execute("SELECT * FROM opciones16PF WHERE idPregunta16PF = ?", [
+      idPregunta16PF,
     ]);
   }
 };

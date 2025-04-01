@@ -144,11 +144,11 @@
     }
 </style>
 <h1 class="title is-3">Preguntas</h1>
-<form method="POST" action="post_formato_entrevista_preguntasP">
+<form method="POST" action="formato_entrevista_preguntasDL">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
     <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="description" class="label">Realice una descripción amplia de su persona:</label>
+                <label for="relacionJefe" class="label">¿Cómo considera que es la relación que tiene con su jefe inmediato?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -161,7 +161,7 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="mood" class="label">Describa su estado de ánimo cotidiano:</label>
+                <label for="personal" class="label">¿Cuál es la relación que tiene con el personal a su cargo?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -174,7 +174,7 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="pressure" class="label">Describa su estado de ánimo en situaciones de presión:</label>
+                <label for="reto" class="label">¿Cuál es el mayor reto que se ha encontrado en los trabajos que ha tenido y como lo ha resuelto? </label>
                 <input
                     class="textarea"
                     type="text"
@@ -187,7 +187,7 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="critic" class="label">Describa su estado de ánimo en situaciones críticas:</label>
+                <label for="intereses" class="label">La empresa en la que trabaja está enterada de sus intereses académicos.</label>
                 <input
                     class="textarea"
                     type="text"
@@ -200,7 +200,7 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="health" class="label">¿Cómo considera que es su estado de salud?</label>
+                <label for="reaccion" class="label">¿Cuál ha sido la reacción de la empresa ante estos intereses?</label>
                 <input
                     class="textarea"
                     type="text"
@@ -213,7 +213,7 @@
         <br />
         <div class="columns is-vcentered ml-5">
             <div class="column is-three-thirds">
-                <label for="freetime" class="label">¿A qué dedica sus tiempos libres?</label>
+                <label for="combinar" class="label">¿Considera combinar sus actividades profesionales con las académicas?</label>
                 <input
                     class="textarea"
                     type="text"

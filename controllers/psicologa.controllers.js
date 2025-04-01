@@ -132,8 +132,20 @@ exports.get_grupo = (request, response, next) => {
   });
 };
 
+exports.post_grupo = (request, response, next) => {
+  const numGrupo = request.params.id;
+  Grupo.fetchOne(numGrupo).then(([rows]) => {
+    response.render("consulta_grupo", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupo: rows[0],
+    });
+  });
+};
+
 exports.registra_reporte_grupo = (request, response, next) => {
-  console.log(request.params.idGrupo);
   const numGrupo = request.params.id;
 
   Grupo.fetchOne(numGrupo).then(([rows]) => {
@@ -144,6 +156,25 @@ exports.registra_reporte_grupo = (request, response, next) => {
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
+  });
+};
+
+exports.post_registra_reporte_grupo = (request, response, next) => {
+  const idGrupo = request.body.idGrupo;
+  const posgrado = request.body.posgrado;
+  const generacion = request.body.generacion;
+
+  let archivoPdf = request.file.filename;
+  let archivoFoda = request.body.archivoFoda;
+
+  Grupo.update_subirReporte(
+    idGrupo,
+    posgrado,
+    generacion,
+    archivoPdf,
+    archivoFoda
+  ).then(() => {
+    response.redirect("/grupo/" + idGrupo);
   });
 };
 
