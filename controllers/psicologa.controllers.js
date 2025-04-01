@@ -3,6 +3,7 @@ const db = require("../util/database");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
+const Aspirante = require("../model/aspirante.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   response.render("inicio_psicologa", {
@@ -41,12 +42,12 @@ exports.get_prueba = (request, response, next) => {
 };
 
 exports.get_aspirantes = (request, response, next) => {
-  response.render("consulta_aspirante", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-  });
+  Aspirante.find(request.session.user_id, request.params.valor)
+      .then(([rows, fieldData]) => {
+          response.status(200).json({aspirantes: rows});
+      }).catch((error) => {
+          response.status(500).json({message: "Aspirante no encontrado"});
+      });
 };
 
 exports.get_respuestasA = (request, response, next) => {

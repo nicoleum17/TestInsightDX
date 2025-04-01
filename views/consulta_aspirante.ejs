@@ -34,6 +34,40 @@
 
   <section>
     <div class="container is-align-items-center">
+      <div class="field has-addons">
+        <div class="control">
+          <input id="buscar" name="buscar" class="input" type="text" placeholder="Ingresa el parámetro">
+        </div>
+        <div class="contol">
+          <button class="button is-info">
+            Buscar
+          </button>
+        </div>
+      </div>
+
+
+      <div id="container_aspirantes">
+        <div class="columns">
+        <% let i = 0 %>
+        <% for(let aspirante of aspirantes) { %>
+            <div class="column">
+                <div class="card">
+                  <div class="media-content">
+                      <p class="title is-4"><a href="/consulta_aspirante/<%= planta.id %>">@<%= planta.nombre %></a></p>
+                  </div>
+                </div>
+            </div>
+            <% i++ %>
+            <% if (i % 3 == 0) { %> 
+                </div>
+                <div class="columns">
+            <% } %>
+        <% } %>
+        </div>
+    </div>
+
+
+
       <table class="table">
         <thead>
           <tr>
@@ -114,6 +148,39 @@
       </table>
     </div>
   </section>
+
+  <script>
+    const buscar = document.getElementById('buscar');
+    buscar.onkeyup = () => {
+
+        fetch('/consulta_aspirante/buscar/' + buscar.value, {
+            method: 'GET',
+        }).then((result) => {
+            return result.json();
+        }).then((data) => {
+
+            let html = `<div class="columns">`;
+            let i = 0; 
+            for(let aspirante of data.aspirantes) {
+                html += `<div class="column">
+                        <div class="media-content">
+                            <p class="title is-4"><a href="/consulta_aspirante/${aspirante.id}">@${aspirante.nombres}</a></p>
+                    </div>
+                </div>`
+                i++;
+                if (i % 3 == 0) {
+                    html += `</div>
+                            <div class="columns">`;
+                }
+            }
+            html += '</div>';
+            const container = document.getElementById('container_aspirantes');
+            container.innerHTML = html;
+        }).catch((error) => {
+            console.log(error);
+        });
+      }
+  </script>
 
   <%- include('includes/_footer')%>
 </body>

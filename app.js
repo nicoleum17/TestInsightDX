@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 app.set("view engine", "ejs");
 app.set("views", "views");
+app.use(bodyParser.json());
 
 const session = require("express-session");
 

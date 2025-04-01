@@ -86,4 +86,7 @@ router.get("/grupo/:id", isAuth, psicologaController.get_grupo);
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
+router.get('/buscar/:valor', isAuth, psicologaController.get_buscar);
+router.get('/buscar', isAuth, psicologaController.get_buscar);
+
 module.exports = router;
