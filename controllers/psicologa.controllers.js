@@ -42,13 +42,39 @@ exports.get_prueba = (request, response, next) => {
 };
 
 exports.get_aspirantes = (request, response, next) => {
-  Aspirante.find(request.session.user_id, request.params.valor)
+
+  console.log(request.session.privilegios);
+
+  const mensaje = request.session.info || '';
+  if (request.session.info) {
+      request.session.info = '';
+  }
+
+  Aspirante.fetchAll(request.session.idUsuario)
       .then(([rows, fieldData]) => {
-          response.status(200).json({aspirantes: rows});
+          console.log(fieldData);
+          console.log(rows);
+          response.render('consulta_aspirante', {
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              aspirantes: rows,
+              info: mensaje,
+              privilegios: request.session.privilegios || [],
+          });
       }).catch((error) => {
-          response.status(500).json({message: "Aspirante no encontrado"});
+          console.log(error);
       });
 };
+
+exports.get_buscar = (request, response, next) => {
+  Aspirante.find(request.session.idUsuario, request.params.valor)
+        .then(([rows, fieldData]) => {
+            response.status(200).json({aspirantes: rows});
+        }).catch((error) => {
+            response.status(500).json({message: "Aspirante no encontrado"});
+        });
+}
 
 exports.get_respuestasA = (request, response, next) => {
   response.render("consulta_respuestas_aspirante", {

@@ -36,9 +36,9 @@
     <div class="container is-align-items-center">
       <div class="field has-addons">
         <div class="control">
-          <input id="buscar" name="buscar" class="input" type="text" placeholder="Ingresa el parámetro">
+          <input id="barra_buscar" name="barra_buscar" class="input" type="text" placeholder="Ingresa el parámetro">
         </div>
-        <div class="contol">
+        <div class="control">
           <button class="button is-info">
             Buscar
           </button>
@@ -47,24 +47,24 @@
 
 
       <div id="container_aspirantes">
-        <div class="columns">
-        <% let i = 0 %>
-        <% for(let aspirante of aspirantes) { %>
-            <div class="column">
-                <div class="card">
-                  <div class="media-content">
-                      <p class="title is-4"><a href="/consulta_aspirante/<%= planta.id %>">@<%= planta.nombre %></a></p>
-                  </div>
-                </div>
-            </div>
-            <% i++ %>
-            <% if (i % 3 == 0) { %> 
-                </div>
-                <div class="columns">
-            <% } %>
-        <% } %>
-        </div>
-    </div>
+        <table class="table">
+            <tr>
+              <% let i = 0 %>
+              <% for(let aspirante of aspirantes) { %>
+                <td>
+                  <a href="/consulta_aspirante/<%= aspirante.id %>">
+                    <%= aspirante.nombres %> <%= aspirante.apellidoPaterno %> <%= aspirante.apellidoMaterno %>
+                  </a>
+                </td>
+                <% i++ %>
+                <% if(i % 6 == 0) { %>
+                </tr>
+                <tr>
+                <% } %>
+              <% } %>
+            </tr>
+        </table>
+      </div>
 
 
 
@@ -150,30 +150,29 @@
   </section>
 
   <script>
-    const buscar = document.getElementById('buscar');
+    const buscar = document.getElementById('barra_buscar');
     buscar.onkeyup = () => {
 
-        fetch('/consulta_aspirante/buscar/' + buscar.value, {
+        fetch('/psicologa/buscar/' + buscar.value, {
             method: 'GET',
         }).then((result) => {
             return result.json();
         }).then((data) => {
 
-            let html = `<div class="columns">`;
-            let i = 0; 
-            for(let aspirante of data.aspirantes) {
-                html += `<div class="column">
-                        <div class="media-content">
-                            <p class="title is-4"><a href="/consulta_aspirante/${aspirante.id}">@${aspirante.nombres}</a></p>
-                    </div>
-                </div>`
+          let html = `<table  class="table">
+            <tr>`;
+            
+            let i = 0;
+            for (let aspirante of data.aspirantes) {
+                html += `<td><a href="/buscar${aspirante.id}">${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}</a></td>`;
                 i++;
-                if (i % 3 == 0) {
-                    html += `</div>
-                            <div class="columns">`;
+                if (i % 6 === 0) {
+                    html += `</tr>
+                            <tr>`;
                 }
             }
-            html += '</div>';
+
+            html += '</tr></table>';
             const container = document.getElementById('container_aspirantes');
             container.innerHTML = html;
         }).catch((error) => {

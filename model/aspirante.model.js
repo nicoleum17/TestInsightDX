@@ -33,4 +33,12 @@ module.exports = class Aspirante {
       idUsuario,
     ]);
   }
+
+  static find(idUsuario, valor) {
+    return db.execute(
+        `SELECT nombres, apellidoPaterno, apellidoMaterno
+        FROM aspirantes a
+        WHERE a.nombres LIKE ?`,
+        ['%' + valor + '%']);
+}
 };
