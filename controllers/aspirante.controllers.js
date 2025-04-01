@@ -267,11 +267,19 @@ exports.post_formato_entrevista_preguntasDA = (request, response, next)=>{
     newPregunta
       .save()
       .then(() => {
-        response.redirect("inicio");
+        response.redirect("formato_entrevista_DL");
         console.log("Pregunta_Guardada");
       })
       .catch((error) => {
         console.log(error);
       });
   }
+};
+
+exports.formato_entrevista_DL = (request, response, next)=>{
+  response.render("formato_entrevista_DL", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+  });
 };
