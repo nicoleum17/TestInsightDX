@@ -166,7 +166,7 @@
       <div class="interviewFormat columns is-vcentered ml-5"></div>
       <br /><br />
       <h3 class="title is-4">Datos Académicos</h3>
-      <form action="formato_entrevista_DA" method="POST">
+      <form action="formato_entrevista_DL" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <div class="columns is-vcentered ml-5">
           <div class="column">
@@ -203,13 +203,13 @@
         <br />
         <div class="columns is-vcentered ml-5">
           <div class="column is-one-third">
-            <label for="años" class="label">Años en la empresa:</label>
+            <label for="tiempo" class="label">Años en la empresa:</label>
             <input
               class="input"
               type="text"
               placeholder="5"
-              id="años"
-              name="años"
+              id="tiempo"
+              name="tiempo"
               required />
           </div>
           <div class="column is-one-third">
@@ -236,7 +236,7 @@
         <br />
           <div class="column is-two-thirds">
             <label for="personal" class="label">Tiene personal a su cargo:</label>
-            <select name="personal" id="personal" required>
+            <select class="select" name="personal" id="personal" required>
                 <option disabled hidden selected>Seleccione una opción</option>
                 <option value="Si">Si</option>
                 <option value="No">No</option>

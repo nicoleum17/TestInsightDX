@@ -3,6 +3,7 @@ const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
 const formatoEntrevistaDA = require("../model/formatoEntrevistaDA.model");
+const formatoEntrevistaDL = require("../model/formatoEntrevistaDL.model");
 const Pregunta16PF = require("../model/preguntas16pf.model");
 
 exports.get_root = (request, response, next) => {
@@ -144,7 +145,6 @@ exports.formato_entrevista = (request, response, next) => {
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
-  console.log(request.body);
   const newFormato = new formatoEntrevista(
       request.body.apellidoP,
       request.body.apellidoM,
@@ -165,7 +165,6 @@ exports.post_formato_entrevista = (request, response, next) => {
       .then((uuid) => {
         request.session.idFormato = uuid;
         response.redirect("formato_entrevista_preguntasP");
-        console.log("Formato guardado con id", uuid);
       })
       .catch((error) => {
         console.log(error);
@@ -181,7 +180,6 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
 };
 
 exports.post_formato_entrevista_preguntasP = (request, response, next) => {
-  console.log(request.body);
   let numPregunta = 1;
   for (const a in request.body) {
     if (a == "_csrf") {
@@ -220,7 +218,6 @@ exports.formato_entrevista_DA = (request, response, next)=> {
 };
 
 exports.post_formato_entrevista_DA = (request, response, next)=>{
-  console.log(request.body)
   const newFormatoDA = new formatoEntrevistaDA(
     request.session.idFormato,
     request.body.nombreLicenciatura,
@@ -252,7 +249,6 @@ exports.formato_entrevista_preguntasDA = (request, response, next)=>{
 };
 
 exports.post_formato_entrevista_preguntasDA = (request, response, next)=>{
-  console.log(request.body);
   let numPregunta = 7;
   for (const a in request.body) {
     if (a == "_csrf") {
@@ -282,4 +278,26 @@ exports.formato_entrevista_DL = (request, response, next)=>{
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
   });
+};
+
+exports.post_formato_entrevista_DL = (request, response, next)=>{
+  console.log(request.body)
+  const newFormatoDL = new formatoEntrevistaDL(
+  
+    request.body.lugarTrabajo, 
+    request.body.empresa, 
+    request.body.puesto, 
+    request.body.tiempo, 
+    request.body.actividades, 
+    request.body.sueldo, 
+    request.body.personal,
+    request.session.idFormato)
+
+    newFormatoDL.save().then(()=>{
+      response.redirect("inicio");
+      console.log("Datos_Laborales_Guardados");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
