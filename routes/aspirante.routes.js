@@ -82,6 +82,18 @@ router.get("/formato_entrevista_DA", isAuth,
   aspiranteController.formato_entrevista_DA);
 
 router.post("/formato_entrevista_DA", isAuth,
-  aspiranteController.post_formato_entrevista_DA)
+  aspiranteController.post_formato_entrevista_DA);
+
+router.get("/formato_entrevista_preguntasDA", isAuth,
+  aspiranteController.formato_entrevista_preguntasDA);
+
+router.post("/formato_entrevista_preguntasDA", isAuth,
+  aspiranteController.post_formato_entrevista_preguntasDA);
+
+router.get("/formato_entrevista_DL", isAuth,
+  aspiranteController.formato_entrevista_DL);
+
+router.post("/formato_entrevista_DL", isAuth,
+  aspiranteController.post_formato_entrevista_DL)
 
 module.exports = router;

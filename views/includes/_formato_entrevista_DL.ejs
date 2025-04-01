@@ -166,120 +166,84 @@
       <div class="interviewFormat columns is-vcentered ml-5"></div>
       <br /><br />
       <h3 class="title is-4">Datos Académicos</h3>
-      <form action="formato_entrevista_DA" method="POST">
+      <form action="formato_entrevista_DL" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <div class="columns is-vcentered ml-5">
           <div class="column">
-            <label for="nombrelicenciatura" class="label">Nombre de la Licenciatura:</label>
+            <label for="lugarTrabajo" class="label">Lugar donde trabaja:</label>
             <input
               class="input"
               type="text"
-              placeholder="Cirujano Dentista"
-              id="nombreLicenciatura"
-              name="nombreLicenciatura"
+              placeholder="Lugar..."
+              id="lugarTrabajo"
+              name="lugarTrabajo"
               required />
           </div>
           <div class="column">
-            <label for="instituto" class="label">Institución de Procedencia:</label>
+            <label for="empresa" class="label">Nombre de la empresa:</label>
             <input
               class="input"
               type="text"
-              placeholder="López"
-              id="institucion"
-              name="institucion"
+              placeholder="Empresa..."
+              id="empresa"
+              name="empresa"
               required />
           </div>
           <div class="column">
-            <label for="promedio" class="label">Promedio de egreso: </label>
+            <label for="puesto" class="label">Puesto que desempeña:</label>
             <input
               class="input"
               type="text"
-              placeholder="8.5"
-              id="promedio"
-              name="promedio"
+              placeholder="Encargado de ..."
+              id="puesto"
+              name="puesto"
               required />
           </div>
         </div>
         <br />
         <div class="columns is-vcentered ml-5">
           <div class="column is-one-third">
-            <label for="generacion" class="label">Generación:</label>
+            <label for="tiempo" class="label">Años en la empresa:</label>
             <input
               class="input"
               type="text"
-              placeholder="2025"
-              id="generacion"
-              name="generacion"
+              placeholder="5"
+              id="tiempo"
+              name="tiempo"
               required />
           </div>
           <div class="column is-one-third">
-            <label for="gradoMax" class="label">Grado máximo de estudios:</label>
+            <label for="actividades" class="label">Actividades que realiza:</label>
             <input
               class="input"
               type="text"
-              placeholder="Licenciatura"
-              id="gradoMax"
-              name="gradoMax"
+              placeholder="Organizar las ..."
+              id="actividades"
+              name="actividades"
               required />
           </div>
           <div class="column is-one-third">
-            <label for="maestria" class="label">Maestría o especialidad (en caso de tener):</label>
+            <label for="sueldo" class="label">Sueldo que percibe:</label>
             <input
               class="input"
               type="text"
-              placeholder="Maestría en Fisioterapia Deportiva"
-              id="maestria"
-              name="maestria"
+              placeholder="1000 pesos al mes..."
+              id="sueldo"
+              name="sueldo"
               required />
           </div>
         </div>
         <br />
-        <div class="columns is-vcentered ml-5">
-          <div class="column is-one-third">
-            <label for="maritalStatus" class="label">Institución donde curso la Maestría:</label>
-                <input
-                class="input"
-                type="text"
-                placeholder="..."
-                id="institucionMaestria"
-                name="institucionMaestria"
-                required />
-            </div>
-          </div>
           <div class="column is-two-thirds">
-            <label for="promedioMaestria" class="label">Promedio de egreso de la Maestría:</label>
-            <input
-              class="input"
-              type="text"
-              placeholder="8.5"
-              id="promedioMaestria"
-              name="promedioMaestria"
-              required />
+            <label for="personal" class="label">Tiene personal a su cargo:</label>
+            <select class="select" name="personal" id="personal" required>
+                <option disabled hidden selected>Seleccione una opción</option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+            </select>
           </div>
         </div>
         <br />
-        <div class="columns is-vcentered ml-5">
-          <div class="column is-one-third">
-            <label for="cursos" class="label">Cursos y Diplomados (Escribir los de los últimos tres años):</label>
-            <input
-              class="textarea"
-              type="text"
-              placeholder="Escribe aqui..."
-              id="cursos"
-              name="cursos"
-              required />
-          </div>
-          <div class="column is-one-third">
-            <label for="idiomas" class="label">Idiomas que domina:</label>
-            <input
-              class="textarea"
-              type="text"
-              placeholder="Escribe..."
-              id="idiomas"
-              name="idiomas"
-              required />
-          </div>
-        </div>
         <div class="columns">
           <div class="column">
             <button
