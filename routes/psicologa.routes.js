@@ -20,13 +20,13 @@ router.get(
 );
 
 router.get(
-  "/notificaciones_psicologa",
+  "/notificaciones",
   isAuth,
   psicologaController.notificaciones_psicologa
 );
 
 router.get(
-  "/calendario_psicologa",
+  "/calendario",
   isAuth,
   consultarCalendario,
   psicologaController.calendario_psicologa
