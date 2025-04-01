@@ -99,7 +99,7 @@ router.post("/formato_entrevista_DA", isAuth,
 router.get("/formato_entrevista_preguntasDA", isAuth,
   aspiranteController.formato_entrevista_preguntasDA);
 
-router.post("formato_entrevista_preguntasDA", isAuth,
+router.post("/formato_entrevista_preguntasDA", isAuth,
   aspiranteController.post_formato_entrevista_preguntasDA)
 
 module.exports = router;

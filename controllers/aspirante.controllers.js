@@ -235,7 +235,7 @@ exports.post_formato_entrevista_DA = (request, response, next)=>{
     request.body.idiomas
   )
   newFormatoDA.save().then(()=>{
-    response.redirect("inicio");
+    response.redirect("formato_entrevista_preguntasDA");
     console.log("Datos_academicos_Guardados");
   })
   .catch((error) => {
@@ -249,4 +249,29 @@ exports.formato_entrevista_preguntasDA = (request, response, next)=>{
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
   });
+};
+
+exports.post_formato_entrevista_preguntasDA = (request, response, next)=>{
+  console.log(request.body);
+  let numPregunta = 7;
+  for (const a in request.body) {
+    if (a == "_csrf") {
+      continue;
+    }
+    const newPregunta = new preguntasFormato(
+      request.body[a],
+      numPregunta,
+      request.session.idFormato || ""
+    );
+    numPregunta += 1;
+    newPregunta
+      .save()
+      .then(() => {
+        response.redirect("inicio");
+        console.log("Pregunta_Guardada");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };
