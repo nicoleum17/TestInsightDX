@@ -9,7 +9,7 @@ module.exports = class Pregunta16PF {
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM preguntas16pf");
+    return db.execute("SELECT * FROM preguntas16PF");
   }
   static fetchOne(idPregunta16PF) {
     return db.execute("SELECT * FROM preguntas16pf WHERE idPregunta16PF = ?", [
@@ -21,5 +21,11 @@ module.exports = class Pregunta16PF {
       "SELECT * FROM preguntas16pf WHERE numeroPregunta16PF = ?",
       [numeroPregunta16PF]
     );
+  }
+
+  static getOpciones(idPregunta16PF) {
+    return db.execute("SELECT * FROM opciones16PF WHERE idPregunta16PF = ?", [
+      idPregunta16PF,
+    ]);
   }
 };

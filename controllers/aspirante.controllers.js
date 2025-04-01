@@ -71,64 +71,27 @@ exports.get_instrucciones = (request, response, next) => {
 };
 
 exports.get_preguntasPrueba = (request, response, next) => {
-  Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
-    Pregunta16PF.fetchAll().then(([rows1]) => {
-      request.session.preguntas = rows;
-      request.session.currentQuestionIndex = 0;
-      response.render("preguntas_prueba", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        prueba: rows[0],
-        pregunta: rows1[0],
-      });
-    });
-  });
-};
-exports.post_empezarPrueba = (request, response, next) => {
-  Prueba.fetchOne(request.params.idPrueba).then(([rows1]) => {
-    Pregunta16PF.fetchAll().then(([rows]) => {
-      request.session.preguntas = rows;
-      request.session.currentQuestionIndex = 0;
-      response.render("preguntas_prueba", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        prueba: rows1[0],
-        pregunta: rows[0],
-      });
-    });
-  });
-};
-
-exports.post_siguientePregunta = (request, response, next) => {
-  Prueba.fetchOne(request.params.idPrueba).then(([rows1]) => {
-    Pregunta16PF.fetchAll().then(([rows]) => {
-      const preguntas = request.session.preguntas;
-      const indice = request.session.currentQuestionIndex;
-      if (indice < preguntas.length - 1) {
-        request.session.currentQuestionIndex++;
-        const siguientePregunta =
-          preguntas[request.session.currentQuestionIndex];
-        response.render("preguntas_prueba", {
-          isLoggedIn: request.session.isLoggedIn || false,
-          usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
-          privilegios: request.session.privilegios || [],
-          prueba: rows1[0],
-          pregunta: rows[0],
-        });
-      } else {
-        response.render("prueba_completada", {
-          prueba: rows1[0],
-          isLoggedIn: request.session.isLoggedIn || false,
-          usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
-          privilegios: request.session.privilegios || [],
-        });
+  Prueba.fetchOne(request.params.idPrueba).then(([prueba]) => {
+    Pregunta16PF.fetchAll().then(async ([preguntas16PF]) => {
+      for (let pregunta of preguntas16PF) {
+        let opciones_pregunta = await Pregunta16PF.getOpciones(
+          pregunta.idPregunta16PF
+        );
+        pregunta.opciones = opciones_pregunta[0];
       }
+
+      console.log(preguntas16PF);
+
+      request.session.preguntas = preguntas16PF;
+      request.session.currentQuestionIndex = 0;
+      response.render("preguntas_prueba", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        prueba: prueba[0],
+        preguntas: preguntas16PF,
+      });
     });
   });
 };
