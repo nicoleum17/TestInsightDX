@@ -26,9 +26,9 @@ module.exports = class Grupo {
   }
 
   static update_subirReporte(idGrupo, archivoPdf) {
-    return db.execute("UPDATE Grupos SET archivoPdf = ? WHERE idGrupo = ?", [
-      idGrupo,
-      archivoPdf,
-    ]);
+    return db.execute(
+      "UPDATE `grupos` SET `archivoPdf` = ? WHERE `idGrupo` = ?",
+      [archivoPdf, idGrupo]
+    );
   }
 };
