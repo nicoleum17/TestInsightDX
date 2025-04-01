@@ -257,10 +257,42 @@ exports.post_formato_entrevista_DL = (request, response, next)=>{
     request.session.idFormato)
 
     newFormatoDL.save().then(()=>{
-      response.redirect("inicio");
+      response.redirect("formato_entrevista_preguntasDL");
       console.log("Datos_Laborales_Guardados");
     })
     .catch((error) => {
       console.log(error);
     });
+};
+
+exports.formato_entrevista_preguntasDL = (request, response, next) => {
+  response.render("formato_entrevista_preguntasDL", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+  });
+};
+
+exports.post_formato_entrevista_preguntasDL = (request, response, next)=>{
+  let numPregunta = 14;
+  for (const a in request.body) {
+    if (a == "_csrf") {
+      continue;
+    }
+    const newPregunta = new preguntasFormato(
+      request.body[a],
+      numPregunta,
+      request.session.idFormato || ""
+    );
+    numPregunta += 1;
+    newPregunta
+      .save()
+      .then(() => {
+        response.redirect("inicio");
+        console.log("Pregunta_Guardada");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };

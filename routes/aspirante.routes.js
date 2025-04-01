@@ -94,6 +94,12 @@ router.get("/formato_entrevista_DL", isAuth,
   aspiranteController.formato_entrevista_DL);
 
 router.post("/formato_entrevista_DL", isAuth,
-  aspiranteController.post_formato_entrevista_DL)
+  aspiranteController.post_formato_entrevista_DL);
+
+router.get("/formato_entrevista_preguntasDL", isAuth,
+  aspiranteController.formato_entrevista_preguntasDL);
+
+router.post("/formato_entrevista_preguntasDL", isAuth,
+  aspiranteController.post_formato_entrevista_preguntasDL)
 
 module.exports = router;
