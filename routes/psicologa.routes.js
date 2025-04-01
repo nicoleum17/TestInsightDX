@@ -80,6 +80,18 @@ router.get(
   psicologaController.registra_reporte_grupo
 );
 
+router.get(
+  "/grupo/registra_foda/:id",
+  isAuth,
+  psicologaController.registra_foda_grupo
+);
+
+router.post(
+  "/grupo/registra_foda/:id",
+  isAuth,
+  psicologaController.post_registra_foda_grupo
+);
+
 router.get("/grupo/:id", isAuth, psicologaController.get_grupo);
 
 router.post(

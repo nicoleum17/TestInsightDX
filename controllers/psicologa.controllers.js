@@ -154,6 +154,29 @@ exports.post_registra_reporte_grupo = (request, response, next) => {
   });
 };
 
+exports.registra_foda_grupo = (request, response, next) => {
+  const numGrupo = request.params.id;
+
+  Grupo.fetchOne(numGrupo).then(([rows]) => {
+    response.render("registrar_foda_grupo", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupo: rows[0],
+    });
+  });
+};
+
+exports.post_registra_foda_grupo = (request, response, next) => {
+  const idGrupo = request.params.id;
+  let archivoFoda = request.file.filename;
+
+  Grupo.update_subirFoda(idGrupo, archivoFoda).then(() => {
+    response.redirect("/psicologa/grupo/" + idGrupo);
+  });
+};
+
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
     response.redirect("/");

@@ -31,4 +31,11 @@ module.exports = class Grupo {
       [archivoPdf, idGrupo]
     );
   }
+
+  static update_subirFoda(idGrupo, archivoFoda) {
+    return db.execute(
+      "UPDATE `grupos` SET `archivoFoda` = ? WHERE `idGrupo` = ?",
+      [archivoFoda, idGrupo]
+    );
+  }
 };

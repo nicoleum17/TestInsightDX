@@ -18,10 +18,10 @@
       <div class="column">
         <div class="has-text-weight-bold">Subir Archivos</div>
         <br />
-        <div>PDF</div>
+        <div>FODA</div>
         <% if (grupo) { %>
         <form
-          action="/psicologa/grupo/<%= grupo.idGrupo%>"
+          action="/psicologa/grupo/registra_foda/<%= grupo.idGrupo%>"
           method="POST"
           enctype="multipart/form-data"
         >
@@ -33,7 +33,7 @@
                 class="file-input"
                 type="file"
                 name="archivo"
-                accept=".pdf"
+                accept=".xls, .xlsx, .csv"
                 required
               />
               <span class="file-cta">
