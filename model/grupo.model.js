@@ -24,4 +24,11 @@ module.exports = class Grupo {
   static fetchAll() {
     return db.execute("SELECT * FROM Grupos");
   }
+
+  static update_subirReporte(idGrupo, archivoPdf) {
+    return db.execute("UPDATE Grupos SET archivoPdf = ? WHERE idGrupo = ?", [
+      idGrupo,
+      archivoPdf,
+    ]);
+  }
 };
