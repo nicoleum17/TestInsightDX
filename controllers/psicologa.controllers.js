@@ -68,7 +68,7 @@ exports.get_aspirantes = (request, response, next) => {
 };
 
 exports.get_buscar = (request, response, next) => {
-  Aspirante.find(request.session.idUsuario, request.params.valor)
+  Aspirante.find(request.params.valor)
         .then(([rows, fieldData]) => {
             response.status(200).json({aspirantes: rows});
         }).catch((error) => {
