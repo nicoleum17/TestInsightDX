@@ -211,12 +211,13 @@ exports.formato_entrevista_DA = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
+    formato: request.session.idFormato
   });
 };
 
-exports.post_formato_entrevista_DA = (request, response, next) => {
-  const newFormatoDA = new formatoEntrevistaDA(
-    request.session.idFormato,
+exports.post_formato_entrevista_DA = (request, response, next)=>{
+  formatoEntrevista.saveDA(
+  
     request.body.nombreLicenciatura,
     request.body.institucion,
     request.body.promedio,
@@ -226,17 +227,15 @@ exports.post_formato_entrevista_DA = (request, response, next) => {
     request.body.institucionMaestria,
     request.body.promedioMaestria,
     request.body.cursos,
-    request.body.idiomas
-  );
-  newFormatoDA
-    .save()
-    .then(() => {
-      response.redirect("formato_entrevista_preguntasDA");
-      console.log("Datos_academicos_Guardados");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    request.body.idiomas,
+    request.body.idFormato,
+  ).then(()=>{
+    response.redirect("formato_entrevista_preguntasDA");
+    console.log("Datos_academicos_Guardados");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 };
 
 exports.formato_entrevista_preguntasDA = (request, response, next) => {

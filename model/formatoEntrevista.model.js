@@ -62,4 +62,40 @@ module.exports = class formatoEntrevista {
         return this.idFormato;
       });
   }
+
+  static saveDA(
+    
+    mi_nombreLicenciatura,
+    mi_institucion,
+    mi_promedio,
+    mi_generacion,
+    mi_gradoMax,
+    mi_maestria,
+    mi_institucionMaestria,
+    mi_promedioMaestria,
+    mi_cursos,
+    mi_idiomas,
+    mi_id
+  ){
+    return db.execute(
+                "UPDATE formatoEntrevista SET nombreLicenciatura=?,institucion=?, promedio=?, generacion=?, gradoMax=?, maestria=?, institucionMaestria=?,  promedioMaestria=?, cursos=?, idiomas=? WHERE idFormato=?",
+                [
+                  mi_nombreLicenciatura,mi_institucion,mi_promedio,mi_generacion,mi_gradoMax,mi_maestria,mi_institucionMaestria,mi_promedioMaestria,
+                  mi_cursos,mi_idiomas,mi_id
+                ]
+              )
+  }
+
+  static saveDL(
+    mi_lugarTrabajo,
+    mi_empresa,
+    mi_puesto,
+    mi_años,
+    mi_actividades,
+    mi_sueldo,
+    mi_personal,
+    mi_idFormato
+  ){
+
+  }
 };
