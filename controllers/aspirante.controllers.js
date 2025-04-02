@@ -182,8 +182,8 @@ exports.formato_entrevista_DA = (request, response, next)=> {
 };
 
 exports.post_formato_entrevista_DA = (request, response, next)=>{
-  saveDA(
-    request.body.idFormato,
+  formatoEntrevista.saveDA(
+  
     request.body.nombreLicenciatura,
     request.body.institucion,
     request.body.promedio,
@@ -193,7 +193,8 @@ exports.post_formato_entrevista_DA = (request, response, next)=>{
     request.body.institucionMaestria,
     request.body.promedioMaestria,
     request.body.cursos,
-    request.body.idiomas
+    request.body.idiomas,
+    request.body.idFormato,
   ).then(()=>{
     response.redirect("formato_entrevista_preguntasDA");
     console.log("Datos_academicos_Guardados");
