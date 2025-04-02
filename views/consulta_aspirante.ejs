@@ -157,7 +157,7 @@
         })
         .then((result) => result.json())
         .then((data) => {
-          suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+          suggestionsContainer.innerHTML = '';
   
           const filteredAspirantes = data.aspirantes.filter(aspirante => {
             return (
@@ -184,7 +184,7 @@
               const correoAspirante = row.insertCell(4);
               const universidadAspirante = row.insertCell(5);
               
-              nombreAspirante.textContent = aspirante.nombres, " ", aspirante.apellidoPaterno, " ", aspirante.apellidoMaterno;
+              nombreAspirante.textContent = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
               codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
               telefonoAspirante.textContent = aspirante.numTelefono;
               lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
