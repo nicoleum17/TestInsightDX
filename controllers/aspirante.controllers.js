@@ -73,29 +73,63 @@ exports.get_instrucciones = (request, response, next) => {
 };
 
 exports.get_preguntasPrueba = (request, response, next) => {
-  Prueba.fetchOne(request.params.idPrueba).then(([prueba]) => {
-    Pregunta16PF.fetchAll().then(async ([preguntas16PF]) => {
-      for (let pregunta of preguntas16PF) {
-        let opciones_pregunta = await Pregunta16PF.getOpciones(
-          pregunta.idPregunta16PF
-        );
-        pregunta.opciones = opciones_pregunta[0];
-      }
-
-      console.log(preguntas16PF);
-
-      request.session.preguntas = preguntas16PF;
-      request.session.currentQuestionIndex = 0;
-      response.render("preguntas_prueba", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        prueba: prueba[0],
-        preguntas: preguntas16PF,
-      });
+  Prueba.fetchOne(request.params.idPrueba)
+    .then(([prueba]) => {
+      request.session.index = 1;
+      let currentQuestionIndex = request.session.index;
+      Pregunta16PF.fetchOne(currentQuestionIndex)
+        .then(([pregunta]) => {
+          Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
+            .then(([opciones]) => {
+              return response.render("preguntas_prueba", {
+                isLoggedIn: request.session.isLoggedIn || false,
+                usuario: request.session.usuario || "",
+                csrfToken: request.csrfToken(),
+                privilegios: request.session.privilegios || [],
+                prueba: prueba[0],
+                pregunta: pregunta[0],
+                opciones: opciones,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  });
+};
+
+exports.post_siguiente_pregunta = (request, response, next) => {
+  const { respuestaSeleccionada } = request.body;
+  if (!request.session.index) {
+    return response.redirect("/login");
+  }
+  request.session.index++;
+
+  //Aqui falta un metodo del modelo, que va a guardar la respuesta del usuario
+
+  Pregunta16PF.fetchOne(request.session.index)
+    .then(([pregunta]) => {
+      Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
+        .then(([opciones]) => {
+          return response.status(200).json({
+            //csrfToken: request.csrfToken(),
+            pregunta: pregunta[0],
+            opciones: opciones,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 exports.formato_entrevista = (request, response, next) => {
@@ -109,29 +143,29 @@ exports.formato_entrevista = (request, response, next) => {
 
 exports.post_formato_entrevista = (request, response, next) => {
   const newFormato = new formatoEntrevista(
-      request.body.apellidoP,
-      request.body.apellidoM,
-      request.body.nombre,
-      request.body.fechaNacimiento,
-      request.body.genero,
-      request.body.edad,
-      request.body.nacionalidad,
-      request.body.origen,
-      request.body.estadoCivil,
-      request.body.direccionA,
-      request.body.celular,
-      request.body.telefono,
-      request.body.correo
-    );
-    newFormato
-      .save()
-      .then((uuid) => {
-        request.session.idFormato = uuid;
-        response.redirect("formato_entrevista_preguntasP");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    request.body.apellidoP,
+    request.body.apellidoM,
+    request.body.nombre,
+    request.body.fechaNacimiento,
+    request.body.genero,
+    request.body.edad,
+    request.body.nacionalidad,
+    request.body.origen,
+    request.body.estadoCivil,
+    request.body.direccionA,
+    request.body.celular,
+    request.body.telefono,
+    request.body.correo
+  );
+  newFormato
+    .save()
+    .then((uuid) => {
+      request.session.idFormato = uuid;
+      response.redirect("formato_entrevista_preguntasP");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 exports.formato_entrevista_preguntasP = (request, response, next) => {
@@ -172,7 +206,7 @@ exports.get_logout = (request, response, next) => {
   });
 };
 
-exports.formato_entrevista_DA = (request, response, next)=> {
+exports.formato_entrevista_DA = (request, response, next) => {
   response.render("formato_entrevista_DA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
@@ -180,7 +214,7 @@ exports.formato_entrevista_DA = (request, response, next)=> {
   });
 };
 
-exports.post_formato_entrevista_DA = (request, response, next)=>{
+exports.post_formato_entrevista_DA = (request, response, next) => {
   const newFormatoDA = new formatoEntrevistaDA(
     request.session.idFormato,
     request.body.nombreLicenciatura,
@@ -193,17 +227,19 @@ exports.post_formato_entrevista_DA = (request, response, next)=>{
     request.body.promedioMaestria,
     request.body.cursos,
     request.body.idiomas
-  )
-  newFormatoDA.save().then(()=>{
-    response.redirect("formato_entrevista_preguntasDA");
-    console.log("Datos_academicos_Guardados");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+  );
+  newFormatoDA
+    .save()
+    .then(() => {
+      response.redirect("formato_entrevista_preguntasDA");
+      console.log("Datos_academicos_Guardados");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-exports.formato_entrevista_preguntasDA = (request, response, next)=>{
+exports.formato_entrevista_preguntasDA = (request, response, next) => {
   response.render("formato_entrevista_preguntasDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
@@ -211,7 +247,7 @@ exports.formato_entrevista_preguntasDA = (request, response, next)=>{
   });
 };
 
-exports.post_formato_entrevista_preguntasDA = (request, response, next)=>{
+exports.post_formato_entrevista_preguntasDA = (request, response, next) => {
   let numPregunta = 7;
   for (const a in request.body) {
     if (a == "_csrf") {
@@ -235,7 +271,7 @@ exports.post_formato_entrevista_preguntasDA = (request, response, next)=>{
   }
 };
 
-exports.formato_entrevista_DL = (request, response, next)=>{
+exports.formato_entrevista_DL = (request, response, next) => {
   response.render("formato_entrevista_DL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
@@ -243,20 +279,22 @@ exports.formato_entrevista_DL = (request, response, next)=>{
   });
 };
 
-exports.post_formato_entrevista_DL = (request, response, next)=>{
-  console.log(request.body)
+exports.post_formato_entrevista_DL = (request, response, next) => {
+  console.log(request.body);
   const newFormatoDL = new formatoEntrevistaDL(
-  
-    request.body.lugarTrabajo, 
-    request.body.empresa, 
-    request.body.puesto, 
-    request.body.tiempo, 
-    request.body.actividades, 
-    request.body.sueldo, 
+    request.body.lugarTrabajo,
+    request.body.empresa,
+    request.body.puesto,
+    request.body.tiempo,
+    request.body.actividades,
+    request.body.sueldo,
     request.body.personal,
-    request.session.idFormato)
+    request.session.idFormato
+  );
 
-    newFormatoDL.save().then(()=>{
+  newFormatoDL
+    .save()
+    .then(() => {
       response.redirect("formato_entrevista_preguntasDL");
       console.log("Datos_Laborales_Guardados");
     })
@@ -273,7 +311,7 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasDL = (request, response, next)=>{
+exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
   let numPregunta = 14;
   for (const a in request.body) {
     if (a == "_csrf") {

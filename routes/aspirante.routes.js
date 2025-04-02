@@ -52,6 +52,12 @@ router.get(
 );
 
 router.get(
+  "/siguiente_pregunta",
+  isAuth,
+  aspiranteController.post_siguiente_pregunta
+);
+
+router.get(
   "/formato_entrevista",
   isAuth,
   registrarRespuestasFE,
@@ -78,28 +84,52 @@ router.post(
 
 router.get("/cerrar_sesion", aspiranteController.get_logout);
 
-router.get("/formato_entrevista_DA", isAuth,
-  aspiranteController.formato_entrevista_DA);
+router.get(
+  "/formato_entrevista_DA",
+  isAuth,
+  aspiranteController.formato_entrevista_DA
+);
 
-router.post("/formato_entrevista_DA", isAuth,
-  aspiranteController.post_formato_entrevista_DA);
+router.post(
+  "/formato_entrevista_DA",
+  isAuth,
+  aspiranteController.post_formato_entrevista_DA
+);
 
-router.get("/formato_entrevista_preguntasDA", isAuth,
-  aspiranteController.formato_entrevista_preguntasDA);
+router.get(
+  "/formato_entrevista_preguntasDA",
+  isAuth,
+  aspiranteController.formato_entrevista_preguntasDA
+);
 
-router.post("/formato_entrevista_preguntasDA", isAuth,
-  aspiranteController.post_formato_entrevista_preguntasDA);
+router.post(
+  "/formato_entrevista_preguntasDA",
+  isAuth,
+  aspiranteController.post_formato_entrevista_preguntasDA
+);
 
-router.get("/formato_entrevista_DL", isAuth,
-  aspiranteController.formato_entrevista_DL);
+router.get(
+  "/formato_entrevista_DL",
+  isAuth,
+  aspiranteController.formato_entrevista_DL
+);
 
-router.post("/formato_entrevista_DL", isAuth,
-  aspiranteController.post_formato_entrevista_DL);
+router.post(
+  "/formato_entrevista_DL",
+  isAuth,
+  aspiranteController.post_formato_entrevista_DL
+);
 
-router.get("/formato_entrevista_preguntasDL", isAuth,
-  aspiranteController.formato_entrevista_preguntasDL);
+router.get(
+  "/formato_entrevista_preguntasDL",
+  isAuth,
+  aspiranteController.formato_entrevista_preguntasDL
+);
 
-router.post("/formato_entrevista_preguntasDL", isAuth,
-  aspiranteController.post_formato_entrevista_preguntasDL)
+router.post(
+  "/formato_entrevista_preguntasDL",
+  isAuth,
+  aspiranteController.post_formato_entrevista_preguntasDL
+);
 
 module.exports = router;
