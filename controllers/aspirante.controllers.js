@@ -2,8 +2,6 @@ const { response } = require("express");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
-const formatoEntrevistaDA = require("../model/formatoEntrevistaDA.model");
-const formatoEntrevistaDL = require("../model/formatoEntrevistaDL.model");
 const Pregunta16PF = require("../model/preguntas16pf.model");
 
 exports.get_root = (request, response, next) => {
@@ -229,7 +227,8 @@ exports.post_formato_entrevista_DA = (request, response, next)=>{
     request.body.cursos,
     request.body.idiomas,
     request.body.idFormato,
-  ).then(()=>{
+  ).then((id)=>{
+    request.session.idFormato = id;
     response.redirect("formato_entrevista_preguntasDA");
     console.log("Datos_academicos_Guardados");
   })
@@ -280,7 +279,7 @@ exports.formato_entrevista_DL = (request, response, next) => {
 
 exports.post_formato_entrevista_DL = (request, response, next) => {
   console.log(request.body);
-  const newFormatoDL = new formatoEntrevistaDL(
+  formatoEntrevista.saveDL(
     request.body.lugarTrabajo,
     request.body.empresa,
     request.body.puesto,
@@ -288,12 +287,10 @@ exports.post_formato_entrevista_DL = (request, response, next) => {
     request.body.actividades,
     request.body.sueldo,
     request.body.personal,
-    request.session.idFormato
-  );
-
-  newFormatoDL
-    .save()
-    .then(() => {
+    request.body.idFormato
+  )
+    .then((id) => {
+      request.session.idFormato=id;
       response.redirect("formato_entrevista_preguntasDL");
       console.log("Datos_Laborales_Guardados");
     })

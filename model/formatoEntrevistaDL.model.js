@@ -22,7 +22,6 @@ module.exports = class formatoEntrevistaDL {
         this.idFormato=mi_idFormato;
     }
     save(){
-        return db.execute("UPDATE formatoEntrevista SET lugarTrabajo=?, empresa=?, puesto=?, años=?, actividades=?, sueldo=?, personal=? WHERE idFormato=?",
-            [this.lugarTrabajo, this.empresa, this.puesto, this.años, this.actividades, this.sueldo, this.personal, this.idFormato])
+        
     }
 };

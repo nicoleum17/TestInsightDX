@@ -64,7 +64,6 @@ module.exports = class formatoEntrevista {
   }
 
   static saveDA(
-    
     mi_nombreLicenciatura,
     mi_institucion,
     mi_promedio,
@@ -83,7 +82,9 @@ module.exports = class formatoEntrevista {
                   mi_nombreLicenciatura,mi_institucion,mi_promedio,mi_generacion,mi_gradoMax,mi_maestria,mi_institucionMaestria,mi_promedioMaestria,
                   mi_cursos,mi_idiomas,mi_id
                 ]
-              )
+              ).then(([result]) => {
+                return mi_id;
+              });
   }
 
   static saveDL(
@@ -96,6 +97,10 @@ module.exports = class formatoEntrevista {
     mi_personal,
     mi_idFormato
   ){
-
+    return db.execute("UPDATE formatoEntrevista SET lugarTrabajo=?, empresa=?, puesto=?, años=?, actividades=?, sueldo=?, personal=? WHERE idFormato=?",
+      [mi_lugarTrabajo, mi_empresa, mi_puesto, mi_años, mi_actividades, mi_sueldo, mi_personal, mi_idFormato])
+      .then(([result]) => {
+        return mi_idFormato;
+      });
   }
 };
