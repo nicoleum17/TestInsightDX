@@ -15,27 +15,108 @@
         </article>
       </div>
     </nav>
-    <div class="container">
-      <% for (let pregunta of preguntas) { %>
-      <p class="subtitle is-2">Pregunta <%= pregunta.numeroPregunta16PF %></p>
-      <p class="subtitle is-3"><%= pregunta.pregunta16PF %></p>
-      <% if (pregunta.opciones) { %> <% pregunta.opciones.forEach(opcion => { %>
-      <div class="control">
+    <div class="container" id="container">
+      <% if (pregunta) { %>
+      <p class="subtitle is-2" id="numero-pregunta">
+        Pregunta <%= pregunta.numeroPregunta16PF %>
+      </p>
+      <p class="subtitle is-3" id="texto-pregunta">
+        <%= pregunta.pregunta16PF %>
+      </p>
+      <% if (opciones) { %> <% opciones.forEach(opcion => { %>
+      <div class="control" id="option-<%= opcion.idOpcion16PF %>">
         <label class="radio mx-5 subtitle is-4">
           <input
             type="radio"
             name="answer"
-            value="<%= opcion.idOpcion16PF %>" />
-          <%= opcion.descripcionOpcion16PF %>
+            value="<%= opcion.idOpcion16PF %>"
+            required />
+          <%= opcion.opcion16PF %>. <%= opcion.descripcionOpcion16PF %>
         </label>
       </div>
-      <% }); %> <% } %> <% } %>
-      <form action="/siguiente_pregunta/<%= prueba.idPrueba %>" method="POST">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-        <button class="column is-narrow button mt-3">Siguiente</button>
-      </form>
+      <% }) %> <% } %> <% } %>
+
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button
+        type="button"
+        class="column is-narrow button mt-3"
+        onclick="nextQuestion(event)">
+        Siguiente
+      </button>
     </div>
   </section>
+  <script>
+    function nextQuestion(event) {
+      event.preventDefault();
+
+      const selectedOption = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+      if (!selectedOption) {
+        alert("Por favor selecciona una opción antes de continuar");
+        return;
+      }
+      const respuestaSeleccionada = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+
+      const data = {
+        respuestaSeleccionada: respuestaSeleccionada.value,
+      };
+      fetch(`/aspirante/siguiente_pregunta/`, {
+        method: "GET",
+        headers: {
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          console.log(data.pregunta16PF);
+          let html = `<div class = "container">`;
+          const questionNumberElement =
+            document.getElementById("numero-pregunta");
+          html += `<p class="subtitle is-2" id="numero-pregunta">
+                    Pregunta ${data.pregunta.numeroPregunta16PF}
+                    </p>
+                    <p class="subtitle is-3" id="texto-pregunta">
+                    ${data.pregunta.pregunta16PF}
+                    </p>`;
+          if (data.opciones && Array.isArray(data.opciones)) {
+            data.opciones.forEach((opcion) => {
+              html += `<div class="control" id="option-${opcion.idOpcion16PF}">
+                              <label class="radio mx-5 subtitle is-4">
+                                <input
+                                  type="radio"
+                                  name="answer"
+                                  value="${opcion.idOpcion16PF}" required />
+                                ${opcion.opcion16PF}. ${opcion.descripcionOpcion16PF}
+                              </label>
+                              </div>
+                            `;
+            });
+          }
+          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button
+        type="button"
+        class="column is-narrow button mt-3"
+        onclick="nextQuestion(event)">
+        Siguiente
+      </button>
+    </div>`;
+          const container = document.getElementById("container");
+          container.innerHTML = html;
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+  </script>
 </body>
 <script>
   let duracionMinutos = <%=prueba.duracion%>;

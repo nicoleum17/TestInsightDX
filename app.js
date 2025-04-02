@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
+
 const path = require("path");
-const bodyParser = require("body-parser");
+app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -16,6 +17,10 @@ app.use(
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
   })
 );
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
 const multer = require("multer");
@@ -32,11 +37,6 @@ const fileStorage = multer.diskStorage({
 });
 
 //Idealmente registramos multer después de bodyParser (la siguiente línea ya debería existir)
-app.use(bodyParser.urlencoded({ extended: false }));
-
-const csrf = require("csurf");
-const csrfProtection = csrf();
-app.use(csrfProtection);
 
 //En el registro, pasamos la constante de configuración y
 //usamos single porque es un sólo archivo el que vamos a subir,
@@ -44,13 +44,16 @@ app.use(csrfProtection);
 //'archivo' es el nombre del input tipo file de la forma
 app.use(multer({ storage: fileStorage }).single("archivo"));
 
+const csrf = require("csurf");
+const csrfProtection = csrf();
+app.use(csrfProtection);
+
 const testInsightRoutes = require("./routes/testInsight.routes");
 const aspiranteRoutes = require("./routes/aspirante.routes");
 const psicologaRoutes = require("./routes/psicologa.routes");
 
 app.use("/psicologa", psicologaRoutes);
 app.use("/aspirante", aspiranteRoutes);
-app.use(express.static(path.join(__dirname, "public")));
 app.use("/", testInsightRoutes);
 
 app.use((request, response, next) => {
