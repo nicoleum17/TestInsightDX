@@ -148,6 +148,7 @@
         <h1 class="title is-3">Preguntas</h1>
         <form method="POST" action="formato_entrevista_preguntasDL">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <input type="hidden" name="idFormato" value="<%= formato %>" />
             <div class="columns is-vcentered ml-5">
                     <div class="column is-three-thirds">
                         <label for="relacionJefe" class="label">¿Cómo considera que es la relación que tiene con su jefe inmediato?</label>

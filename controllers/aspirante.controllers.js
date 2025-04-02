@@ -171,24 +171,26 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
+    formato:request.session.idFormato
   });
 };
 
 exports.post_formato_entrevista_preguntasP = (request, response, next) => {
   let numPregunta = 1;
   for (const a in request.body) {
-    if (a == "_csrf") {
+    if (a == "_csrf" || a=="idFormato") {
       continue;
     }
     const newPregunta = new preguntasFormato(
       request.body[a],
       numPregunta,
-      request.session.idFormato || ""
+      request.body.idFormato 
     );
     numPregunta += 1;
     newPregunta
       .save()
-      .then(() => {
+      .then((id) => {
+        request.session.idFormato = id
         response.redirect("formato_entrevista_DA");
         console.log("Pregunta_Guardada");
       })
@@ -242,24 +244,26 @@ exports.formato_entrevista_preguntasDA = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
+    formato:request.session.idFormato
   });
 };
 
 exports.post_formato_entrevista_preguntasDA = (request, response, next) => {
   let numPregunta = 7;
   for (const a in request.body) {
-    if (a == "_csrf") {
+    if (a == "_csrf"||a == "idFormato") {
       continue;
     }
     const newPregunta = new preguntasFormato(
       request.body[a],
       numPregunta,
-      request.session.idFormato || ""
+      request.body.idFormato || ""
     );
     numPregunta += 1;
     newPregunta
       .save()
-      .then(() => {
+      .then((id) => {
+        request.session.idFormato = id
         response.redirect("formato_entrevista_DL");
         console.log("Pregunta_Guardada");
       })
@@ -274,6 +278,7 @@ exports.formato_entrevista_DL = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
+    formato: request.session.idFormato
   });
 };
 
@@ -304,24 +309,26 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
+    formato:request.session.idFormato
   });
 };
 
 exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
   let numPregunta = 14;
   for (const a in request.body) {
-    if (a == "_csrf") {
+    if (a == "_csrf"||a == "idFormato") {
       continue;
     }
     const newPregunta = new preguntasFormato(
       request.body[a],
       numPregunta,
-      request.session.idFormato || ""
+      request.body.idFormato || ""
     );
     numPregunta += 1;
     newPregunta
       .save()
-      .then(() => {
+      .then((id) => {
+        request.session.idFormato = id
         response.redirect("inicio");
         console.log("Pregunta_Guardada");
       })

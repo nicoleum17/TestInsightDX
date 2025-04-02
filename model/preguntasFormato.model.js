@@ -14,6 +14,9 @@ module.exports = class preguntasFormato{
     }
     save(){
         return db.execute("INSERT INTO respuestaspreguntasformatos(idFormato,idPregunta,respuesta) VALUES(?,?,?)",
-            [this.idEntrevista,this.idPregunta,this.respuesta]);
+            [this.idEntrevista,this.idPregunta,this.respuesta])
+            .then(([result]) => {
+                return this.idEntrevista;
+              });;
     }
 }
