@@ -143,87 +143,91 @@
       font-size: 10px;
     }
 </style>
-<h1 class="title is-3">Preguntas</h1>
-<form method="POST" action="post_formato_entrevista_preguntasP">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <div class="columns is-vcentered ml-5">
-            <div class="column is-three-thirds">
-                <label for="description" class="label">Realice una descripción amplia de su persona:</label>
-                <input
-                    class="textarea"
-                    type="text"
-                    placeholder="Escribe aquí tu respuesta..."
-                    id="respuesta1"
-                    name="respuesta1"
-                    required />
-            </div>
+<section class="section">
+    <div class="container">
+        <h1 class="title is-3">Preguntas</h1>
+        <form method="POST" action="post_formato_entrevista_preguntasP">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <div class="columns is-vcentered ml-5">
+                    <div class="column is-three-thirds">
+                        <label for="description" class="label">Realice una descripción amplia de su persona:</label>
+                        <input
+                            class="textarea"
+                            type="text"
+                            placeholder="Escribe aquí tu respuesta..."
+                            id="respuesta1"
+                            name="respuesta1"
+                            required />
+                    </div>
+                </div>
+                <br />
+                <div class="columns is-vcentered ml-5">
+                    <div class="column is-three-thirds">
+                        <label for="mood" class="label">Describa su estado de ánimo cotidiano:</label>
+                        <input
+                            class="textarea"
+                            type="text"
+                            placeholder="Escribe aquí tu respuesta..."
+                            id="respuesta2"
+                            name="respuesta2"
+                            required />
+                    </div>
+                </div>
+                <br />
+                <div class="columns is-vcentered ml-5">
+                    <div class="column is-three-thirds">
+                        <label for="pressure" class="label">Describa su estado de ánimo en situaciones de presión:</label>
+                        <input
+                            class="textarea"
+                            type="text"
+                            placeholder="Escribe aquí tu respuesta..."
+                            id="respuesta3"
+                            name="respuesta3"
+                            required />
+                    </div>
+                </div>
+                <br />
+                <div class="columns is-vcentered ml-5">
+                    <div class="column is-three-thirds">
+                        <label for="critic" class="label">Describa su estado de ánimo en situaciones críticas:</label>
+                        <input
+                            class="textarea"
+                            type="text"
+                            placeholder="Escribe aquí tu respuesta..."
+                            id="respuesta4"
+                            name="respuesta4"
+                            required />
+                    </div>
+                </div>
+                <br />
+                <div class="columns is-vcentered ml-5">
+                    <div class="column is-three-thirds">
+                        <label for="health" class="label">¿Cómo considera que es su estado de salud?</label>
+                        <input
+                            class="textarea"
+                            type="text"
+                            placeholder="Escribe aquí tu respuesta..."
+                            id="respuesta5"
+                            name="respuesta5"
+                            required />
+                    </div>
+                </div>
+                <br />
+                <div class="columns is-vcentered ml-5">
+                    <div class="column is-three-thirds">
+                        <label for="freetime" class="label">¿A qué dedica sus tiempos libres?</label>
+                        <input
+                            class="textarea"
+                            type="text"
+                            placeholder="Escribe aquí tu respuesta..."
+                            id="respuesta6"
+                            name="respuesta6"
+                            required />
+                    </div>
+                </div>
+                <button class="button"></a>Continuar</button>
+            </form>
         </div>
-        <br />
-        <div class="columns is-vcentered ml-5">
-            <div class="column is-three-thirds">
-                <label for="mood" class="label">Describa su estado de ánimo cotidiano:</label>
-                <input
-                    class="textarea"
-                    type="text"
-                    placeholder="Escribe aquí tu respuesta..."
-                    id="respuesta2"
-                    name="respuesta2"
-                    required />
-            </div>
-        </div>
-        <br />
-        <div class="columns is-vcentered ml-5">
-            <div class="column is-three-thirds">
-                <label for="pressure" class="label">Describa su estado de ánimo en situaciones de presión:</label>
-                <input
-                    class="textarea"
-                    type="text"
-                    placeholder="Escribe aquí tu respuesta..."
-                    id="respuesta3"
-                    name="respuesta3"
-                    required />
-            </div>
-        </div>
-        <br />
-        <div class="columns is-vcentered ml-5">
-            <div class="column is-three-thirds">
-                <label for="critic" class="label">Describa su estado de ánimo en situaciones críticas:</label>
-                <input
-                    class="textarea"
-                    type="text"
-                    placeholder="Escribe aquí tu respuesta..."
-                    id="respuesta4"
-                    name="respuesta4"
-                    required />
-            </div>
-        </div>
-        <br />
-        <div class="columns is-vcentered ml-5">
-            <div class="column is-three-thirds">
-                <label for="health" class="label">¿Cómo considera que es su estado de salud?</label>
-                <input
-                    class="textarea"
-                    type="text"
-                    placeholder="Escribe aquí tu respuesta..."
-                    id="respuesta5"
-                    name="respuesta5"
-                    required />
-            </div>
-        </div>
-        <br />
-        <div class="columns is-vcentered ml-5">
-            <div class="column is-three-thirds">
-                <label for="freetime" class="label">¿A qué dedica sus tiempos libres?</label>
-                <input
-                    class="textarea"
-                    type="text"
-                    placeholder="Escribe aquí tu respuesta..."
-                    id="respuesta6"
-                    name="respuesta6"
-                    required />
-            </div>
-        </div>
-        <button class="button"></a>Continuar</button>
-    </form>
+    </section>
     </body> 
     </html>
