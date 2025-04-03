@@ -415,10 +415,20 @@ exports.post_formato_entrevista_familia = (request, response, next) => {
   .then((idFormato,idFamilia) => {
     request.session.idFormato = idFormato;
     request.session.idFamilia = idFamilia;
-    response.redirect("formato_entrevista_DL");
+    response.redirect("formato_entrevista_familiar");
     console.log(request.body.idFormato, request.body.idFamilia);
   })
   .catch((error) => {
     console.log(error);
+  });
+};
+
+exports.formato_entrevista_familiar = (request,response,next) => {
+  response.render("formato_entrevista_familiar", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    formato:request.session.idFormato,
+    familia:request.session.idFamilia
   });
 };
