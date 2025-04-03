@@ -1,6 +1,7 @@
 const { response, request } = require("express");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
+const familia = require("../model/familiaEntrevista.model")
 const preguntasFormato = require("../model/preguntasFormato.model");
 const Pregunta16PF = require("../model/preguntas16pf.model");
 const PreguntaKostick = require("../model/preguntasKostick.model");
@@ -249,7 +250,7 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       .save()
       .then((id) => {
         request.session.idFormato = id
-        response.redirect("formato_entrevista_DA");
+        response.redirect("formato_entrevista_familia");
         console.log("Pregunta_Guardada");
       })
       .catch((error) => {
@@ -394,4 +395,30 @@ exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
         console.log(error);
       });
   }
+};
+
+exports.formato_entrevista_familia = (request, response, next) => {
+  response.render("formato_entrevista_familia", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    formato:request.session.idFormato
+  });
+};
+
+exports.post_formato_entrevista_familia = (request, response, next) => {
+  console.log(request.body)
+  const newFamilia = new familia(
+    request.body.idFormato,
+  )
+  newFamilia.save()
+  .then((idFormato,idFamilia) => {
+    request.session.idFormato = idFormato;
+    request.session.idFamilia = idFamilia;
+    response.redirect("formato_entrevista_DL");
+    console.log(request.body.idFormato, request.body.idFamilia);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 };

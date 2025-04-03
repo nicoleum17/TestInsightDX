@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../util/database.js");
 
 module.exports = class Pregunta16PF {
   constructor(mi_pregunta16PF, mi_idPrueba, mi_numeroPregunta16PF) {
