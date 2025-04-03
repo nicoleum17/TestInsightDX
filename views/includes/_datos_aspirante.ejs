@@ -64,30 +64,16 @@
                   </div>
             </form>
         </div>
-        <% if (prueba.idPrueba === 1) { %>
-            <% if (pregunta) {%>
+        <% if (prueba) { %>
         <div class="columns is-centered ml-5 mt-6">
             <br><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <a href="/aspirante/instrucciones_prueba/<%=prueba.idPrueba%>">
             <button  class="button is-primary has-text-warning">Regresar</button></a>
-            <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>/<%=pregunta.idPreguntaKostick%>">
+            <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>">
             <button  class="button is-primary has-text-warning ml-6">Comenzar</button></a>
         </div>
         <%}%>
-        <%} else if (prueba.idPrueba === 2) {%>
-            <% if (pregunta) {%>
-                <div class="columns is-centered ml-5 mt-6">
-                    <br><br>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-        
-                    <a href="/aspirante/instrucciones_prueba/<%=prueba.idPrueba%>">
-                    <button  class="button is-primary has-text-warning">Regresar</button></a>
-                    <a href="/aspirante/preguntas_prueba/<%=prueba.idPrueba%>/<%=pregunta.idPregunta16PF%>">
-                    <button  class="button is-primary has-text-warning ml-6">Comenzar</button></a>
-                </div>
-                <%}%>
-            <%}%>
         </div>
       </div>
     </div>

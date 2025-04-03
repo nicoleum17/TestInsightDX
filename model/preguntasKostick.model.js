@@ -11,7 +11,22 @@ module.exports = class PreguntaKostick {
   static fetchAll() {
     return db.execute("SELECT * FROM preguntasKostick");
   }
-  static fetchOne(idPreguntaKostick) {
+
+  static fetchOne(index) {
+    return db.execute(
+      "SELECT * FROM preguntasKostick WHERE numeroPreguntaKostick = ?",
+      [index]
+    );
+  }
+
+  static getOpciones(idPreguntaKostick) {
+    return db.execute(
+      "SELECT * FROM opcionesKostick WHERE idPreguntaKostick = ?",
+      [idPreguntaKostick]
+    );
+  }
+
+  /*static fetchOne(idPreguntaKostick) {
     return db.execute(
       "SELECT * FROM preguntasKostick WHERE idPreguntaKostick = ?",
       [idPreguntaKostick]
@@ -23,5 +38,5 @@ module.exports = class PreguntaKostick {
       "SELECT * FROM preguntasKostick WHERE numeroPreguntaKostick = ?",
       [numeroPreguntaKostick]
     );
-  }
+  }*/
 };

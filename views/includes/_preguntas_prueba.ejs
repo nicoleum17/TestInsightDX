@@ -15,6 +15,35 @@
         </article>
       </div>
     </nav>
+    <% if (prueba.idPrueba === 1) {%>
+    <div class="container" id="container">
+      <% if (pregunta) { %>
+      <p class="subtitle is-2" id="numero-pregunta">
+        Pregunta <%= pregunta.numeroPreguntaKostick %>
+      </p>
+
+      <% if (opciones) { %> <% opciones.forEach(opcion => { %>
+      <div class="control" id="option-<%= opcion.idOpcionKostick %>">
+        <label class="radio mx-5 subtitle is-4">
+          <input
+            type="radio"
+            name="answer"
+            value="<%= opcion.idOpcionKostick %>"
+            required />
+          <%= opcion.opcionKostick %>. <%= opcion.descripcionOpcionKostick %>
+        </label>
+      </div>
+      <% }) %> <% } %> <% } %>
+
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button
+        type="button"
+        class="column is-narrow button mt-3"
+        onclick="nextQuestion(event)">
+        Siguiente
+      </button>
+    </div>
+    <%} else if (prueba.idPrueba === 2) {%>
     <div class="container" id="container">
       <% if (pregunta) { %>
       <p class="subtitle is-2" id="numero-pregunta">
@@ -40,10 +69,11 @@
       <button
         type="button"
         class="column is-narrow button mt-3"
-        onclick="nextQuestion(event)">
+        onclick="nextQuestion1(event)">
         Siguiente
       </button>
     </div>
+    <%}%>
   </section>
   <script>
     function nextQuestion(event) {
@@ -63,7 +93,74 @@
       const data = {
         respuestaSeleccionada: respuestaSeleccionada.value,
       };
-      fetch(`/aspirante/siguiente_pregunta/`, {
+      fetch(`/aspirante/siguiente_pregunta?idPrueba=${data.idPrueba}`, {
+        method: "GET",
+        headers: {
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          console.log(data.preguntaKostick);
+          let html = `<div class = "container">`;
+          const questionNumberElement =
+            document.getElementById("numero-pregunta");
+          html += `<p class="subtitle is-2" id="numero-pregunta">
+                    Pregunta ${data.pregunta.numeroPreguntaKostick}
+                    </p>`;
+          if (data.opciones && Array.isArray(data.opciones)) {
+            data.opciones.forEach((opcion) => {
+              html += `<div class="control" id="option-${opcion.idOpcionKostick}">
+                              <label class="radio mx-5 subtitle is-4">
+                                <input
+                                  type="radio"
+                                  name="answer"
+                                  value="${opcion.idOpcionKostick}" required />
+                                ${opcion.opcionKostick}. ${opcion.descripcionOpcionKostick}
+                              </label>
+                              </div>
+                            `;
+            });
+          }
+          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button
+        type="button"
+        class="column is-narrow button mt-3"
+        onclick="nextQuestion(event)">
+        Siguiente
+      </button>
+    </div>`;
+          const container = document.getElementById("container");
+          container.innerHTML = html;
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+    function nextQuestion1(event) {
+      event.preventDefault();
+
+      const selectedOption = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+      if (!selectedOption) {
+        alert("Por favor selecciona una opción antes de continuar");
+        return;
+      }
+      const respuestaSeleccionada = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+
+      const data = {
+        respuestaSeleccionada: respuestaSeleccionada.value,
+      };
+      fetch(`/aspirante/siguiente_pregunta1/`, {
         method: "GET",
         headers: {
           "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
@@ -105,7 +202,7 @@
       <button
         type="button"
         class="column is-narrow button mt-3"
-        onclick="nextQuestion(event)">
+        onclick="nextQuestion1(event)">
         Siguiente
       </button>
     </div>`;

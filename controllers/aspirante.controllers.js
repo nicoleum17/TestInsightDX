@@ -1,10 +1,11 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
 const formatoEntrevistaDA = require("../model/formatoEntrevistaDA.model");
 const formatoEntrevistaDL = require("../model/formatoEntrevistaDL.model");
 const Pregunta16PF = require("../model/preguntas16pf.model");
+const PreguntaKostick = require("../model/preguntasKostick.model");
 
 exports.get_root = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
@@ -47,15 +48,12 @@ exports.get_calendarioA = (request, response, next) => {
 
 exports.get_datosA = (request, response, next) => {
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
-    Pregunta16PF.fetchAll().then(([rows1]) => {
-      response.render("datos_aspirante", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        prueba: rows[0],
-        pregunta: rows1[0],
-      });
+    response.render("datos_aspirante", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      prueba: rows[0],
     });
   });
 };
@@ -73,27 +71,87 @@ exports.get_instrucciones = (request, response, next) => {
 };
 
 exports.get_preguntasPrueba = (request, response, next) => {
-  Prueba.fetchOne(request.params.idPrueba)
-    .then(([prueba]) => {
-      request.session.index = 1;
-      let currentQuestionIndex = request.session.index;
-      Pregunta16PF.fetchOne(currentQuestionIndex)
-        .then(([pregunta]) => {
-          Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
-            .then(([opciones]) => {
-              return response.render("preguntas_prueba", {
-                isLoggedIn: request.session.isLoggedIn || false,
-                usuario: request.session.usuario || "",
-                csrfToken: request.csrfToken(),
-                privilegios: request.session.privilegios || [],
-                prueba: prueba[0],
-                pregunta: pregunta[0],
-                opciones: opciones,
+  if (request.params.idPrueba == 1) {
+    Prueba.fetchOne(request.params.idPrueba)
+      .then(([prueba]) => {
+        request.session.index = 1;
+        let currentQuestionIndex = request.session.index;
+        PreguntaKostick.fetchOne(currentQuestionIndex)
+          .then(([pregunta]) => {
+            PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
+              .then(([opciones]) => {
+                return response.render("preguntas_prueba", {
+                  isLoggedIn: request.session.isLoggedIn || false,
+                  usuario: request.session.usuario || "",
+                  csrfToken: request.csrfToken(),
+                  privilegios: request.session.privilegios || [],
+                  prueba: prueba[0],
+                  pregunta: pregunta[0],
+                  opciones: opciones,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else if (request.params.idPrueba == 2) {
+    Prueba.fetchOne(request.params.idPrueba)
+      .then(([prueba]) => {
+        request.session.index = 1;
+        let currentQuestionIndex = request.session.index;
+        Pregunta16PF.fetchOne(currentQuestionIndex)
+          .then(([pregunta]) => {
+            Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
+              .then(([opciones]) => {
+                return response.render("preguntas_prueba", {
+                  isLoggedIn: request.session.isLoggedIn || false,
+                  usuario: request.session.usuario || "",
+                  csrfToken: request.csrfToken(),
+                  privilegios: request.session.privilegios || [],
+                  prueba: prueba[0],
+                  pregunta: pregunta[0],
+                  opciones: opciones,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+exports.post_siguiente_pregunta = (request, response, next) => {
+  const { respuestaSeleccionada } = request.body;
+  if (!request.session.index) {
+    return response.redirect("/login");
+  }
+  request.session.index++;
+
+  //Aqui falta un metodo del modelo, que va a guardar la respuesta del usuario
+
+  PreguntaKostick.fetchOne(request.session.index)
+    .then(([pregunta]) => {
+      PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
+        .then(([opciones]) => {
+          return response.status(200).json({
+            csrfToken: request.csrfToken(),
+            pregunta: pregunta[0],
+            opciones: opciones,
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -104,7 +162,7 @@ exports.get_preguntasPrueba = (request, response, next) => {
     });
 };
 
-exports.post_siguiente_pregunta = (request, response, next) => {
+exports.post_siguiente_pregunta1 = (request, response, next) => {
   const { respuestaSeleccionada } = request.body;
   if (!request.session.index) {
     return response.redirect("/login");
@@ -118,7 +176,7 @@ exports.post_siguiente_pregunta = (request, response, next) => {
       Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
         .then(([opciones]) => {
           return response.status(200).json({
-            //csrfToken: request.csrfToken(),
+            csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
           });
