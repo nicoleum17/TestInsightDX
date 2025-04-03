@@ -65,6 +65,13 @@ router.get(
 
 router.get("/crear_grupo", isAuth, crearGrupo, psicologaController.crear_grupo);
 
+router.post(
+  "/confirmar_creacion_grupo",
+  isAuth,
+  crearGrupo,
+  psicologaController.post_grupo
+);
+
 router.get(
   "/confirmar_creacion_grupo",
   isAuth,
@@ -102,7 +109,7 @@ router.post(
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
-router.get('/buscar/:valor', isAuth, psicologaController.get_buscar);
-router.get('/buscar', isAuth, psicologaController.get_buscar);
+router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
+router.get("/buscar", isAuth, psicologaController.get_buscar);
 
 module.exports = router;

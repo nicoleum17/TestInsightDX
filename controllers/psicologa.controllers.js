@@ -4,6 +4,7 @@ const db = require("../util/database");
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
+const TienePruebas = require("../model/tienePruebas.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   response.render("inicio_psicologa", {
@@ -42,39 +43,40 @@ exports.get_prueba = (request, response, next) => {
 };
 
 exports.get_aspirantes = (request, response, next) => {
-
   console.log(request.session.privilegios);
 
-  const mensaje = request.session.info || '';
+  const mensaje = request.session.info || "";
   if (request.session.info) {
-      request.session.info = '';
+    request.session.info = "";
   }
 
   Aspirante.fetchAll(request.session.idUsuario)
-      .then(([rows, fieldData]) => {
-          console.log(fieldData);
-          console.log(rows);
-          response.render('consulta_aspirante', {
-              isLoggedIn: request.session.isLoggedIn || false,
-              usuario: request.session.usuario || "",
-              csrfToken: request.csrfToken(),
-              aspirantes: rows,
-              info: mensaje,
-              privilegios: request.session.privilegios || [],
-          });
-      }).catch((error) => {
-          console.log(error);
+    .then(([rows, fieldData]) => {
+      console.log(fieldData);
+      console.log(rows);
+      response.render("consulta_aspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        aspirantes: rows,
+        info: mensaje,
+        privilegios: request.session.privilegios || [],
       });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 exports.get_buscar = (request, response, next) => {
   Aspirante.find(request.params.valor)
-        .then(([rows, fieldData]) => {
-            response.status(200).json({aspirantes: rows});
-        }).catch((error) => {
-            response.status(500).json({message: "Aspirante no encontrado"});
-        });
-}
+    .then(([rows, fieldData]) => {
+      response.status(200).json({ aspirantes: rows });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Aspirante no encontrado" });
+    });
+};
 
 exports.get_respuestasA = (request, response, next) => {
   response.render("consulta_respuestas_aspirante", {
@@ -124,6 +126,35 @@ exports.crear_grupo = (request, response, next) => {
   });
 };
 
+exports.post_grupo = (request, response, next) => {
+  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
+  mi_grupo
+    .save()
+    .then(() => {
+      request.session.info = `El grupo ${mi_grupo.posgrado} - ${mi_grupo.generacion} se ha creado`;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  const mi_tienePruebas = new TienePruebas(
+    mi_grupo.id,
+    request.body.prueba,
+    request.body.fecha_limite_prueba,
+    request.body.fechaPruebaGrupal,
+    request.body.enlace_zoom
+  );
+
+  mi_tienePruebas
+    .save(() => {
+      request.session.info = `Las pruebas se han asignado al grupo`;
+      response.redirect("/confirmar_creacion");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 exports.confirmar_creacion_grupo = (request, response, next) => {
   response.render("confirmar_creacion_grupo", {
     isLoggedIn: request.session.isLoggedIn || false,
@@ -147,7 +178,7 @@ exports.elegir_grupo = (request, response, next) => {
 
 exports.get_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
-  Grupo.fetchOne(numGrupo).then(([rows]) => {
+  Grupo.fetchOneId(numGrupo).then(([rows]) => {
     response.render("consulta_grupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
@@ -161,7 +192,7 @@ exports.get_grupo = (request, response, next) => {
 exports.registra_reporte_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
 
-  Grupo.fetchOne(numGrupo).then(([rows]) => {
+  Grupo.fetchOneId(numGrupo).then(([rows]) => {
     response.render("registrar_reporte_grupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
@@ -184,7 +215,7 @@ exports.post_registra_reporte_grupo = (request, response, next) => {
 exports.registra_foda_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
 
-  Grupo.fetchOne(numGrupo).then(([rows]) => {
+  Grupo.fetchOneId(numGrupo).then(([rows]) => {
     response.render("registrar_foda_grupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",

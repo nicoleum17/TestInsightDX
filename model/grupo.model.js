@@ -1,9 +1,10 @@
 const db = require("../util/database");
+const { v4: uuidv4 } = require("uuid");
 
 module.exports = class Grupo {
   //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-  constructor(mi_idGrupo, mi_posgrado, mi_generacion) {
-    this.idGrupo = mi_idGrupo;
+  constructor(mi_posgrado, mi_generacion) {
+    this.idGrupo = uuidv4();
     this.posgrado = mi_posgrado;
     this.generacion = mi_generacion;
   }
@@ -17,8 +18,15 @@ module.exports = class Grupo {
   }
 
   //Este método servirá para devolver los objetos del almacenamiento persistente.
-  static fetchOne(idGrupo) {
+  static fetchOneId(idGrupo) {
     return db.execute("SELECT * FROM Grupos WHERE idGrupo = ?", [idGrupo]);
+  }
+
+  static fetchOneNombre(posgrado, generacion) {
+    return db.execute(
+      "SELECT idGrupo FROM Grupos WHERE posgrado = ? AND generacion = ?",
+      [posgrado, generacion]
+    );
   }
 
   static fetchAll() {
