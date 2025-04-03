@@ -229,26 +229,26 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
-    formato:request.session.idFormato
+    formato: request.session.idFormato,
   });
 };
 
 exports.post_formato_entrevista_preguntasP = (request, response, next) => {
   let numPregunta = 1;
   for (const a in request.body) {
-    if (a == "_csrf" || a=="idFormato") {
+    if (a == "_csrf" || a == "idFormato") {
       continue;
     }
     const newPregunta = new preguntasFormato(
       request.body[a],
       numPregunta,
-      request.body.idFormato 
+      request.body.idFormato
     );
     numPregunta += 1;
     newPregunta
       .save()
       .then((id) => {
-        request.session.idFormato = id
+        request.session.idFormato = id;
         response.redirect("formato_entrevista_DA");
         console.log("Pregunta_Guardada");
       })
@@ -269,32 +269,33 @@ exports.formato_entrevista_DA = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
-    formato: request.session.idFormato
+    formato: request.session.idFormato,
   });
 };
 
-exports.post_formato_entrevista_DA = (request, response, next)=>{
-  formatoEntrevista.saveDA(
-  
-    request.body.nombreLicenciatura,
-    request.body.institucion,
-    request.body.promedio,
-    request.body.generacion,
-    request.body.gradoMax,
-    request.body.maestria,
-    request.body.institucionMaestria,
-    request.body.promedioMaestria,
-    request.body.cursos,
-    request.body.idiomas,
-    request.body.idFormato,
-  ).then((id)=>{
-    request.session.idFormato = id;
-    response.redirect("formato_entrevista_preguntasDA");
-    console.log("Datos_academicos_Guardados");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+exports.post_formato_entrevista_DA = (request, response, next) => {
+  formatoEntrevista
+    .saveDA(
+      request.body.nombreLicenciatura,
+      request.body.institucion,
+      request.body.promedio,
+      request.body.generacion,
+      request.body.gradoMax,
+      request.body.maestria,
+      request.body.institucionMaestria,
+      request.body.promedioMaestria,
+      request.body.cursos,
+      request.body.idiomas,
+      request.body.idFormato
+    )
+    .then((id) => {
+      request.session.idFormato = id;
+      response.redirect("formato_entrevista_preguntasDA");
+      console.log("Datos_academicos_Guardados");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 exports.formato_entrevista_preguntasDA = (request, response, next) => {
@@ -302,14 +303,14 @@ exports.formato_entrevista_preguntasDA = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
-    formato:request.session.idFormato
+    formato: request.session.idFormato,
   });
 };
 
 exports.post_formato_entrevista_preguntasDA = (request, response, next) => {
   let numPregunta = 7;
   for (const a in request.body) {
-    if (a == "_csrf"||a == "idFormato") {
+    if (a == "_csrf" || a == "idFormato") {
       continue;
     }
     const newPregunta = new preguntasFormato(
@@ -321,7 +322,7 @@ exports.post_formato_entrevista_preguntasDA = (request, response, next) => {
     newPregunta
       .save()
       .then((id) => {
-        request.session.idFormato = id
+        request.session.idFormato = id;
         response.redirect("formato_entrevista_DL");
         console.log("Pregunta_Guardada");
       })
@@ -336,24 +337,25 @@ exports.formato_entrevista_DL = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
-    formato: request.session.idFormato
+    formato: request.session.idFormato,
   });
 };
 
 exports.post_formato_entrevista_DL = (request, response, next) => {
   console.log(request.body);
-  formatoEntrevista.saveDL(
-    request.body.lugarTrabajo,
-    request.body.empresa,
-    request.body.puesto,
-    request.body.tiempo,
-    request.body.actividades,
-    request.body.sueldo,
-    request.body.personal,
-    request.body.idFormato
-  )
+  formatoEntrevista
+    .saveDL(
+      request.body.lugarTrabajo,
+      request.body.empresa,
+      request.body.puesto,
+      request.body.tiempo,
+      request.body.actividades,
+      request.body.sueldo,
+      request.body.personal,
+      request.body.idFormato
+    )
     .then((id) => {
-      request.session.idFormato=id;
+      request.session.idFormato = id;
       response.redirect("formato_entrevista_preguntasDL");
       console.log("Datos_Laborales_Guardados");
     })
@@ -367,14 +369,14 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
-    formato:request.session.idFormato
+    formato: request.session.idFormato,
   });
 };
 
 exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
   let numPregunta = 14;
   for (const a in request.body) {
-    if (a == "_csrf"||a == "idFormato") {
+    if (a == "_csrf" || a == "idFormato") {
       continue;
     }
     const newPregunta = new preguntasFormato(
@@ -386,7 +388,7 @@ exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
     newPregunta
       .save()
       .then((id) => {
-        request.session.idFormato = id
+        request.session.idFormato = id;
         response.redirect("inicio");
         console.log("Pregunta_Guardada");
       })
