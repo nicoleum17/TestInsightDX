@@ -151,9 +151,9 @@ router.post(
 );
 
 router.get(
-  "/formato_entrevista_familiar",
+  "/formato_entrevista_familiar_abueloM",
   isAuth,
-  aspiranteController.formato_entrevista_familiar
+  aspiranteController.formato_entrevista_familiar_abueloM
 );
 
 

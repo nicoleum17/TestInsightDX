@@ -1,224 +1,18 @@
-<style>
-    :root {
-      --bulma-primary-h: 227deg;
-      --bulma-primary-s: 54%;
-      --bulma-primary-l: 44%;
-      --bulma-link-h: 224deg;
-      --bulma-link-s: 84%;
-      --bulma-link-l: 20%;
-      --bulma-info-h: 216deg;
-      --bulma-info-l: 91%;
-      --bulma-success-h: 175deg;
-    }
-    .person {
-      border: 1px solid black;
-      padding: 10px;
-      min-width: 150px;
-      background-color: #ffffff;
-      display: inline-block;
-    }
-    .person div {
-      text-align: center;
-    }
-    .person .name {
-      font-size: 16px;
-    }
-    .person .parentDrop,
-    .person .spouseDrop,
-    .person .childDrop {
-      width: auto;
-      min-width: 80px;
-      min-height: 90px;
-      display: inline-block;
-      position: relative;
-      padding-top: 15px;
-    }
-    .person .parentDrop > span,
-    .person .spouseDrop > span,
-    .person .childDrop > span {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      font-weight: bold;
-    }
-    .parentDrop > .person,
-    .spouseDrop > .person,
-    .childDrop > .person {
-      margin-top: 20px;
-    }
-    .tree {
-      transform: scale(0.8);
-      transform-origin: top left;
-    }
-    .tree ul {
-      padding-top: 20px;
-      position: relative;
-      transition: all 0.5s;
-      -webkit-transition: all 0.5s;
-      -moz-transition: all 0.5s;
-    }
-    .tree li {
-      display: table-cell;
-      text-align: center;
-      list-style-type: none;
-      position: relative;
-      padding: 20px 5px 0 5px;
-      transition: all 0.5s;
-      -webkit-transition: all 0.5s;
-      -moz-transition: all 0.5s;
-    }
-  
-    .tree li::before,
-    .tree li::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 50%;
-      border-top: 1px solid #ccc;
-      width: 50%;
-      height: 20px;
-    }
-    .tree li::after {
-      right: auto;
-      left: 50%;
-      border-left: 1px solid #ccc;
-    }
-    .tree li:only-child::after,
-    .tree li:only-child::before {
-      display: none;
-    }
-    .tree li:only-child {
-      padding-top: 0;
-    }
-    .tree li:first-child::before,
-    .tree li:last-child::after {
-      border: 0 none;
-    }
-    .tree li:last-child::before {
-      border-right: 1px solid #ccc;
-      border-radius: 0 5px 0 0;
-      -webkit-border-radius: 0 5px 0 0;
-      -moz-border-radius: 0 5px 0 0;
-    }
-    .tree li:first-child::after {
-      border-radius: 5px 0 0 0;
-      -webkit-border-radius: 5px 0 0 0;
-      -moz-border-radius: 5px 0 0 0;
-    }
-    .tree ul ul::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 50%;
-      border-left: 1px solid #ccc;
-      width: 0;
-      height: 20px;
-    }
-    .tree li .parent {
-      transition: all 0.5s;
-      -webkit-transition: all 0.5s;
-      -moz-transition: all 0.5s;
-      margin-top: 10px;
-    }
-    .tree li .parent::before {
-      content: "";
-      position: absolute;
-      top: 45px;
-      left: 50%;
-      border-left: 1px solid #ccc;
-      width: 3px;
-      height: 10px;
-    }
-    .tree li .family {
-      position: relative;
-    }
-    .tree li .family .spouse {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      margin-left: 95px;
-    }
-    .tree li .family .spouse::before {
-      display: none;
-    }
-    .input.superior {
-      margin: 0;
-      margin-bottom: -10px;
-      font-size: 10px;
-    }
-  
-    .input.inferior {
-      margin: 0;
-      margin-top: -5px;
-      font-size: 10px;
-    }
-  
-    .select.is-danger.familiar {
-      margin: 0;
-      margin-top: 5px;
-      font-size: 10px;
-    }
-  </style>
-  <section class="section">
+
+ <section class="section">
     <div class="container">
-        <h1 class="title is-3">Familia</h1>
+
+         <h1 class="title is-3">Familia <%= tipoFamiliar %></h1>
         <div class="interviewFormat columns is-vcentered ml-5"></div>
         <form action="formato_entrevista_familiar" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <input type="hidden" name="idFormato" value="<%= formato %>" />
             <input type="hidden" name="familia" value="<%= familia %>" />
-            <div class="box">
-                <div class="columns is-vcentered ml-5">
-                    <div class="column">
-                        <label for="nombre" class="label">Nombre:</label>
-                        <input
-                        class="input"
-                        type="text"
-                        placeholder="Jose "
-                        id="nombreFamiliar"
-                        name="nombreFamiliar"
-                        required />
-                    </div>
-                </div>
-                <div class="columns is-vcentered ml-5">
-                    <div class="column">
-                        <label for="edad" class="label">Edad:</label>
-                        <input
-                        class="input"
-                        type="text"
-                        placeholder="35"
-                        id="edad"
-                        name="edad"
-                        required />
-                    </div>
-                    <div class="column">
-                        <label for="genero" class="label">Género:</label>
-                        <input
-                        class="input"
-                        type="text"
-                        placeholder="Hombre"
-                        id="edad"
-                        name="edad"
-                        required />
-                    </div>
-                </div>
-                <div class="columns is-vcentered ml-5">
-                    <div class="column">
-                        <label for="estadoCivil" class="label">Estado Civil:</label>
-                        <select name="estadoCivil" id="estadoCivil" required>
-                            <option disabled hidden>Seleccione una opción</option>
-                            <option value="soltero">Soltero/a</option>
-                            <option value="casado">Casado/a</option>
-                            <option value="divorciado">Divorciado/a</option>
-                            <option value="separado">Separado/a</option>
-                            <option value="viudo">Viudo/a</option>
-                            <option value="unionLibre">Unión libre</option>
-                          </select>
-                    </div>
+            <div class="box" id="contenedorFamiliares">
                     <div class="column">
                         <div class="is-flex is-align-items-center mb-3">
-                            <label class="label">Agregar Familiar</label> 
-                            <button id="button-agregar-sesion">
+                            <label class="label" for="button-agregar-familiar">Agregar Familiar</label> 
+                            <button  onclick="agregarFamiliar()" id="button-agregar-familiar" type="button">
                               <img
                                 src="https://img.icons8.com/m_rounded/512/plus.png"
                                 width="30"
@@ -227,13 +21,87 @@
                           </div>
                     </div>
                 </div>
-            </div>
+            
             Hola esto es una prueba
             <button
             class="button has-background-primary has-text-warning ml-6"
             type="submit">
             Continuar
             </button>
-        </form>
+        </form> 
     </div>
 </section>
+
+<script>
+    function agregarFamiliar() {
+        console.log("AAAAAAAAA");
+        const cont = document.getElementById("contenedorFamiliares");
+        const nuevoFamiliar = document.createElement("div");
+        nuevoFamiliar.classList.add("tarjeta", "mt-3");
+        nuevoFamiliar.innerHTML = 
+        `
+        <div class="box">
+        <div class="columns is-vcentered ml-5">
+                        <div class="column">
+                            <label for="nombre" class="label">Nombre:</label>
+                            <input
+                            class="input"
+                            type="text"
+                            placeholder="Jose "
+                            id="nombreFamiliar"
+                            name="nombreFamiliar"
+                            required />
+                        </div>
+                    </div>
+                    <div class="columns is-vcentered ml-5">
+                        <div class="column">
+                            <label for="edad" class="label">Edad:</label>
+                            <input
+                            class="input"
+                            type="text"
+                            placeholder="35"
+                            id="edad"
+                            name="edad"
+                            required />
+                        </div>
+                        <div class="column">
+                            <label for="genero" class="label">Género:</label>
+                            <input
+                            class="input"
+                            type="text"
+                            placeholder="Hombre"
+                            id="edad"
+                            name="edad"
+                            required />
+                        </div>
+                    </div>
+                    <div class="columns is-vcentered ml-5">
+                        <div class="column">
+                            <label for="estadoCivil" class="label">Estado Civil:</label>
+                            <div class="select is-danger">
+                            <select name="estadoCivil" id="estadoCivil" required>
+                                <option disabled hidden>Seleccione una opción</option>
+                                <option value="soltero">Soltero/a</option>
+                                <option value="casado">Casado/a</option>
+                                <option value="divorciado">Divorciado/a</option>
+                                <option value="separado">Separado/a</option>
+                                <option value="viudo">Viudo/a</option>
+                                <option value="unionLibre">Unión libre</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="has-text-right">
+                            <button class="button" onclick="eliminarFamiliar(this)">
+                                <img src="https://static.thenounproject.com/png/2456540-200.png" width="20" height="20" />
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+        `;
+        cont.appendChild(nuevoFamiliar);
+    }
+
+    function eliminarFamiliar(boton) {
+    boton.closest(".tarjeta").remove();
+  }
+</script>

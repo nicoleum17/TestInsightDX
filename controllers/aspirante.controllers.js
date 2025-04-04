@@ -307,7 +307,7 @@ exports.formato_entrevista_preguntasDA = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasDA = (request, response, next) => {
+exports.post_formato_entrevista_preguntasDA = async (request, response, next) => {
   let numPregunta = 7;
   for (const a in request.body) {
     if (a == "_csrf"||a == "idFormato") {
@@ -319,7 +319,7 @@ exports.post_formato_entrevista_preguntasDA = (request, response, next) => {
       request.body.idFormato || ""
     );
     numPregunta += 1;
-    newPregunta
+    await newPregunta
       .save()
       .then((id) => {
         request.session.idFormato = id
@@ -415,7 +415,7 @@ exports.post_formato_entrevista_familia = (request, response, next) => {
   .then((idFormato,idFamilia) => {
     request.session.idFormato = idFormato;
     request.session.idFamilia = idFamilia;
-    response.redirect("formato_entrevista_familiar");
+    response.redirect("formato_entrevista_familiar_abueloM");
     console.log(request.body.idFormato, request.body.idFamilia);
   })
   .catch((error) => {
@@ -423,12 +423,26 @@ exports.post_formato_entrevista_familia = (request, response, next) => {
   });
 };
 
-exports.formato_entrevista_familiar = (request,response,next) => {
+exports.formato_entrevista_familiar_abueloM = (request,response,next) => {
   response.render("formato_entrevista_familiar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     formato:request.session.idFormato,
-    familia:request.session.idFamilia
+    familia:request.session.idFamilia,
+    tipoFamiliar:'Abuelos Maternos'
   });
 };
+
+//exports.post_formato_entrevista = (request,response,next) => {
+  
+  // UNMODELO.fetchAll().then(async () => {
+  //   for (let familiar of request.body.familiares) {
+  //     const nuevo_familiar = new Familiar(familiar);
+  //     await nuevo_familiar.save();
+  //   }
+
+  // });
+
+
+//};
