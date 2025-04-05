@@ -21,6 +21,11 @@
       <p class="subtitle is-2" id="numero-pregunta">
         Pregunta <%= pregunta.numeroPreguntaKostick %>
       </p>
+      <input
+        type="hidden"
+        name="preguntaK"
+        id="preguntaK"
+        value="<%=pregunta.idPreguntaKostick%>" />
 
       <% if (opciones) { %> <% opciones.forEach(opcion => { %>
       <div class="control" id="option-<%= opcion.idOpcionKostick %>">
@@ -36,8 +41,15 @@
       <% }) %> <% } %> <% } %>
 
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input
+        type="hidden"
+        id="idUsuario"
+        name="idUsuario"
+        value="<%= idUsuario%>" />
+      <input type="hidden" id="idGrupo" name="idGrupo" value="<%= idGrupo%>" />
       <button
         type="button"
+        id="submit-answer"
         class="column is-narrow button mt-3"
         onclick="nextQuestion(event)">
         Siguiente
@@ -49,6 +61,11 @@
       <p class="subtitle is-2" id="numero-pregunta">
         Pregunta <%= pregunta.numeroPregunta16PF %>
       </p>
+      <input
+        type="hidden"
+        name="pregunta16"
+        id="pregunta16"
+        value="<%=pregunta.idPregunta16PF%>" />
       <p class="subtitle is-3" id="texto-pregunta">
         <%= pregunta.pregunta16PF %>
       </p>
@@ -66,8 +83,19 @@
       <% }) %> <% } %> <% } %>
 
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input
+        type="hidden"
+        id="idUsuario1"
+        name="idUsuario1"
+        value="<%=idUsuario%>" />
+      <input
+        type="hidden"
+        id="idGrupo1"
+        name="idGrupo1"
+        value="<%= idGrupo%>" />
       <button
         type="button"
+        id="submit-answer"
         class="column is-narrow button mt-3"
         onclick="nextQuestion1(event)">
         Siguiente
@@ -76,28 +104,51 @@
     <%}%>
   </section>
   <script>
+    const startTime = Date.now();
+
     function nextQuestion(event) {
       event.preventDefault();
 
-      const selectedOption = document.querySelector(
-        'input[name="answer"]:checked'
-      );
-      if (!selectedOption) {
-        alert("Por favor selecciona una opción antes de continuar");
-        return;
-      }
-      const respuestaSeleccionada = document.querySelector(
+      const endTime = Date.now();
+      const timeTaken = endTime - startTime;
+      let tiempo = (timeTaken / 1000).toFixed(2);
+
+      let respuestaSeleccionada;
+      let idOpcionKostick;
+
+      respuestaSeleccionada = document.querySelector(
         'input[name="answer"]:checked'
       );
 
+      if (respuestaSeleccionada) {
+        idOpcionKostick = respuestaSeleccionada.value;
+      } else {
+        console.error(
+          "No answer selected. Please select an answer before proceeding."
+        );
+      }
+      let idPregunta = document.getElementById("preguntaK");
+      let idGrupoActual = document.getElementById("idGrupo");
+      let idUsuarioActual = document.getElementById("idUsuario");
+      let idPreguntaKostick = idPregunta.value;
+      let idGrupo = idGrupoActual.value;
+      let idUsuario = idUsuarioActual.value;
+
       const data = {
-        respuestaSeleccionada: respuestaSeleccionada.value,
+        idOpcionKostick,
+        idGrupo,
+        idUsuario,
+        idPreguntaKostick,
+        tiempo,
       };
-      fetch(`/aspirante/siguiente_pregunta?idPrueba=${data.idPrueba}`, {
-        method: "GET",
+
+      fetch(`/aspirante/siguiente_pregunta`, {
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
         },
+        body: JSON.stringify(data),
       })
         .then((response) => {
           if (!response.ok) {
@@ -106,14 +157,17 @@
           return response.json();
         })
         .then((data) => {
-          console.log(data);
-          console.log(data.preguntaKostick);
           let html = `<div class = "container">`;
           const questionNumberElement =
             document.getElementById("numero-pregunta");
           html += `<p class="subtitle is-2" id="numero-pregunta">
                     Pregunta ${data.pregunta.numeroPreguntaKostick}
-                    </p>`;
+                    </p>
+                          <input
+        type="hidden"
+        name="preguntaK"
+        id="preguntaK"
+        value="${data.pregunta.idPreguntaKostick}" />`;
           if (data.opciones && Array.isArray(data.opciones)) {
             data.opciones.forEach((opcion) => {
               html += `<div class="control" id="option-${opcion.idOpcionKostick}">
@@ -129,6 +183,16 @@
             });
           }
           html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <input
+        type="hidden"
+        id="idUsuario"
+        name="idUsuario"
+        value="<%= idUsuario%>" />
+      <input
+        type="hidden"
+        id="idGrupo"
+        name="idGrupo"
+        value="<%= idGrupo%>" />
       <button
         type="button"
         class="column is-narrow button mt-3"
@@ -143,28 +207,55 @@
           console.error("There was a problem with the fetch operation:", error);
         });
     }
+    //
+    //
+    //
+    //
+    //
+    //
     function nextQuestion1(event) {
       event.preventDefault();
 
-      const selectedOption = document.querySelector(
-        'input[name="answer"]:checked'
-      );
-      if (!selectedOption) {
-        alert("Por favor selecciona una opción antes de continuar");
-        return;
-      }
-      const respuestaSeleccionada = document.querySelector(
+      const endTime = Date.now();
+      const timeTaken = endTime - startTime;
+      let tiempo = (timeTaken / 1000).toFixed(2);
+
+      let respuestaSeleccionada;
+      let idOpcion16PF;
+
+      respuestaSeleccionada = document.querySelector(
         'input[name="answer"]:checked'
       );
 
+      if (respuestaSeleccionada) {
+        idOpcion16PF = respuestaSeleccionada.value;
+      } else {
+        console.error(
+          "No answer selected. Please select an answer before proceeding."
+        );
+      }
+      let idPregunta1 = document.getElementById("pregunta16");
+      let idGrupo1Actual = document.getElementById("idGrupo1");
+      let idUsuario1Actual = document.getElementById("idUsuario1");
+      let idPregunta16PF = idPregunta1.value;
+      let idGrupo = idGrupo1Actual.value;
+      let idUsuario = idUsuario1Actual.value;
+
       const data = {
-        respuestaSeleccionada: respuestaSeleccionada.value,
+        idOpcion16PF,
+        idGrupo,
+        idUsuario,
+        idPregunta16PF,
+        tiempo,
       };
-      fetch(`/aspirante/siguiente_pregunta1/`, {
-        method: "GET",
+
+      fetch(`/aspirante/siguiente_pregunta1`, {
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
         },
+        body: JSON.stringify(data),
       })
         .then((response) => {
           if (!response.ok) {
@@ -173,14 +264,17 @@
           return response.json();
         })
         .then((data) => {
-          console.log(data);
-          console.log(data.pregunta16PF);
           let html = `<div class = "container">`;
           const questionNumberElement =
             document.getElementById("numero-pregunta");
           html += `<p class="subtitle is-2" id="numero-pregunta">
                     Pregunta ${data.pregunta.numeroPregunta16PF}
                     </p>
+                          <input
+                          type="hidden"
+                          name="pregunta16"
+                          id="pregunta16"
+                          value="${data.pregunta.idPregunta16PF}" />
                     <p class="subtitle is-3" id="texto-pregunta">
                     ${data.pregunta.pregunta16PF}
                     </p>`;
@@ -199,6 +293,16 @@
             });
           }
           html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <input
+        type="hidden"
+        id="idUsuario1"
+        name="idUsuario"
+        value="<%= idUsuario%>" />
+      <input
+        type="hidden"
+        id="idGrupo1"
+        name="idGrupo"
+        value="<%= idGrupo%>" />
       <button
         type="button"
         class="column is-narrow button mt-3"

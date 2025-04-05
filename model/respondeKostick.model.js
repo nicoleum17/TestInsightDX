@@ -1,35 +1,35 @@
 const db = require("../util/database");
 const bcrypt = require("bcryptjs");
 
-module.exports = class Responde16PF {
+module.exports = class RespondeKostick {
   constructor(
-    mi_idPregunta16PF,
+    mi_idPreguntaKostick,
     mi_idGrupo,
     mi_idUsuario,
-    mi_idOpcion16PF,
+    mi_idOpcionKostick,
     mi_tiempo
   ) {
-    this.idPregunta16PF = mi_idPregunta16PF;
+    this.idPreguntaKostick = mi_idPreguntaKostick;
     this.idGrupo = mi_idGrupo;
     this.idUsuario = mi_idUsuario;
-    this.idOpcion16PF = mi_idOpcion16PF;
+    this.idOpcionKostick = mi_idOpcionKostick;
     this.tiempo = mi_tiempo;
   }
   save() {
     return db
       .execute(
-        "INSERT INTO responde16pf (idPregunta16PF, idGrupo, idUsuario, idOpcion16PF, tiempo) VALUES (?,?,?,?,?)",
+        "INSERT INTO respondeKostick (idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?)",
         [
-          this.idPregunta16PF,
+          this.idPreguntaKostick,
           this.idGrupo,
           this.idUsuario,
-          this.idOpcion16PF,
+          this.idOpcionKostick,
           this.tiempo,
         ]
       )
       .then(([result]) => {
         return {
-          idPregunta16PF: this.idPregunta16PF,
+          idPreguntaKostick: this.idPreguntaKostick,
           idGrupo: this.idGrupo,
           idUsuario: this.idUsuario,
         };

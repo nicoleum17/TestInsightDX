@@ -51,13 +51,13 @@ router.get(
   aspiranteController.get_preguntasPrueba
 );
 
-router.get(
+router.post(
   "/siguiente_pregunta",
   isAuth,
   aspiranteController.post_siguiente_pregunta
 );
 
-router.get(
+router.post(
   "/siguiente_pregunta1",
   isAuth,
   aspiranteController.post_siguiente_pregunta1

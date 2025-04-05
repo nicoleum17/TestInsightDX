@@ -4,7 +4,8 @@ const formatoEntrevista = require("../model/formatoEntrevista.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
 const Pregunta16PF = require("../model/preguntas16pf.model");
 const PreguntaKostick = require("../model/preguntasKostick.model");
-
+const Responde16PF = require("../model/responde16pf.model");
+const RespondeKostick = require("../model/respondeKostick.model");
 exports.get_root = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
     response.render("inicio_aspirante", {
@@ -13,6 +14,7 @@ exports.get_root = (request, response, next) => {
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
+      grupo: request.session.grupo,
     });
   });
 };
@@ -86,6 +88,8 @@ exports.get_preguntasPrueba = (request, response, next) => {
                   prueba: prueba[0],
                   pregunta: pregunta[0],
                   opciones: opciones,
+                  idGrupo: request.session.grupo,
+                  idUsuario: request.session.idUsuario || "",
                 });
               })
               .catch((error) => {
@@ -116,6 +120,8 @@ exports.get_preguntasPrueba = (request, response, next) => {
                   prueba: prueba[0],
                   pregunta: pregunta[0],
                   opciones: opciones,
+                  idGrupo: request.session.grupo,
+                  idUsuario: request.session.idUsuario || "",
                 });
               })
               .catch((error) => {
@@ -133,14 +139,29 @@ exports.get_preguntasPrueba = (request, response, next) => {
 };
 
 exports.post_siguiente_pregunta = (request, response, next) => {
-  const { respuestaSeleccionada } = request.body;
+  console.log("Request body", request.body);
+  const { idOpcionKostick, idGrupo, idUsuario, idPreguntaKostick, tiempo } =
+    request.body;
   if (!request.session.index) {
     return response.redirect("/login");
   }
   request.session.index++;
+  // if(request.session.index == 90){
+  //   return response.redirect("/prueba_completada")
+  // }
 
-  //Aqui falta un metodo del modelo, que va a guardar la respuesta del usuario
-
+  const newRespondeKostick = new RespondeKostick(
+    request.body.idPreguntaKostick,
+    request.body.idGrupo,
+    request.body.idUsuario,
+    request.body.idOpcionKostick,
+    request.body.tiempo
+  );
+  newRespondeKostick.save().then((uuid) => {
+    request.session.idPregunta16PF = uuid;
+    request.session.idGrupo = uuid;
+    request.session.idUsuario = uuid;
+  });
   PreguntaKostick.fetchOne(request.session.index)
     .then(([pregunta]) => {
       PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
@@ -149,6 +170,8 @@ exports.post_siguiente_pregunta = (request, response, next) => {
             csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
+            idGrupo: request.session.grupo,
+            idUsuario: request.session.idUsuario || "",
           });
         })
         .catch((error) => {
@@ -161,13 +184,26 @@ exports.post_siguiente_pregunta = (request, response, next) => {
 };
 
 exports.post_siguiente_pregunta1 = (request, response, next) => {
-  const { respuestaSeleccionada } = request.body;
+  console.log("Request body1", request.body);
+  const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
+    request.body;
   if (!request.session.index) {
     return response.redirect("/login");
   }
   request.session.index++;
 
-  //Aqui falta un metodo del modelo, que va a guardar la respuesta del usuario
+  const newResponde16pf = new Responde16PF(
+    request.body.idPregunta16PF,
+    request.body.idGrupo,
+    request.body.idUsuario,
+    request.body.idOpcion16PF,
+    request.body.tiempo
+  );
+  newResponde16pf.save().then((uuid) => {
+    request.session.idPregunta16PF = uuid;
+    request.session.idGrupo = uuid;
+    request.session.idUsuario = uuid;
+  });
 
   Pregunta16PF.fetchOne(request.session.index)
     .then(([pregunta]) => {
@@ -177,6 +213,8 @@ exports.post_siguiente_pregunta1 = (request, response, next) => {
             csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
+            idGrupo: request.session.grupo,
+            idUsuario: request.session.idUsuario || "",
           });
         })
         .catch((error) => {
