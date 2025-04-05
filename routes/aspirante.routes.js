@@ -18,7 +18,7 @@ router.get(
 );
 
 router.get(
-  "/documentos_aspirante",
+  "/documentosAspirante",
   isAuth,
   cargarDocumentos,
   aspiranteController.get_documentosA

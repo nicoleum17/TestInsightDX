@@ -116,7 +116,7 @@ exports.sesion_individual = (request, response, next) => {
 
 exports.crear_grupo = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
-    response.render("crear_grupo", {
+    response.render("crearGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -165,7 +165,7 @@ exports.confirmar_creacion_grupo = (request, response, next) => {
 
 exports.elegir_grupo = (request, response, next) => {
   Grupo.fetchAll().then(([rows]) => {
-    response.render("elegir_grupo", {
+    response.render("elegirGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),

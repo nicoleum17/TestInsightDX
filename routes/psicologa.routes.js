@@ -63,7 +63,7 @@ router.get(
   psicologaController.get_prueba
 );
 
-router.get("/crear_grupo", isAuth, crearGrupo, psicologaController.crear_grupo);
+router.get("/crearGrupo", isAuth, crearGrupo, psicologaController.crear_grupo);
 
 router.post(
   "/confirmarCreacionGrupo",

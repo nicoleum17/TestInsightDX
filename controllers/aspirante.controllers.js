@@ -30,7 +30,7 @@ exports.get_notificacionA = (request, response, next) => {
 };
 
 exports.get_documentosA = (request, response, next) => {
-  response.render("documentos_aspirante", {
+  response.render("documentosAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
