@@ -434,6 +434,9 @@ exports.formato_entrevista_familiar_abueloM = (request,response,next) => {
   });
 };
 
+exports.post_formato_entrevista_familiar_abueloM = (request, response, next) => {
+  console.log(request.body)
+};
 //exports.post_formato_entrevista = (request,response,next) => {
   
   // UNMODELO.fetchAll().then(async () => {
