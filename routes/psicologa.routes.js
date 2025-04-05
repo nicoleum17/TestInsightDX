@@ -66,14 +66,14 @@ router.get(
 router.get("/crear_grupo", isAuth, crearGrupo, psicologaController.crear_grupo);
 
 router.post(
-  "/confirmar_creacion_grupo",
+  "/confirmarCreacionGrupo",
   isAuth,
   crearGrupo,
   psicologaController.post_grupo
 );
 
 router.get(
-  "/confirmar_creacion_grupo",
+  "/confirmarCreacionGrupo",
   isAuth,
   confirmarCrearGrupo,
   psicologaController.confirmar_creacion_grupo

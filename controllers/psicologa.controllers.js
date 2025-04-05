@@ -143,7 +143,7 @@ exports.post_grupo = (request, response, next) => {
   //     mi_tienePruebas
   //       .save(() => {
   //         request.session.info = `Las pruebas se han asignado al grupo`;
-  //         response.redirect("/confirmar_creacion");
+  //         response.redirect("/confirmarCreacion");
   //       })
   //       .catch((error) => {
   //         console.log(error);
@@ -155,7 +155,7 @@ exports.post_grupo = (request, response, next) => {
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {
-  response.render("confirmar_creacion_grupo", {
+  response.render("confirmarCreacionGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
