@@ -9,7 +9,7 @@ const Responde16PF = require("../model/responde16pf.model");
 const RespondeKostick = require("../model/respondeKostick.model");
 exports.get_root = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
-    response.render("inicio_aspirante", {
+    response.render("inicioAspirante", {
       pruebas: rows,
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",

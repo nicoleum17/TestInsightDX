@@ -7,7 +7,7 @@ const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
 
 exports.inicio_psicologa = (request, response, next) => {
-  response.render("inicio_psicologa", {
+  response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
