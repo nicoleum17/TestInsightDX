@@ -54,7 +54,7 @@ exports.get_aspirantes = (request, response, next) => {
     .then(([rows, fieldData]) => {
       console.log(fieldData);
       console.log(rows);
-      response.render("consulta_aspirante", {
+      response.render("consultaAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
         csrfToken: request.csrfToken(),

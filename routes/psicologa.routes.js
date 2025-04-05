@@ -33,7 +33,7 @@ router.get(
 );
 
 router.get(
-  "/consulta_aspirante",
+  "/consultaAspirante",
   isAuth,
   consultarAspirante,
   psicologaController.get_aspirantes
