@@ -365,7 +365,7 @@ exports.post_formato_entrevista_preguntasDA = async (
       .save()
       .then((id) => {
         request.session.idFormato = id;
-        response.redirect("formato_entrevista_DL");
+        response.redirect("formatoEntrevistaDL");
         console.log("Pregunta_Guardada");
       })
       .catch((error) => {
@@ -375,7 +375,7 @@ exports.post_formato_entrevista_preguntasDA = async (
 };
 
 exports.formato_entrevista_DL = (request, response, next) => {
-  response.render("formato_entrevista_DL", {
+  response.render("formatoEntrevistaDL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),

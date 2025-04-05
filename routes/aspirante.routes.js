@@ -115,13 +115,13 @@ router.post(
 );
 
 router.get(
-  "/formato_entrevista_DL",
+  "/formatoEntrevistaDL",
   isAuth,
   aspiranteController.formato_entrevista_DL
 );
 
 router.post(
-  "/formato_entrevista_DL",
+  "/formatoEntrevistaDL",
   isAuth,
   aspiranteController.post_formato_entrevista_DL
 );
