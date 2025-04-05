@@ -81,7 +81,7 @@ exports.get_preguntasPrueba = (request, response, next) => {
           .then(([pregunta]) => {
             PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
               .then(([opciones]) => {
-                return response.render("preguntas_prueba", {
+                return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
                   csrfToken: request.csrfToken(),
@@ -113,7 +113,7 @@ exports.get_preguntasPrueba = (request, response, next) => {
           .then(([pregunta]) => {
             Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
               .then(([opciones]) => {
-                return response.render("preguntas_prueba", {
+                return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
                   csrfToken: request.csrfToken(),

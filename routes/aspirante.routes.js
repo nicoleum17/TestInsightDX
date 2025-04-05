@@ -46,7 +46,7 @@ router.get(
 );
 
 router.get(
-  "/preguntas_prueba/:idPrueba",
+  "/preguntasPrueba/:idPrueba",
   isAuth,
   aspiranteController.get_preguntasPrueba
 );
