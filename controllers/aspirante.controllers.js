@@ -303,7 +303,7 @@ exports.get_logout = (request, response, next) => {
 };
 
 exports.formato_entrevista_DA = (request, response, next) => {
-  response.render("formato_entrevista_DA", {
+  response.render("formatoEntrevistaDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),

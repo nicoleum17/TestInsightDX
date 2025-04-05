@@ -91,13 +91,13 @@ router.post(
 router.get("/cerrar_sesion", aspiranteController.get_logout);
 
 router.get(
-  "/formato_entrevista_DA",
+  "/formatoEntrevistaDA",
   isAuth,
   aspiranteController.formato_entrevista_DA
 );
 
 router.post(
-  "/formato_entrevista_DA",
+  "/formatoEntrevistaDA",
   isAuth,
   aspiranteController.post_formato_entrevista_DA
 );
