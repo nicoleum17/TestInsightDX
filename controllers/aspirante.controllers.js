@@ -61,7 +61,7 @@ exports.get_datosA = (request, response, next) => {
 
 exports.get_instrucciones = (request, response, next) => {
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
-    response.render("instrucciones_prueba", {
+    response.render("instruccionesPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),

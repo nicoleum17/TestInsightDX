@@ -39,7 +39,7 @@ router.get(
 );
 
 router.get(
-  "/instrucciones_prueba/:idPrueba",
+  "/instruccionesPrueba/:idPrueba",
   isAuth,
   consultarPrueba,
   aspiranteController.get_instrucciones
