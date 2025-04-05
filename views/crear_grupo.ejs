@@ -5,7 +5,7 @@
     margin-top: 20px;
   }
 </style>
-<div class="container fullHeight">
+<div class="container fullHeight " style="width: 60%;">
   <!-- Título -->
   <h2 class="title is-3 mt-5">Crear Grupo</h2>
   <form 
@@ -13,42 +13,30 @@
     method="POST"
     enctype="multipart/form-data"">
     <input type="hidden" name="_csrf" value=<%= csrfToken%> />
-    <div class="columns">
-      <div class="column">
-        <label class="label">Posgrado:</label>
-        <input type="text" class="input" name="posgrado" value="ingresa el posgrado" />
-      </div>
-      <div class="column">
-        <label class="label">Generación:</label>
-        <input type="text" class="input" name="generacion" value="ingresa la generación" />
-      </div>
-    </div>
-  
+    <label class="label">Posgrado:</label>
+    <input type="text" class="input" name="posgrado" placeholder="ingresa el posgrado" required/> <br><br>
+    <label class="label">Generación:</label>
+    <input type="text" class="input" name="generacion" placeholder="ingresa la generación" required/>  <br><br>
 
   <!-- Subir archivo y fecha límite -->
-  <div class="columns">
-    <div class="column">
-      <label class="label">Subir Archivo</label>
-      <div class="file">
-        <label class="file-label">
-          <input class="file-input" type="file" name="resume" accept=".csv" />
-          <span class="file-cta">
-            <span class="file-label"> Selecciona un archivo </span>
-          </span>
-        </label>
-      </div>
-    </div>
-    <div class="column">
-      <label class="label">Fecha Límite:</label>
-      <input type="date" class="input" name="fechaLimite" value="2025-01-01" />
-    </div>
-  </div>
+    <!-- <label class="label">Subir Archivo</label>
+    <div class="file">
+      <label class="file-label">
+        <input class="file-input" type="file" name="resume" accept=".csv" />
+        <span class="file-cta">
+          <span class="file-label"> Selecciona un archivo </span>
+        </span>
+      </label>
+    </div> -->
+
+    <label class="label">Fecha Límite:</label>
+    <input type="date" class="input" name="fechaLimite" placeholder="2025-01-01" required/><br><br> 
 
   <!-- Batería de Pruebas -->
   <div class="box">
     <div class="is-flex is-align-items-center mb-3">
       <strong class="mr-auto">Batería de Pruebas</strong>
-      <button onclick="agregarPrueba()" id="button-agregar">
+      <button onclick="agregarPrueba()" id="button-agregar" type="button">
         <img
           src="https://img.icons8.com/m_rounded/512/plus.png"
           width="30"
@@ -60,15 +48,17 @@
     <div class="box has-background-primary">
       <div class="columns">
         <div class="column">
-          <div class="select is-fullwidth">
-            <select name="pruebasOpcion">
-              <option value="" selected disabled>Selecciona una prueba</option>
-              <% pruebas.forEach(prueba => {%>
-              <option value="<%= prueba.nombrePrueba%>">
-                <%= prueba.nombrePrueba%>
-              </option>
-              <%})%>
-            </select>
+          <div>
+            <div class="select is-fullwidth">
+              <select class="pruebasOpcion" required>
+                <option value="" selected disabled>Selecciona una prueba</option>
+                <% pruebas.forEach(prueba => {%>
+                <option name="prueba" value="<%= prueba.nombrePrueba%>">
+                  <%= prueba.nombrePrueba%>
+                </option>
+                <%})%>
+              </select>
+            </div>
           </div>
         </div>
         <div
@@ -83,28 +73,23 @@
   <!-- Botones de acción -->
   <section id="SesionGrupal">
     <div class="title">Sesión Grupal</div>
-    <div class="columns is-mobile">
-      <div class="column">
-        <div class="field">
-          <label class="label">Fecha</label>
-          <div class="control">
-            <input
-              class="input"
-              type="date"
-              name="fechaPruebaGrupal"
-              value="2025-01-01" />
-          </div>
+      <div class="field">
+        <label class="label">Fecha</label>
+        <div class="control">
+          <input
+            class="input"
+            type="date"
+            name="fechaPruebaGrupal"
+            placeholder="2025-01-01" 
+            required/>
         </div>
       </div>
-      <div class="column">
-        <div class="field">
-          <label class="label">Hora</label>
-          <div class="control">
-            <input class="input" type="time" name="horaPruebaGrupal" />
-          </div>
+      <div class="field">
+        <label class="label">Hora</label>
+        <div class="control">
+          <input class="input" type="time" name="horaPruebaGrupal" placeholder="2:00 PM" required/>
         </div>
       </div>
-    </div>
     <div>
       <div class="field">
         <label class="label">Link</label>
@@ -112,8 +97,9 @@
           <input
             class="input"
             type="text"
-            name="enlace_zoom"
-            value="ingresa un link" />
+            name="enlaceZoom"
+            placeholder="ingresa un link" 
+            required/>
         </div>
       </div>
     </div>
@@ -122,11 +108,7 @@
 </form>
 </div>
 
-<div class="buttons is-centered">
-  <a href="inicio"
-    ><button class="button m-5 is-primary has-text-white">Regresar</button></a
-  >
-</div>
+
 
 <script>
   function agregarPrueba() {
@@ -136,17 +118,19 @@
 
     nuevaPrueba.innerHTML = `
       <div class="column">
-          <div class="select is-fullwidth">
-            <select name="pruebasOpcion">
-              <option value="" selected disabled>Selecciona una prueba</option>
-              <% pruebas.forEach(prueba => {%>
-              <option value="<%= prueba.nombrePrueba%>">
-                <%= prueba.nombrePrueba%>
-              </option>
-              <%})%>
-            </select>
+          <div>
+            <div class="select is-fullwidth">
+              <select name="pruebasOpcion" required>
+                <option value="" selected disabled>Selecciona una prueba</option>
+                <% pruebas.forEach(prueba => {%>
+                <option class="prueba" value="<%= prueba.nombrePrueba%>">
+                  <%= prueba.nombrePrueba%>
+                </option>
+                <%})%>
+              </select>
+            </div>
           </div>
-      </div>
+        </div>
       <div class="column is-1" style="text-align: center; margin-top: 5px">
         <button onclick="eliminarPrueba(this)">
           <img src="https://static.thenounproject.com/png/2456540-200.png" width="30" height="30" />
