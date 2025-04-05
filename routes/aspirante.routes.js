@@ -32,7 +32,7 @@ router.get(
 );
 
 router.get(
-  "/datos_aspirante/:idPrueba",
+  "/datosAspirante/:idPrueba",
   isAuth,
   verificarDatosPersonales,
   aspiranteController.get_datosA

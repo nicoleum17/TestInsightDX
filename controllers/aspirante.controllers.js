@@ -49,7 +49,7 @@ exports.get_calendarioA = (request, response, next) => {
 
 exports.get_datosA = (request, response, next) => {
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
-    response.render("datos_aspirante", {
+    response.render("datosAspirante", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
