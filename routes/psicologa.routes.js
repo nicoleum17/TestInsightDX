@@ -40,14 +40,14 @@ router.get(
 );
 
 router.get(
-  "/consulta_respuestas_aspirante",
+  "/consultaRespuestasAspirante",
   isAuth,
   consultarRespuestasAspirante,
   psicologaController.get_respuestasA
 );
 
 router.get(
-  "/consulta_respuestas_grupo",
+  "/consultaRespuestasGrupo",
   isAuth,
   psicologaController.get_respuestasG
 );

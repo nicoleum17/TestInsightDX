@@ -32,7 +32,7 @@ exports.calendario_psicologa = (request, response, next) => {
 };
 exports.get_prueba = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
-    response.render("consulta_prueba", {
+    response.render("consultaPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -79,7 +79,7 @@ exports.get_buscar = (request, response, next) => {
 };
 
 exports.get_respuestasA = (request, response, next) => {
-  response.render("consulta_respuestas_aspirante", {
+  response.render("consultaRespuestasAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -88,7 +88,7 @@ exports.get_respuestasA = (request, response, next) => {
 };
 
 exports.get_respuestasG = (request, response, next) => {
-  response.render("consulta_respuestas_grupo", {
+  response.render("consultaRespuestasGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -178,7 +178,7 @@ exports.elegir_grupo = (request, response, next) => {
 exports.get_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
   Grupo.fetchOneId(numGrupo).then(([rows]) => {
-    response.render("consulta_grupo", {
+    response.render("consultaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
