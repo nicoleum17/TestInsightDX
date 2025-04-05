@@ -127,32 +127,31 @@ exports.crear_grupo = (request, response, next) => {
 };
 
 exports.post_grupo = (request, response, next) => {
-  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
-  mi_grupo
-    .save()
-    .then(() => {
-      request.session.info = `El grupo ${mi_grupo.posgrado} - ${mi_grupo.generacion} se ha creado`;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  console.log(request.body.prueba);
+  // const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
+  // mi_grupo
+  //   .save()
+  //   .then(() => {
+  //     const mi_tienePruebas = new TienePruebas(
+  //       mi_grupo.idGrupo,
+  //       request.body.prueba,
+  //       request.body.fechaLimite + request.body.horaPruebaGrupal,
+  //       request.body.fechaPruebaGrupal,
+  //       request.body.enlaceZoom
+  //     );
 
-  const mi_tienePruebas = new TienePruebas(
-    mi_grupo.id,
-    request.body.prueba,
-    request.body.fecha_limite_prueba,
-    request.body.fechaPruebaGrupal,
-    request.body.enlace_zoom
-  );
-
-  mi_tienePruebas
-    .save(() => {
-      request.session.info = `Las pruebas se han asignado al grupo`;
-      response.redirect("/confirmar_creacion");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  //     mi_tienePruebas
+  //       .save(() => {
+  //         request.session.info = `Las pruebas se han asignado al grupo`;
+  //         response.redirect("/confirmar_creacion");
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {

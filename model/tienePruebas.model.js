@@ -18,7 +18,7 @@ module.exports = class TienePruebas {
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO tienePruebas (id_grupo, id_prueba, fecha_limite_prueba, fecha_prueba_grupal, enlace_zoom) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO tienePruebas (idGrupo, idPrueba, fechaLimitePrueba, fechaPruebaGrupal, enlaceZoom) VALUES (?, ?, ?, ?, ?)",
       [
         this.idGrupo,
         this.idPrueba,
