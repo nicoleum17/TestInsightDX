@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../util/database.js");
 
 module.exports = class Prueba {
   //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo

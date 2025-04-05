@@ -138,4 +138,30 @@ router.post(
   aspiranteController.post_formato_entrevista_preguntasDL
 );
 
+router.get(
+  "/formato_entrevista_familia",
+  isAuth,
+  aspiranteController.formato_entrevista_familia
+);
+
+router.post(
+  "/formato_entrevista_familia",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familia
+);
+
+router.get(
+  "/formato_entrevista_familiar_abueloM",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_abueloM
+);
+
+router.post(
+  "/formato_entrevista_familiar_abueloM",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_abueloM
+);
+
+
+
 module.exports = router;
