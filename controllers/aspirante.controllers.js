@@ -139,7 +139,6 @@ exports.get_preguntasPrueba = (request, response, next) => {
 };
 
 exports.post_siguiente_pregunta = (request, response, next) => {
-  console.log("Request body", request.body);
   const { idOpcionKostick, idGrupo, idUsuario, idPreguntaKostick, tiempo } =
     request.body;
   if (!request.session.index) {

@@ -15,10 +15,19 @@
         </article>
       </div>
     </nav>
+
     <% if (prueba.idPrueba === 1) {%>
-    <div class="container" id="container">
+
+    <div class="container is-max-tablet" id="container">
+      <progress
+        class="progress is-link"
+        max="90"
+        value="<%= pregunta.numeroPreguntaKostick %>"
+        id="progressBar">
+        <%= pregunta.numeroPreguntaKostick %>
+      </progress>
       <% if (pregunta) { %>
-      <p class="subtitle is-2" id="numero-pregunta">
+      <p class="subtitle is-2 mt-3" id="numero-pregunta">
         Pregunta <%= pregunta.numeroPreguntaKostick %>
       </p>
       <input
@@ -28,7 +37,7 @@
         value="<%=pregunta.idPreguntaKostick%>" />
 
       <% if (opciones) { %> <% opciones.forEach(opcion => { %>
-      <div class="control" id="option-<%= opcion.idOpcionKostick %>">
+      <div class="control mt-3" id="option-<%= opcion.idOpcionKostick %>">
         <label class="radio mx-5 subtitle is-4">
           <input
             type="radio"
@@ -56,9 +65,16 @@
       </button>
     </div>
     <%} else if (prueba.idPrueba === 2) {%>
-    <div class="container" id="container">
+    <div class="container is-max-tablet" id="container">
+      <progress
+        class="progress is-link"
+        max="90"
+        value="<%= pregunta.numeroPregunta16PF%>"
+        id="progressBar">
+        <%= pregunta.numeroPregunta16PF %>
+      </progress>
       <% if (pregunta) { %>
-      <p class="subtitle is-2" id="numero-pregunta">
+      <p class="subtitle is-2 mt-3" id="numero-pregunta">
         Pregunta <%= pregunta.numeroPregunta16PF %>
       </p>
       <input
@@ -66,11 +82,11 @@
         name="pregunta16"
         id="pregunta16"
         value="<%=pregunta.idPregunta16PF%>" />
-      <p class="subtitle is-3" id="texto-pregunta">
+      <p class="subtitle is-3 mt-2" id="texto-pregunta">
         <%= pregunta.pregunta16PF %>
       </p>
       <% if (opciones) { %> <% opciones.forEach(opcion => { %>
-      <div class="control" id="option-<%= opcion.idOpcion16PF %>">
+      <div class="control m-3" id="option-<%= opcion.idOpcion16PF %>">
         <label class="radio mx-5 subtitle is-4">
           <input
             type="radio"
@@ -157,7 +173,11 @@
           return response.json();
         })
         .then((data) => {
-          let html = `<div class = "container">`;
+          let html = `    <progress
+      class="progress is-link"
+      max="90"
+      value="${data.pregunta.numeroPreguntaKostick}">${data.pregunta.numeroPreguntaKostick}</progress>
+          <div class = "container">`;
           const questionNumberElement =
             document.getElementById("numero-pregunta");
           html += `<p class="subtitle is-2" id="numero-pregunta">
@@ -264,7 +284,11 @@
           return response.json();
         })
         .then((data) => {
-          let html = `<div class = "container">`;
+          let html = `<progress
+      class="progress is-link"
+      max="185"
+      value="${data.pregunta.numeroPregunta16PF}">${data.pregunta.numeroPregunta16PF}</progress>
+          <div class = "container">`;
           const questionNumberElement =
             document.getElementById("numero-pregunta");
           html += `<p class="subtitle is-2" id="numero-pregunta">
@@ -318,20 +342,21 @@
         });
     }
   </script>
+
+  <script>
+    let duracionMinutos = <%=prueba.duracion%>;
+    let totalSegundos = duracionMinutos * 60;
+    let cuentaRegresiva = setInterval(function() {
+        let horas = Math.floor(totalSegundos / 3600);
+        let minutos = Math.floor((totalSegundos % 3600) / 60);
+        let segundos = totalSegundos % 60;
+        let formatoTiempo = `${horas}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+        document.getElementById("timer").innerHTML = formatoTiempo;
+        totalSegundos--;
+        if (totalSegundos < 0) {
+            clearInterval(cuentaRegresiva);
+            document.getElementById("timer").innerHTML = "TIME UP";
+        }
+    }, 1000);
+  </script>
 </body>
-<script>
-  let duracionMinutos = <%=prueba.duracion%>;
-  let totalSegundos = duracionMinutos * 60;
-  let cuentaRegresiva = setInterval(function() {
-      let horas = Math.floor(totalSegundos / 3600);
-      let minutos = Math.floor((totalSegundos % 3600) / 60);
-      let segundos = totalSegundos % 60;
-      let formatoTiempo = `${horas}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
-      document.getElementById("timer").innerHTML = formatoTiempo;
-      totalSegundos--;
-      if (totalSegundos < 0) {
-          clearInterval(cuentaRegresiva);
-          document.getElementById("timer").innerHTML = "TIME UP";
-      }
-  }, 1000);
-</script>
