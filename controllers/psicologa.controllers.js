@@ -15,7 +15,7 @@ exports.inicio_psicologa = (request, response, next) => {
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
-  response.render("notificaciones_psicologa", {
+  response.render("notificacionesPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),

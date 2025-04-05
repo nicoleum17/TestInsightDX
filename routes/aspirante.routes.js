@@ -12,7 +12,7 @@ const verificarDatosPersonales = require("../util/puedeVerificarDatosPersonales"
 router.get("/inicio", isAuth, inicioAspirante, aspiranteController.get_root);
 
 router.get(
-  "/notificaciones_aspirante",
+  "/notificacionesAspirante",
   isAuth,
   aspiranteController.get_notificacionA
 );

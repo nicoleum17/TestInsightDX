@@ -21,7 +21,7 @@ exports.get_root = (request, response, next) => {
 };
 
 exports.get_notificacionA = (request, response, next) => {
-  response.render("notificaciones_aspirante", {
+  response.render("notificacionesAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
