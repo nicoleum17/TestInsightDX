@@ -97,7 +97,7 @@ exports.get_respuestasG = (request, response, next) => {
 };
 
 exports.sesion_grupal = (request, response, next) => {
-  response.render("sesion_grupal", {
+  response.render("sesionGrupal", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -106,7 +106,7 @@ exports.sesion_grupal = (request, response, next) => {
 };
 
 exports.sesion_individual = (request, response, next) => {
-  response.render("sesion_individual", {
+  response.render("sesionIndividual", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -192,7 +192,7 @@ exports.registra_reporte_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
 
   Grupo.fetchOneId(numGrupo).then(([rows]) => {
-    response.render("registrar_reporte_grupo", {
+    response.render("registrarReporteGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -215,7 +215,7 @@ exports.registra_foda_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
 
   Grupo.fetchOneId(numGrupo).then(([rows]) => {
-    response.render("registrar_foda_grupo", {
+    response.render("registrarFodaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),

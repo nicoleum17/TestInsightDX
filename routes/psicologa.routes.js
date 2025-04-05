@@ -52,9 +52,9 @@ router.get(
   psicologaController.get_respuestasG
 );
 
-router.get("/sesion_grupal", isAuth, psicologaController.sesion_grupal);
+router.get("/sesionGrupal", isAuth, psicologaController.sesion_grupal);
 
-router.get("/sesion_individual", isAuth, psicologaController.sesion_individual);
+router.get("/sesionIndividual", isAuth, psicologaController.sesion_individual);
 
 router.get(
   "/pruebas",
