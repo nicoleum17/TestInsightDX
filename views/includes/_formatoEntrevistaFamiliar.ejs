@@ -1,45 +1,50 @@
-
- <section class="section">
-    <div class="container">
-
-         <h1 class="title is-3">Familia <%= tipoFamiliar %></h1>
-        <div class="interviewFormat columns is-vcentered ml-5"></div>
-        <form action="formato_entrevista_familiar_abueloM" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <input type="hidden" name="idFormato" value="<%= formato %>" />
-            <input type="hidden" name="familia" value="<%= familia %>" />
-            <div class="box" id="contenedorFamiliares">
-                    <div class="column">
-                        <div class="is-flex is-align-items-center mb-3">
-                            <label class="label" for="button-agregar-familiar">Agregar Familiar</label> 
-                            <button  onclick="agregarFamiliar()" id="button-agregar-familiar" type="button">
-                              <img
-                                src="https://img.icons8.com/m_rounded/512/plus.png"
-                                width="30"
-                                height="30" />
-                            </button>
-                          </div>
-                    </div>
-                </div>
-            
-            Hola esto es una prueba
+<section class="section">
+  <div class="container">
+    <h1 class="title is-3">Familia <%= tipoFamiliar %></h1>
+    <div class="interviewFormat columns is-vcentered ml-5"></div>
+    <form action="formatoEntrevistaFamiliarAbueloM" method="POST">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input type="hidden" name="idFormato" value="<%= formato %>" />
+      <input type="hidden" name="familia" value="<%= familia %>" />
+      <div class="box" id="contenedorFamiliares">
+        <div class="column">
+          <div class="is-flex is-align-items-center mb-3">
+            <label class="label" for="button-agregar-familiar"
+              >Agregar Familiar</label
+            >
             <button
-            class="button has-background-primary has-text-warning ml-6"
-            type="submit">
-            Continuar
+              onclick="agregarFamiliar()"
+              id="button-agregar-familiar"
+              type="button"
+            >
+              <img
+                src="https://img.icons8.com/m_rounded/512/plus.png"
+                width="30"
+                height="30"
+              />
             </button>
-        </form> 
-    </div>
+          </div>
+        </div>
+      </div>
+
+      Hola esto es una prueba
+      <button
+        class="button has-background-primary has-text-warning ml-6"
+        type="submit"
+      >
+        Continuar
+      </button>
+    </form>
+  </div>
 </section>
 
 <script>
-    function agregarFamiliar() {
-        console.log("AAAAAAAAA");
-        const cont = document.getElementById("contenedorFamiliares");
-        const nuevoFamiliar = document.createElement("div");
-        nuevoFamiliar.classList.add("tarjeta", "mt-3");
-        nuevoFamiliar.innerHTML = 
-        `
+  function agregarFamiliar() {
+    console.log("AAAAAAAAA");
+    const cont = document.getElementById("contenedorFamiliares");
+    const nuevoFamiliar = document.createElement("div");
+    nuevoFamiliar.classList.add("tarjeta", "mt-3");
+    nuevoFamiliar.innerHTML = `
         <div class="box">
         <div class="columns is-vcentered ml-5">
                         <div class="column">
@@ -98,10 +103,10 @@
                     </div>
                     </div>
         `;
-        cont.appendChild(nuevoFamiliar);
-    }
+    cont.appendChild(nuevoFamiliar);
+  }
 
-    function eliminarFamiliar(boton) {
+  function eliminarFamiliar(boton) {
     boton.closest(".tarjeta").remove();
   }
 </script>

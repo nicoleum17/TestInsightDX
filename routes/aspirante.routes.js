@@ -64,26 +64,26 @@ router.post(
 );
 
 router.get(
-  "/formato_entrevista",
+  "/formatoEntrevista",
   isAuth,
   registrarRespuestasFE,
   aspiranteController.formato_entrevista
 );
 
 router.post(
-  "/formato_entrevista",
+  "/formatoEntrevista",
   isAuth,
   aspiranteController.post_formato_entrevista
 );
 
 router.get(
-  "/formato_entrevista_preguntasP",
+  "/formatoEntrevistaPreguntasP",
   isAuth,
   aspiranteController.formato_entrevista_preguntasP
 );
 
 router.post(
-  "/post_formato_entrevista_preguntasP",
+  "/post_formatoEntrevistaPreguntasP",
   isAuth,
   aspiranteController.post_formato_entrevista_preguntasP
 );
@@ -103,13 +103,13 @@ router.post(
 );
 
 router.get(
-  "/formato_entrevista_preguntasDA",
+  "/formatoEntrevistaPreguntasDA",
   isAuth,
   aspiranteController.formato_entrevista_preguntasDA
 );
 
 router.post(
-  "/formato_entrevista_preguntasDA",
+  "/formatoEntrevistaPreguntasDA",
   isAuth,
   aspiranteController.post_formato_entrevista_preguntasDA
 );
@@ -127,37 +127,37 @@ router.post(
 );
 
 router.get(
-  "/formato_entrevista_preguntasDL",
+  "/formatoEntrevistaPreguntasDL",
   isAuth,
   aspiranteController.formato_entrevista_preguntasDL
 );
 
 router.post(
-  "/formato_entrevista_preguntasDL",
+  "/formatoEntrevistaPreguntasDL",
   isAuth,
   aspiranteController.post_formato_entrevista_preguntasDL
 );
 
 router.get(
-  "/formato_entrevista_familia",
+  "/formatoEntrevistaFamilia",
   isAuth,
   aspiranteController.formato_entrevista_familia
 );
 
 router.post(
-  "/formato_entrevista_familia",
+  "/formatoEntrevistaFamilia",
   isAuth,
   aspiranteController.post_formato_entrevista_familia
 );
 
 router.get(
-  "/formato_entrevista_familiar_abueloM",
+  "/formatoEntrevistaFamiliarAbueloM",
   isAuth,
   aspiranteController.formato_entrevista_familiar_abueloM
 );
 
 router.post(
-  "/formato_entrevista_familiar_abueloM",
+  "/formatoEntrevistaFamiliarAbueloM",
   isAuth,
   aspiranteController.post_formato_entrevista_familiar_abueloM
 );

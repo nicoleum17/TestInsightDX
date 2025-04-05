@@ -227,7 +227,7 @@ exports.post_siguiente_pregunta1 = (request, response, next) => {
 };
 
 exports.formato_entrevista = (request, response, next) => {
-  response.render("formato_entrevista", {
+  response.render("formatoEntrevista", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -255,7 +255,7 @@ exports.post_formato_entrevista = (request, response, next) => {
     .save()
     .then((uuid) => {
       request.session.idFormato = uuid;
-      response.redirect("formato_entrevista_preguntasP");
+      response.redirect("formatoEntrevistaPreguntasP");
     })
     .catch((error) => {
       console.log(error);
@@ -263,7 +263,7 @@ exports.post_formato_entrevista = (request, response, next) => {
 };
 
 exports.formato_entrevista_preguntasP = (request, response, next) => {
-  response.render("formato_entrevista_preguntasP", {
+  response.render("formatoEntrevistaPreguntasP", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -287,7 +287,7 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       .save()
       .then((id) => {
         request.session.idFormato = id;
-        response.redirect("formato_entrevista_familia");
+        response.redirect("formatoEntrevistaFamilia");
         console.log("Pregunta_Guardada");
       })
       .catch((error) => {
@@ -328,7 +328,7 @@ exports.post_formato_entrevista_DA = (request, response, next) => {
     )
     .then((id) => {
       request.session.idFormato = id;
-      response.redirect("formato_entrevista_preguntasDA");
+      response.redirect("formatoEntrevistaPreguntasDA");
       console.log("Datos_academicos_Guardados");
     })
     .catch((error) => {
@@ -337,7 +337,7 @@ exports.post_formato_entrevista_DA = (request, response, next) => {
 };
 
 exports.formato_entrevista_preguntasDA = (request, response, next) => {
-  response.render("formato_entrevista_preguntasDA", {
+  response.render("formatoEntrevistaPreguntasDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -398,7 +398,7 @@ exports.post_formato_entrevista_DL = (request, response, next) => {
     )
     .then((id) => {
       request.session.idFormato = id;
-      response.redirect("formato_entrevista_preguntasDL");
+      response.redirect("formatoEntrevistaPreguntasDL");
       console.log("Datos_Laborales_Guardados");
     })
     .catch((error) => {
@@ -407,7 +407,7 @@ exports.post_formato_entrevista_DL = (request, response, next) => {
 };
 
 exports.formato_entrevista_preguntasDL = (request, response, next) => {
-  response.render("formato_entrevista_preguntasDL", {
+  response.render("formatoEntrevistaPreguntasDL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -441,7 +441,7 @@ exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
 };
 
 exports.formato_entrevista_familia = (request, response, next) => {
-  response.render("formato_entrevista_familia", {
+  response.render("formatoEntrevistaFamilia", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -457,7 +457,7 @@ exports.post_formato_entrevista_familia = (request, response, next) => {
     .then((idFormato, idFamilia) => {
       request.session.idFormato = idFormato;
       request.session.idFamilia = idFamilia;
-      response.redirect("formato_entrevista_familiar_abueloM");
+      response.redirect("formatoEntrevistaFamiliarAbueloM");
       console.log(request.body.idFormato, request.body.idFamilia);
     })
     .catch((error) => {
@@ -466,7 +466,7 @@ exports.post_formato_entrevista_familia = (request, response, next) => {
 };
 
 exports.formato_entrevista_familiar_abueloM = (request, response, next) => {
-  response.render("formato_entrevista_familiar", {
+  response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),

@@ -166,7 +166,7 @@
     <div class="interviewFormat columns is-vcentered ml-5"></div>
     <br /><br />
     <h3 class="title is-4">Datos Personales</h3>
-    <form action="formato_entrevista" method="POST">
+    <form action="formatoEntrevista" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <div class="columns is-vcentered ml-5">
         <div class="column">
@@ -176,9 +176,9 @@
             type="text"
             placeholder="García"
             id="apellidoP"
-            name="apellidoP" 
-            required />
-            
+            name="apellidoP"
+            required
+          />
         </div>
         <div class="column">
           <label for="apellidoMaterno" class="label">Apellido Materno:</label>
@@ -187,8 +187,9 @@
             type="text"
             placeholder="López"
             id="apellidoM"
-            name="apellidoM" 
-            required />
+            name="apellidoM"
+            required
+          />
         </div>
         <div class="column">
           <label for="name" class="label">Nombre:</label>
@@ -197,8 +198,9 @@
             type="text"
             placeholder="Arturo"
             id="nombre"
-            name="nombre" 
-            required />
+            name="nombre"
+            required
+          />
         </div>
       </div>
       <br />
@@ -210,7 +212,8 @@
             type="date"
             id="fechaNacimiento"
             name="fechaNacimiento"
-            required />
+            required
+          />
         </div>
         <div class="column is-offset-5">
           <label for="age" class="label">Edad (años cumplidos):</label>
@@ -230,7 +233,8 @@
             placeholder="Mexicana"
             id="nacionalidad"
             name="nacionalidad"
-            required />
+            required
+          />
         </div>
         <div class="column is-one-third">
           <label for="origin" class="label">Originario de:</label>
@@ -240,7 +244,8 @@
             placeholder="Guerrero"
             id="origen"
             name="origen"
-            required />
+            required
+          />
         </div>
         <div class="column is-one-third">
           <label for="gender" class="label">Género:</label>
@@ -250,7 +255,8 @@
             placeholder="Mujer"
             id="genero"
             name="genero"
-            required />
+            required
+          />
         </div>
       </div>
       <br />
@@ -277,7 +283,8 @@
             placeholder="Calle del Mármol #32"
             id="dirrecionA"
             name="direccionA"
-            required />
+            required
+          />
         </div>
       </div>
       <br />
@@ -290,7 +297,8 @@
             placeholder="123 456 7890"
             id="celular"
             name="celular"
-            required />
+            required
+          />
         </div>
         <div class="column is-one-third">
           <label for="phone" class="label">Teléfono(s):</label>
@@ -300,7 +308,8 @@
             placeholder="123 456 7890"
             id="telefono"
             name="telefono"
-            required />
+            required
+          />
         </div>
         <div class="column is-one-third">
           <label for="email" class="label">Correo:</label>
@@ -310,14 +319,16 @@
             placeholder="ejemplo@gmail.com"
             id="correo"
             name="correo"
-            required />
+            required
+          />
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <button
             class="button has-background-primary has-text-warning ml-6"
-            type="submit">
+            type="submit"
+          >
             Continuar
           </button>
         </div>
