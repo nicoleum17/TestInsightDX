@@ -25,7 +25,7 @@ router.get(
 );
 
 router.get(
-  "/calendario_aspirante",
+  "/calendarioAspirante",
   isAuth,
   consultarCalendario,
   aspiranteController.get_calendarioA
@@ -161,7 +161,5 @@ router.post(
   isAuth,
   aspiranteController.post_formato_entrevista_familiar_abueloM
 );
-
-
 
 module.exports = router;

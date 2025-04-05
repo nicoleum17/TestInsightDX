@@ -23,7 +23,7 @@ exports.notificaciones_psicologa = (request, response, next) => {
   });
 };
 exports.calendario_psicologa = (request, response, next) => {
-  response.render("calendario_psicologa", {
+  response.render("calendarioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
