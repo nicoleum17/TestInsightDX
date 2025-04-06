@@ -127,31 +127,45 @@ exports.crear_grupo = (request, response, next) => {
 };
 
 exports.post_grupo = (request, response, next) => {
-  console.log(request.body.prueba);
-  // const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
-  // mi_grupo
-  //   .save()
-  //   .then(() => {
-  //     const mi_tienePruebas = new TienePruebas(
-  //       mi_grupo.idGrupo,
-  //       request.body.prueba,
-  //       request.body.fechaLimite + request.body.horaPruebaGrupal,
-  //       request.body.fechaPruebaGrupal,
-  //       request.body.enlaceZoom
-  //     );
+  console.log(request.body);
 
-  //     mi_tienePruebas
-  //       .save(() => {
-  //         request.session.info = `Las pruebas se han asignado al grupo`;
-  //         response.redirect("/confirmarCreacion");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
+  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
+
+  mi_grupo
+    .save()
+    .then(() => {
+      const pruebas = Array.isArray(request.body.pruebasOpcion)
+        ? request.body.pruebasOpcion
+        : [request.body.pruebasOpcion];
+
+      const promesas = pruebas.map((prueba) => {
+        return Prueba.fetchOneNombre(prueba).then(([rows]) => {
+          const idPrueba = rows[0]?.idPrueba;
+
+          const mi_tienePruebas = new TienePruebas(
+            mi_grupo.idGrupo,
+            idPrueba,
+            request.body.fechaLimite,
+            request.body.fechaPruebaGrupal +
+              " " +
+              request.body.horaPruebaGrupal,
+            request.body.enlaceZoom
+          );
+
+          return mi_tienePruebas.save();
+        });
+      });
+
+      return Promise.all(promesas);
+    })
+    .then(() => {
+      request.session.info = `Las pruebas se han asignado al grupo`;
+      response.redirect("grupo/confirmarCreacion");
+    })
+    .catch((error) => {
+      console.log("Error al crear grupo o asignar pruebas:", error);
+      response.status(500).send("Error al procesar la creación del grupo.");
+    });
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {

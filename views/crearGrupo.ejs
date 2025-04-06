@@ -50,10 +50,10 @@
         <div class="column">
           <div>
             <div class="select is-fullwidth">
-              <select class="pruebasOpcion" required>
-                <option value="" selected disabled>Selecciona una prueba</option>
+              <select name="pruebasOpcion" required>
+                <option value="" selected disabled>Selecciona una de las pruebas</option>
                 <% pruebas.forEach(prueba => {%>
-                <option name="prueba" value="<%= prueba.nombrePrueba%>">
+                <option value="<%= prueba.nombrePrueba%>">
                   <%= prueba.nombrePrueba%>
                 </option>
                 <%})%>

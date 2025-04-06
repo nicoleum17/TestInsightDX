@@ -23,7 +23,7 @@ module.exports = class TienePruebas {
         this.idGrupo,
         this.idPrueba,
         this.fechaLimitePrueba,
-        this.fechaLimitePrueba,
+        this.fechaPruebaGrupal,
         this.enlaceZoom,
       ]
     );

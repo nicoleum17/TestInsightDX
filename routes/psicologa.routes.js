@@ -73,7 +73,7 @@ router.post(
 );
 
 router.get(
-  "/confirmarCreacionGrupo",
+  "/grupo/confirmarCreacion",
   isAuth,
   confirmarCrearGrupo,
   psicologaController.confirmar_creacion_grupo
