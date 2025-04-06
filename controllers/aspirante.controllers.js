@@ -546,7 +546,8 @@ exports.formato_entrevista_familiar_abueloM = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Maternos",
-    rutaPost: "AbueloM"
+    rutaPost: "AbueloM",
+    omitirRuta: "AbueloP"
   });
 };
 
@@ -558,7 +559,8 @@ exports.formato_entrevista_familiar_abueloP = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Paternos",
-    rutaPost: "AbueloP"
+    rutaPost: "AbueloP",
+    omitirRuta: "TioM"
   });
 };
 
@@ -570,7 +572,8 @@ exports.formato_entrevista_familiar_TioM = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Maternos/as",
-    rutaPost: "TioM"
+    rutaPost: "TioM",
+    omitirRuta: "TioP"
   });
 };
 
@@ -582,7 +585,8 @@ exports.formato_entrevista_familiar_TioP = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Paternos/as",
-    rutaPost: "TioP"
+    rutaPost: "TioP",
+    omitirRuta: "Padres"
   });
 };
 
@@ -594,7 +598,8 @@ exports.formato_entrevista_familiar_Padres = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Padres",
-    rutaPost: "Padres"
+    rutaPost: "Padres",
+    omitirRuta: "Pareja"
   });
 };
 
@@ -606,7 +611,8 @@ exports.formato_entrevista_familiar_Pareja = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Pareja",
-    rutaPost: "Pareja"
+    rutaPost: "Pareja",
+    omitirRuta: "Hijos"
   });
 };
 
@@ -618,7 +624,8 @@ exports.formato_entrevista_familiar_Hijos = (request, response, next) => {
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Hijos",
-    rutaPost: "Hijos"
+    rutaPost: "Hijos",
+    omitirRuta: "/aspirante/formatoEntrevistaPreguntasDA"
   });
 };
 
@@ -632,30 +639,35 @@ exports.post_formato_entrevista_familiar_abueloM = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Abuelo/a Materno/a",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("AbueloP");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
+  if (!request.body.nombreFamiliar){
+    response.redirect("AbueloM");
+  }
+  else{
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Abuelo/a Materno/a",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("AbueloP");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+      };
+    }
   };
-};
 
 exports.post_formato_entrevista_familiar_abueloP = (
   request,
@@ -666,29 +678,34 @@ exports.post_formato_entrevista_familiar_abueloP = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Abuelo/a Paterno/a",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("TioM");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
-  };
+  if (!request.body.nombreFamiliar){
+    response.redirect("AbueloP");
+  }
+  else {
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Abuelo/a Paterno/a",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("TioM");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+    };
+  }
 };
 
 exports.post_formato_entrevista_familiar_TioM = (
@@ -700,29 +717,34 @@ exports.post_formato_entrevista_familiar_TioM = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Tio/a Materno/a",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("TioP");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
-  };
+  if (!request.body.nombreFamiliar){
+    response.redirect("TioM");
+  }
+  else{
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Tio/a Materno/a",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("TioP");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+    };
+  }
 };
 
 exports.post_formato_entrevista_familiar_TioP = (
@@ -734,29 +756,34 @@ exports.post_formato_entrevista_familiar_TioP = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Tio/a Paterno/a",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("Padres");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
-  };
+  if (!request.body.nombreFamiliar){
+    response.redirect("TioP");
+  }
+  else{
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Tio/a Paterno/a",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("Padres");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+    };
+  }
 };
 
 exports.post_formato_entrevista_familiar_Padres = (
@@ -768,29 +795,34 @@ exports.post_formato_entrevista_familiar_Padres = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Padre/Madre",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("Pareja");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
-  };
+  if (!request.body.nombreFamiliar){
+    response.redirect("Padres");
+  }
+  else{
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Padre/Madre",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("Pareja");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+    };
+  }
 };
 
 exports.post_formato_entrevista_familiar_Pareja = (
@@ -802,29 +834,34 @@ exports.post_formato_entrevista_familiar_Pareja = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Pareja",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("Hijos");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
-  };
+  if (!request.body.nombreFamiliar){
+    response.redirect("Pareja");
+  }
+  else{
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Pareja",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("Hijos");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+    };
+  }
 };
 
 exports.post_formato_entrevista_familiar_Hijos = (
@@ -836,29 +873,34 @@ exports.post_formato_entrevista_familiar_Hijos = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  let contador = 0;
-  for (const a in nombres){
-    const newFamiliar = new familiar(
-      nombres[contador],
-      edades[contador],
-      generos[contador],
-      estadosCiviles[contador],
-      request.body.familia,
-      "Hijo/a",
-      request.session.idFormato
-    )
-    newFamiliar
-      .save()
-      .then(({idFormato, idFamilia}) => {
-        request.session.idFormato = idFormato;
-        request.session.idFamilia = idFamilia;
-        response.redirect("/aspirante/formatoEntrevistaPreguntasDA");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      contador += 1;
-  };
+  if (!request.body.nombreFamiliar){
+    response.redirect("Hijos");
+  }
+  else{
+    let contador = 0;
+    for (const a in nombres){
+      const newFamiliar = new familiar(
+        nombres[contador],
+        edades[contador],
+        generos[contador],
+        estadosCiviles[contador],
+        request.body.familia,
+        "Hijo/a",
+        request.session.idFormato
+      )
+      newFamiliar
+        .save()
+        .then(({idFormato, idFamilia}) => {
+          request.session.idFormato = idFormato;
+          request.session.idFamilia = idFamilia;
+          response.redirect("/aspirante/formatoEntrevistaPreguntasDA");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        contador += 1;
+    };
+  }
 };
 //exports.post_formato_entrevista = (request,response,next) => {
 
