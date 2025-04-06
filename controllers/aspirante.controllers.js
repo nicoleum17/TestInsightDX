@@ -184,7 +184,6 @@ exports.post_siguiente_pregunta = (request, response, next) => {
 };
 
 exports.post_siguiente_pregunta1 = (request, response, next) => {
-  console.log("Request body1", request.body);
   const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
     request.body;
   if (!request.session.index) {
@@ -224,6 +223,78 @@ exports.post_siguiente_pregunta1 = (request, response, next) => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+exports.pruebaCompletada = (request, response, next) => {
+  const { idOpcionKostick, idGrupo, idUsuario, idPreguntaKostick, tiempo } =
+    request.body;
+
+  if (!request.session.index) {
+    return response.redirect("/login");
+  }
+
+  const newRespondeKostick = new RespondeKostick(
+    idPreguntaKostick,
+    idGrupo,
+    idUsuario,
+    idOpcionKostick,
+    tiempo
+  );
+
+  newRespondeKostick
+    .save()
+    .then((uuid) => {
+      request.session.idPregunta16PF = uuid;
+      request.session.idGrupo = uuid;
+      request.session.idUsuario = uuid;
+      return response.status(200).json({
+        message: "Prueba completada exitosamente",
+      });
+    })
+    .catch((error) => {
+      console.error("Error saving response:", error);
+      response.status(500).json({ message: "Error saving response." });
+    });
+};
+
+exports.pruebaCompletada1 = (request, response, next) => {
+  const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
+    request.body;
+  if (!request.session.index) {
+    return response.redirect("/login");
+  }
+  request.session.index++;
+
+  const newResponde16pf = new Responde16PF(
+    request.body.idPregunta16PF,
+    request.body.idGrupo,
+    request.body.idUsuario,
+    request.body.idOpcion16PF,
+    request.body.tiempo
+  );
+  newResponde16pf
+    .save()
+    .then((uuid) => {
+      request.session.idPregunta16PF = uuid;
+      request.session.idGrupo = uuid;
+      request.session.idUsuario = uuid;
+      return response.status(200).json({
+        message: "Prueba completada exitosamente",
+      });
+    })
+    .catch((error) => {
+      console.error("Error saving response:", error);
+      response.status(500).json({ message: "Error saving response." });
+    });
+};
+
+exports.get_pruebaCompletada = (request, response, next) => {
+  response.render("finPrueba", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    privilegios: request.session.privilegios || [],
+  });
 };
 
 exports.formato_entrevista = (request, response, next) => {

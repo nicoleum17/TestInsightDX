@@ -57,10 +57,24 @@ router.post(
   aspiranteController.post_siguiente_pregunta
 );
 
+router.post("/pruebaCompletada", isAuth, aspiranteController.pruebaCompletada);
+
+router.get(
+  "/pruebaCompletada",
+  isAuth,
+  aspiranteController.get_pruebaCompletada
+);
+
 router.post(
   "/siguiente_pregunta1",
   isAuth,
   aspiranteController.post_siguiente_pregunta1
+);
+
+router.post(
+  "/pruebaCompletada1",
+  isAuth,
+  aspiranteController.pruebaCompletada1
 );
 
 router.get(
