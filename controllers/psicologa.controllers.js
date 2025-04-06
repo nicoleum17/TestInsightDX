@@ -159,8 +159,13 @@ exports.post_grupo = (request, response, next) => {
       return Promise.all(promesas);
     })
     .then(() => {
-      request.session.info = `Las pruebas se han asignado al grupo`;
-      response.redirect("grupo/confirmarCreacion");
+      request.session.info = "Grupo creado exitosamente";
+      request.session.grupoCreado = {
+        id: mi_grupo.idGrupo,
+        posgrado: mi_grupo.posgrado,
+        generacion: mi_grupo.generacion,
+      };
+      response.redirect("/psicologa/grupo/confirmarCreacion");
     })
     .catch((error) => {
       console.log("Error al crear grupo o asignar pruebas:", error);
@@ -169,11 +174,20 @@ exports.post_grupo = (request, response, next) => {
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {
+  const info = request.session.info;
+  const grupo = request.session.grupoCreado;
+
+  // Limpiar sesión
+  delete request.session.info;
+  delete request.session.grupoCreado;
+
   response.render("confirmarCreacionGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
+    info: info,
+    grupo: grupo,
   });
 };
 

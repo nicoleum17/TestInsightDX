@@ -6,13 +6,29 @@
   }
 </style>
 <section class="section fullHeight">
-  <h1>Confirmar Creación de Grupo</h1>
-  <p>
-    Grupo: Maestría en Diseño Multimedia con orientación en Aplicaciones Web y
-    Móviles. <br />
-    Generación: Ene-Jun 2025 <br />
-    Total de aspirantes: 8
-  </p>
+ 
+  <div class="container mt-5">
+    <% if (info) { %>
+      <article class="message is-success">
+        <div class="message-header">
+          <p>Éxito</p>
+          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+        <div class="message-body">
+          <%= info %>
+        </div>
+      </article>
+    <% } %>
+
+    <% if (grupo) { %>
+      <div class="box">
+        <h3 class="title is-4">Detalles del Grupo</h3>
+        <p><strong>ID del Grupo:</strong> <%= grupo.id %></p>
+        <p><strong>Posgrado:</strong> <%= grupo.posgrado %></p>
+        <p><strong>Generación:</strong> <%= grupo.generacion %></p>
+      </div>
+    <% } %>
+  </div>
 
   <div class="buttons is-centered">
     <a href="/psicologa/crearGrupo"

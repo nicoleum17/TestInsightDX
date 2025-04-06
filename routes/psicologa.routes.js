@@ -65,18 +65,18 @@ router.get(
 
 router.get("/crearGrupo", isAuth, crearGrupo, psicologaController.crear_grupo);
 
-router.post(
-  "/confirmarCreacionGrupo",
-  isAuth,
-  crearGrupo,
-  psicologaController.post_grupo
-);
-
 router.get(
   "/grupo/confirmarCreacion",
   isAuth,
   confirmarCrearGrupo,
   psicologaController.confirmar_creacion_grupo
+);
+
+router.post(
+  "/grupo/confirmarCreacion",
+  isAuth,
+  confirmarCrearGrupo,
+  psicologaController.post_grupo
 );
 
 router.get("/grupo/elegir", isAuth, psicologaController.elegir_grupo);
