@@ -45,8 +45,7 @@ exports.post_login = (request, response, next) => {
                   } else if (rows[0].idRol === 2) {
                     Usuario.getGrupo(rows[0].idUsuario).then(([grupo]) => {
                       (request.session.grupo = grupo[0].idGrupo),
-                        console.log(request.session.grupo);
-                      response.redirect("/aspirante/inicio");
+                        response.redirect("/aspirante/inicio");
                     });
                   }
                 }
