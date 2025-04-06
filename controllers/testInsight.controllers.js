@@ -58,7 +58,7 @@ exports.post_login = (request, response, next) => {
                 request.session.warning = `Por favor contácte a los administradores para verificar sus credenciales`;
                 response.redirect("/login");
               } else {
-                request.session.warning = `Contraseña incorrecta`;
+                request.session.warning = `Usuario y/o contraseña incorrectos`;
                 response.redirect("/login");
               }
             }
@@ -73,7 +73,7 @@ exports.post_login = (request, response, next) => {
           request.session.warning = `Por favor contácte a los administradores para verificar sus credenciales`;
           response.redirect("/login");
         } else {
-          request.session.warning = `Usuario no se encuentra registrado`;
+          request.session.warning = `Usuario y/o contraseña incorrectos`;
           response.redirect("/login");
         }
       }

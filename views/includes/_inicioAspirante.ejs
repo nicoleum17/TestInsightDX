@@ -60,13 +60,3 @@
           
        
     </section>
-    <script>
-      const deleteButtons = document.querySelectorAll('.delete');
-        deleteButtons.forEach(button => {
-          button.addEventListener('click', function() {
-              const articleToDelete = this.closest('article');
-                  articleToDelete.remove();
-              
-          });
-      });
-  </script>
