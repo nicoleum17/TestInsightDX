@@ -151,15 +151,86 @@ router.post(
 );
 
 router.get(
-  "/formatoEntrevistaFamiliarAbueloM",
+  "/formatoEntrevista/Familiar/AbueloM",
   isAuth,
   aspiranteController.formato_entrevista_familiar_abueloM
 );
 
+router.get(
+  "/formatoEntrevista/Familiar/AbueloP",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_abueloP
+);
+
+router.get(
+  "/formatoEntrevista/Familiar/TioM",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_TioM
+);
+
+router.get(
+  "/formatoEntrevista/Familiar/TioP",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_TioP
+);
+
+router.get(
+  "/formatoEntrevista/Familiar/Padres",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_Padres
+);
+
+router.get(
+  "/formatoEntrevista/Familiar/Pareja",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_Pareja
+);
+
+router.get(
+  "/formatoEntrevista/Familiar/Hijos",
+  isAuth,
+  aspiranteController.formato_entrevista_familiar_Hijos
+);
+
 router.post(
-  "/formatoEntrevistaFamiliarAbueloM",
+  "/formatoEntrevista/Familiar/AbueloM",
   isAuth,
   aspiranteController.post_formato_entrevista_familiar_abueloM
 );
 
+router.post(
+  "/formatoEntrevista/Familiar/AbueloP",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_abueloP
+);
+
+router.post(
+  "/formatoEntrevista/Familiar/TioM",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_TioM
+);
+
+router.post(
+  "/formatoEntrevista/Familiar/TioP",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_TioP
+);
+
+router.post(
+  "/formatoEntrevista/Familiar/Padres",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_Padres
+);
+
+router.post(
+  "/formatoEntrevista/Familiar/Pareja",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_Pareja
+);
+
+router.post(
+  "/formatoEntrevista/Familiar/Hijos",
+  isAuth,
+  aspiranteController.post_formato_entrevista_familiar_Hijos
+);
 module.exports = router;

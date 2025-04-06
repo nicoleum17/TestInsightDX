@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title is-3">Familia <%= tipoFamiliar %></h1>
     <div class="interviewFormat columns is-vcentered ml-5"></div>
-    <form action="formatoEntrevistaFamiliarAbueloM" method="POST">
+    <form action= "<%= rutaPost %>" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
       <input type="hidden" name="familia" value="<%= familia %>" />
@@ -75,8 +75,8 @@
                             class="input"
                             type="text"
                             placeholder="Hombre"
-                            id="edad"
-                            name="edad"
+                            id="genero"
+                            name="genero"
                             required />
                         </div>
                     </div>

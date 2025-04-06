@@ -15,7 +15,9 @@ module.exports = class familia {
         console.log(this.idFamilia)
         return db.execute("INSERT INTO familia(idFormato,idFamilia) VALUES (?,?)", [this.idFormato,this.idFamilia])
         .then(([result]) => {
-            return this.idFormato, this.idFamilia;
+            return {
+                idFormato: this.idFormato,
+                idFamilia: this.idFamilia};
           });
     }
 };
