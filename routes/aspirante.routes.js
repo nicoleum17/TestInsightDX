@@ -38,6 +38,8 @@ router.get(
   aspiranteController.get_datosA
 );
 
+router.post("/datosA", isAuth, aspiranteController.post_datosA);
+
 router.get(
   "/instruccionesPrueba/:idPrueba",
   isAuth,
