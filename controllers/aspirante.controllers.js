@@ -308,6 +308,7 @@ exports.formato_entrevista = (request, response, next) => {
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
+  console.log(request.body)
   const newFormato = new formatoEntrevista(
     request.body.apellidoP,
     request.body.apellidoM,
@@ -321,7 +322,8 @@ exports.post_formato_entrevista = (request, response, next) => {
     request.body.direccionA,
     request.body.celular,
     request.body.telefono,
-    request.body.correo
+    request.body.correo,
+    request.body.usuario
   );
   newFormato
     .save()

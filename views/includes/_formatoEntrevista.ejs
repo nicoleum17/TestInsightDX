@@ -168,6 +168,7 @@
     <h3 class="title is-4">Datos Personales</h3>
     <form action="formatoEntrevista" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input type="hidden" name="usuario" value="<%= usuario %>" />
       <div class="columns is-vcentered ml-5">
         <div class="column">
           <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
@@ -265,7 +266,7 @@
           <label for="maritalStatus" class="label">Estado Civil:</label>
           <div class="select is-primary">
             <select name="estadoCivil" id="maritalStatus" required>
-              <option disabled hidden selected>Seleccione una opción</option>
+              <option value= "" disabled hidden selected>Seleccione una opción</option>
               <option value="soltero">Soltero/a</option>
               <option value="casado">Casado/a</option>
               <option value="divorciado">Divorciado/a</option>

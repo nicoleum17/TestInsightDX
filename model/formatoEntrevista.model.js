@@ -4,9 +4,10 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = class formatoEntrevista {
   constructor(
-    mi_nombre,
+    
     mi_apellidoP,
     mi_apellidoM,
+    mi_nombre,
     mi_fechaNacimiento,
     mi_genero,
     mi_edad,
@@ -17,7 +18,7 @@ module.exports = class formatoEntrevista {
     mi_celular,
     mi_telefono,
     mi_correo,
-    mi_estatus
+    mi_usuario
   ) {
     this.idFormato = uuidv4();
     this.nombre = mi_nombre;
@@ -33,7 +34,9 @@ module.exports = class formatoEntrevista {
     this.celular = mi_celular;
     this.telefono = mi_telefono;
     this.correo = mi_correo;
-    this.estatus = mi_estatus;
+    this.usuario = mi_usuario;
+    this.estatus = "Empezado";
+
   }
   save() {
     return db
@@ -54,8 +57,8 @@ module.exports = class formatoEntrevista {
           this.celular,
           this.correo,
           this.direccionA,
-          "aa",
-          "Empezado",
+          this.usuario,
+          this.estatus
         ]
       )
       .then(([result]) => {
