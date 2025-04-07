@@ -33,28 +33,28 @@ router.get(
 );
 
 router.get(
-  "/consulta_aspirante",
+  "/consultaAspirante",
   isAuth,
   consultarAspirante,
   psicologaController.get_aspirantes
 );
 
 router.get(
-  "/consulta_respuestas_aspirante",
+  "/consultaRespuestasAspirante",
   isAuth,
   consultarRespuestasAspirante,
   psicologaController.get_respuestasA
 );
 
 router.get(
-  "/consulta_respuestas_grupo",
+  "/consultaRespuestasGrupo",
   isAuth,
   psicologaController.get_respuestasG
 );
 
-router.get("/sesion_grupal", isAuth, psicologaController.sesion_grupal);
+router.get("/sesionGrupal", isAuth, psicologaController.sesion_grupal);
 
-router.get("/sesion_individual", isAuth, psicologaController.sesion_individual);
+router.get("/sesionIndividual", isAuth, psicologaController.sesion_individual);
 
 router.get(
   "/pruebas",
@@ -63,13 +63,20 @@ router.get(
   psicologaController.get_prueba
 );
 
-router.get("/crear_grupo", isAuth, crearGrupo, psicologaController.crear_grupo);
+router.get("/crearGrupo", isAuth, crearGrupo, psicologaController.crear_grupo);
 
 router.get(
-  "/confirmar_creacion_grupo",
+  "/grupo/confirmarCreacion",
   isAuth,
   confirmarCrearGrupo,
   psicologaController.confirmar_creacion_grupo
+);
+
+router.post(
+  "/grupo/confirmarCreacion",
+  isAuth,
+  confirmarCrearGrupo,
+  psicologaController.post_grupo
 );
 
 router.get("/grupo/elegir", isAuth, psicologaController.elegir_grupo);
@@ -102,7 +109,7 @@ router.post(
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
-router.get('/buscar/:valor', isAuth, psicologaController.get_buscar);
-router.get('/buscar', isAuth, psicologaController.get_buscar);
+router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
+router.get("/buscar", isAuth, psicologaController.get_buscar);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../util/database.js");
 
 module.exports = class Prueba {
   //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
@@ -20,6 +20,12 @@ module.exports = class Prueba {
   //Este método servirá para devolver los objetos del almacenamiento persistente.
   static fetchOne(idPrueba) {
     return db.execute("SELECT * FROM Pruebas WHERE idPrueba = ?", [idPrueba]);
+  }
+
+  static fetchOneNombre(nombrePrueba) {
+    return db.execute("SELECT idPrueba FROM Pruebas WHERE nombrePrueba = ?", [
+      nombrePrueba,
+    ]);
   }
 
   static fetchAll() {

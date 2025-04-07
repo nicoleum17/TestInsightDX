@@ -4,9 +4,10 @@ const db = require("../util/database");
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
+const TienePruebas = require("../model/tienePruebas.model");
 
 exports.inicio_psicologa = (request, response, next) => {
-  response.render("inicio_psicologa", {
+  response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -14,7 +15,7 @@ exports.inicio_psicologa = (request, response, next) => {
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
-  response.render("notificaciones_psicologa", {
+  response.render("notificacionesPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -22,7 +23,7 @@ exports.notificaciones_psicologa = (request, response, next) => {
   });
 };
 exports.calendario_psicologa = (request, response, next) => {
-  response.render("calendario_psicologa", {
+  response.render("calendarioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -31,7 +32,7 @@ exports.calendario_psicologa = (request, response, next) => {
 };
 exports.get_prueba = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
-    response.render("consulta_prueba", {
+    response.render("consultaPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -42,42 +43,43 @@ exports.get_prueba = (request, response, next) => {
 };
 
 exports.get_aspirantes = (request, response, next) => {
-
   console.log(request.session.privilegios);
 
-  const mensaje = request.session.info || '';
+  const mensaje = request.session.info || "";
   if (request.session.info) {
-      request.session.info = '';
+    request.session.info = "";
   }
 
   Aspirante.fetchAll(request.session.idUsuario)
-      .then(([rows, fieldData]) => {
-          console.log(fieldData);
-          console.log(rows);
-          response.render('consulta_aspirante', {
-              isLoggedIn: request.session.isLoggedIn || false,
-              usuario: request.session.usuario || "",
-              csrfToken: request.csrfToken(),
-              aspirantes: rows,
-              info: mensaje,
-              privilegios: request.session.privilegios || [],
-          });
-      }).catch((error) => {
-          console.log(error);
+    .then(([rows, fieldData]) => {
+      console.log(fieldData);
+      console.log(rows);
+      response.render("consultaAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        aspirantes: rows,
+        info: mensaje,
+        privilegios: request.session.privilegios || [],
       });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 exports.get_buscar = (request, response, next) => {
   Aspirante.find(request.params.valor)
-        .then(([rows, fieldData]) => {
-            response.status(200).json({aspirantes: rows});
-        }).catch((error) => {
-            response.status(500).json({message: "Aspirante no encontrado"});
-        });
-}
+    .then(([rows, fieldData]) => {
+      response.status(200).json({ aspirantes: rows });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Aspirante no encontrado" });
+    });
+};
 
 exports.get_respuestasA = (request, response, next) => {
-  response.render("consulta_respuestas_aspirante", {
+  response.render("consultaRespuestasAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -86,7 +88,7 @@ exports.get_respuestasA = (request, response, next) => {
 };
 
 exports.get_respuestasG = (request, response, next) => {
-  response.render("consulta_respuestas_grupo", {
+  response.render("consultaRespuestasGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -95,7 +97,7 @@ exports.get_respuestasG = (request, response, next) => {
 };
 
 exports.sesion_grupal = (request, response, next) => {
-  response.render("sesion_grupal", {
+  response.render("sesionGrupal", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -104,7 +106,7 @@ exports.sesion_grupal = (request, response, next) => {
 };
 
 exports.sesion_individual = (request, response, next) => {
-  response.render("sesion_individual", {
+  response.render("sesionIndividual", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
@@ -114,7 +116,7 @@ exports.sesion_individual = (request, response, next) => {
 
 exports.crear_grupo = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
-    response.render("crear_grupo", {
+    response.render("crearGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -124,18 +126,74 @@ exports.crear_grupo = (request, response, next) => {
   });
 };
 
+exports.post_grupo = (request, response, next) => {
+  console.log(request.body);
+
+  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
+
+  mi_grupo
+    .save()
+    .then(() => {
+      const pruebas = Array.isArray(request.body.pruebasOpcion)
+        ? request.body.pruebasOpcion
+        : [request.body.pruebasOpcion];
+
+      const promesas = pruebas.map((prueba) => {
+        return Prueba.fetchOneNombre(prueba).then(([rows]) => {
+          const idPrueba = rows[0]?.idPrueba;
+
+          const mi_tienePruebas = new TienePruebas(
+            mi_grupo.idGrupo,
+            idPrueba,
+            request.body.fechaLimite,
+            request.body.fechaPruebaGrupal +
+              " " +
+              request.body.horaPruebaGrupal,
+            request.body.enlaceZoom
+          );
+
+          return mi_tienePruebas.save();
+        });
+      });
+
+      return Promise.all(promesas);
+    })
+    .then(() => {
+      request.session.info = "Grupo creado exitosamente";
+      request.session.grupoCreado = {
+        id: mi_grupo.idGrupo,
+        posgrado: mi_grupo.posgrado,
+        generacion: mi_grupo.generacion,
+      };
+      response.redirect("/psicologa/grupo/confirmarCreacion");
+    })
+    .catch((error) => {
+      console.log("Error al crear grupo o asignar pruebas:", error);
+      response.status(500).send("Error al procesar la creación del grupo.");
+    });
+};
+
 exports.confirmar_creacion_grupo = (request, response, next) => {
-  response.render("confirmar_creacion_grupo", {
+  const info = request.session.info;
+  const grupo = request.session.grupoCreado;
+
+  // Limpiar sesión
+  delete request.session.info;
+  delete request.session.grupoCreado;
+
+  response.render("confirmarCreacionGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
+    info: info,
+    grupo: grupo,
   });
 };
 
 exports.elegir_grupo = (request, response, next) => {
   Grupo.fetchAll().then(([rows]) => {
-    response.render("elegir_grupo", {
+    response.render("elegirGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -147,8 +205,8 @@ exports.elegir_grupo = (request, response, next) => {
 
 exports.get_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
-  Grupo.fetchOne(numGrupo).then(([rows]) => {
-    response.render("consulta_grupo", {
+  Grupo.fetchOneId(numGrupo).then(([rows]) => {
+    response.render("consultaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -161,8 +219,8 @@ exports.get_grupo = (request, response, next) => {
 exports.registra_reporte_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
 
-  Grupo.fetchOne(numGrupo).then(([rows]) => {
-    response.render("registrar_reporte_grupo", {
+  Grupo.fetchOneId(numGrupo).then(([rows]) => {
+    response.render("registrarReporteGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
@@ -184,8 +242,8 @@ exports.post_registra_reporte_grupo = (request, response, next) => {
 exports.registra_foda_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
 
-  Grupo.fetchOne(numGrupo).then(([rows]) => {
-    response.render("registrar_foda_grupo", {
+  Grupo.fetchOneId(numGrupo).then(([rows]) => {
+    response.render("registrarFodaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),

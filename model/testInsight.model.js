@@ -34,4 +34,11 @@ module.exports = class Usuario {
       [usuario]
     );
   }
+
+  static getGrupo(idUsuario) {
+    return db.execute(
+      "SELECT idGrupo FROM perteneceGrupo WHERE idUsuario = ?",
+      [idUsuario]
+    );
+  }
 };

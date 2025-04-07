@@ -1,0 +1,41 @@
+<style>
+  .fullHeight {
+    min-height: 90vh;
+    margin-top: 20px;
+  }
+  .justified {
+    text-align: justify;
+  }
+</style>
+<body class="has-background-danger-95">
+  <section class="section fullHeight">
+    <div class="container is-max-tablet">
+      <% if (prueba) { %>
+      <h1 class="title is-1 has-text-weight-semibold">
+        <%=prueba.nombrePrueba%>
+      </h1>
+      <br />
+      <div class="is-centered ml-5">
+        <h2 class="title is-3 has-text-weight-semibold">Instrucciones</h2>
+        <br />
+        <p class="subtitle is-5 justified"><%=prueba.instrucciones%></p>
+        <br />
+        <br />
+        <div class="columns is-centered">
+          <a href="/aspirante/inicio">
+            <button class="column is-narrow button is-primary has-text-warning">
+              Regresar
+            </button>
+          </a>
+          <a href="/aspirante/datosAspirante/<%=prueba.idPrueba%>">
+            <button
+              class="column is-narrow button is-primary has-text-warning ml-6">
+              Siguiente
+            </button></a
+          >
+        </div>
+      </div>
+      <%};%>
+    </div>
+  </section>
+</body>

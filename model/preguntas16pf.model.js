@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../util/database.js");
 
 module.exports = class Pregunta16PF {
   constructor(mi_pregunta16PF, mi_idPrueba, mi_numeroPregunta16PF) {
@@ -11,14 +11,17 @@ module.exports = class Pregunta16PF {
   static fetchAll() {
     return db.execute("SELECT * FROM preguntas16PF");
   }
-  static fetchOne(idPregunta16PF) {
-    return db.execute("SELECT * FROM preguntas16pf WHERE idPregunta16PF = ?", [
-      idPregunta16PF,
-    ]);
+
+  static fetchOne(index) {
+    return db.execute(
+      "SELECT * FROM preguntas16PF WHERE numeroPregunta16PF = ?",
+      [index]
+    );
   }
+
   static fetchOneByNumber(numeroPregunta16PF) {
     return db.execute(
-      "SELECT * FROM preguntas16pf WHERE numeroPregunta16PF = ?",
+      "SELECT * FROM preguntas16PF WHERE numeroPregunta16PF = ?",
       [numeroPregunta16PF]
     );
   }

@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
+
 const path = require("path");
-const bodyParser = require("body-parser");
+app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -17,9 +18,11 @@ app.use(
   })
 );
 
-//Idealmente registramos multer después de bodyParser (la siguiente línea ya debería existir)
+const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
+//fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
 const multer = require("multer");
 
 //fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
@@ -51,7 +54,6 @@ const psicologaRoutes = require("./routes/psicologa.routes");
 
 app.use("/psicologa", psicologaRoutes);
 app.use("/aspirante", aspiranteRoutes);
-app.use(express.static(path.join(__dirname, "public")));
 app.use("/", testInsightRoutes);
 
 app.use((request, response, next) => {
