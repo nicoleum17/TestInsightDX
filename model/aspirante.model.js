@@ -11,7 +11,8 @@ module.exports = class Aspirante {
     mi_numTelefono,
     mi_lugarOrigen,
     mi_correo,
-    mi_universidadOrigen
+    mi_universidadOrigen,
+    mi_puestoSolicitado
   ) {
     this.codigoIdentidad = mi_codigoIdentidad;
     this.idUsuario = mi_idUsuario;
@@ -22,8 +23,18 @@ module.exports = class Aspirante {
     this.lugarOrigen = mi_lugarOrigen;
     this.correo = mi_correo;
     this.universidadOrigen = mi_universidadOrigen;
+    this.puestoSolicitado = mi_puestoSolicitado;
   }
-
+  save() {
+    return db
+      .execute(
+        "UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?",
+        [this.puestoSolicitado, this.idUsuario]
+      )
+      .then(([result]) => {
+        return this.idUsuario;
+      });
+  }
   static fetchAll() {
     return db.execute("SELECT * FROM aspirantes");
   }
@@ -36,7 +47,8 @@ module.exports = class Aspirante {
 
   static find(valor) {
     return db.execute(
-        `SELECT *
-        FROM aspirantes a`);
-}
+      `SELECT *
+        FROM aspirantes a`
+    );
+  }
 };

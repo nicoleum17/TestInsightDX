@@ -34,34 +34,6 @@
 
   <section>
     <div class="container is-align-items-center">
-      <div class="field has-addons">
-        <div class="control">
-          <input id="barra_buscar" name="barra_buscar" class="input" type="text" placeholder="Ingresa el parámetro" autocomplete="off">
-        </div>
-      </div>
-
-      <div id="suggestions-container" class="suggestions-container" style="display: none;">
-      </div>
-    </div>
-<div style="display: flex; justify-content: center; margin-top: 20px;">
-    <table id="datos-aspirante" class="table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Codigo de Identidad</th>
-          <th>Teléfono</th>
-          <th>Lugar de Origen</th>
-          <th>Correo</th>
-          <th>Universidad de Procedencia</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-  <br><br><br>
-
-    <!--
       <table class="table">
         <thead>
           <tr>
@@ -141,113 +113,7 @@
         </tbody>
       </table>
     </div>
-    -->
   </section>
-
-  <script>
-    const buscar = document.getElementById('barra_buscar');
-    const suggestionsContainer = document.getElementById('suggestions-container');
-  
-    buscar.addEventListener('input', function() {
-      const query = buscar.value.trim();
-  
-      if (query.length > 0) {
-        fetch('/psicologa/buscar/' + query, {
-          method: 'GET',
-        })
-        .then((result) => result.json())
-        .then((data) => {
-          suggestionsContainer.innerHTML = '';
-  
-          const filteredAspirantes = data.aspirantes.filter(aspirante => {
-            return (
-              aspirante.nombres.toLowerCase().includes(query.toLowerCase()) ||
-              aspirante.apellidoPaterno.toLowerCase().includes(query.toLowerCase()) ||
-              aspirante.apellidoMaterno.toLowerCase().includes(query.toLowerCase()) ||
-              aspirante.codigoIdentidad.toLowerCase().includes(query.toLowerCase()) ||
-              aspirante.correo.toLowerCase().includes(query.toLowerCase())
-            );
-          });
-  
-          filteredAspirantes.forEach(aspirante => {
-            const suggestion = document.createElement('div');
-            suggestion.classList.add('suggestion-item');
-            suggestion.innerHTML = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
-            suggestion.onclick = () => {
-              const tableBody = document.getElementById('datos-aspirante').getElementsByTagName('tbody')[0];
-              tableBody.innerHTML = '';
-              const row = tableBody.insertRow();
-              const nombreAspirante = row.insertCell(0);
-              const codigoIdentidadAspirante = row.insertCell(1);
-              const telefonoAspirante = row.insertCell(2);
-              const lugarOrigenAspirante = row.insertCell(3);
-              const correoAspirante = row.insertCell(4);
-              const universidadAspirante = row.insertCell(5);
-              
-              nombreAspirante.textContent = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
-              codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
-              telefonoAspirante.textContent = aspirante.numTelefono;
-              lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
-              correoAspirante.textContent = aspirante.correo;
-              universidadAspirante.textContent = aspirante.universidadOrigen;
-  
-              suggestionsContainer.style.display = 'none';
-            };
-            suggestionsContainer.appendChild(suggestion);
-          });
-  
-          if (filteredAspirantes.length > 0) {
-            suggestionsContainer.style.display = 'block';
-          } else {
-            suggestionsContainer.style.display = 'none';
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      } else {
-        suggestionsContainer.style.display = 'none';
-      }
-    });
-  
-    document.addEventListener('click', function(event) {
-      if (!suggestionsContainer.contains(event.target) && event.target !== buscar) {
-        suggestionsContainer.style.display = 'none';
-      }
-    });
-  </script>
-  
-  <style>
-  .suggestions-container {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    border: 1px solid #ddd;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: white;
-    z-index: 10;
-    border-radius: 5px;
-  }
-
-  .suggestion-item {
-    padding: 8px;
-    cursor: pointer;
-  }
-
-  .suggestion-item:hover {
-    background-color: #f0f0f0;
-  }
-
-  .suggestion-item a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .container {
-    position: relative;
-  }
-</style>
 
   <%- include('includes/_footer')%>
 </body>
