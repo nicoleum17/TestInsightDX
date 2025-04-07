@@ -129,7 +129,12 @@ exports.crear_grupo = (request, response, next) => {
 exports.post_grupo = (request, response, next) => {
   console.log(request.body);
 
-  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
+  const mi_grupo = new Grupo(
+    request.body.posgrado,
+    request.body.generacion,
+    request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal,
+    request.body.enlaceZoom
+  );
 
   mi_grupo
     .save()
@@ -145,11 +150,7 @@ exports.post_grupo = (request, response, next) => {
           const mi_tienePruebas = new TienePruebas(
             mi_grupo.idGrupo,
             idPrueba,
-            request.body.fechaLimite,
-            request.body.fechaPruebaGrupal +
-              " " +
-              request.body.horaPruebaGrupal,
-            request.body.enlaceZoom
+            request.body.fechaLimite
           );
 
           return mi_tienePruebas.save();
