@@ -658,7 +658,7 @@ exports.formato_entrevista_familiar_Hijos = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Hijos",
     rutaPost: "Hijos",
-    omitirRuta: "/aspirante/formatoEntrevistaPreguntasDA"
+    omitirRuta: "/aspirante/formatoEntrevistaDA"
   });
 };
 
@@ -905,7 +905,7 @@ exports.post_formato_entrevista_familiar_Hijos = (request, response, next) => {
         .then(({idFormato, idFamilia}) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
-          response.redirect("/aspirante/formatoEntrevistaPreguntasDA");
+          response.redirect("/aspirante/formatoEntrevistaDA");
         })
         .catch((error) => {
           console.log(error);
@@ -913,6 +913,15 @@ exports.post_formato_entrevista_familiar_Hijos = (request, response, next) => {
         contador += 1;
     };
   }
+};
+
+exports.getConfirmacionFormato = (request,response)=>{ 
+  response.render("formatoEntrevistaConfirmat", {
+  isLoggedIn: request.session.isLoggedIn || false,
+  usuario: request.session.usuario || "",
+  csrfToken: request.csrfToken(),
+  formato: request.session.idFormato
+});
 };
 //exports.post_formato_entrevista = (request,response,next) => {
 
