@@ -42,6 +42,41 @@ exports.get_prueba = (request, response, next) => {
   });
 };
 
+exports.registrarAspirante = (request, response, next) => {
+  Grupo.fetchAll().then(([rows]) => {
+    response.render("registrarAspirante", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupos: rows,
+    });
+  });
+};
+
+exports.post_registrarAspirante = (request, response, next) => {
+  const mi_aspirante = new Aspirante(
+    request.body.idGrupo,
+    request.body.nombre,
+    request.body.apellidoP,
+    request.body.apellidoM,
+    request.body.codigoI,
+    request.body.correo,
+    request.body.numeroTel,
+    request.body.lugarO,
+    request.body.universidad
+  );
+
+  mi_aspirante.save().then(() => {
+    response.redirect("/inicio", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+    });
+  });
+};
+
 exports.get_aspirantes = (request, response, next) => {
   console.log(request.session.privilegios);
 
@@ -127,8 +162,6 @@ exports.crear_grupo = (request, response, next) => {
 };
 
 exports.post_grupo = (request, response, next) => {
-  console.log(request.body);
-
   const mi_grupo = new Grupo(
     request.body.posgrado,
     request.body.generacion,

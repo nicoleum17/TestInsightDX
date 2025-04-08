@@ -40,6 +40,18 @@ router.get(
 );
 
 router.get(
+  "/registrarAspirante",
+  isAuth,
+  psicologaController.registrarAspirante
+);
+
+router.post(
+  "/registrarAspirante",
+  isAuth,
+  psicologaController.post_registrarAspirante
+);
+
+router.get(
   "/consultaRespuestasAspirante",
   isAuth,
   consultarRespuestasAspirante,
