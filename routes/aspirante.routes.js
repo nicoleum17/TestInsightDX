@@ -263,13 +263,13 @@ router.post(
 );
 
 router.get(
-  "/aspirante/registra_kardex",
+  "/registra_kardex",
   isAuth,
   aspiranteController.registra_kardex
 );
 
 router.post(
-  "/aspirante/registra_kardex",
+  "/registra_kardex",
   isAuth,
   aspiranteController.post_registra_kardex
 );
