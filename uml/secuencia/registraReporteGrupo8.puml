@@ -1,0 +1,69 @@
+@startuml   registraReporteGrupo 8
+actor       Psicologa                   as a1
+boundary    psicologa.routes            as a2
+boundary    vistas__registraReporteGrupo.ejs  as a3
+boundary    vistas__consultaGrupo.ejs  as a3.1
+control     psicologa.controllers       as a4
+entity      Grupo                       as g
+database    mysql                       as a5
+
+
+autonumber
+activate a1
+a1->a2: GET /psicologa/grupo/registraReporte/:id
+deactivate a1
+activate a2
+a2->a4: registraReporteGrupo(response, request)
+deactivate a2
+
+
+activate a4
+a4->>g: fetchOneId\n(request.params.id)
+activate g
+g->>a5: execute("SELECT *\n FROM Grupos WHERE\n idGrupo = ?", [idGrupo])
+activate a5
+a5-->>g: rows
+deactivate a5
+g-->>a4:rows
+deactivate g
+
+
+a4->a3: response.render\n('registraReporteGrupo.ejs', rows)
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+activate a1
+
+
+a1->a2: POST /psicologa/grupo/registraReporte/:id
+deactivate a1
+activate a2
+a2->a4: post_registraReporteGrupo(response, request)
+deactivate a2
+activate a4
+a4->>g: update_subirPdf(request.params.id,\n request.file.filename)
+activate g
+g->>a5: execute("UPDATE `grupos` SET\n `archivoPdf` = ? \n WHERE `idGrupo` = ?",\n [archivoPdf, idGrupo])
+activate a5
+a5-->>g: Update Ok
+deactivate a5
+g-->>a4: promesa
+deactivate g
+
+
+a4->a2: response.redirect('consultaGrupo.ejs')
+deactivate a4
+activate a2
+a2->a4: get_grupo(response, request)
+deactivate a2
+activate a4
+a4->a3.1: response.render\n('consultaGrupo.ejs')
+deactivate a4
+activate a3.1
+a3.1->a1: HTML
+deactivate a3.1
+activate a1
+
+
+@enduml

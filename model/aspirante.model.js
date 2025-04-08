@@ -26,6 +26,24 @@ module.exports = class Aspirante {
     this.puestoSolicitado = mi_puestoSolicitado;
   }
   save() {
+    return db.execute(
+      "INSERT INTO aspirantes (codigoIdentidad, idUsuario, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen, puestoSolicitado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        this.codigoIdentidad,
+        this.idUsuario,
+        this.nombres,
+        this.apellidoPaterno,
+        this.apellidoMaterno,
+        this.numTelefono,
+        this.lugarOrigen,
+        this.correo,
+        this.universidadOrigen,
+        this.puestoSolicitado,
+      ]
+    );
+  }
+
+  static updateAspirante() {
     return db
       .execute(
         "UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?",
