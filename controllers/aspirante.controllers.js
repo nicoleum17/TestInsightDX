@@ -946,18 +946,15 @@ exports.postConfirmacionFormato = (request,response) =>{
 //};
 
 exports.registra_kardex = (request, response, next) => {
-  const numAspirante = request.params.id;
 
-  Aspirante.fetchOne(numAspirante).then(([rows]) => {
     response.render("registrarKardex", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       idUsuario: request.session.idUsuario || "",
-      aspirante: rows[0],
     });
-  });
+
 };
 
 exports.post_registra_kardex = (request, response, next) => {

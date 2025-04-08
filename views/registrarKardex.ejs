@@ -13,13 +13,12 @@
         <div class="has-text-weight-bold">Subir Archivos</div>
         <br />
         <div>PDF</div>
-        <% if (aspirante) { %>
         <form
           action="aspirante"
           method="POST"
           enctype="multipart/form-data"
         >
-        <%}%>
+
           <div class="file is-boxed">
             <label class="file-label">
               <input type="hidden" name="_csrf" value=<%= csrfToken%> />
