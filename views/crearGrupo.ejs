@@ -45,12 +45,12 @@
     </div>
 
     <!-- Lista de pruebas -->
-    <div class="box has-background-primary">
+    <div class="box has-background-primary" id="pruebas-container">
       <div class="columns">
         <div class="column">
           <div>
             <div class="select is-fullwidth">
-              <select name="pruebasOpcion" required>
+              <select class="dynamic-select" name="pruebasOpcion" required>
                 <option value="" selected disabled>Selecciona una de las pruebas</option>
                 <% pruebas.forEach(prueba => {%>
                 <option value="<%= prueba.nombrePrueba%>">
@@ -125,7 +125,7 @@
       <div class="column">
           <div>
             <div class="select is-fullwidth">
-              <select name="pruebasOpcion" required>
+              <select class="dynamic-select" name="pruebasOpcion" required>
                 <option value="" selected disabled>Selecciona una prueba</option>
                 <% pruebas.forEach(prueba => {%>
                 <option class="prueba" value="<%= prueba.nombrePrueba%>">
@@ -145,13 +145,37 @@
 
     //Se agrega la prueba al contenedor
     contenedor.appendChild(nuevaPrueba);
+    actualizarSelects(); 
   }
 
   function eliminarPrueba(boton) {
     boton.closest(".columns").remove();
+    actualizarSelects(); 
   }
 
-  
+  function actualizarSelects() {
+    const selects = Array.from(document.querySelectorAll('.dynamic-select'));
+
+    function getSelectedValues() {
+      return selects.map(select => select.value).filter(value => value !== "");
+    }
+
+    const selectedValues = getSelectedValues();
+
+    selects.forEach(select => {
+      const currentValue = select.value;
+      const allOptions = Array.from(select.options);
+
+      allOptions.forEach(opt => {
+        if (opt.value === "") return; // No tocar la opción vacía
+        opt.disabled = selectedValues.includes(opt.value) && opt.value !== currentValue;
+      });
+    });
+  }
+
+  // Inicializar la función al cargar la página
+  document.addEventListener("DOMContentLoaded", actualizarSelects);
+
 </script>
 
 <%- include('includes/_footer') %>
