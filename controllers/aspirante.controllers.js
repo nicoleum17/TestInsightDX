@@ -963,15 +963,14 @@ exports.post_registra_kardex = (request, response, next) => {
   });
 }
 
-  exports.registra_CV = (request, response, next) => {
-    response.render("registrarCV", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      idUsuario: request.session.idUsuario || "",
-    });
-
+exports.registra_CV = (request, response, next) => {
+  response.render("registrarCV", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario || "",
+  });
 };
 
 exports.post_registra_CV = (request, response, next) => {
@@ -979,4 +978,14 @@ exports.post_registra_CV = (request, response, next) => {
   Aspirante.update_subirCV(request.session.idUsuario, CV).then(() => {
     response.redirect("/aspirante/documentosAspirante");
   });
-  }
+}
+
+/*
+exports.get_documentos_activos = (request, response, next) => {
+  Aspirante.documentos_activos(request.params.idUsuario)
+    .then(([rows]) => {
+      response.status(200).json({ documentos: rows[0] });
+    }
+  );
+};
+*/
