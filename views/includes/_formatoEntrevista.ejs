@@ -158,14 +158,19 @@
     margin-top: 5px;
     font-size: 10px;
   }
+  .fullHeight {
+    min-height: 120vh;
+    margin-top: 20px;
+  }
 </style>
 
-<section class="section">
-  <div class="container">
-    <h1 class="title is-3">Formato de entrevista</h1>
+<section class="section fullHeight has-background-warning">
+  <div class="container mt-3">
+    <h1 class="title is-3 has-text-weight-semibold">Formato de entrevista</h1>
     <div class="interviewFormat columns is-vcentered ml-5"></div>
-    <br /><br />
-    <h3 class="title is-4">Datos Personales</h3>
+    <br />
+    <h3 class="title is-4 has-text-weight-semibold ml-1">Datos Personales</h3>
+    <br />
     <form action="formatoEntrevista" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="usuario" value="<%= usuario %>" />
@@ -178,8 +183,7 @@
             placeholder="García"
             id="apellidoP"
             name="apellidoP"
-            required
-          />
+            required />
         </div>
         <div class="column">
           <label for="apellidoMaterno" class="label">Apellido Materno:</label>
@@ -189,8 +193,7 @@
             placeholder="López"
             id="apellidoM"
             name="apellidoM"
-            required
-          />
+            required />
         </div>
         <div class="column">
           <label for="name" class="label">Nombre:</label>
@@ -200,8 +203,7 @@
             placeholder="Arturo"
             id="nombre"
             name="nombre"
-            required
-          />
+            required />
         </div>
       </div>
       <br />
@@ -213,8 +215,7 @@
             type="date"
             id="fechaNacimiento"
             name="fechaNacimiento"
-            required
-          />
+            required />
         </div>
         <div class="column is-offset-5">
           <label for="age" class="label">Edad (años cumplidos):</label>
@@ -234,8 +235,7 @@
             placeholder="Mexicana"
             id="nacionalidad"
             name="nacionalidad"
-            required
-          />
+            required />
         </div>
         <div class="column is-one-third">
           <label for="origin" class="label">Originario de:</label>
@@ -245,8 +245,7 @@
             placeholder="Guerrero"
             id="origen"
             name="origen"
-            required
-          />
+            required />
         </div>
         <div class="column is-one-third">
           <label for="gender" class="label">Género:</label>
@@ -256,8 +255,7 @@
             placeholder="Mujer"
             id="genero"
             name="genero"
-            required
-          />
+            required />
         </div>
       </div>
       <br />
@@ -266,7 +264,9 @@
           <label for="maritalStatus" class="label">Estado Civil:</label>
           <div class="select is-primary">
             <select name="estadoCivil" id="maritalStatus" required>
-              <option value= "" disabled hidden selected>Seleccione una opción</option>
+              <option value="" disabled hidden selected>
+                Seleccione una opción
+              </option>
               <option value="soltero">Soltero/a</option>
               <option value="casado">Casado/a</option>
               <option value="divorciado">Divorciado/a</option>
@@ -284,8 +284,7 @@
             placeholder="Calle del Mármol #32"
             id="dirrecionA"
             name="direccionA"
-            required
-          />
+            required />
         </div>
       </div>
       <br />
@@ -298,8 +297,7 @@
             placeholder="123 456 7890"
             id="celular"
             name="celular"
-            required
-          />
+            required />
         </div>
         <div class="column is-one-third">
           <label for="phone" class="label">Teléfono(s):</label>
@@ -309,8 +307,7 @@
             placeholder="123 456 7890"
             id="telefono"
             name="telefono"
-            required
-          />
+            required />
         </div>
         <div class="column is-one-third">
           <label for="email" class="label">Correo:</label>
@@ -320,16 +317,14 @@
             placeholder="ejemplo@gmail.com"
             id="correo"
             name="correo"
-            required
-          />
+            required />
         </div>
       </div>
       <div class="columns">
-        <div class="column">
+        <div class="column has-text-centered">
           <button
-            class="button has-background-primary has-text-warning ml-6"
-            type="submit"
-          >
+            class="button has-background-primary has-text-warning"
+            type="submit">
             Continuar
           </button>
         </div>

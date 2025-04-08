@@ -41,7 +41,7 @@ module.exports = class formatoEntrevista {
   save() {
     return db
       .execute(
-        "INSERT INTO formatoentrevista(idFormato, nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, estadoCivil, origen, telefono, celular, correo, direccionA, codigoIdentidad, estatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO formatoentrevista(idFormato, nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, estadoCivil, origen, telefono, celular, correo, direccionA, idUsuario, estatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [
           this.idFormato,
           this.nombre,
@@ -106,4 +106,14 @@ module.exports = class formatoEntrevista {
         return mi_idFormato;
       });
   }
+
+  static finish(
+    mi_idFormato
+  ){
+    return db.execute("UPDATE formatoEntrevista SET estatus=? WHERE idFormato=?", ["Terminado",mi_idFormato])
+    .then(([result]) => {
+      return mi_idFormato;
+    });
+  }
+  
 };

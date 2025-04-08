@@ -1,13 +1,13 @@
 <%- include('includes/_navbarP') %>
 <style>
   .fullHeight {
-    min-height: 90vh;
-    margin-top: 20px;
+    min-height: 110vh;
   }
 </style>
-<div class="container fullHeight " style="width: 60%;">
+<section class="section fullHeight has-background-warning">
+<div class="container " style="width: 60%;">
   <!-- Título -->
-  <h2 class="title is-3 mt-5">Crear Grupo</h2>
+  <h2 class="title is-3 mt-5 has-text-weight-semibold">Crear Grupo</h2>
   <form 
     action="/psicologa/grupo/confirmarCreacion"
     method="POST"
@@ -72,7 +72,7 @@
 
   <!-- Botones de acción -->
   <section id="SesionGrupal">
-    <div class="title">Sesión Grupal</div>
+    <div class="title has-text-weight-semibold">Sesión Grupal</div>
       <div class="field">
         <label class="label">Fecha</label>
         <div class="control">
@@ -104,9 +104,14 @@
       </div>
     </div>
   </section>
+  <div class="columns">
+    <div class="column has-text-centered">
   <input class="button m-5 is-primary has-text-white" type="submit" value="Confirmar">
+</div>
+</div>
 </form>
 </div>
+</section>
 
 
 

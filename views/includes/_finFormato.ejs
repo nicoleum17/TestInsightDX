@@ -1,0 +1,21 @@
+<style>
+    .fullHeight {
+      min-height: 90vh;
+      margin-top: 20px;
+    }
+  </style>
+  <section class="section fullHeight">
+    <div class="container mt-5 is-max-desktop">
+      <div class="notification is-info is-size-3">¡Haz completado tu formato!</div>
+    </div>
+    <FORM action="confirmacion" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="idFormato" value="<%= formato %>" />
+        <input type="hidden" name="user" value="<%= usuario %>" />
+
+        <button type="submit" class="button is-primary has-text-warning ml-6">
+            Volver al inicio
+        </button>
+    </FORM>
+
+  </section>

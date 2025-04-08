@@ -3,17 +3,25 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = class Grupo {
   //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-  constructor(mi_posgrado, mi_generacion) {
+  constructor(mi_posgrado, mi_generacion, mi_fechaPruebaGrupal, mi_enlaceZoom) {
     this.idGrupo = uuidv4();
     this.posgrado = mi_posgrado;
     this.generacion = mi_generacion;
+    this.fechaPruebaGrupal = mi_fechaPruebaGrupal;
+    this.enlaceZoom = mi_enlaceZoom;
   }
 
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO Grupos (idGrupo, posgrado, generacion) VALUES (?, ?, ?)",
-      [this.idGrupo, this.posgrado, this.generacion]
+      "INSERT INTO Grupos (idGrupo, posgrado, generacion, fechaPruebaGrupal, enlaceZoom) VALUES (?, ?, ?, ?, ?)",
+      [
+        this.idGrupo,
+        this.posgrado,
+        this.generacion,
+        this.fechaPruebaGrupal,
+        this.enlaceZoom,
+      ]
     );
   }
 

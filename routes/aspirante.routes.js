@@ -249,4 +249,16 @@ router.post(
   isAuth,
   aspiranteController.post_formato_entrevista_familiar_Hijos
 );
+
+router.get(
+  "/formatoEntrevista/confirmacion",
+  isAuth,
+  aspiranteController.getConfirmacionFormato
+);
+
+router.post(
+  "/formatoEntrevista/confirmacion",
+  isAuth,
+  aspiranteController.postConfirmacionFormato
+);
 module.exports = router;

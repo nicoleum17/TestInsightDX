@@ -1,8 +1,10 @@
 <section class="section">
-  <div class="container">
-    <h1 class="title is-3">Familia <%= tipoFamiliar %></h1>
+  <div class="container mt-4">
+    <h1 class="title is-3 has-text-weight-semibold">
+      Familia <%= tipoFamiliar %>
+    </h1>
     <div class="interviewFormat columns is-vcentered ml-5"></div>
-    <form action= "<%= rutaPost %>" method="POST">
+    <form action="<%= rutaPost %>" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
       <input type="hidden" name="familia" value="<%= familia %>" />
@@ -15,28 +17,27 @@
             <button
               onclick="agregarFamiliar()"
               id="button-agregar-familiar"
-              type="button"
-            >
+              type="button">
               <img
                 src="https://img.icons8.com/m_rounded/512/plus.png"
-                width="30"
-                height="30"
-              />
+                width="40"
+                height="40" />
             </button>
           </div>
         </div>
       </div>
-
-      <button
-        class="button has-background-primary has-text-warning ml-6"
-        type="submit"
-      >
-        Continuar
-      </button>
-      <a
-      href="<%= omitirRuta %>" class="button has-background-primary has-text-warning ml-6">
-          Omitir
-    </a>
+      <div class="columns has-text-centered">
+        <div class="column">
+          <a href="<%= omitirRuta %>" class="button is-warning"> Omitir </a>
+        </div>
+        <div class="column">
+          <button
+            class="button has-background-primary has-text-warning ml-6"
+            type="submit">
+            Continuar
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </section>
@@ -66,7 +67,7 @@
                             <label for="edad" class="label">Edad:</label>
                             <input
                             class="input"
-                            type="text"
+                            type="number"
                             placeholder="35"
                             id="edad"
                             name="edad"
@@ -100,7 +101,7 @@
                         </div>
                         <div class="has-text-right">
                             <button class="button" onclick="eliminarFamiliar(this)">
-                                <img src="https://static.thenounproject.com/png/2456540-200.png" width="20" height="20" />
+                                <img src="https://static.thenounproject.com/png/2456540-200.png" width="30" height="30" />
                             </button>
                         </div>
                     </div>
