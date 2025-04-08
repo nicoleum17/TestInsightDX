@@ -96,7 +96,7 @@ exports.post_datosA = (request, response, next) => {
   );
   newPuesto.idUsuario = idUsuario;
   newPuesto
-    .save()
+    .updateAspirante()
     .then((uuid) => {
       request.session.idUsuario = uuid;
       request.csrfToken();
@@ -578,7 +578,7 @@ exports.formato_entrevista_familiar_abueloM = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Maternos",
     rutaPost: "AbueloM",
-    omitirRuta: "AbueloP"
+    omitirRuta: "AbueloP",
   });
 };
 
@@ -591,7 +591,7 @@ exports.formato_entrevista_familiar_abueloP = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Paternos",
     rutaPost: "AbueloP",
-    omitirRuta: "TioM"
+    omitirRuta: "TioM",
   });
 };
 
@@ -604,7 +604,7 @@ exports.formato_entrevista_familiar_TioM = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Maternos/as",
     rutaPost: "TioM",
-    omitirRuta: "TioP"
+    omitirRuta: "TioP",
   });
 };
 
@@ -617,7 +617,7 @@ exports.formato_entrevista_familiar_TioP = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Paternos/as",
     rutaPost: "TioP",
-    omitirRuta: "Padres"
+    omitirRuta: "Padres",
   });
 };
 
@@ -630,7 +630,7 @@ exports.formato_entrevista_familiar_Padres = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Padres",
     rutaPost: "Padres",
-    omitirRuta: "Pareja"
+    omitirRuta: "Pareja",
   });
 };
 
@@ -643,7 +643,7 @@ exports.formato_entrevista_familiar_Pareja = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Pareja",
     rutaPost: "Pareja",
-    omitirRuta: "Hijos"
+    omitirRuta: "Hijos",
   });
 };
 
@@ -656,7 +656,7 @@ exports.formato_entrevista_familiar_Hijos = (request, response, next) => {
     familia: request.session.idFamilia,
     tipoFamiliar: "Hijos",
     rutaPost: "Hijos",
-    omitirRuta: "/aspirante/formatoEntrevistaDA"
+    omitirRuta: "/aspirante/formatoEntrevistaDA",
   });
 };
 
@@ -669,12 +669,11 @@ exports.post_formato_entrevista_familiar_abueloM = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("AbueloM");
-  }
-  else{
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -683,10 +682,10 @@ exports.post_formato_entrevista_familiar_abueloM = (
         request.body.familia,
         "Abuelo/a Materno/a",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("AbueloP");
@@ -694,10 +693,10 @@ exports.post_formato_entrevista_familiar_abueloM = (
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-      };
+      contador += 1;
     }
-  };
+  }
+};
 
 exports.post_formato_entrevista_familiar_abueloP = (
   request,
@@ -708,12 +707,11 @@ exports.post_formato_entrevista_familiar_abueloP = (
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("AbueloP");
-  }
-  else {
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -722,10 +720,10 @@ exports.post_formato_entrevista_familiar_abueloP = (
         request.body.familia,
         "Abuelo/a Paterno/a",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("TioM");
@@ -733,8 +731,8 @@ exports.post_formato_entrevista_familiar_abueloP = (
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-    };
+      contador += 1;
+    }
   }
 };
 
@@ -743,12 +741,11 @@ exports.post_formato_entrevista_familiar_TioM = (request, response, next) => {
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("TioM");
-  }
-  else{
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -757,10 +754,10 @@ exports.post_formato_entrevista_familiar_TioM = (request, response, next) => {
         request.body.familia,
         "Tio/a Materno/a",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("TioP");
@@ -768,8 +765,8 @@ exports.post_formato_entrevista_familiar_TioM = (request, response, next) => {
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-    };
+      contador += 1;
+    }
   }
 };
 
@@ -778,12 +775,11 @@ exports.post_formato_entrevista_familiar_TioP = (request, response, next) => {
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("TioP");
-  }
-  else{
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -792,10 +788,10 @@ exports.post_formato_entrevista_familiar_TioP = (request, response, next) => {
         request.body.familia,
         "Tio/a Paterno/a",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("Padres");
@@ -803,8 +799,8 @@ exports.post_formato_entrevista_familiar_TioP = (request, response, next) => {
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-    };
+      contador += 1;
+    }
   }
 };
 
@@ -813,12 +809,11 @@ exports.post_formato_entrevista_familiar_Padres = (request, response, next) => {
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("Padres");
-  }
-  else{
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -827,10 +822,10 @@ exports.post_formato_entrevista_familiar_Padres = (request, response, next) => {
         request.body.familia,
         "Padre/Madre",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("Pareja");
@@ -838,8 +833,8 @@ exports.post_formato_entrevista_familiar_Padres = (request, response, next) => {
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-    };
+      contador += 1;
+    }
   }
 };
 
@@ -848,12 +843,11 @@ exports.post_formato_entrevista_familiar_Pareja = (request, response, next) => {
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("Pareja");
-  }
-  else{
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -862,10 +856,10 @@ exports.post_formato_entrevista_familiar_Pareja = (request, response, next) => {
         request.body.familia,
         "Pareja",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("Hijos");
@@ -873,8 +867,8 @@ exports.post_formato_entrevista_familiar_Pareja = (request, response, next) => {
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-    };
+      contador += 1;
+    }
   }
 };
 
@@ -883,12 +877,11 @@ exports.post_formato_entrevista_familiar_Hijos = (request, response, next) => {
   const edades = [].concat(request.body.edad);
   const generos = [].concat(request.body.genero);
   const estadosCiviles = [].concat(request.body.estadoCivil);
-  if (!request.body.nombreFamiliar){
+  if (!request.body.nombreFamiliar) {
     response.redirect("Hijos");
-  }
-  else{
+  } else {
     let contador = 0;
-    for (const a in nombres){
+    for (const a in nombres) {
       const newFamiliar = new familiar(
         nombres[contador],
         edades[contador],
@@ -897,10 +890,10 @@ exports.post_formato_entrevista_familiar_Hijos = (request, response, next) => {
         request.body.familia,
         "Hijo/a",
         request.session.idFormato
-      )
+      );
       newFamiliar
         .save()
-        .then(({idFormato, idFamilia}) => {
+        .then(({ idFormato, idFamilia }) => {
           request.session.idFormato = idFormato;
           request.session.idFamilia = idFamilia;
           response.redirect("/aspirante/formatoEntrevistaDA");
@@ -908,31 +901,32 @@ exports.post_formato_entrevista_familiar_Hijos = (request, response, next) => {
         .catch((error) => {
           console.log(error);
         });
-        contador += 1;
-    };
+      contador += 1;
+    }
   }
 };
 
-exports.getConfirmacionFormato = (request,response)=>{ 
+exports.getConfirmacionFormato = (request, response) => {
   response.render("formatoEntrevistaConfirmar", {
-  isLoggedIn: request.session.isLoggedIn || false,
-  usuario: request.session.usuario || "",
-  csrfToken: request.csrfToken(),
-  formato: request.session.idFormato
-});
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    formato: request.session.idFormato,
+  });
 };
 
-exports.postConfirmacionFormato = (request,response) =>{
-  formatoEntrevista.finish(request.body.idFormato)
-  .then((id) => {
-    request.session.idFormato = id;
-    response.redirect("/aspirante/inicio");
-    console.log("Termina Formato Entrevista");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-}
+exports.postConfirmacionFormato = (request, response) => {
+  formatoEntrevista
+    .finish(request.body.idFormato)
+    .then((id) => {
+      request.session.idFormato = id;
+      response.redirect("/aspirante/inicio");
+      console.log("Termina Formato Entrevista");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 //exports.post_formato_entrevista = (request,response,next) => {
 
 // UNMODELO.fetchAll().then(async () => {
@@ -946,14 +940,13 @@ exports.postConfirmacionFormato = (request,response) =>{
 //};
 
 exports.registra_kardex = (request, response, next) => {
-    response.render("registrarKardex", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      idUsuario: request.session.idUsuario || "",
-    });
-
+  response.render("registrarKardex", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario || "",
+  });
 };
 
 exports.post_registra_kardex = (request, response, next) => {
@@ -961,17 +954,16 @@ exports.post_registra_kardex = (request, response, next) => {
   Aspirante.update_subirKardex(request.session.idUsuario, kardex).then(() => {
     response.redirect("/aspirante/documentosAspirante");
   });
-}
+};
 
-  exports.registra_CV = (request, response, next) => {
-    response.render("registrarCV", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      idUsuario: request.session.idUsuario || "",
-    });
-
+exports.registra_CV = (request, response, next) => {
+  response.render("registrarCV", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario || "",
+  });
 };
 
 exports.post_registra_CV = (request, response, next) => {
@@ -979,4 +971,4 @@ exports.post_registra_CV = (request, response, next) => {
   Aspirante.update_subirCV(request.session.idUsuario, CV).then(() => {
     response.redirect("/aspirante/documentosAspirante");
   });
-  }
+};

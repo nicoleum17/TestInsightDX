@@ -40,6 +40,18 @@ router.get(
 );
 
 router.get(
+  "/registrarAspirante",
+  isAuth,
+  psicologaController.registrarAspirante
+);
+
+router.post(
+  "/registrarAspirante",
+  isAuth,
+  psicologaController.post_registrarAspirante
+);
+
+router.get(
   "/consultaRespuestasAspirante",
   isAuth,
   consultarRespuestasAspirante,
@@ -105,6 +117,18 @@ router.post(
   "/grupo/:id",
   isAuth,
   psicologaController.post_registra_reporte_grupo
+);
+
+router.get(
+  "/grupo/:id/modificar",
+  isAuth,
+  psicologaController.get_modificarGrupo
+);
+
+router.post(
+  "grupo/:id/modificar",
+  isAuth,
+  psicologaController.post_modificarGrupo
 );
 
 router.get("/cerrar_sesion", psicologaController.get_logout);

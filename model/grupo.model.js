@@ -54,6 +54,12 @@ module.exports = class Grupo {
       [archivoFoda, idGrupo]
     );
   }
+  updateGrupo() {
+    return db.execute(
+      "UPDATE Grupos SET posgrado = ?, generacion = ? WHERE idGrupo = ?",
+      [this.posgrado, this.generacion, this.idGrupo]
+    );
+  }
 
   static borrarGrupo(idGrupo) {
     return db.execute(
