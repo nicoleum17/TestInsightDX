@@ -51,4 +51,19 @@ module.exports = class Aspirante {
         FROM aspirantes a`
     );
   }
+
+  static update_subirKardex(idUsuario, kardex) {
+      return db.execute(
+        "UPDATE `perteneceGrupo` SET `kardex` = ? WHERE `idUsuario` = ?",
+        [kardex, idUsuario]
+      );
+    }
+
+  static update_subirCV(idUsuario, CV) {
+    return db.execute(
+      "UPDATE `perteneceGrupo` SET `curriculumVitae` = ? WHERE `idUsuario` = ?",
+      [CV, idUsuario]
+    );
+  }
+  
 };

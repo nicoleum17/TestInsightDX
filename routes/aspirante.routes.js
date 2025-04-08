@@ -274,5 +274,17 @@ router.post(
   aspiranteController.post_registra_kardex
 );
 
+router.get(
+  "/registra_CV",
+  isAuth,
+  aspiranteController.registra_CV
+);
+
+router.post(
+  "/registra_CV",
+  isAuth,
+  aspiranteController.post_registra_CV
+);
+
 
 module.exports = router;

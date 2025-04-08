@@ -946,7 +946,6 @@ exports.postConfirmacionFormato = (request,response) =>{
 //};
 
 exports.registra_kardex = (request, response, next) => {
-
     response.render("registrarKardex", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
@@ -958,10 +957,26 @@ exports.registra_kardex = (request, response, next) => {
 };
 
 exports.post_registra_kardex = (request, response, next) => {
-  const idUsuario = request.params.id;
   let kardex = request.file.filename;
-
-  Aspirante.update_subirKardex(idUsuario, kardex).then(() => {
+  Aspirante.update_subirKardex(request.session.idUsuario, kardex).then(() => {
     response.redirect("/aspirante/documentosAspirante");
   });
 }
+
+  exports.registra_CV = (request, response, next) => {
+    response.render("registrarCV", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      idUsuario: request.session.idUsuario || "",
+    });
+
+};
+
+exports.post_registra_CV = (request, response, next) => {
+  let CV = request.file.filename;
+  Aspirante.update_subirCV(request.session.idUsuario, CV).then(() => {
+    response.redirect("/aspirante/documentosAspirante");
+  });
+  }
