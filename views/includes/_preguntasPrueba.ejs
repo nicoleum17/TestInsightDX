@@ -57,20 +57,10 @@
         value="<%= idUsuario%>" />
       <input type="hidden" id="idGrupo" name="idGrupo" value="<%= idGrupo%>" />
       <div class="columns is-centered ml-5 mt-6">
-        <% if (pregunta.numeroPreguntaKostick === 1) { %>
-        <button
-          type="button"
-          id="preguntaAnterior"
-          class="column is-narrow button mt-3 mr-6 is-primary has-text-warning"
-          onclick=""
-          disabled>
-          Regresar
-        </button>
-        <%}%>
         <button
           type="button"
           id="guardarPregunta"
-          class="column is-narrow button mt-3 ml-6 is-primary has-text-warning"
+          class="column is-narrow button mt-3 is-primary has-text-warning"
           onclick="nextQuestion(event)">
           Siguiente
         </button>
@@ -122,20 +112,10 @@
         name="idGrupo1"
         value="<%= idGrupo%>" />
       <div class="columns is-centered ml-5 mt-6">
-        <% if (pregunta.numeroPregunta16PF === 1) { %>
-        <button
-          type="button"
-          id="preguntaAnterior"
-          class="column is-narrow button mt-3 mr-6 is-primary has-text-warning"
-          onclick=""
-          disabled>
-          Regresar
-        </button>
-        <%}%>
         <button
           type="button"
           id="guardarPregunta"
-          class="column is-narrow button mt-3 ml-6 is-primary has-text-warning"
+          class="column is-narrow button mt-3 is-primary has-text-warning"
           onclick="nextQuestion1(event)">
           Siguiente
         </button>
@@ -238,32 +218,11 @@
         name="idGrupo"
         value="<%= idGrupo%>" />
                 <div class="columns is-centered ml-5 mt-6">`;
-          if (data.pregunta.numeroPreguntaKostick === 1) {
-            html += `
-        <button
-          type="button"
-          id="preguntaAnterior"
-          class="column is-narrow button mt-3 mr-6 is-primary has-text-warning"
-          onclick=""
-          disabled>
-          Regresar
-        </button>`;
-          } else {
-            html += ` <button
-          type="button"
-          id="preguntaAnterior"
-          class="column is-narrow button mt-3 mr-6 is-primary has-text-warning"
-          onclick=""
-          >
-          Regresar
-        </button>`;
-          }
-
           if (data.pregunta.numeroPreguntaKostick === 90) {
             html += `<button
             type="button"
             id="guardarPregunta"
-            class="column is-narrow button mt-3 ml-6 is-primary has-text-warning"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
             onclick="entregar(event)">
             Finalizar
            </button>
@@ -272,7 +231,7 @@
             html += `<button
             type="button"
             id="guardarPregunta"
-            class="column is-narrow button mt-3 ml-6 is-primary has-text-warning"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
             onclick="nextQuestion(event)">
             Siguiente
           </button>
@@ -442,32 +401,12 @@
         name="idGrupo"
         value="<%= idGrupo%>" />
               <div class="columns is-centered ml-5 mt-6">`;
-          if (data.pregunta.numeroPregunta16PF === 1) {
-            html += `
-        <button
-          type="button"
-          id="preguntaAnterior"
-          class="column is-narrow button mt-3 mr-6 is-primary has-text-warning"
-          onclick=""
-          disabled>
-          Regresar
-        </button>`;
-          } else {
-            html += ` <button
-          type="button"
-          id="preguntaAnterior"
-          class="column is-narrow button mt-3 mr-6 is-primary has-text-warning"
-          onclick=""
-          >
-          Regresar
-        </button>`;
-          }
           if (data.pregunta.numeroPregunta16PF === 185) {
             html += `
           <button
             type="button"
             id="guardarPregunta"
-            class="column is-narrow button mt-3 ml-6 is-primary has-text-warning"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
             onclick="entregar1(event)">
             Finalizar
           </button>
@@ -476,7 +415,7 @@
             html += `<button
             type="button"
             id="guardarPregunta"
-            class="column is-narrow button mt-3 ml-6 is-primary has-text-warning"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
             onclick="nextQuestion1(event)">
             Siguiente
           </button>
