@@ -2,7 +2,7 @@
 <head> </head>
 <body class="fullHeight">
   <section class="section">
-    <div class="title">Grupo </div>
+    <div class="title has-text-weight-semibold mb-2">Grupo</div>
 
     <div class="subtitle"><%= grupo.posgrado %> - <%= grupo.generacion %></div>
 
@@ -17,29 +17,24 @@
             <img
               src="https://cdn-icons-png.flaticon.com/256/337/337946.png"
               alt=""
-              width="30px"
-            /></button
+              width="30px" /></button
         ></a>
         <a href="registra_foda/<%= grupo.idGrupo%>">
           <button class="image-button">
             <img
               src="https://cdn-icons-png.freepik.com/512/9322/9322975.png"
               alt=""
-              width="30px"
-            /></button
+              width="30px" /></button
         ></a>
         <a href="modifica_grupo">
           <button class="image-button">
             <img
               src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
               alt=""
-              width="20px"
-            /></button
+              width="20px" /></button
         ></a>
       </div>
     </div>
-    
-    
   </section>
 
   <section>
@@ -48,13 +43,13 @@
         <thead>
           <tr>
             <th>Prueba</th>
-            <th>Fecha Limite</abbr></th>
+            <th>Fecha Limite</th>
             <th>Tiempo Promedio</th>
             <th>Estatus</th>
             <th>Respuestas</th>
           </tr>
         </thead>
-  
+
         <tbody>
           <tr>
             <th>Prueba OTIS</th>
@@ -67,8 +62,7 @@
                   <img
                     src="https://img.icons8.com/ios7/512/plus.png"
                     alt=""
-                    width="25px"
-                  /></button
+                    width="25px" /></button
               ></a>
             </td>
           </tr>
@@ -83,8 +77,7 @@
                   <img
                     src="https://img.icons8.com/ios7/512/plus.png"
                     alt=""
-                    width="25px"
-                  /></button
+                    width="25px" /></button
               ></a>
             </td>
           </tr>
@@ -99,8 +92,7 @@
                   <img
                     src="https://img.icons8.com/ios7/512/plus.png"
                     alt=""
-                    width="25px"
-                  /></button
+                    width="25px" /></button
               ></a>
             </td>
           </tr>
@@ -115,23 +107,29 @@
                   <img
                     src="https://img.icons8.com/ios7/512/plus.png"
                     alt=""
-                    width="25px"
-                  /></button
+                    width="25px" /></button
               ></a>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    
-    <a href="elegir"
-      ><button class="button m-5 is-primary has-text-white">Regresar</button></a
-    >
-    <a href="/psicologa/inicio"
-      ><button class="button m-5 is-primary has-text-white">
-        Volver al inicio
-      </button></a
-    >
+    <div class="columns has-text-centered">
+      <div class="column">
+        <a href="elegir"
+          ><button class="button m-5 is-primary has-text-white">
+            Regresar
+          </button>
+        </a>
+      </div>
+      <div class="column">
+        <a href="/psicologa/inicio">
+          <button class="button m-5 is-primary has-text-white">
+            Volver al inicio
+          </button>
+        </a>
+      </div>
+    </div>
   </section>
 
   <%- include('includes/_footer')%>
