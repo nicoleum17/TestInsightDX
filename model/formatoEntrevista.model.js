@@ -106,4 +106,14 @@ module.exports = class formatoEntrevista {
         return mi_idFormato;
       });
   }
+
+  static finish(
+    mi_idFormato
+  ){
+    return db.execute("UPDATE formatoEntrevista SET estatus=? WHERE idFormato=?", ["Terminado",mi_idFormato])
+    .then(([result]) => {
+      return mi_idFormato;
+    });
+  }
+  
 };

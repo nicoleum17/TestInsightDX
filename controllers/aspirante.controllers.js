@@ -341,7 +341,6 @@ exports.formato_entrevista = (request, response, next) => {
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
-  console.log(request.body)
   const newFormato = new formatoEntrevista(
     request.body.apellidoP,
     request.body.apellidoM,
@@ -491,7 +490,6 @@ exports.formato_entrevista_DL = (request, response, next) => {
 };
 
 exports.post_formato_entrevista_DL = (request, response, next) => {
-  console.log(request.body);
   formatoEntrevista
     .saveDL(
       request.body.lugarTrabajo,
@@ -538,7 +536,7 @@ exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
       .save()
       .then((id) => {
         request.session.idFormato = id;
-        response.redirect("inicio");
+        response.redirect("formatoEntrevista/confirmacion");
         console.log("Pregunta_Guardada");
       })
       .catch((error) => {
@@ -916,13 +914,25 @@ exports.post_formato_entrevista_familiar_Hijos = (request, response, next) => {
 };
 
 exports.getConfirmacionFormato = (request,response)=>{ 
-  response.render("formatoEntrevistaConfirmat", {
+  response.render("formatoEntrevistaConfirmar", {
   isLoggedIn: request.session.isLoggedIn || false,
   usuario: request.session.usuario || "",
   csrfToken: request.csrfToken(),
   formato: request.session.idFormato
 });
 };
+
+exports.postConfirmacionFormato = (request,response) =>{
+  formatoEntrevista.finish(request.body.idFormato)
+  .then((id) => {
+    request.session.idFormato = id;
+    response.redirect("/aspirante/inicio");
+    console.log("Termina Formato Entrevista");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
 //exports.post_formato_entrevista = (request,response,next) => {
 
 // UNMODELO.fetchAll().then(async () => {

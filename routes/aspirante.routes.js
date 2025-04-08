@@ -255,4 +255,10 @@ router.get(
   isAuth,
   aspiranteController.getConfirmacionFormato
 );
+
+router.post(
+  "/formatoEntrevista/confirmacion",
+  isAuth,
+  aspiranteController.postConfirmacionFormato
+);
 module.exports = router;
