@@ -54,4 +54,11 @@ module.exports = class Grupo {
       [archivoFoda, idGrupo]
     );
   }
+
+  static borrarGrupo(idGrupo) {
+    return db.execute(
+      "UPDATE `grupos` SET `hidden` = ? WHERE `idGrupo` = ?",
+      [1,idGrupo]
+    );
+  }
 };

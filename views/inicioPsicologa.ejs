@@ -5,8 +5,20 @@
     margin-top: 60px;
   }
 </style>
+
 <section class="fullHeight has-background-warning">
   <div class="container is-max-desktop mt-5">
+    <% if (infoBorrado) { %>
+      <article class="message is-success">
+        <div class="message-header">
+          <p>Éxito</p>
+          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+        <div class="message-body">
+          <%= infoBorrado %>
+        </div>
+      </article>
+    <% } %>
     <div class="title is-2 has-text-weight-semibold">
       Bienvenida Claudia Cook
     </div>

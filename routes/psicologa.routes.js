@@ -110,6 +110,11 @@ router.post(
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
 router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
+
 router.get("/buscar", isAuth, psicologaController.get_buscar);
+
+router.get("/grupo/confirmacion/:id", isAuth, psicologaController.getPreguntaSeguridad);
+
+router.post("/grupo/confirmacion/:id", isAuth, psicologaController.postPreguntaSeguridad);
 
 module.exports = router;
