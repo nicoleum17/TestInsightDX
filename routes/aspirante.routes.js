@@ -261,4 +261,18 @@ router.post(
   isAuth,
   aspiranteController.postConfirmacionFormato
 );
+
+router.get(
+  "/aspirante/registra_kardex",
+  isAuth,
+  aspiranteController.registra_kardex
+);
+
+router.post(
+  "/aspirante/registra_kardex",
+  isAuth,
+  aspiranteController.post_registra_kardex
+);
+
+
 module.exports = router;

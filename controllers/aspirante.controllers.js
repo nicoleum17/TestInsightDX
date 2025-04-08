@@ -944,3 +944,27 @@ exports.postConfirmacionFormato = (request,response) =>{
 // });
 
 //};
+
+exports.registra_kardex = (request, response, next) => {
+  const numAspirante = request.params.id;
+
+  Aspirante.fetchOne(numAspirante).then(([rows]) => {
+    response.render("registrarKardex", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      idUsuario: request.session.idUsuario || "",
+      aspirante: rows[0],
+    });
+  });
+};
+
+exports.post_registra_kardex = (request, response, next) => {
+  const idUsuario = request.params.id;
+  let kardex = request.file.filename;
+
+  Aspirante.update_subirKardex(idUsuario, kardex).then(() => {
+    response.redirect("/aspirante/documentosAspirante");
+  });
+}
