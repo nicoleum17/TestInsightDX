@@ -162,18 +162,15 @@
 
 <section class="section">
   <div class="container">
-    <h1 class="title is-3">Familia</h1>
+    <h1 class="title is-3 has-text-weight-semibold">Familia</h1>
     <div class="interviewFormat columns is-vcentered ml-5"></div>
     <form action="formatoEntrevistaFamilia" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
-      <div class="block">
-        
-      </div>
+      <div class="block"></div>
       <button
         class="button has-background-primary has-text-warning ml-6"
-        type="submit"
-      >
+        type="submit">
         Continuar
       </button>
     </form>
