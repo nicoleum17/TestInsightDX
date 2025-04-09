@@ -286,8 +286,8 @@ router.post(
   aspiranteController.post_registra_CV
 );
 
-/*
 router.get("/documentos/:id", isAuth, aspiranteController.get_documentos_activos);
-*/
+
+router.get("/formatoEntrevista/:id", isAuth, aspiranteController.get_formato_activo);
 
 module.exports = router;
