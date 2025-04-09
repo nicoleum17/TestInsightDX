@@ -25,7 +25,9 @@
       <div class="container mt-5 is-max-desktop">
         <div class="columns">
           <div class="column">
-        <h1 class="title is-1 has-text-weight-semibold">¡Hola Arturo!</h1>
+            <% if (aspirante) {%>
+        <h1 class="title is-1 has-text-weight-semibold">¡Hola <%= aspirante.nombres%>!</h1>
+        <%}%>
         </div>
         <div class="column ">
           <nav class="level-right">
@@ -51,9 +53,15 @@
               <p>Estatus</p>
             </div>
             <div class="column">
+              <% if (pruebasAspirante.estatus != 'Por comenzar') {%>
+              <a href="instruccionesPrueba/<%=prueba.idPrueba%>">
+                <button class="button is-primary has-text-warning" disabled>Comenzar</button>
+              </a>
+              <% } else {%>
               <a href="instruccionesPrueba/<%=prueba.idPrueba%>">
                 <button class="button is-primary has-text-warning">Comenzar</button>
               </a>
+              <% } %>
             </div>
           </div>
           <%});%>

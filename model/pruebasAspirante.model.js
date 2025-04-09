@@ -19,4 +19,9 @@ module.exports = class PruebaAspirante {
       ["Completada", this.idUsuario, this.idGrupo, this.idPrueba]
     );
   }
+  static fetchOne(idUsuario) {
+    return db.execute("SELECT * FROM pruebasAspirante WHERE idUsuario = ?", [
+      idUsuario,
+    ]);
+  }
 };

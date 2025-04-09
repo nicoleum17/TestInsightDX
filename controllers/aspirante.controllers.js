@@ -12,14 +12,23 @@ const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
 
 exports.get_root = (request, response, next) => {
-  Prueba.fetchAll().then(([rows]) => {
-    response.render("inicioAspirante", {
-      pruebas: rows,
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      grupo: request.session.grupo,
+  Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
+    Prueba.fetchAll().then(([rows]) => {
+      PruebaAspirante.fetchOne(request.session.idUsuario).then(
+        ([pruebasAspirante]) => {
+          response.render("inicioAspirante", {
+            pruebas: rows,
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            grupo: request.session.grupo,
+            pruebasAspirante: pruebasAspirante[0],
+            idUsuario: request.session.idUsuario,
+            aspirante: aspirante[0],
+          });
+        }
+      );
     });
   });
 };
@@ -119,6 +128,7 @@ exports.get_preguntasPrueba = (request, response, next) => {
           .then(([pregunta]) => {
             PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
               .then(([opciones]) => {
+                console.log(opciones);
                 return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
@@ -978,7 +988,7 @@ exports.post_registra_kardex = (request, response, next) => {
   Aspirante.update_subirKardex(request.session.idUsuario, kardex).then(() => {
     response.redirect("/aspirante/documentosAspirante");
   });
-}
+};
 
 exports.registra_CV = (request, response, next) => {
   response.render("registrarCV", {
@@ -995,34 +1005,30 @@ exports.post_registra_CV = (request, response, next) => {
   Aspirante.update_subirCV(request.session.idUsuario, CV).then(() => {
     response.redirect("/aspirante/documentosAspirante");
   });
-}
+};
 
 exports.get_documentos_activos = (request, response, next) => {
-  Aspirante.documentos_activos(request.session.idUsuario)
-    .then(([rows]) => {
-      if (rows.length > 0) {
-        const documentos = {
-          kardex: rows[0].kardex || null,
-          curriculumVitae: rows[0].curriculumVitae || null,
-          idUsuario: request.session.idUsuario,
-        };
-        response.status(200).json({ documentos });
-      }
+  Aspirante.documentos_activos(request.session.idUsuario).then(([rows]) => {
+    if (rows.length > 0) {
+      const documentos = {
+        kardex: rows[0].kardex || null,
+        curriculumVitae: rows[0].curriculumVitae || null,
+        idUsuario: request.session.idUsuario,
+      };
+      response.status(200).json({ documentos });
     }
-  );
-}
+  });
+};
 
 exports.get_formato_activo = (request, response, next) => {
-  formatoEntrevista.formato_activo(request.session.idUsuario)
-    .then(([rows]) => {
-      if (rows.length > 0) {
-        const formato = {
-          estatus: rows[0].estatus || null,
-          idFormato: rows[0].idFormato || null,
-          idUsuario: request.session.idUsuario,
-        };
-        response.status(200).json({ formato });
-      }
+  formatoEntrevista.formato_activo(request.session.idUsuario).then(([rows]) => {
+    if (rows.length > 0) {
+      const formato = {
+        estatus: rows[0].estatus || null,
+        idFormato: rows[0].idFormato || null,
+        idUsuario: request.session.idUsuario,
+      };
+      response.status(200).json({ formato });
     }
-  );
+  });
 };
