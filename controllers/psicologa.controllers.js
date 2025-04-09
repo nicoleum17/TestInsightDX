@@ -6,16 +6,17 @@ const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/testInsight.model");
+const PerteneceGrupo = require("../model/perteneceGrupo.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   const mensaje = request.session.infoBorrado;
-  request.session.infoBorrado=undefined;
+  request.session.infoBorrado = undefined;
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
-    infoBorrado: mensaje
+    infoBorrado: mensaje,
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
@@ -60,23 +61,30 @@ exports.registrarAspirante = (request, response, next) => {
 
 exports.post_registrarAspirante = (request, response, next) => {
   const mi_aspirante = new Aspirante(
-    request.body.idGrupo,
+    request.body.codigoI,
     request.body.nombre,
     request.body.apellidoP,
     request.body.apellidoM,
-    request.body.codigoI,
-    request.body.correo,
     request.body.numeroTel,
     request.body.lugarO,
+    request.body.correo,
     request.body.universidad
   );
 
+  const mi_perteneceGrupo = new PerteneceGrupo(
+    request.body.grupo,
+    mi_aspirante.idUsuario,
+    request.body.fechaSesionIndividual +
+      " " +
+      request.body.horaSesionIndividual,
+    request.body.enlaceZoom
+  );
+
+  console.log(mi_perteneceGrupo);
+
   mi_aspirante.save().then(() => {
-    response.redirect("/inicio", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
+    mi_perteneceGrupo.save().then(() => {
+      response.redirect("inicio");
     });
   });
 };
@@ -231,7 +239,7 @@ exports.confirmar_creacion_grupo = (request, response, next) => {
 
 exports.elegir_grupo = (request, response, next) => {
   const mensaje = request.session.infoBorrado;
-  request.session.infoBorrado=undefined;
+  request.session.infoBorrado = undefined;
   Grupo.fetchAll().then(([rows]) => {
     response.render("elegirGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
@@ -239,7 +247,7 @@ exports.elegir_grupo = (request, response, next) => {
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupos: rows,
-      infoBorrado: mensaje
+      infoBorrado: mensaje,
     });
   });
 };
@@ -378,37 +386,37 @@ exports.get_logout = (request, response, next) => {
 
 exports.getPreguntaSeguridad = (request, response, next) => {
   const idGrupo = request.params.id;
-  response.render("preguntaSeguridadBorrado.ejs",{
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      grupo: idGrupo
+  response.render("preguntaSeguridadBorrado.ejs", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    grupo: idGrupo,
   });
 };
 
 exports.postPreguntaSeguridad = (request, response, next) => {
   console.log(request.body);
-  Usuario.fetchOne(request.body.usuario)
-    .then(([rows, fieldData])=>{
-      if (rows.length > 0){
-        const bcrypt = require("bcryptjs");
-        bcrypt.compare(request.body.contra, rows[0].contraseña)
+  Usuario.fetchOne(request.body.usuario).then(([rows, fieldData]) => {
+    if (rows.length > 0) {
+      const bcrypt = require("bcryptjs");
+      bcrypt
+        .compare(request.body.contra, rows[0].contraseña)
         .then((doMatch) => {
           if (doMatch) {
             Grupo.borrarGrupo(request.body.grupo);
             request.session.infoBorrado = "Grupo borrado exitosamente";
             response.redirect("/psicologa/inicio");
             console.log("Grupo borrado");
-          }
-          else{
-            request.session.infoBorrado = "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
-            response.redirect("/psicologa/grupo/elegir")
+          } else {
+            request.session.infoBorrado =
+              "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
+            response.redirect("/psicologa/grupo/elegir");
             console.log("Grupo no borrado");
           }
         })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-   });
-  };
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  });
+};
