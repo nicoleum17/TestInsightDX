@@ -371,36 +371,42 @@ exports.formato_entrevista = (request, response, next) => {
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario
   });
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
-  const newFormato = new formatoEntrevista(
-    request.body.apellidoP,
-    request.body.apellidoM,
-    request.body.nombre,
-    request.body.fechaNacimiento,
-    request.body.genero,
-    request.body.edad,
-    request.body.nacionalidad,
-    request.body.origen,
-    request.body.estadoCivil,
-    request.body.direccionA,
-    request.body.celular,
-    request.body.telefono,
-    request.body.correo,
-    request.body.usuario
-  );
-  newFormato
-    .save()
-    .then((uuid) => {
-      request.session.idFormato = uuid;
-      response.redirect("formatoEntrevistaPreguntasP");
+  formatoEntrevista.getID(request.body.idUsuario).then(([row, fieldData])=>{
+    const newFormato = new formatoEntrevista(
+      request.body.apellidoP,
+      request.body.apellidoM,
+      request.body.nombre,
+      request.body.fechaNacimiento,
+      request.body.genero,
+      request.body.edad,
+      request.body.nacionalidad,
+      request.body.origen,
+      request.body.estadoCivil,
+      request.body.direccionA,
+      request.body.celular,
+      request.body.telefono,
+      request.body.correo,
+      row[0].idFormato
+    );
+    newFormato
+      .save()
+      .then((uuid) => {
+        request.session.idFormato = uuid;
+        response.redirect("formatoEntrevistaPreguntasP");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     })
     .catch((error) => {
       console.log(error);
     });
-};
+  };
 
 exports.formato_entrevista_preguntasP = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasP", {

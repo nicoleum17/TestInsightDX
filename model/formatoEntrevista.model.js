@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = class formatoEntrevista {
   constructor(
-    
     mi_apellidoP,
     mi_apellidoM,
     mi_nombre,
@@ -18,9 +17,8 @@ module.exports = class formatoEntrevista {
     mi_celular,
     mi_telefono,
     mi_correo,
-    mi_usuario
+    mi_idFormato
   ) {
-    this.idFormato = uuidv4();
     this.nombre = mi_nombre;
     this.apellidoP = mi_apellidoP;
     this.apellidoM = mi_apellidoM;
@@ -34,16 +32,23 @@ module.exports = class formatoEntrevista {
     this.celular = mi_celular;
     this.telefono = mi_telefono;
     this.correo = mi_correo;
-    this.usuario = mi_usuario;
+    this.idFormato = mi_idFormato;
     this.estatus = "Empezado";
 
+  }
+  static getID(idUsuario){
+    return db
+      .execute(
+        "SELECT idFormato FROM formatoEntrevista WHERE idUsuario = ?", [idUsuario]
+      )
   }
   save() {
     return db
       .execute(
-        "INSERT INTO formatoentrevista(idFormato, nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, estadoCivil, origen, telefono, celular, correo, direccionA, idUsuario, estatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        "UPDATE formatoentrevista SET nombre = ?, apellidoP = ?, apellidoM = ?, fechaNacimiento = ?, "+
+        "genero = ?, nacionalidad = ?, edad = ?, estadoCivil = ?, origen = ?, telefono = ?, celular = ?, "+
+        "correo = ?, direccionA = ?, estatus = ? WHERE idFormato = ?",
         [
-          this.idFormato,
           this.nombre,
           this.apellidoP,
           this.apellidoM,
@@ -57,8 +62,8 @@ module.exports = class formatoEntrevista {
           this.celular,
           this.correo,
           this.direccionA,
-          this.usuario,
-          this.estatus
+          this.estatus,
+          this.idFormato
         ]
       )
       .then(([result]) => {
@@ -110,7 +115,7 @@ module.exports = class formatoEntrevista {
   static finish(
     mi_idFormato
   ){
-    return db.execute("UPDATE formatoEntrevista SET estatus=? WHERE idFormato=?", ["Terminado",mi_idFormato])
+    return db.execute("UPDATE formatoEntrevista SET estatus=? WHERE idFormato=?", ["Finalizado",mi_idFormato])
     .then(([result]) => {
       return mi_idFormato;
     });
