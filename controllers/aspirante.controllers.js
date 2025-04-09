@@ -9,6 +9,7 @@ const PreguntaKostick = require("../model/preguntasKostick.model");
 const Responde16PF = require("../model/responde16pf.model");
 const RespondeKostick = require("../model/respondeKostick.model");
 const Aspirante = require("../model/aspirante.model");
+const PruebaAspirante = require("../model/pruebasAspirante.model");
 
 exports.get_root = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
@@ -260,8 +261,13 @@ exports.post_siguiente_pregunta1 = (request, response, next) => {
 };
 
 exports.pruebaCompletada = (request, response, next) => {
-  const { idOpcionKostick, idGrupo, idUsuario, idPreguntaKostick, tiempo } =
-    request.body;
+  const idOpcionKostick = request.body.idOpcionKostick;
+  const idGrupo = request.body.idGrupo;
+  const idUsuario = request.body.idUsuario;
+  const idPreguntaKostick = request.body.idPreguntaKostick;
+  const tiempo = request.body.tiempo;
+
+  const idPrueba = 1;
 
   if (!request.session.index) {
     return response.redirect("/login");
@@ -287,24 +293,36 @@ exports.pruebaCompletada = (request, response, next) => {
     })
     .catch((error) => {
       console.error("Error saving response:", error);
-      response.status(500).json({ message: "Error saving response." });
+      return response.status(500).json({ message: "Error saving response." });
     });
+
+  const newPruebaAspirante = new PruebaAspirante(idUsuario, idGrupo, idPrueba);
+
+  newPruebaAspirante.terminarPrueba().then((uuid) => {
+    request.session.idGrupo = uuid;
+    request.session.idUsuario = uuid;
+  });
 };
 
 exports.pruebaCompletada1 = (request, response, next) => {
-  const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
-    request.body;
+  const idOpcion16PF = request.body.idOpcion16PF;
+  const idGrupo = request.body.idGrupo;
+  const idUsuario = request.body.idUsuario;
+  const idPregunta16PF = request.body.idPregunta16PF;
+  const tiempo = request.body.tiempo;
+
+  const idPrueba = 2;
+
   if (!request.session.index) {
     return response.redirect("/login");
   }
-  request.session.index++;
 
   const newResponde16pf = new Responde16PF(
-    request.body.idPregunta16PF,
-    request.body.idGrupo,
-    request.body.idUsuario,
-    request.body.idOpcion16PF,
-    request.body.tiempo
+    idOpcion16PF,
+    idGrupo,
+    idUsuario,
+    idPregunta16PF,
+    tiempo
   );
   newResponde16pf
     .save()
@@ -318,8 +336,14 @@ exports.pruebaCompletada1 = (request, response, next) => {
     })
     .catch((error) => {
       console.error("Error saving response:", error);
-      response.status(500).json({ message: "Error saving response." });
+      return response.status(500).json({ message: "Error saving response." });
     });
+  const newPruebaAspirante = new PruebaAspirante(idUsuario, idGrupo, idPrueba);
+
+  newPruebaAspirante.terminarPrueba().then((uuid) => {
+    request.session.idGrupo = uuid;
+    request.session.idUsuario = uuid;
+  });
 };
 
 exports.get_pruebaCompletada = (request, response, next) => {

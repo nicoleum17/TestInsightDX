@@ -43,7 +43,7 @@ module.exports = class Aspirante {
     );
   }
 
-  static updateAspirante() {
+  updateAspirante() {
     return db
       .execute(
         "UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?",
@@ -71,11 +71,11 @@ module.exports = class Aspirante {
   }
 
   static update_subirKardex(idUsuario, kardex) {
-      return db.execute(
-        "UPDATE `perteneceGrupo` SET `kardex` = ? WHERE `idUsuario` = ?",
-        [kardex, idUsuario]
-      );
-    }
+    return db.execute(
+      "UPDATE `perteneceGrupo` SET `kardex` = ? WHERE `idUsuario` = ?",
+      [kardex, idUsuario]
+    );
+  }
 
   static update_subirCV(idUsuario, CV) {
     return db.execute(
@@ -84,12 +84,12 @@ module.exports = class Aspirante {
     );
   }
 
-  static documentos_activos(idUsuario){
+  static documentos_activos(idUsuario) {
     return db.execute(
       `SELECT kardex, curriculumVitae
       FROM perteneceGrupo
       WHERE idUsuario = ?`,
       [idUsuario]
     );
-  } 
+  }
 };
