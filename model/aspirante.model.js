@@ -83,5 +83,13 @@ module.exports = class Aspirante {
       [CV, idUsuario]
     );
   }
-  
+
+  static documentos_activos(idUsuario){
+    return db.execute(
+      `SELECT kardex, curriculumVitae
+      FROM perteneceGrupo
+      WHERE idUsuario = ?`,
+      [idUsuario]
+    );
+  } 
 };

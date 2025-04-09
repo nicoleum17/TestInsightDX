@@ -14,42 +14,107 @@
       <div class="column">
         <h4 class="title is-4">Contestar formato de entrevista:</h4>
       </div>
-      <div class="column">
-        <a href="formatoEntrevista">
-          <button class="button is-primary has-text-warning">Contestar</button>
-        </a>
+      <div class="column" id="contenedor_formato">
       </div>
     </div>
     <div class="test1 columns is-vcentered ml-5">
       <div class="column">
         <h4 class="title is-4">Subir Kardex</h4>
       </div>
-      <div class="column">
-        <a href="registra_kardex">
-          <button class="image-button">
-            <img
-              src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
-              alt=""
-              width="30px"
-            /></button
-        ></a>
+      <div class="column" id="contenedor_kardex">
       </div>
     </div>
     <div class="test1 columns is-vcentered ml-5">
       <div class="column">
         <h4 class="title is-4">Subir CV</h4>
       </div>
-      <div class="column">
-        <a href="registra_CV">
-          <button class="image-button">
-            <img
-              src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
-              alt=""
-              width="30px"
-            /></button
-        ></a>
+      <div class="column" id="contenedor_cv">
       </div>
   </div>
 </section>
 </body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+      fetch("/aspirante/documentos/${idUsuario}", {
+        method: "GET",
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.documentos) {
+          if (data.documentos.kardex) {
+            document.getElementById("contenedor_kardex").innerHTML = `
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/018/886/516/non_2x/check-mark-icon-png.png"
+                alt="Kardex"
+                width="30px"
+              />
+            `;
+          } else {
+            document.getElementById("contenedor_kardex").innerHTML = `
+              <a href="registra_kardex">
+                <button class="image-button">
+                  <img
+                    src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
+                    alt=""
+                    width="30px"
+                  /></button
+              ></a>
+            `;
+          }
+          if (data.documentos.curriculumVitae) {
+            document.getElementById("contenedor_cv").innerHTML = `
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/018/886/516/non_2x/check-mark-icon-png.png"
+                alt="CV"
+                width="30px"
+              />
+            `;
+          } else {
+            document.getElementById("contenedor_cv").innerHTML = `
+              <a href="registra_CV">
+                <button class="image-button">
+                  <img
+                    src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
+                    alt=""
+                    width="30px"
+                  /></button
+              ></a>
+            `;
+          }
+        }
+        })
+      });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+      fetch("/aspirante/formatoEntrevista/${idUsuario}", {
+        method: "GET",
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.formato) {
+          if (data.formato.estatus == 'Finalizado') {
+            document.getElementById("contenedor_formato").innerHTML = `
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/018/886/516/non_2x/check-mark-icon-png.png"
+                alt=""
+                width="30px"
+              />
+            `;
+          } else {
+            document.getElementById("contenedor_formato").innerHTML = `
+              <a href="formatoEntrevista">
+                <button class="button is-primary has-text-warning">Contestar</button>
+              </a>
+            `;
+          }
+        }
+        })
+      });
+</script>
+
 </html>

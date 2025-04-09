@@ -43,8 +43,15 @@
 </section>
 
 <script>
+  let contadorFamiliares = 0;
+  const MaxFamiliares = 15;
   function agregarFamiliar() {
-    console.log("AAAAAAAAA");
+    if (contadorFamiliares >= MaxFamiliares) {
+      alert("Has alcanzado el número máximo de familiares permitidos (" + MAX_FAMILIARES + ").");
+      return;
+    }
+    contadorFamiliares += 1;
+    console.log("Nuevo Familiar!");
     const cont = document.getElementById("contenedorFamiliares");
     const nuevoFamiliar = document.createElement("div");
     nuevoFamiliar.classList.add("tarjeta", "mt-3");
