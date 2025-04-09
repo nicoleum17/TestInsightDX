@@ -9,18 +9,20 @@ module.exports = class Grupo {
     this.generacion = mi_generacion;
     this.fechaPruebaGrupal = mi_fechaPruebaGrupal;
     this.enlaceZoom = mi_enlaceZoom;
+    this.hidden = 0;
   }
 
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO Grupos (idGrupo, posgrado, generacion, fechaPruebaGrupal, enlaceZoom) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO Grupos (idGrupo, posgrado, generacion, fechaPruebaGrupal, enlaceZoom, hidden) VALUES (?, ?, ?, ?, ?, ?)",
       [
         this.idGrupo,
         this.posgrado,
         this.generacion,
         this.fechaPruebaGrupal,
         this.enlaceZoom,
+        this.hidden,
       ]
     );
   }
@@ -62,9 +64,9 @@ module.exports = class Grupo {
   }
 
   static borrarGrupo(idGrupo) {
-    return db.execute(
-      "UPDATE `grupos` SET `hidden` = ? WHERE `idGrupo` = ?",
-      [1,idGrupo]
-    );
+    return db.execute("UPDATE `grupos` SET `hidden` = ? WHERE `idGrupo` = ?", [
+      1,
+      idGrupo,
+    ]);
   }
 };
