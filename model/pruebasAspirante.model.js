@@ -8,12 +8,6 @@ module.exports = class PruebaAspirante {
       (this.estatus = mi_estatus);
   }
   terminarPrueba() {
-    console.log(
-      "Params para query",
-      this.idUsuario,
-      this.idGrupo,
-      this.idPrueba
-    );
     return db.execute(
       "UPDATE pruebasAspirante SET estatus = ? WHERE idUsuario = ? AND idGrupo = ? AND idPrueba = ?",
       ["Completada", this.idUsuario, this.idGrupo, this.idPrueba]

@@ -1,0 +1,41 @@
+@startuml   consultarReporteGrupo 12
+actor       Psicologa                    as a1
+boundary    psicologa.routes             as a2
+boundary    vistas__consultar_grupo.ejs  as a3
+boundary    vistas_consultar_reporte.ejs as a6
+control     psicologa.controllers        as a4
+entity      psicologa.model              as a7
+database    mysql                        as a5
+
+autonumber
+activate a1
+a1 -> a2: GET /psicologa/grupo/:idGrupo/reporte
+deactivate a1
+activate a2
+a2->a4: get_consultarReporte(request, response)
+deactivate a2
+activate a4
+a4 ->> a7: fetchOne(idGrupo)
+activate a7
+a7->>a5: execute("SELECT * FROM Grupos WHERE idGrupo = ?", this.idGrupo)
+activate a5
+a5-->>a7: rows
+deactivate a5
+a7 -->> a4: rows
+deactivate a7
+
+a4->a6: response.render('consultarReporte.ejs')
+note right
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupo: rows[0]
+end note
+deactivate a4
+activate a6
+a6->a1: HTML
+deactivate a6
+activate a1
+
+@enduml
