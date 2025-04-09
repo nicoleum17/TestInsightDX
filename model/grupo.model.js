@@ -3,8 +3,15 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = class Grupo {
   //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-  constructor(mi_posgrado, mi_generacion, mi_fechaPruebaGrupal, mi_enlaceZoom) {
+  constructor(
+    mi_institucion,
+    mi_posgrado,
+    mi_generacion,
+    mi_fechaPruebaGrupal,
+    mi_enlaceZoom
+  ) {
     this.idGrupo = uuidv4();
+    this.institucion = mi_institucion;
     this.posgrado = mi_posgrado;
     this.generacion = mi_generacion;
     this.fechaPruebaGrupal = mi_fechaPruebaGrupal;
@@ -15,9 +22,10 @@ module.exports = class Grupo {
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO Grupos (idGrupo, posgrado, generacion, fechaPruebaGrupal, enlaceZoom, hidden) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO Grupos (idGrupo, institucion, posgrado, generacion, fechaPruebaGrupal, enlaceZoom, hidden) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
         this.idGrupo,
+        this.institucion,
         this.posgrado,
         this.generacion,
         this.fechaPruebaGrupal,
@@ -40,7 +48,7 @@ module.exports = class Grupo {
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM Grupos");
+    return db.execute("SELECT * FROM Grupos WHERE hidden = 0");
   }
 
   static update_subirReporte(idGrupo, archivoPdf) {

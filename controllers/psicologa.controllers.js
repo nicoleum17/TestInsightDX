@@ -175,6 +175,7 @@ exports.crear_grupo = (request, response, next) => {
 
 exports.post_grupo = (request, response, next) => {
   const mi_grupo = new Grupo(
+    request.body.institucion,
     request.body.posgrado,
     request.body.generacion,
     request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal,
@@ -210,6 +211,7 @@ exports.post_grupo = (request, response, next) => {
         id: mi_grupo.idGrupo,
         posgrado: mi_grupo.posgrado,
         generacion: mi_grupo.generacion,
+        institucion: mi_grupo.institucion,
       };
       response.redirect("/psicologa/grupo/confirmarCreacion");
     })
