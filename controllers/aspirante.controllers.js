@@ -980,12 +980,32 @@ exports.post_registra_CV = (request, response, next) => {
   });
 }
 
-/*
 exports.get_documentos_activos = (request, response, next) => {
-  Aspirante.documentos_activos(request.params.idUsuario)
+  Aspirante.documentos_activos(request.session.idUsuario)
     .then(([rows]) => {
-      response.status(200).json({ documentos: rows[0] });
+      if (rows.length > 0) {
+        const documentos = {
+          kardex: rows[0].kardex || null,
+          curriculumVitae: rows[0].curriculumVitae || null,
+          idUsuario: request.session.idUsuario,
+        };
+        response.status(200).json({ documentos });
+      }
+    }
+  );
+}
+
+exports.get_formato_activo = (request, response, next) => {
+  formatoEntrevista.formato_activo(request.session.idUsuario)
+    .then(([rows]) => {
+      if (rows.length > 0) {
+        const formato = {
+          estatus: rows[0].estatus || null,
+          idFormato: rows[0].idFormato || null,
+          idUsuario: request.session.idUsuario,
+        };
+        response.status(200).json({ formato });
+      }
     }
   );
 };
-*/

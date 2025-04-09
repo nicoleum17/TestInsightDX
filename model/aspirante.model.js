@@ -84,7 +84,6 @@ module.exports = class Aspirante {
     );
   }
 
-  /*
   static documentos_activos(idUsuario){
     return db.execute(
       `SELECT kardex, curriculumVitae
@@ -92,15 +91,5 @@ module.exports = class Aspirante {
       WHERE idUsuario = ?`,
       [idUsuario]
     );
-  }
-
-  static formato_activo(idUsuario){
-    return db.execute(
-      `SELECT idFormato, estatus
-      FROM formatoEntrevista
-      WHERE idUsuario = ?`,
-      [idUsuario]
-    );
-  }  
-    */
+  } 
 };

@@ -115,5 +115,13 @@ module.exports = class formatoEntrevista {
       return mi_idFormato;
     });
   }
-  
+
+  static formato_activo(idUsuario){
+    return db.execute(
+      `SELECT estatus, idFormato
+      FROM formatoEntrevista
+      WHERE idUsuario = ?`,
+      [idUsuario]
+    );
+  }   
 };
