@@ -14,21 +14,34 @@
 <section class="section fullHeight">
   <div class="container">
     <br />
+
+    <% if (infoBorrado) { %>
+      <article class="message is-warning">
+        <div class="message-header">
+          <p>Error</p>
+          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+        <div class="message-body">
+          <%= infoBorrado %>
+        </div>
+      </article>
+    <% } %>
     
       <div class="title">Elegir Grupo</div>
         <br>
         <% grupos.forEach(grupo => {%>
-        <div class="columns">
-          <div class="column subtitle">
-            <%= grupo.posgrado %> - <%=grupo.generacion%>
-          </div>
-          <div class="column is-2">
-            <a href="/psicologa/grupo/<%= grupo.idGrupo%>">
-              <button class="button m-5 is-primary has-text-white">Consultar</button>
-            </a>
-          </div>
-          
-        </div>
+          <%if(grupo.hidden != 1){%>
+            <div class="columns">
+              <div class="column subtitle">
+                <%= grupo.posgrado %> - <%=grupo.generacion%>
+              </div>
+              <div class="column is-2">
+                <a href="/psicologa/grupo/<%= grupo.idGrupo%>">
+                  <button class="button m-5 is-primary has-text-white">Consultar</button>
+                </a>
+              </div>
+            </div>
+          <%}%>
         <%})%>
         
 

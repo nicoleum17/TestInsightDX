@@ -1,0 +1,35 @@
+<section class="section fullHeight has-background-warning">
+    <div class="container mt-3">
+        <h1 class="title is-3 has-text-weight-semibold">Pregunta de Seguridad</h1>
+        <p>
+            Por motivos de seguridad, requerimos que introduzca su contraseña antes de poder borrar este grupo.
+        </p>
+        <form action="<%= grupo %>" method="POST">
+            <input type="hidden" name="grupo" value="<%= grupo %>" />
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <input type="hidden" name="usuario" value="<%= usuario %>" />
+            <div class="columns is-vcentered ml-5">
+                <div class="column">
+                    <div class="container is-max-desktop mt-5">
+                        <label for="contraseña" class="label">Contraseña:</label>
+                            <input
+                            class="input"
+                            type="password"
+                            placeholder="Contraseña"
+                            id="contra"
+                            name="contra"
+                            required />
+                    </div>
+                </div>
+            </div>
+            <a class="button is-warning" href="/psicologa/grupo/elegir">
+                Cancelar
+            </a>
+            <button class="button has-background-primary has-text-warning"
+            type="submit">
+                Confirmar
+            </button>
+
+        </form>
+    </div>
+</section>

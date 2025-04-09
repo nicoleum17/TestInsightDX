@@ -1,17 +1,21 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const db = require("../util/database");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
+const Usuario = require("../model/testInsight.model");
 
 exports.inicio_psicologa = (request, response, next) => {
+  const mensaje = request.session.infoBorrado;
+  request.session.infoBorrado=undefined;
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
+    infoBorrado: mensaje
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
@@ -226,6 +230,8 @@ exports.confirmar_creacion_grupo = (request, response, next) => {
 };
 
 exports.elegir_grupo = (request, response, next) => {
+  const mensaje = request.session.infoBorrado;
+  request.session.infoBorrado=undefined;
   Grupo.fetchAll().then(([rows]) => {
     response.render("elegirGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
@@ -233,6 +239,7 @@ exports.elegir_grupo = (request, response, next) => {
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupos: rows,
+      infoBorrado: mensaje
     });
   });
 };
@@ -296,8 +303,112 @@ exports.post_registra_foda_grupo = (request, response, next) => {
   });
 };
 
+exports.get_modificarGrupo = (request, response, next) => {
+  const idGrupo = request.params.id;
+  Prueba.fetchAll().then(([pruebas]) => {
+    Grupo.fetchOneId(idGrupo).then(([rows]) => {
+      TienePruebas.getFechaLimite(idGrupo).then(([tienePruebas]) => {
+        response.render("modificarGrupo", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+          grupo: rows[0],
+          pruebas: pruebas,
+          idGrupo: request.params.id,
+          tienePruebas: tienePruebas[0],
+        });
+      });
+    });
+  });
+};
+
+exports.post_modificarGrupo = (request, response, next) => {
+  console.log(request.body);
+
+  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
+
+  mi_grupo
+    .updateGrupo()
+    .then(() => {
+      const pruebas = Array.isArray(request.body.pruebasOpcion)
+        ? request.body.pruebasOpcion
+        : [request.body.pruebasOpcion];
+
+      const promesas = pruebas.map((prueba) => {
+        return Prueba.fetchOneNombre(prueba).then(([rows]) => {
+          const idPrueba = rows[0]?.idPrueba;
+
+          const mi_tienePruebas = new TienePruebas(
+            mi_grupo.idGrupo,
+            idPrueba,
+            request.body.fechaLimite,
+            request.body.fechaPruebaGrupal +
+              " " +
+              request.body.horaPruebaGrupal,
+            request.body.enlaceZoom
+          );
+
+          return mi_tienePruebas.updateGrupo();
+        });
+      });
+
+      return Promise.all(promesas);
+    })
+    .then(() => {
+      request.session.info = "Grupo actualizado exitosamente";
+      request.session.grupoCreado = {
+        id: mi_grupo.idGrupo,
+        posgrado: mi_grupo.posgrado,
+        generacion: mi_grupo.generacion,
+      };
+      response.redirect("inicio");
+    })
+    .catch((error) => {
+      console.log("Error al crear grupo o asignar pruebas:", error);
+      response.status(500).send("Error al procesar la creación del grupo.");
+    });
+};
+
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
     response.redirect("/");
   });
 };
+
+exports.getPreguntaSeguridad = (request, response, next) => {
+  const idGrupo = request.params.id;
+  response.render("preguntaSeguridadBorrado.ejs",{
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      grupo: idGrupo
+  });
+};
+
+exports.postPreguntaSeguridad = (request, response, next) => {
+  console.log(request.body);
+  Usuario.fetchOne(request.body.usuario)
+    .then(([rows, fieldData])=>{
+      if (rows.length > 0){
+        const bcrypt = require("bcryptjs");
+        bcrypt.compare(request.body.contra, rows[0].contraseña)
+        .then((doMatch) => {
+          if (doMatch) {
+            Grupo.borrarGrupo(request.body.grupo);
+            request.session.infoBorrado = "Grupo borrado exitosamente";
+            response.redirect("/psicologa/inicio");
+            console.log("Grupo borrado");
+          }
+          else{
+            request.session.infoBorrado = "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
+            response.redirect("/psicologa/grupo/elegir")
+            console.log("Grupo no borrado");
+          }
+        })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+   });
+  };
