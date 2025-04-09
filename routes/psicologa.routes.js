@@ -119,9 +119,26 @@ router.post(
   psicologaController.post_registra_reporte_grupo
 );
 
+router.get(
+  "/grupo/:id/modificar",
+  isAuth,
+  psicologaController.get_modificarGrupo
+);
+
+router.post(
+  "grupo/:id/modificar",
+  isAuth,
+  psicologaController.post_modificarGrupo
+);
+
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
 router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
+
 router.get("/buscar", isAuth, psicologaController.get_buscar);
+
+router.get("/grupo/confirmacion/:id", isAuth, psicologaController.getPreguntaSeguridad);
+
+router.post("/grupo/confirmacion/:id", isAuth, psicologaController.postPreguntaSeguridad);
 
 module.exports = router;

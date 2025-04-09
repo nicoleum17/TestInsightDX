@@ -14,8 +14,27 @@ module.exports = class TienePruebas {
       [this.idGrupo, this.idPrueba, this.fechaLimitePrueba]
     );
   }
+  static getFechaLimite(idGrupo) {
+    console.log(idGrupo);
+    return db.execute("SELECT * FROM tienepruebas WHERE idGrupo = ?", [
+      idGrupo,
+    ]);
+  }
 
   static fetchAll() {
     return db.execute("SELECT * FROM tienePruebas");
+  }
+
+  updateGrupo() {
+    return db.execute(
+      "UPDATE tienepruebas SET idPrueba = ?, fechaLimitePrueba = ?, fechaPruebaGrupal = ?, enlaceZoom = ? WHERE idGrupo = ?",
+      [
+        this.idPrueba,
+        this.fechaLimitePrueba,
+        this.fechaPruebaGrupal,
+        this.enlaceZoom,
+        this.idGrupo,
+      ]
+    );
   }
 };
