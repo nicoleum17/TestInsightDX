@@ -17,7 +17,7 @@ deactivate a2
 activate a4
 a4->>g: fetchAll()
 activate g
-g->>a6: execute("SELECT * \nFROM Grupos")
+g->>a6: execute("SELECT * \nFROM Grupos WHERE hidden = 0")
 activate a6
 a6-->>g: rows
 deactivate a6
