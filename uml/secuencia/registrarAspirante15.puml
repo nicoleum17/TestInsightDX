@@ -42,16 +42,27 @@ activate a4
 
 
 create entity Aspirante              as a5
-a4->>a5: new Aspirante (request.body.codigoIdentidad, ...)
+a4->a5: new Aspirante (request.body.codigoIdentidad, ...)
 note left: los elementos para la query se obtienen con request.body
 activate a5
 a4->>a5: save()
 a5->>a6: execute("INSERT INTO aspirantes \n(codigoIdentidad, idUsuario, nombres, \napellidoPaterno, apellidoMaterno, \nnumTelefono, lugarOrigen, correo, \nuniversidadOrigen, puestoSolicitado) \nVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \n[this.codigoIdentidad, this.idUsuario, \nthis.nombres, this.apellidoPaterno, \nthis.apellidoMaterno, this.numTelefono, \nthis.lugarOrigen, this.correo, \nthis.universidadOrigen, this.puestoSolicitado])
-activate a6
+activate a6 
 a6-->>a5: Query OK
 deactivate a6
 a5-->>a4: promesa
 deactivate a5
+
+create entity perteneceGrupo         as pg 
+a4->pg: new perteneceGrupo (request.body.grupo, mi_aspirante.idUsuario, \nrequest.body.fechaSesionIndividual + " " + request.body.horaSesionIndividual, \nrequest.body.enlaceZoom)
+activate pg
+a4->>pg: save()
+pg->>a6: execute execute("INSERT INTO perteneceGrupo \n(idGrupo, idUsuario, fechaZoomIndividual, enlaceZoom) \nVALUES (?, ?, ?, ?)", [this.idGrupo, this.idUsuario, \nthis.fechaZoomIndividual, this.enlaceZoom])
+activate a6
+a6-->>pg: Query OK
+deactivate a6
+pg-->>a4: promesa
+deactivate pg
 
 
 a4->a3: response.render('registrarAspirante.ejs')
