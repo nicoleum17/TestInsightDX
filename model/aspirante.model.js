@@ -40,14 +40,14 @@ module.exports = class Aspirante {
     );
   }
 
-  updateAspirante() {
+  static updateAspirante(puestoSolicitado, idUsuario) {
     return db
       .execute(
         "UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?",
-        [this.puestoSolicitado, this.idUsuario]
+        [puestoSolicitado, idUsuario]
       )
       .then(([result]) => {
-        return this.idUsuario;
+        return idUsuario;
       });
   }
   static fetchAll() {
