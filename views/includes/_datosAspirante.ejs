@@ -1,0 +1,120 @@
+<style>
+  .fullHeight {
+    min-height: 110vh;
+    margin-top: 20px;
+  }
+</style>
+<section class="section fullHeight has-background-warning">
+  <div class="container is-max-tablet is-warning">
+    <div class="columns">
+      <div class="column">
+        <p class="title is-2 has-text-weight-semibold">Datos personales</p>
+      </div>
+    </div>
+    <% if (aspirante) {%>
+    <div class="columns">
+      <div class="column">
+        <p>
+          Verifica que tus datos sean correctos. En caso de que exista algún
+          error, por favor contácta a los administradores
+        </p>
+      </div>
+    </div>
+    <div class="test1 columns is-centered ml-5" style="max-width: 700px">
+      <form action="/aspirante/datosA" id="personalInformation" method="POST">
+        <div class="column">
+          <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+          <input
+            class="input"
+            type="text"
+            placeholder="<%=aspirante.apellidoPaterno%>"
+            disabled />
+        </div>
+        <div class="column">
+          <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+          <input
+            class="input"
+            type="text"
+            placeholder="<%=aspirante.apellidoMaterno%>"
+            disabled />
+        </div>
+
+        <div class="column">
+          <label for="name" class="label">Nombre(s)</label>
+          <input
+            class="input"
+            type="text"
+            placeholder="<%=aspirante.nombres%>"
+            disabled />
+          <br />
+        </div>
+
+        <div class="edad columns is-vcentered">
+          <div class="column is-one-fifth">
+            <label for="selectAge" class="label">Edad:</label>
+
+            <div class="is-primary">
+              <input class="input" type="text" placeholder="25" disabled />
+            </div>
+          </div>
+          <div class="column">
+            <label for="puestoSolicitado" class="label"
+              >Puesto solicitado:</label
+            >
+            <input
+              class="input"
+              type="text"
+              id="puestoSolicitado"
+              name="puestoSolicitado"
+              placeholder="Gerente de ventas"
+              required />
+          </div>
+        </div>
+        <div class="columns mt-5 is-centered">
+          <nav class="level-left">
+            <div class="level-left">
+              <article class="message">
+                <div class="message-header has-background-info">
+                  <p class="has-text-link">¡Importante!</p>
+                </div>
+                <div class="message-body">
+                  Una vez que des click en <strong>Comenzar</strong>, comenzará
+                  a correr tu tiempo.
+                </div>
+              </article>
+            </div>
+          </nav>
+        </div>
+        <%}%> <% if (prueba) { %>
+        <div class="columns is-centered ml-5 mt-6">
+          <br /><br />
+
+          <a href="/aspirante/instruccionesPrueba/<%=prueba.idPrueba%>">
+            <button class="button is-primary has-text-warning">
+              Regresar
+            </button></a
+          >
+          <a href="/aspirante/preguntasPrueba/<%=prueba.idPrueba%>">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <input
+              type="hidden"
+              id="idUsuario"
+              name="idUsuario"
+              value="<%= idUsuario%>" />
+            <input
+              type="hidden"
+              id="idPrueba"
+              name="idPrueba"
+              value="<%= prueba.idPrueba%>" />
+            <button
+              class="button is-primary has-text-warning ml-6"
+              type="submit">
+              Comenzar
+            </button>
+          </a>
+        </div>
+        <%}%>
+      </form>
+    </div>
+  </div>
+</section>

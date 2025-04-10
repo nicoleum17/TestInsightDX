@@ -1,0 +1,66 @@
+@startuml eliminarGrupo
+
+actor psicologa as a1
+boundary psicologa.routes as a2
+control psicologa.controllers as a3
+database mysql as a4
+boundary preguntaSeguridadBorrado.ejs as a5
+boundary inicioPsicologa.ejs as a6
+
+autonumber
+activate a1
+a1->a2: GET/psicologa/**Ruta por confimar**
+deactivate a1
+activate a2
+a2->a3: getPreguntaSeguridad(request,response)
+deactivate a2
+activate a3
+a3->a5: response.render("preguntaSeguridadBorrado.ejs")
+deactivate a3
+activate a5
+a5->a1: HTML
+deactivate a5
+activate a1
+a1->a2: POST/psicologa/**ruta por confirmar**
+deactivate a1
+activate a2
+a2->a3: postPreguntaSeguridad(request,response)
+deactivate a2
+activate a3
+
+entity usuario
+a3->> usuario: fetchOne(request.body.usuario)
+activate usuario
+usuario ->> a4: execute("SELECT * FROM usuarios WHERE usuario = ?", [usuario])
+activate a4
+a4-->> usuario: user
+deactivate a4
+usuario->a3: usuario
+deactivate usuario
+alt misma contraseña
+ entity grupo
+ a3->>grupo: deleteOne(request.session.idGrupo)
+ activate grupo
+ grupo ->> a4: execute("UPDATE `grupos` SET `hidden` = ? WHERE `idGrupo` = ?"[1,idGrupo])
+ activate a4
+ a4-->> grupo: Query OK
+ deactivate a4
+ grupo-->>a3: promesa
+ deactivate grupo
+ a3->a2:response.redirect("inicioPsicologa")
+ deactivate a3
+ activate a2
+ a2->a3:inicioPsicologa(request,response)
+ deactivate a2
+ activate a3
+ a3->a6: response.render("inicioPsicologa.ejs")
+ deactivate a3
+ activate a6
+ a6->a1: HTML
+ deactivate a6
+ activate a1
+
+END
+
+
+@enduml

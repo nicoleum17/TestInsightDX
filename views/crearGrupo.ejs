@@ -1,0 +1,183 @@
+<%- include('includes/_navbarP') %>
+<style>
+  .fullHeight {
+    min-height: 110vh;
+  }
+</style>
+<section class="section fullHeight has-background-warning">
+<div class="container " style="width: 60%;">
+  <!-- Título -->
+  <h2 class="title is-3 mt-5 has-text-weight-semibold">Crear Grupo</h2>
+  <form 
+    action="/psicologa/grupo/confirmarCreacion"
+    method="POST"
+    enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value=<%= csrfToken%> />
+    <label class="label">Institución:</label>
+    <input type="text" class="input" name="institucion" placeholder="ingresa la institucion" required/>  <br><br>
+    <label class="label">Posgrado:</label>
+    <input type="text" class="input" name="posgrado" placeholder="ingresa el posgrado" required/> <br><br>
+    <label class="label">Generación:</label>
+    <input type="text" class="input" name="generacion" placeholder="ingresa la generación" required/>  <br><br>
+
+  <!-- Subir archivo y fecha límite -->
+    <!-- <label class="label">Subir Archivo</label>
+    <div class="file">
+      <label class="file-label">
+        <input class="file-input" type="file" name="resume" accept=".csv" />
+        <span class="file-cta">
+          <span class="file-label"> Selecciona un archivo </span>
+        </span>
+      </label>
+    </div> -->
+
+    <label class="label">Fecha Límite Pruebas:</label>
+    <input type="date" class="input" name="fechaLimite" placeholder="2025-01-01" required/><br><br> 
+
+  <!-- Batería de Pruebas -->
+  <div class="box">
+    <div class="is-flex is-align-items-center mb-3">
+      <strong class="mr-auto">Batería de Pruebas</strong>
+      <button onclick="agregarPrueba()" id="button-agregar" type="button">
+        <img
+          src="https://img.icons8.com/m_rounded/512/plus.png"
+          width="30"
+          height="30" />
+      </button>
+    </div>
+
+    <!-- Lista de pruebas -->
+    <div class="box has-background-primary" id="pruebas-container">
+      <div class="columns">
+        <div class="column">
+          <div>
+            <div class="select is-fullwidth">
+              <select class="dynamic-select" name="pruebasOpcion" required>
+                <option value="" selected disabled>Selecciona una de las pruebas</option>
+                <% pruebas.forEach(prueba => {%>
+                <option value="<%= prueba.nombrePrueba%>">
+                  <%= prueba.nombrePrueba%>
+                </option>
+                <%})%>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
+          class="column is-1"
+          style="text-align: center; margin-top: 5px"></div>
+      </div>
+    </div>
+  </div>
+
+  <br /><br />
+
+  <!-- Botones de acción -->
+  <section id="SesionGrupal">
+    <div class="title has-text-weight-semibold">Sesión Grupal</div>
+      <div class="field">
+        <label class="label">Fecha</label>
+        <div class="control">
+          <input
+            class="input"
+            type="date"
+            name="fechaPruebaGrupal"
+            placeholder="2025-01-01" 
+            required/>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Hora</label>
+        <div class="control">
+          <input class="input" type="time" name="horaPruebaGrupal" placeholder="2:00 PM" required/>
+        </div>
+      </div>
+    <div>
+      <div class="field">
+        <label class="label">Link</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            name="enlaceZoom"
+            placeholder="ingresa un link" 
+            required/>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="columns">
+    <div class="column has-text-centered">
+      <input class="button m-5 is-primary has-text-white" type="submit" value="Confirmar">
+    </div>
+  </div>
+</form>
+</div>
+</section>
+
+
+
+<script>
+  function agregarPrueba() {
+    const contenedor = document.querySelector(".box.has-background-primary");
+    const nuevaPrueba = document.createElement("div");
+    nuevaPrueba.classList.add("columns", "mt-2");
+
+    nuevaPrueba.innerHTML = `
+      <div class="column">
+          <div>
+            <div class="select is-fullwidth">
+              <select class="dynamic-select" name="pruebasOpcion" required>
+                <option value="" selected disabled>Selecciona una prueba</option>
+                <% pruebas.forEach(prueba => {%>
+                <option class="prueba" value="<%= prueba.nombrePrueba%>">
+                  <%= prueba.nombrePrueba%>
+                </option>
+                <%})%>
+              </select>
+            </div>
+          </div>
+        </div>
+      <div class="column is-1" style="text-align: center; margin-top: 5px">
+        <button onclick="eliminarPrueba(this)">
+          <img src="https://static.thenounproject.com/png/2456540-200.png" width="30" height="30" />
+        </button>
+      </div>
+    `;
+
+    //Se agrega la prueba al contenedor
+    contenedor.appendChild(nuevaPrueba);
+    actualizarSelects(); 
+  }
+
+  function eliminarPrueba(boton) {
+    boton.closest(".columns").remove();
+    actualizarSelects(); 
+  }
+
+  function actualizarSelects() {
+    const selects = Array.from(document.querySelectorAll('.dynamic-select'));
+
+    function getSelectedValues() {
+      return selects.map(select => select.value).filter(value => value !== "");
+    }
+
+    const selectedValues = getSelectedValues();
+
+    selects.forEach(select => {
+      const currentValue = select.value;
+      const allOptions = Array.from(select.options);
+
+      allOptions.forEach(opt => {
+        if (opt.value === "") return; // No tocar la opción vacía
+        opt.disabled = selectedValues.includes(opt.value) && opt.value !== currentValue;
+      });
+    });
+  }
+
+  // Inicializar la función al cargar la página
+  document.addEventListener("DOMContentLoaded", actualizarSelects);
+
+</script>
+
+<%- include('includes/_footer') %>

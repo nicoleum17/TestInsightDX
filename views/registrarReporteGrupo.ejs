@@ -1,0 +1,57 @@
+<%- include('includes/_navbarP')%>
+<style>
+  .fullHeight {
+    min-height: 90vh;
+    margin-top: 20px;
+  }
+</style>
+<section class="section fullHeight">
+  <div class="container">
+    <div class="title">Subir Reporte - Grupo</div>
+    <div class="columns is-mobile">
+      <div class="column">
+        <div class="has-text-weight-bold">Posgrado: <%= grupo.posgrado %></div>
+        <div class="has-text-weight-bold">
+          Generación: <%= grupo.generacion %>
+        </div>
+      </div>
+      <div class="column">
+        <div class="has-text-weight-bold">Subir Archivos</div>
+        <br />
+        <div>PDF</div>
+        <% if (grupo) { %>
+        <form
+          action="/psicologa/grupo/<%= grupo.idGrupo%>"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+        <%}%>
+          <div class="file is-boxed">
+            <label class="file-label">
+              <input type="hidden" name="_csrf" value=<%= csrfToken%> />
+              <input
+                class="file-input"
+                type="file"
+                name="archivo"
+                accept=".pdf"
+                required
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <img
+                    src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
+                  />
+                </span>
+                <span class="file-label"> Elige un archivo </span>
+              </span>
+            </label>
+          </div>
+          <br />
+          <input class="button is-info" type="submit" value="Subir" />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('includes/_footer')%>

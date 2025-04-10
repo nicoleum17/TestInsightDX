@@ -32,6 +32,7 @@ exports.post_login = (request, response, next) => {
           .compare(request.body.contraseña, rows[0].contraseña)
           .then((doMatch) => {
             if (doMatch) {
+<<<<<<< HEAD
               request.session.attempts = 0;
                request.session.attempts1 = 0;
                request.session.isLoggedIn = true;
@@ -39,6 +40,26 @@ exports.post_login = (request, response, next) => {
                return request.session.save((error) => {
                  response.redirect("/aspirante/inicio_aspirante");
                });
+=======
+              Usuario.getPrivilegios(rows[0].usuario).then(
+                ([privilegios, fieldData]) => {
+                  request.session.attempts = 0;
+                  request.session.attempts1 = 0;
+                  request.session.isLoggedIn = true;
+                  request.session.usuario = request.body.usuario;
+                  request.session.privilegios = privilegios;
+                  request.session.idUsuario = rows[0].idUsuario;
+                  if (rows[0].idRol === 1) {
+                    response.redirect("/psicologa/inicio");
+                  } else if (rows[0].idRol === 2) {
+                    Usuario.getGrupo(rows[0].idUsuario).then(([grupo]) => {
+                      (request.session.grupo = grupo[0].idGrupo),
+                        response.redirect("/aspirante/inicio");
+                    });
+                  }
+                }
+              );
+>>>>>>> develop
             } else {
               request.session.attempts = request.session.attempts + 1;
               console.log(request.session.attempts);
@@ -46,7 +67,7 @@ exports.post_login = (request, response, next) => {
                 request.session.warning = `Por favor contácte a los administradores para verificar sus credenciales`;
                 response.redirect("/login");
               } else {
-                request.session.warning = `Contraseña incorrecta`;
+                request.session.warning = `Usuario y/o contraseña incorrectos`;
                 response.redirect("/login");
               }
             }
@@ -61,7 +82,7 @@ exports.post_login = (request, response, next) => {
           request.session.warning = `Por favor contácte a los administradores para verificar sus credenciales`;
           response.redirect("/login");
         } else {
-          request.session.warning = `Usuario no se encuentra registrado`;
+          request.session.warning = `Usuario y/o contraseña incorrectos`;
           response.redirect("/login");
         }
       }

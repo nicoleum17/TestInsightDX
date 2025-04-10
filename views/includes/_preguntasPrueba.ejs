@@ -1,0 +1,505 @@
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+  .fullHeight {
+    min-height: 90vh;
+  }
+</style>
+<body class="has-background-danger-95 fullHeight">
+  <section class="section fullHeight">
+    <nav class="level-right">
+      <div class="level-right">
+        <article class="message">
+          <div class="message-body" id="cronometro"></div>
+        </article>
+      </div>
+    </nav>
+
+    <% if (prueba.idPrueba === 1) {%>
+
+    <div class="container is-max-tablet" id="container">
+      <progress
+        class="progress is-link"
+        max="90"
+        value="<%= pregunta.numeroPreguntaKostick %>"
+        id="progressBar">
+        <%= pregunta.numeroPreguntaKostick %>
+      </progress>
+      <% if (pregunta) { %>
+      <p class="subtitle is-2 mt-3" id="numero-pregunta">
+        Pregunta <%= pregunta.numeroPreguntaKostick %>
+      </p>
+      <input
+        type="hidden"
+        name="preguntaK"
+        id="preguntaK"
+        value="<%=pregunta.idPreguntaKostick%>" />
+
+      <% if (opciones) { %> <% opciones.forEach(opcion => { %>
+      <div class="control mt-3" id="option-<%= opcion.idOpcionKostick %>">
+        <label class="radio mx-5 subtitle is-4">
+          <input
+            type="radio"
+            name="answer"
+            value="<%= opcion.idOpcionKostick %>"
+            required />
+          <%= opcion.opcionKostick %>. <%= opcion.descripcionOpcionKostick %>
+        </label>
+      </div>
+      <% }) %> <% } %> <% } %>
+
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input
+        type="hidden"
+        id="idUsuario"
+        name="idUsuario"
+        value="<%= idUsuario%>" />
+      <input type="hidden" id="idGrupo" name="idGrupo" value="<%= idGrupo%>" />
+      <div class="columns is-centered ml-5 mt-6">
+        <button
+          type="button"
+          id="guardarPregunta"
+          class="column is-narrow button mt-3 is-primary has-text-warning"
+          onclick="nextQuestion(event)">
+          Siguiente
+        </button>
+      </div>
+    </div>
+    <%} else if (prueba.idPrueba === 2) {%>
+    <div class="container is-max-tablet" id="container">
+      <progress
+        class="progress is-link"
+        max="90"
+        value="<%= pregunta.numeroPregunta16PF%>"
+        id="progressBar">
+        <%= pregunta.numeroPregunta16PF %>
+      </progress>
+      <% if (pregunta) { %>
+      <p class="subtitle is-2 mt-3" id="numero-pregunta">
+        Pregunta <%= pregunta.numeroPregunta16PF %>
+      </p>
+      <input
+        type="hidden"
+        name="pregunta16"
+        id="pregunta16"
+        value="<%=pregunta.idPregunta16PF%>" />
+      <p class="subtitle is-3 mt-3" id="texto-pregunta">
+        <%= pregunta.pregunta16PF %>
+      </p>
+      <% if (opciones) { %> <% opciones.forEach(opcion => { %>
+      <div class="control mt-3" id="option-<%= opcion.idOpcion16PF %>">
+        <label class="radio mx-5 subtitle is-4">
+          <input
+            type="radio"
+            name="answer"
+            value="<%= opcion.idOpcion16PF %>"
+            required />
+          <%= opcion.opcion16PF %>. <%= opcion.descripcionOpcion16PF %>
+        </label>
+      </div>
+      <% }) %> <% } %> <% } %>
+
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input
+        type="hidden"
+        id="idUsuario1"
+        name="idUsuario1"
+        value="<%=idUsuario%>" />
+      <input
+        type="hidden"
+        id="idGrupo1"
+        name="idGrupo1"
+        value="<%= idGrupo%>" />
+      <div class="columns is-centered ml-5 mt-6">
+        <button
+          type="button"
+          id="guardarPregunta"
+          class="column is-narrow button mt-3 is-primary has-text-warning"
+          onclick="nextQuestion1(event)">
+          Siguiente
+        </button>
+      </div>
+    </div>
+    <%}%>
+  </section>
+
+  <script>
+    const startTime = Date.now();
+
+    function nextQuestion(event) {
+      event.preventDefault();
+
+      const endTime = Date.now();
+      const timeTaken = endTime - startTime;
+      let tiempo = (timeTaken / 1000).toFixed(2);
+
+      let respuestaSeleccionada;
+      let idOpcionKostick;
+
+      respuestaSeleccionada = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+
+      if (respuestaSeleccionada) {
+        idOpcionKostick = respuestaSeleccionada.value;
+      } else if (!respuestaSeleccionada) {
+        alert("Por favor selecciona una opción antes de continuar");
+        return;
+      }
+      let idPregunta = document.getElementById("preguntaK");
+      let idGrupoActual = document.getElementById("idGrupo");
+      let idUsuarioActual = document.getElementById("idUsuario");
+      let idPreguntaKostick = idPregunta.value;
+      let idGrupo = idGrupoActual.value;
+      let idUsuario = idUsuarioActual.value;
+
+      const data = {
+        idOpcionKostick,
+        idGrupo,
+        idUsuario,
+        idPreguntaKostick,
+        tiempo,
+      };
+
+      fetch(`/aspirante/siguiente_pregunta`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          let html = `    <progress
+      class="progress is-link"
+      max="90"
+      value="${data.pregunta.numeroPreguntaKostick}">${data.pregunta.numeroPreguntaKostick}</progress>
+          <div class = "container">`;
+          const questionNumberElement =
+            document.getElementById("numero-pregunta");
+          html += `<p class="subtitle is-2 mt-3" id="numero-pregunta">
+                    Pregunta ${data.pregunta.numeroPreguntaKostick}
+                    </p>
+                          <input
+        type="hidden"
+        name="preguntaK"
+        id="preguntaK"
+        value="${data.pregunta.idPreguntaKostick}" />`;
+          if (data.opciones && Array.isArray(data.opciones)) {
+            data.opciones.forEach((opcion) => {
+              html += `<div class="control mt-3" id="option-${opcion.idOpcionKostick}">
+                              <label class="radio mx-5 subtitle is-4">
+                                <input
+                                  type="radio"
+                                  name="answer"
+                                  value="${opcion.idOpcionKostick}" required />
+                                ${opcion.opcionKostick}. ${opcion.descripcionOpcionKostick}
+                              </label>
+                              </div>
+                            `;
+            });
+          }
+          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <input
+        type="hidden"
+        id="idUsuario"
+        name="idUsuario"
+        value="<%= idUsuario%>" />
+      <input
+        type="hidden"
+        id="idGrupo"
+        name="idGrupo"
+        value="<%= idGrupo%>" />
+                <div class="columns is-centered ml-5 mt-6">`;
+          if (data.pregunta.numeroPreguntaKostick === 90) {
+            html += `<button
+            type="button"
+            id="guardarPregunta"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
+            onclick="entregar(event)">
+            Finalizar
+           </button>
+        `;
+          } else {
+            html += `<button
+            type="button"
+            id="guardarPregunta"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
+            onclick="nextQuestion(event)">
+            Siguiente
+          </button>
+          </div>`;
+          }
+          const container = document.getElementById("container");
+          container.innerHTML = html;
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+
+    function entregar(event) {
+      event.preventDefault();
+
+      const endTime = Date.now();
+      const timeTaken = endTime - startTime;
+      let tiempo = (timeTaken / 1000).toFixed(2);
+
+      let respuestaSeleccionada;
+      let idOpcionKostick;
+
+      respuestaSeleccionada = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+
+      if (respuestaSeleccionada) {
+        idOpcionKostick = respuestaSeleccionada.value;
+      } else if (!respuestaSeleccionada) {
+        alert("Por favor selecciona una opción antes de continuar");
+        return;
+      }
+      let idPregunta = document.getElementById("preguntaK");
+      let idGrupoActual = document.getElementById("idGrupo");
+      let idUsuarioActual = document.getElementById("idUsuario");
+      let idPreguntaKostick = idPregunta.value;
+      let idGrupo = idGrupoActual.value;
+      let idUsuario = idUsuarioActual.value;
+
+      const data = {
+        idOpcionKostick,
+        idGrupo,
+        idUsuario,
+        idPreguntaKostick,
+        tiempo,
+      };
+      fetch(`/aspirante/pruebaCompletada`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          alert(data.message);
+          window.location.href = "/aspirante/pruebaCompletada";
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+    //
+    //
+    //
+    //
+    //
+    //
+    function nextQuestion1(event) {
+      event.preventDefault();
+
+      const endTime = Date.now();
+      const timeTaken = endTime - startTime;
+      let tiempo = (timeTaken / 1000).toFixed(2);
+
+      let respuestaSeleccionada1;
+      let idOpcion16PF;
+
+      respuestaSeleccionada1 = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+
+      if (respuestaSeleccionada1) {
+        idOpcion16PF = respuestaSeleccionada1.value;
+      } else if (!respuestaSeleccionada1) {
+        alert("Por favor selecciona una opción antes de continuar");
+        return;
+      }
+      let idPregunta1 = document.getElementById("pregunta16");
+      let idGrupoActual1 = document.getElementById("idGrupo1");
+      let idUsuarioActual1 = document.getElementById("idUsuario1");
+      let idPregunta16PF = idPregunta1.value;
+      let idGrupo = idGrupoActual1.value;
+      let idUsuario = idUsuarioActual1.value;
+
+      const data = {
+        idOpcion16PF,
+        idGrupo,
+        idUsuario,
+        idPregunta16PF,
+        tiempo,
+      };
+
+      fetch(`/aspirante/siguiente_pregunta1`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          let html = `<progress
+      class="progress is-link"
+      max="185"
+      value="${data.pregunta.numeroPregunta16PF}">${data.pregunta.numeroPregunta16PF}</progress>
+          <div class = "container">`;
+          const questionNumberElement =
+            document.getElementById("numero-pregunta");
+          html += `<p class="subtitle is-2 mt-3" id="numero-pregunta">
+                    Pregunta ${data.pregunta.numeroPregunta16PF}
+                    </p>
+                          <input
+                          type="hidden"
+                          name="pregunta16"
+                          id="pregunta16"
+                          value="${data.pregunta.idPregunta16PF}" />
+                    <p class="subtitle is-3 mt-3" id="texto-pregunta">
+                    ${data.pregunta.pregunta16PF}
+                    </p>`;
+          if (data.opciones && Array.isArray(data.opciones)) {
+            data.opciones.forEach((opcion) => {
+              html += `<div class="control mt-3" id="option-${opcion.idOpcion16PF}">
+                              <label class="radio mx-5 subtitle is-4">
+                                <input
+                                  type="radio"
+                                  name="answer"
+                                  value="${opcion.idOpcion16PF}" required />
+                                ${opcion.opcion16PF}. ${opcion.descripcionOpcion16PF}
+                              </label>
+                              </div>
+                            `;
+            });
+          }
+          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <input
+        type="hidden"
+        id="idUsuario1"
+        name="idUsuario"
+        value="<%= idUsuario%>" />
+      <input
+        type="hidden"
+        id="idGrupo1"
+        name="idGrupo"
+        value="<%= idGrupo%>" />
+              <div class="columns is-centered ml-5 mt-6">`;
+          if (data.pregunta.numeroPregunta16PF === 185) {
+            html += `
+          <button
+            type="button"
+            id="guardarPregunta"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
+            onclick="entregar1(event)">
+            Finalizar
+          </button>
+        `;
+          } else {
+            html += `<button
+            type="button"
+            id="guardarPregunta"
+            class="column is-narrow button mt-3 is-primary has-text-warning"
+            onclick="nextQuestion1(event)">
+            Siguiente
+          </button>
+          </div>`;
+          }
+          const container = document.getElementById("container");
+          container.innerHTML = html;
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+    function entregar1(event) {
+      event.preventDefault();
+
+      const endTime = Date.now();
+      const timeTaken = endTime - startTime;
+      let tiempo = (timeTaken / 1000).toFixed(2);
+
+      let respuestaSeleccionada;
+      let idOpcion16PF;
+
+      respuestaSeleccionada = document.querySelector(
+        'input[name="answer"]:checked'
+      );
+
+      if (respuestaSeleccionada) {
+        idOpcion16PF = respuestaSeleccionada.value;
+      } else if (!respuestaSeleccionada) {
+        alert("Por favor selecciona una opción antes de continuar");
+        return;
+      }
+      let idPregunta1 = document.getElementById("pregunta16");
+      let idGrupo1Actual = document.getElementById("idGrupo1");
+      let idUsuario1Actual = document.getElementById("idUsuario1");
+      let idPregunta16PF = idPregunta1.value;
+      let idGrupo = idGrupo1Actual.value;
+      let idUsuario = idUsuario1Actual.value;
+
+      const data = {
+        idOpcion16PF,
+        idGrupo,
+        idUsuario,
+        idPregunta16PF,
+        tiempo,
+      };
+      fetch(`/aspirante/pruebaCompletada1`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          alert(data.message);
+          window.location.href = "/aspirante/pruebaCompletada";
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+  </script>
+
+  <script>
+    let duracionMinutos = <%=prueba.duracion%>;
+    let totalSegundos = duracionMinutos * 60;
+    let cuentaRegresiva = setInterval(function() {
+        let horas = Math.floor(totalSegundos / 3600);
+        let minutos = Math.floor((totalSegundos % 3600) / 60);
+        let segundos = totalSegundos % 60;
+        let formatoTiempo = `${horas}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+        document.getElementById("cronometro").innerHTML = formatoTiempo;
+        totalSegundos--;
+        if (totalSegundos < 0) {
+            clearInterval(cuentaRegresiva);
+            document.getElementById("cronometro").innerHTML = "TIME UP";
+        }
+    }, 1000);
+  </script>
+</body>

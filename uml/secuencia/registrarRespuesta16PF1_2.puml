@@ -1,0 +1,204 @@
+@startuml   registrarRespuesta16PF 1.2
+actor       Aspirante                    as a1
+boundary    aspirante.routes             as a2
+boundary    vistas_instruccionesPrueba.ejs  as a3
+boundary    vistas_datosAspirante.ejs    as a6
+boundary    vistas_inicioAspirante.ejs   as a8
+boundary    vistas_preguntasPrueba.ejs   as a10
+boundary    vistas_finPrueba.ejs         as a11
+control     aspirante.controllers        as a4
+entity      Aspirante
+entity      Responde16PF
+entity      PruebasAspirante
+entity      aspirante.model              as a7
+entity      prueba.model                 as a9
+database    mysql                        as a5
+
+autonumber
+activate a1
+a1 -> a2: GET /incio
+deactivate a1
+activate a2
+a2 -> a4: get_inicio(request,response)
+deactivate a2
+activate a4
+a4 --> a8: response.render('inicio.ejs')
+deactivate a4
+activate a8
+a8 --> a1: HTML
+deactivate a8
+
+activate a1
+a1->a2: GET /aspirante/instruccionesPrueba/2
+deactivate a1
+activate a2
+a2->a4: get_instruccionesPrueba(request, repsonse)
+deactivate a2
+activate a4
+a4->> a9: fetchOne(request.params.idPrueba)
+activate a9
+a9->>a5: execute("SELECT * FROM Pruebas WHERE idPrueba = ?", this.idPrueba)
+activate a5
+a5-->>a9: rows
+deactivate a5
+a9-->>a4: rows
+deactivate a9
+a4 --> a3: response.render('instruccionesPrueba.ejs')
+note right
+request.session.isLoggedIn || false,
+request.session.usuario || "",
+request.csrfToken(),
+request.session.privilegios || [],
+prueba: rows[0],
+end note
+deactivate a4
+activate a3
+a3 --> a1: HTML
+deactivate a3
+
+activate a1
+a1 -> a2: GET /aspirante/datosAspirante/2
+deactivate a1 
+activate a2
+a2 -> a4: get_datosAspirante(request, response)
+deactivate a2
+activate a4
+a4 ->> a9: fetchOne(request.params.idPrueba)
+activate a9
+a9 -> a5: execute("SELECT * FROM Pruebas WHERE idPrueba = ?", this.idPrueba)
+activate a5
+a5 -->> a9: rows
+deactivate a5
+a9-->>a4: rows
+deactivate a9
+a4 ->> a7: fetchOne(idUsuario)
+activate a7
+a7 -> a5: execute("SELECT * FROM aspirantes WHERE idUsuario = ?", idUsuario)
+activate a5
+a5 -->> a7: aspirante
+deactivate a5
+a7-->>a4: aspirante
+deactivate a7
+a4 --> a6: response.render('datosAspirante.ejs')
+note right
+request.session.isLoggedIn || false,
+request.session.usuario || "",
+request.csrfToken(),
+request.session.privilegios || [],
+rows[0],
+request.session.idUsuario || "",
+aspirante[0],
+end note
+deactivate a4
+activate a6
+a6 --> a1: HTML
+deactivate a6
+
+
+activate a1
+a1 -> a2: POST /aspirante/datosAspirante/2
+deactivate a1 
+activate a2
+a2 -> a4: post_datosAspirante(request, response)
+deactivate a2
+activate a4
+
+
+a4 -> Aspirante**: new Aspirante(request.body.puestoSolicitado, request.body.idUsuario)
+a4 ->> Aspirante: save()
+activate Aspirante
+Aspirante -> a5: execute("UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?", this.puestoSolicitado, this.idUsuario)
+activate a5 
+a5 -->> Aspirante: Query OK
+deactivate a5
+Aspirante -->> a4: Query OK
+deactivate Aspirante
+a4 --> a2: response.redirect("preguntasPrueba/:idPrueba")
+note right 
+request.session.idUsuario = uuid;
+request.csrfToken();
+request.body.idPrueba
+end note
+deactivate a4
+activate a2
+a2 -> a4: get_preguntasPrueba(request, response)
+deactivate a2
+activate a4
+a4 --> a10: response.render('preguntasPrueba')
+deactivate a4
+activate a10
+a10 --> a1: HTML
+deactivate a10
+
+Loop in request.body
+activate a1
+a1 -->> a2: POST /siguientePregunta
+deactivate a1
+activate a2
+a2 -> a4: post_siguientePregunta(request, response)
+deactivate a2
+activate a4
+
+
+
+a4 -> Responde16PF**: new Responde16PF (request.body.idPregunta16PF, request.body.idGrupo, request.body.idUsuario, request.body.idOpcion16PF, request.body.tiempo)
+a4 ->> Responde16PF: save()
+activate Responde16PF
+RespondeKostick ->> a5: execute("INSERT INTO responde16PF (idPregunta16PF, idGrupo, idUsuario, idOpcion16PF, tiempo) VALUES (?,?,?,?,?)", this.value)
+activate a5
+a5 -->> Responde16PF: Query OK
+deactivate a5
+Responde16PF -->> a4: Query OK
+deactivate Responde16PF
+a4 -> a1: json
+activate a1
+a1 -> a1: siguientePregunta(json)
+END 
+deactivate a1
+
+a4 --> a2: response.redirect("pruebaCompletada")
+note right
+csrfToken: request.csrfToken(),
+pregunta: pregunta[0],
+opciones: opciones,
+idGrupo: request.session.grupo,
+idUsuario: request.session.idUsuario || "",
+end note
+deactivate a4
+activate a2
+a2 -> a4: get_pruebaCompletada
+deactivate a2
+activate a4
+a4 -> a11: response.render('finPrueba.ejs')
+deactivate a4
+activate a11
+a11 --> a1: HTML
+deactivate a11
+activate a1
+
+a1 -> a2: POST /pruebaCompletada
+deactivate a1
+activate a2
+a2 -> a4: post_pruebaCompletada
+deactivate a2
+activate a4
+a4 -> Responde16PF**: new Responde16PF (request.body.idPregunta16PF, request.body.idGrupo, request.body.idUsuario, request.body.idOpcion16PF, request.body.tiempo)
+a4 ->> Responde16PF: save()
+activate Responde16PF
+Responde16PF ->> a5: execute("INSERT INTO responde16PF (idPregunta16PF, idGrupo, idUsuario, idOpcion16PF, tiempo) VALUES (?,?,?,?,?)", this.value)
+activate a5
+a5 -->> Responde16PF: Query OK
+deactivate a5
+Responde16PF -->> a4: Query OK
+deactivate Responde16PF
+a4 -> PruebasAspirante**: new PruebaAspirante (request.body.idUsuario, request.body.idGrupo, idPrueba)
+a4 ->> PruebasAspirante: terminarPrueba()
+activate PruebasAspirante
+PruebasAspirante ->> a5: execute("UPDATE pruebasAspirante SET estatus = ? WHERE idUsuario = ? AND idGrupo = ? AND idPrueba = ?", "Completada", this.idUsuario, this.idGrupo, this.idPrueba)
+activate a5
+a5 -->> PruebasAspirante: Query OK
+deactivate a5
+PruebasAspirante -->> a4: Query OK
+a4 --> a2: response.redirect('/inicio')
+
+@enduml

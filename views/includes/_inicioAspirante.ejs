@@ -1,0 +1,70 @@
+<style>
+      :root {
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+        --bulma-warning-h: 34deg;
+        --bulma-warning-l: 99%;
+      }
+
+  .fullHeight {
+        min-height: 90vh;
+        }
+
+      
+
+</style>
+    
+    <section class="section fullHeight">
+      <div class="container mt-5 is-max-desktop">
+        <div class="columns">
+          <div class="column">
+            <% if (aspirante) {%>
+        <h1 class="title is-1 has-text-weight-semibold">¡Hola <%= aspirante.nombres%>!</h1>
+        <%}%>
+        </div>
+        <div class="column ">
+          <nav class="level-right">
+            <div class="level-right">
+              <article class="message" style="max-width: 350px;">
+                <div class="message-header has-background-info ">
+                  <p class="has-text-link">¡Importante!</p>
+                </div>
+                <div class="message-body ">
+                  Tienes <strong>7 días</strong> para realizar tus pruebas y cargar tu documentación.
+                </div>
+              </article>
+            </div>
+          </nav>
+        </div>
+      </div>
+        <% pruebas.forEach(prueba => { %>
+        <div class="test1 columns is-vcentered ml-5 mt-3">
+            <div class="column">
+              <h3 class="subtitle is-4"><%=prueba.nombrePrueba%></h3>
+            </div>
+            <div class="column is-centered">
+              <p>Estatus</p>
+            </div>
+            <div class="column">
+              <% if (pruebasAspirante.estatus != 'Por comenzar') {%>
+              <a href="instruccionesPrueba/<%=prueba.idPrueba%>">
+                <button class="button is-primary has-text-warning" disabled>Comenzar</button>
+              </a>
+              <% } else {%>
+              <a href="instruccionesPrueba/<%=prueba.idPrueba%>">
+                <button class="button is-primary has-text-warning">Comenzar</button>
+              </a>
+              <% } %>
+            </div>
+          </div>
+          <%});%>
+          
+       
+    </section>

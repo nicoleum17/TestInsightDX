@@ -1,0 +1,31 @@
+<%- include('includes/_navbarP')%>
+<style>
+  .fullHeight {
+    min-height: 90vh;
+    margin-top: 20px;
+  }
+</style>
+<section class="section fullHeight">
+  <div class="container">
+    <br />
+    <h1 class="title">Lista de Pruebas</h1>
+
+    <% pruebas.forEach(prueba => { %>
+    <div class="box">
+      <div class="title"><%= prueba.nombrePrueba %></div>
+      <br />
+      <div class="subtitle">Instrucciones:</div>
+      <br />
+      <div class="instructions"><%= prueba.instrucciones %></div>
+      <br />
+      <p>Duración: <%= prueba.duracion %> min</p>
+    </div>
+    <% }) %>
+  </div>
+
+  <a href="inicio">
+    <button class="button m-5 is-primary has-text-white">Regresar</button>
+  </a>
+</section>
+
+<%- include('includes/_footer')%>

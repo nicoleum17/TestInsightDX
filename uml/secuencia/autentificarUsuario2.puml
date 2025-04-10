@@ -1,0 +1,105 @@
+@startuml   autentificarUsuario 2
+actor       Usuario                    as a1
+boundary    user.routes             as a2
+boundary    vistas__login.ejs  as a3
+boundary    vistas_aspiranteInicio as a7
+boundary    vistas_psicologaInicio as a8
+control     user.controllers        as a4
+entity      user.model    as a6
+database    mysql                        as a5
+
+autonumber
+activate a1
+a1 -> a2: GET /login
+deactivate a1
+activate a2
+a2 -> a4: get_login(request,response)
+deactivate a2
+activate a4
+a4 --> a3: response.render('login.ejs')
+deactivate a4
+activate a3
+a3 --> a1: HTML
+deactivate a3
+activate a1
+a1->a2: POST /login
+deactivate a1
+activate a2
+a2->a4: post_login(request, response)
+deactivate a2
+activate a4
+a4 ->> a6: fetchOne(usuario).compare(request.body.contraseña, rows[0].contraseña)
+activate a6
+a6->>a5: execute("SELECT * FROM Usuarios WHERE usuario = ?", this.usuario)
+activate a5
+a5-->>a6: rows
+deactivate a5
+a6 -->> a4: rows
+deactivate a6
+a4 ->> a6: getPrivilegios(usuario)
+activate a6
+a6 ->> a5: execute("SELECT DISTINCT p.permiso FROM permisos p, tienepermiso tp, roles r, usuarios u WHERE p.idPermiso = tp.idPermiso AND tp.idRol = r.idRol AND r.idRol = u.idRol AND u.usuario=?", [this.usuario])
+activate a5 
+a5 -->> a6: privilegios
+deactivate a5
+a6 -->> a4: privilegios
+deactivate a6
+
+alt aspirante
+
+    a4 ->> a6: getGrupo(idUsuario)
+    activate a6
+    a6->a5: execute("SELECT idGrupo FROM perteneceGrupo WHERE idUsuario = ?", this.usuario)
+    activate a5
+    a5 -->> a6: idGrupo
+    deactivate a5
+    a6 -->> a4: idGrupo
+
+    deactivate a6
+    a4 --> a2: response.redirect('aspirante/inicio')
+        note right
+request.session.attempts = 0;
+request.session.attempts1 = 0;
+request.session.isLoggedIn = true;
+request.session.usuario = request.body.usuario;
+request.session.privilegios = privilegios;
+request.session.idUsuario = rows[0].idUsuario;
+request.session.grupo = grupo[0].idGrupo;
+end note
+    deactivate a4
+    activate a2
+    a2 -> a4: get_inicio(request, response)
+    deactivate a2
+    activate a4
+    a4 --> a7: response.render('inicioAspirante.ejs')
+    deactivate a4
+    activate a7
+    a7 --> a1: HTML
+    deactivate a7
+    activate a1
+    
+else psicologa
+activate a4
+    a4 --> a2: response.redirect('psicologa/inicio')
+            note right
+request.session.attempts = 0;
+request.session.attempts1 = 0;
+request.session.isLoggedIn = true;
+request.session.usuario = request.body.usuario;
+request.session.privilegios = privilegios;
+request.session.idUsuario = rows[0].idUsuario;
+end note
+    deactivate a4
+    activate a2
+    a2 --> a4: get_inicio(request, response)
+    deactivate a2
+    activate a4
+    a4 --> a8: response.render('inicioPsicologa.ejs')
+    deactivate a4
+    activate a8
+    a8 --> a1: HTML
+    deactivate a8
+    
+end
+
+@enduml
