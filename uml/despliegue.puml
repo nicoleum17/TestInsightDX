@@ -2,26 +2,26 @@
 
 node userPC <<device>>{
     node sistemaOperativo <<execution enviroment>>{
-        node navegador <<execution enviroment>>
+        node navegador <<execution enviroment>>{
+            
+        }
     }
 }
 
 node servidor <<device>>{
     node ubuntu <<execution enviroment>>{
-        rectangle mysql <<execution enviroment>>{
+        node mysql <<execution enviroment>>{
             artifact testInsight <<artefact>>
         }
-        rectangle nodeJS <<execution enviroment>>{
+        node nodeJS <<execution enviroment>>{
             artifact app.js <<artefact>>
         }
-        rectangle PM2 <<execution enviroment>>
-        rectangle CADDY <<execution enviroment>>
-        mysql -- nodeJS: label
-        nodeJS -- PM2: label
-        nodeJS -- CADDY: label
+        node CADDY <<execution enviroment>>
+        mysql -- nodeJS: tcp/ip
+        nodeJS -- CADDY: https
     }
 }
 
-userPC -- servidor : https
+navegador -- CADDY : https
 
 @enduml
