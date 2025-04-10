@@ -80,8 +80,6 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.enlaceZoom
   );
 
-  console.log(mi_perteneceGrupo);
-
   mi_aspirante.save().then(() => {
     mi_perteneceGrupo.save().then(() => {
       response.redirect("inicio");

@@ -68,6 +68,7 @@ exports.get_instrucciones = (request, response, next) => {
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       prueba: rows[0],
+      idUsuario: request.session.idUsuario,
     });
   });
 };
@@ -81,7 +82,7 @@ exports.get_datosA = (request, response, next) => {
         csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         prueba: rows[0],
-        idUsuario: request.session.idUsuario || "",
+        idUsuario: request.session.idUsuario,
         aspirante: aspirante[0],
       });
     });
@@ -92,26 +93,13 @@ exports.post_datosA = (request, response, next) => {
   const puestoSolicitado = request.body.puestoSolicitado;
   const idUsuario = request.body.idUsuario;
 
-  const newPuesto = new Aspirante(
-    null, // mi_codigoIdentidad
-    idUsuario, // mi_idUsuario
-    null, // mi_nombres
-    null, // mi_apellidoPaterno
-    null, // mi_apellidoMaterno
-    null, // mi_numTelefono
-    null, // mi_lugarOrigen
-    null, // mi_correo
-    null, // mi_universidadOrigen
-    puestoSolicitado // mi_puestoSolicitado
-  );
-  newPuesto.idUsuario = idUsuario;
-  newPuesto
-    .updateAspirante()
+  Aspirante.updateAspirante(puestoSolicitado, idUsuario)
     .then((uuid) => {
       request.session.idUsuario = uuid;
       request.csrfToken();
       const idPrueba = request.body.idPrueba;
       response.redirect(`preguntasPrueba/${idPrueba}`);
+      request.session.idGrupo = uuid;
     })
     .catch((error) => {
       console.log(error);
@@ -128,7 +116,6 @@ exports.get_preguntasPrueba = (request, response, next) => {
           .then(([pregunta]) => {
             PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
               .then(([opciones]) => {
-                console.log(opciones);
                 return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
@@ -188,8 +175,6 @@ exports.get_preguntasPrueba = (request, response, next) => {
 };
 
 exports.post_siguiente_pregunta = (request, response, next) => {
-  const { idOpcionKostick, idGrupo, idUsuario, idPreguntaKostick, tiempo } =
-    request.body;
   if (!request.session.index) {
     return response.redirect("/login");
   }
@@ -276,7 +261,6 @@ exports.pruebaCompletada = (request, response, next) => {
   const idUsuario = request.body.idUsuario;
   const idPreguntaKostick = request.body.idPreguntaKostick;
   const tiempo = request.body.tiempo;
-
   const idPrueba = 1;
 
   if (!request.session.index) {
@@ -362,6 +346,7 @@ exports.get_pruebaCompletada = (request, response, next) => {
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario,
   });
 };
 
@@ -371,42 +356,44 @@ exports.formato_entrevista = (request, response, next) => {
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
-    idUsuario: request.session.idUsuario
+    idUsuario: request.session.idUsuario,
   });
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
-  formatoEntrevista.getID(request.body.idUsuario).then(([row, fieldData])=>{
-    const newFormato = new formatoEntrevista(
-      request.body.apellidoP,
-      request.body.apellidoM,
-      request.body.nombre,
-      request.body.fechaNacimiento,
-      request.body.genero,
-      request.body.edad,
-      request.body.nacionalidad,
-      request.body.origen,
-      request.body.estadoCivil,
-      request.body.direccionA,
-      request.body.celular,
-      request.body.telefono,
-      request.body.correo,
-      row[0].idFormato
-    );
-    newFormato
-      .save()
-      .then((uuid) => {
-        request.session.idFormato = uuid;
-        response.redirect("formatoEntrevistaPreguntasP");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  formatoEntrevista
+    .getID(request.body.idUsuario)
+    .then(([row, fieldData]) => {
+      const newFormato = new formatoEntrevista(
+        request.body.apellidoP,
+        request.body.apellidoM,
+        request.body.nombre,
+        request.body.fechaNacimiento,
+        request.body.genero,
+        request.body.edad,
+        request.body.nacionalidad,
+        request.body.origen,
+        request.body.estadoCivil,
+        request.body.direccionA,
+        request.body.celular,
+        request.body.telefono,
+        request.body.correo,
+        row[0].idFormato
+      );
+      newFormato
+        .save()
+        .then((uuid) => {
+          request.session.idFormato = uuid;
+          response.redirect("formatoEntrevistaPreguntasP");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     })
     .catch((error) => {
       console.log(error);
     });
-  };
+};
 
 exports.formato_entrevista_preguntasP = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasP", {
