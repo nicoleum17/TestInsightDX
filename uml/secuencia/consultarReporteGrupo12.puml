@@ -4,7 +4,7 @@ boundary    psicologa.routes             as a2
 boundary    vistas__consultar_grupo.ejs  as a3
 boundary    vistas_consultar_reporte.ejs as a6
 control     psicologa.controllers        as a4
-entity      psicologa.model              as a7
+entity      grupo.model              as a7
 database    mysql                        as a5
 
 autonumber
