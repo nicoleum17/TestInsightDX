@@ -49,9 +49,11 @@
             <div class="column">
               <h3 class="subtitle is-4"><%=prueba.nombrePrueba%></h3>
             </div>
+            <% if (pruebasAspirante) {%>
             <div class="column is-centered">
-              <p>Estatus</p>
+              <p><%=pruebasAspirante.estatus%></p>
             </div>
+            <%}%>
             <div class="column">
               <% if (pruebasAspirante.estatus != 'Por comenzar') {%>
               <a href="instruccionesPrueba/<%=prueba.idPrueba%>">
