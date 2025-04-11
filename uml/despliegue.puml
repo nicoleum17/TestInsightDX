@@ -1,0 +1,27 @@
+@startuml Diagrama de Despliegue
+
+node userPC <<device>>{
+    node sistemaOperativo <<execution enviroment>>{
+        node navegador <<execution enviroment>>{
+            
+        }
+    }
+}
+
+node servidor <<device>>{
+    node ubuntu <<execution enviroment>>{
+        node mysql <<execution enviroment>>{
+            artifact testInsight <<artefact>>
+        }
+        node nodeJS <<execution enviroment>>{
+            artifact app.js <<artefact>>
+        }
+        node CADDY <<execution enviroment>>
+        mysql -- nodeJS: tcp/ip
+        nodeJS -- CADDY: https
+    }
+}
+
+navegador -- CADDY : https
+
+@enduml

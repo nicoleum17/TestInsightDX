@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 
@@ -61,4 +63,4 @@ app.use((request, response, next) => {
   response.send("No se encuentra el recurso que estás buscando");
 });
 
-app.listen(3002);
+app.listen(3001);

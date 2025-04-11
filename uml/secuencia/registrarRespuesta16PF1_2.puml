@@ -104,8 +104,8 @@ deactivate a2
 activate a4
 
 
-a4 -> Aspirante**: new Aspirante(request.body.puestoSolicitado, request.body.idUsuario)
-a4 ->> Aspirante: save()
+a4 -> Aspirante: Aspirante(request.body.puestoSolicitado, request.body.idUsuario)
+a4 ->> Aspirante: updateAspirante(puestoSolicitado, idUsuario)
 activate Aspirante
 Aspirante -> a5: execute("UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?", this.puestoSolicitado, this.idUsuario)
 activate a5 
