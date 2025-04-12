@@ -10,6 +10,7 @@ const Responde16PF = require("../model/responde16pf.model");
 const RespondeKostick = require("../model/respondeKostick.model");
 const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
+const Grupo = require("../model/grupo.model");
 
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
@@ -78,37 +79,24 @@ exports.get_instrucciones = (request, response, next) => {
 exports.get_datosA = (request, response, next) => {
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
     Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-      response.render("datosAspirante", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        prueba: rows[0],
-        idUsuario: request.session.idUsuario,
-        aspirante: aspirante[0],
+      Grupo.fetchOneId(request.session.grupo).then(([grupoCompleto]) => {
+        response.render("datosAspirante", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+          prueba: rows[0],
+          idUsuario: request.session.idUsuario,
+          aspirante: aspirante[0],
+          grupo: request.session.grupo,
+          grupoCompleto: grupoCompleto[0],
+        });
       });
     });
   });
 };
 
-exports.post_datosA = (request, response, next) => {
-  const puestoSolicitado = request.body.puestoSolicitado;
-  const idUsuario = request.body.idUsuario;
-
-  Aspirante.updateAspirante(puestoSolicitado, idUsuario)
-    .then((uuid) => {
-      request.session.idUsuario = uuid;
-      request.csrfToken();
-      const idPrueba = request.body.idPrueba;
-      response.redirect(`preguntasPrueba/${idPrueba}`);
-      request.session.idGrupo = uuid;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-exports.get_preguntasPrueba = (request, response, next) => {
+exports.post_preguntasPrueba = (request, response, next) => {
   if (request.params.idPrueba == 1) {
     Prueba.fetchOne(request.params.idPrueba)
       .then(([prueba]) => {

@@ -38,8 +38,6 @@ router.get(
   aspiranteController.get_datosA
 );
 
-router.post("/datosA", isAuth, aspiranteController.post_datosA);
-
 router.get(
   "/instruccionesPrueba/:idPrueba",
   isAuth,
@@ -47,10 +45,10 @@ router.get(
   aspiranteController.get_instrucciones
 );
 
-router.get(
+router.post(
   "/preguntasPrueba/:idPrueba",
   isAuth,
-  aspiranteController.get_preguntasPrueba
+  aspiranteController.post_preguntasPrueba
 );
 
 router.post(
@@ -262,11 +260,7 @@ router.post(
   aspiranteController.postConfirmacionFormato
 );
 
-router.get(
-  "/registra_kardex",
-  isAuth,
-  aspiranteController.registra_kardex
-);
+router.get("/registra_kardex", isAuth, aspiranteController.registra_kardex);
 
 router.post(
   "/registra_kardex",
@@ -274,20 +268,20 @@ router.post(
   aspiranteController.post_registra_kardex
 );
 
+router.get("/registra_CV", isAuth, aspiranteController.registra_CV);
+
+router.post("/registra_CV", isAuth, aspiranteController.post_registra_CV);
+
 router.get(
-  "/registra_CV",
+  "/documentos/:id",
   isAuth,
-  aspiranteController.registra_CV
+  aspiranteController.get_documentos_activos
 );
 
-router.post(
-  "/registra_CV",
+router.get(
+  "/formatoEntrevista/:id",
   isAuth,
-  aspiranteController.post_registra_CV
+  aspiranteController.get_formato_activo
 );
-
-router.get("/documentos/:id", isAuth, aspiranteController.get_documentos_activos);
-
-router.get("/formatoEntrevista/:id", isAuth, aspiranteController.get_formato_activo);
 
 module.exports = router;

@@ -11,7 +11,7 @@
         <p class="title is-2 has-text-weight-semibold">Datos personales</p>
       </div>
     </div>
-    <% if (aspirante) {%>
+    <% if (aspirante) {%> <% if (prueba) { %>
     <div class="columns">
       <div class="column">
         <p>
@@ -21,7 +21,10 @@
       </div>
     </div>
     <div class="test1 columns is-centered ml-5" style="max-width: 700px">
-      <form action="/aspirante/datosA" id="personalInformation" method="POST">
+      <form
+        action="/aspirante/preguntasPrueba/<%= prueba.idPrueba%>"
+        id="personalInformation"
+        method="POST">
         <div class="column">
           <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
           <input
@@ -35,7 +38,7 @@
           <input
             class="input"
             type="text"
-            placeholder="<%=aspirante.apellidoMaterno%>"
+            value="<%=aspirante.apellidoMaterno%>"
             disabled />
         </div>
 
@@ -44,7 +47,7 @@
           <input
             class="input"
             type="text"
-            placeholder="<%=aspirante.nombres%>"
+            value="<%=aspirante.nombres%>"
             disabled />
           <br />
         </div>
@@ -66,8 +69,8 @@
               type="text"
               id="puestoSolicitado"
               name="puestoSolicitado"
-              placeholder="Maestría en Salud Pública"
-              required />
+              value="<%= grupoCompleto.posgrado%>"
+              disabled />
           </div>
         </div>
         <div class="columns mt-5 is-centered">
@@ -85,33 +88,27 @@
             </div>
           </nav>
         </div>
-        <%}%> <% if (prueba) { %>
+        <%}%>
         <div class="columns is-centered ml-5 mt-6">
           <br /><br />
 
           <a href="/aspirante/instruccionesPrueba/<%=prueba.idPrueba%>">
-            <button class="button is-primary has-text-warning">
-              Regresar
-            </button></a
-          >
-          <a href="/aspirante/preguntasPrueba/<%=prueba.idPrueba%>">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <input
-              type="hidden"
-              id="idUsuario"
-              name="idUsuario"
-              value="<%= idUsuario%>" />
-            <input
-              type="hidden"
-              id="idPrueba"
-              name="idPrueba"
-              value="<%= prueba.idPrueba%>" />
-            <button
-              class="button is-primary has-text-warning ml-6"
-              type="submit">
-              Comenzar
-            </button>
+            <button class="button is-primary has-text-warning">Regresar</button>
           </a>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input
+            type="hidden"
+            id="idUsuario"
+            name="idUsuario"
+            value="<%= idUsuario%>" />
+          <input
+            type="hidden"
+            id="idPrueba"
+            name="idPrueba"
+            value="<%= prueba.idPrueba%>" />
+          <button class="button is-primary has-text-warning ml-6" type="submit">
+            Comenzar
+          </button>
         </div>
         <%}%>
       </form>
