@@ -14,21 +14,23 @@ const PruebaAspirante = require("../model/pruebasAspirante.model");
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
     Prueba.fetchAll().then(([rows]) => {
-      PruebaAspirante.fetchOne(request.session.idUsuario).then(
-        ([pruebasAspirante]) => {
-          response.render("inicioAspirante", {
-            pruebas: rows,
-            isLoggedIn: request.session.isLoggedIn || false,
-            usuario: request.session.usuario || "",
-            csrfToken: request.csrfToken(),
-            privilegios: request.session.privilegios || [],
-            grupo: request.session.grupo,
-            pruebasAspirante: pruebasAspirante[0],
-            idUsuario: request.session.idUsuario,
-            aspirante: aspirante[0],
-          });
-        }
-      );
+      Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
+        PruebaAspirante.fetchOne(request.session.idUsuario).then(
+          ([pruebasAspirante]) => {
+            response.render("inicioAspirante", {
+              pruebas: rows,
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+              grupo: request.session.grupo,
+              pruebasAspirante: pruebasAspirante[0],
+              idUsuario: request.session.idUsuario,
+              aspirante: aspirante[0],
+            });
+          }
+        );
+      });
     });
   });
 };
