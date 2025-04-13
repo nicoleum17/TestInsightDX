@@ -64,10 +64,33 @@ module.exports = class Grupo {
       [archivoFoda, idGrupo]
     );
   }
-  updateGrupo() {
+
+  static updateGrupo(
+    institucion,
+    posgrado,
+    generacion,
+    fechaPruebaGrupal,
+    enlaceZoom,
+    idGrupo
+  ) {
+    console.log("Update Parameters:", {
+      institucion,
+      posgrado,
+      generacion,
+      fechaPruebaGrupal,
+      enlaceZoom,
+      idGrupo,
+    });
     return db.execute(
-      "UPDATE Grupos SET posgrado = ?, generacion = ? WHERE idGrupo = ?",
-      [this.posgrado, this.generacion, this.idGrupo]
+      "UPDATE Grupos SET institucion = ?, posgrado = ?, generacion = ?, fechaPruebaGrupal = ?, enlaceZoom = ? WHERE idGrupo = ?",
+      [
+        institucion,
+        posgrado,
+        generacion,
+        fechaPruebaGrupal,
+        enlaceZoom,
+        idGrupo,
+      ]
     );
   }
 
