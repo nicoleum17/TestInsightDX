@@ -1,0 +1,75 @@
+@startuml   registrarAspirante 15
+actor       Psicologa                   as a1
+boundary    psicologa.routes            as a2
+boundary    registrarAspirante.ejs  as a3
+control     psicologa.controllers       as a4
+entity      Grupos                      as g
+database    mysql                       as a6
+
+
+autonumber
+activate a1
+a1->a2: GET /psicologa/registrarAspirante
+deactivate a1
+activate a2
+a2->a4: registrarAspirante(response, request)
+deactivate a2
+activate a4
+a4->>g: fetchAll()
+activate g
+g->>a6: execute("SELECT * \nFROM Grupos WHERE hidden = 0")
+activate a6
+a6-->>g: rows
+deactivate a6
+g-->>a4: rows
+deactivate g
+
+
+a4->a3: response.render('registrarAspirante.ejs', rows)
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+activate a1
+
+
+a1->a2: POST /psicologa/registrarAspirante
+deactivate a1
+activate a2
+a2->a4: post_registrarAspirante(response, request)
+deactivate a2
+activate a4
+
+
+create entity Aspirante              as a5
+a4->a5: new Aspirante (request.body.codigoIdentidad, ...)
+note left: los elementos para la query se obtienen con request.body
+activate a5
+a4->>a5: save()
+a5->>a6: execute("INSERT INTO aspirantes \n(codigoIdentidad, idUsuario, nombres, \napellidoPaterno, apellidoMaterno, \nnumTelefono, lugarOrigen, correo, \nuniversidadOrigen, puestoSolicitado) \nVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", \n[this.codigoIdentidad, this.idUsuario, \nthis.nombres, this.apellidoPaterno, \nthis.apellidoMaterno, this.numTelefono, \nthis.lugarOrigen, this.correo, \nthis.universidadOrigen, this.puestoSolicitado])
+activate a6 
+a6-->>a5: Query OK
+deactivate a6
+a5-->>a4: promesa
+deactivate a5
+
+create entity perteneceGrupo         as pg 
+a4->pg: new perteneceGrupo (request.body.grupo, mi_aspirante.idUsuario, \nrequest.body.fechaSesionIndividual + " " + request.body.horaSesionIndividual, \nrequest.body.enlaceZoom)
+activate pg
+a4->>pg: save()
+pg->>a6: execute execute("INSERT INTO perteneceGrupo \n(idGrupo, idUsuario, fechaZoomIndividual, enlaceZoom) \nVALUES (?, ?, ?, ?)", [this.idGrupo, this.idUsuario, \nthis.fechaZoomIndividual, this.enlaceZoom])
+activate a6
+a6-->>pg: Query OK
+deactivate a6
+pg-->>a4: promesa
+deactivate pg
+
+
+a4->a3: response.render('registrarAspirante.ejs')
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+
+
+@enduml

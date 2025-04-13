@@ -1,4 +1,4 @@
 package-lock.json
-package.json
-database.json
 node_modules
+.gitignore
+.env

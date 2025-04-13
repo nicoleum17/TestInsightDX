@@ -1,0 +1,254 @@
+<%- include('includes/_navbarP')%>
+
+<body class="fullHeight">
+  <section class="section">
+    <div class="title">Aspirante</div>
+
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column is-1">
+        <a href="registra_reporte/:id">
+          <button class="image-button" method="GET">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1828/1829031.png"
+              alt=""
+              width="20px"
+            /></button
+        ></a>
+      </div>
+      <div class="column is-1">
+        <a href="modifica_grupo">
+          <button class="image-button">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
+              alt=""
+              width="20px"
+            /></button
+        ></a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container is-align-items-center">
+      <div class="field has-addons">
+        <div class="control">
+          <input
+            id="barra_buscar"
+            name="barra_buscar"
+            class="input"
+            type="text"
+            placeholder="Ingresa el parámetro"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <div
+        id="contenedor-Sugerencias"
+        class="contenedor-Sugerencias"
+        style="display: none"
+      ></div>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 20px">
+      <table id="datos-aspirante" class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Codigo de Identidad</th>
+            <th>Teléfono</th>
+            <th>Lugar de Origen</th>
+            <th>Correo</th>
+            <th>Universidad de Procedencia</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <br /><br /><br />
+
+    <div style="display: flex; justify-content: center; margin-top: 20px">
+      <table id="pruebas-aspirante" class="table">
+        <thead>
+          <tr>
+            <th>Prueba</th>
+            <th>Fecha</th>
+            <th>Tiempo</th>
+            <th>Estatus</th>
+            <th>Respuestas</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const buscar = document.getElementById("barra_buscar");
+    const contenedorSugerencias = document.getElementById(
+      "contenedor-Sugerencias"
+    );
+
+    buscar.addEventListener("input", function () {
+      const query = buscar.value.trim();
+
+      if (query.length > 0) {
+        fetch("/psicologa/buscar/" + query, {
+          method: "GET",
+        })
+          .then((result) => result.json())
+          .then((data) => {
+            contenedorSugerencias.innerHTML = "";
+
+            const aspirantesFiltrados = data.aspirantes.filter((aspirante) => {
+              return (
+                aspirante.nombres.toLowerCase().includes(query.toLowerCase()) ||
+                aspirante.apellidoPaterno
+                  .toLowerCase()
+                  .includes(query.toLowerCase()) ||
+                aspirante.apellidoMaterno
+                  .toLowerCase()
+                  .includes(query.toLowerCase()) ||
+                aspirante.codigoIdentidad
+                  .toLowerCase()
+                  .includes(query.toLowerCase()) ||
+                aspirante.correo.toLowerCase().includes(query.toLowerCase())
+              );
+            });
+
+            aspirantesFiltrados.forEach((aspirante) => {
+              const sugerencia = document.createElement("div");
+              sugerencia.classList.add("sugerencia-item");
+              sugerencia.innerHTML = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
+              sugerencia.onclick = () => {
+                const tableBody = document
+                  .getElementById("datos-aspirante")
+                  .getElementsByTagName("tbody")[0];
+                tableBody.innerHTML = "";
+                const row = tableBody.insertRow();
+                const nombreAspirante = row.insertCell(0);
+                const codigoIdentidadAspirante = row.insertCell(1);
+                const telefonoAspirante = row.insertCell(2);
+                const lugarOrigenAspirante = row.insertCell(3);
+                const correoAspirante = row.insertCell(4);
+                const universidadAspirante = row.insertCell(5);
+
+                (nombreAspirante.textContent = aspirante.nombres),
+                  " ",
+                  aspirante.apellidoPaterno,
+                  " ",
+                  aspirante.apellidoMaterno;
+                codigoIdentidadAspirante.textContent =
+                  aspirante.codigoIdentidad;
+                telefonoAspirante.textContent = aspirante.numTelefono;
+                lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
+                correoAspirante.textContent = aspirante.correo;
+                universidadAspirante.textContent = aspirante.universidadOrigen;
+
+                contenedorSugerencias.style.display = "none";
+                bodyPrueba = document
+                    .getElementById("pruebas-aspirante")
+                    .getElementsByTagName("tbody")[0];
+                    bodyPrueba.innerHTML = "";
+                fetch("/psicologa/pruebasActivas/" + aspirante.idUsuario, {
+                  method: "GET",
+                })
+                .then((result) => result.json())
+                .then((data) => {
+                  for(let prueba of data.pruebas) {
+                    const filaPrueba = bodyPrueba.insertRow();
+                    const nombrePrueba = filaPrueba.insertCell(0);
+                    const fechaPrueba = filaPrueba.insertCell(1);
+                    const tiempoPrueba = filaPrueba.insertCell(2);
+                    const estatusPrueba = filaPrueba.insertCell(3);
+                    const respuestasPrueba = filaPrueba.insertCell(4);
+
+                    fechaPrueba.textContent = prueba.fecha;
+                    estatusPrueba.textContent = prueba.estatus;
+                    if(prueba.idPrueba == 1){
+                      fetch("/psicologa/kostickActiva/" + aspirante.idUsuario, {
+                        method: "GET",
+                      })
+                      .then((result) => result.json())
+                      .then((data) => {
+                      nombrePrueba.textContent = "Kostick";
+                      tiempoPrueba.textContent = data.kostickTiempo.tiempo;
+                    })
+                    }
+                    else if(prueba.idPrueba == 2){
+                      fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
+                        method: "GET",
+                      })
+                      .then((result) => result.json())
+                      .then((data) => {
+                      nombrePrueba.textContent = "16PF";
+                      tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
+                    })
+                    }
+                };
+              })
+              };
+              contenedorSugerencias.appendChild(sugerencia);
+            });
+
+            if (aspirantesFiltrados.length > 0) {
+              contenedorSugerencias.style.display = "block";
+            } else {
+              contenedorSugerencias.style.display = "none";
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        contenedorSugerencias.style.display = "none";
+      }
+    });
+
+    document.addEventListener("click", function (event) {
+      if (
+        !contenedorSugerencias.contains(event.target) &&
+        event.target !== buscar
+      ) {
+        contenedorSugerencias.style.display = "none";
+      }
+    });
+  </script>
+
+  <style>
+    .contenedor-Sugerencias {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      border: 1px solid #ddd;
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: white;
+      z-index: 10;
+      border-radius: 5px;
+    }
+
+    .sugerencia-item {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .sugerencia-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .sugerencia-item a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .container {
+      position: relative;
+    }
+  </style>
+
+  <%- include('includes/_footer')%>
+</body>

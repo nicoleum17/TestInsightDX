@@ -1,0 +1,64 @@
+<%- include('includes/_navbarP')%>
+<style>
+  .fullHeight {
+    min-height: 90vh;
+    margin-top: 60px;
+  }
+</style>
+
+<section class="fullHeight has-background-warning">
+  <div class="container is-max-desktop mt-5">
+    <% if (infoBorrado) { %>
+      <article class="message is-success">
+        <div class="message-header">
+          <p>Éxito</p>
+          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+        <div class="message-body">
+          <%= infoBorrado %>
+        </div>
+      </article>
+    <% } %>
+    <div class="title is-2 has-text-weight-semibold">
+      Bienvenida Claudia Cook
+    </div>
+    <div class="columns has-text-centered mt-6">
+      <div class="column">
+        <a href="crearGrupo"
+          ><button class="button m-5 is-primary has-text-white">
+            Crear Grupo
+          </button>
+        </a>
+      </div>
+      <div class="column">
+        <a href="grupo/elegir"
+          ><button class="button m-5 is-primary has-text-white">
+            Consultar grupo
+          </button>
+        </a>
+      </div>
+      <div class="column">
+        <a href="consultaAspirante"
+          ><button class="button m-5 is-primary has-text-white">
+            Consultar aspirante
+          </button>
+        </a>
+      </div>
+      <div class="column">
+        <a href="registrarAspirante"
+          ><button class="button m-5 is-primary has-text-white">
+            Registra Aspirante
+          </button>
+        </a>
+      </div>
+      <div class="column">
+        <a href="pruebas"
+          ><button class="button m-5 is-primary has-text-white">
+            Consultar pruebas
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('includes/_footer')%>

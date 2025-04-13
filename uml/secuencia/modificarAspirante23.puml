@@ -1,0 +1,70 @@
+@startuml modificarAspirante 23
+actor Psicologa as a1
+boundary Psicologa.routes as a2
+boundary vistas_modificarAspirante as a3
+boundary vistas_consultarAspirante as a7
+control psicologa.controllers as a4
+entity aspirante as a5
+database mysql as a6
+
+autonumber
+activate a1
+a1 -> a2: GET /psicologa/modifcarAspirante/:idUsuario
+note right
+request.params.idUsuario
+end note
+deactivate a1
+activate a2
+a2 -> a4: get_modificarAspirante(request, response)
+deactivate a2
+activate a4
+a4 ->>  a5: fetchOne(idUsuario)
+activate a5
+a5 ->> a6: execute("SELECT * FROM Aspirantes WHERE idUsuario = ?", idUsuario)
+activate a6
+a6 -->> a5: rows
+deactivate a6
+a5-->> a4 : rows
+deactivate a5
+a4 --> a3: response.render('modificarAspirante.ejs)
+note right
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupo: rows[0]
+end note
+deactivate a4
+activate a3
+a3 --> a1: HTML
+deactivate a3
+activate a1
+a1 -> a2: POST /psicologa/modifcarAspirante/:idUsuario
+deactivate a1
+activate a2
+a2 -> a4: post_modificarAspirante(request, response)
+deactivate a2
+activate a4
+a4 ->> a5: updateAspirante(codigoIdentidad, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen, hidden)
+activate a5 
+a5 ->> a6: execute("UPDATE Aspirante SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ?, hidden = ?", values)
+activate a6
+a6 -->> a5: Query OK
+deactivate a6
+a5 -->> a4: Query OK
+deactivate a5
+a4 --> a2: response.redirect('/consultarAspirante')
+deactivate a4
+activate a2
+a2 -> a4: get_consultarAspirante(request, response)
+deactivate a2
+activate a4
+a4 --> a7: response.render('consultarAspirante.ejs') 
+deactivate a4
+activate a7
+a7 --> a1: HTML
+deactivate a7
+activate a1
+
+
+@enduml

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TestInsight DX</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+      :root {
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+      }
+      body {
+        background-color: #fffcf8;
+        margin: 0;
+        padding: 0;
+      }
+      .loginShapeContainer {
+        width: 92%;
+        position: relative;
+      }
+      .mainTitle {
+        color: #081f5c;
+        font-size: 4rem;
+      }
+      .shapeLogin {
+        position: absolute;
+        z-index: 0;
+      }
+      .loginTitle {
+        color: #fff9f0;
+        position: relative;
+        margin-left: 13%;
+        margin-top: 8%;
+      }
+      .logoPsicodxContainer {
+        width: 55%;
+        margin-left: 22%;
+      }
+      .welcomeTitle {
+        font-size: 5.5rem;
+      }
+      form {
+        position: relative;
+        margin-left: 19%;
+      }
+      input,
+      label {
+        margin-left: 17%;
+      }
+      .label {
+        color: #fff9f0;
+      }
+      .button {
+        background-color: #dddddc;
+        color: black;
+      }
+      .fullHeight {
+        min-height: 100vh;
+      }
+      @media (min-width: 821px) {
+        .hasMarginTopDesktop {
+          margin-top: 165px !important;
+        }
+        .formLogin {
+          padding: 1.5rem;
+        }
+        .button {
+          margin-top: 23px;
+          margin-left: 150px;
+        }
+        .contraseña {
+          margin-top: 25px;
+        }
+      }
+      @media (max-width: 820px) {
+        .loginTitle {
+          margin-left: 0;
+          margin-top: 2%;
+        }
+        .formLogin {
+          padding: 0;
+        }
+        .label,
+        .input {
+          margin-left: 10px;
+        }
+        .input {
+          width: 195px;
+          height: 35px;
+        }
+        .label {
+          font-size: small;
+        }
+        .contraseña,
+        .label {
+          margin-top: 0;
+        }
+        .usuario {
+          margin-bottom: 0;
+        }
+        .button {
+          margin-top: 40px;
+          background-color: #d0e3ff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section pt-5 fullHeight">
+      <div class="container">
+        <h1
+          class="mainTitle title is-size-1-mobile has-text-centered has-text-weight-semibold">
+          TestInsight DX
+        </h1>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <figure class="logoPsicodxContainer image mt-6 hasMarginTopDesktop">
+            <img
+              src="/images/logoPsicodx.png"
+              alt="logoPsicodx"
+              class="logoPsicodx" />
+          </figure>
+          <div
+            class="welcomeTitle title is-size-2-mobile is-size-2-tablet-only has-text-centered has-text-weight-normal"
+            id="typewriter-text">
+            ¡Bienvenido!
+          </div>
+        </div>
+        <div class="column is-half">
+          <figure class="loginShapeContainer image is-pulled-right mr-5 mt-3">
+            <img
+              src="/images/shapeLogin.png"
+              alt="shapeLogin"
+              class="shapeLogin" />
+          </figure>
+          <h2
+            class="loginTitle title is-size-4-mobile is-size-4-tablet-only is-2 has-text-weight-semibold has-text-centered pt-5">
+            Inicia sesión
+          </h2>
+          <form action="/login" method="POST" class="formLogin">
+            <div class="columns usuario">
+              <div class="column usuarioColumn is-two-thirds">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <label for="usuario" class="label">Nombre de usuario</label>
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="AALF031220MMCNRA8"
+                  id="usuario"
+                  name="usuario" />
+              </div>
+            </div>
+
+            <div class="columns contraseña">
+              <div class="column is-two-thirds">
+                <label for="contraseña" class="label">Contraseña</label>
+                <input
+                  class="input"
+                  type="password"
+                  placeholder="*********"
+                  id="contraseña"
+                  name="contraseña" />
+                <br />
+              </div>
+            </div>
+            <input
+              class="button has-text-link"
+              type="submit"
+              value="Iniciar sesión" />
+            <br /><br />
+            <% if (info != '') { %>
+            <div class="notification has-text-centered is-info">
+              <%= info %>
+            </div>
+            <% } %> <% if (warning != '') { %>
+            <div class="notification has-text-centered is-info">
+              <%= warning %>
+            </div>
+            <% } %>
+          </form>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+@startuml modificarGrupo 14
+actor Psicologa as a1
+boundary Psicologa.routes as a2
+boundary vistas_modificarGrupo as a3
+boundary vistas_elegirGrupo as a7
+control psicologa.controllers as a4
+entity grupo as a5
+database mysql as a6
+
+autonumber
+activate a1
+a1 -> a2: GET /psicologa/grupo/:id/modificarGrupo
+note right
+request.params.idGrupo
+end note
+deactivate a1
+activate a2
+a2 -> a4: get_modificarGrupo(request, response)
+deactivate a2
+activate a4
+a4 ->>  a5: fetchOne(idGrupo)
+activate a5
+a5 ->> a6: execute("SELECT * FROM Grupos WHERE idGrupo = ?", idGrupo)
+activate a6
+a6 -->> a5: rows
+deactivate a6
+a5-->> a4 : rows
+deactivate a5
+a4 --> a3: response.render('modificarGrupo.ejs)
+note right
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      grupo: rows[0]
+end note
+deactivate a4
+activate a3
+a3 --> a1: HTML
+deactivate a3
+activate a1
+a1 -> a2: POST /psicologa/grupo/:id/modificarGrupo
+deactivate a1
+activate a2
+a2 -> a4: post_modificarGrupo(request, response)
+deactivate a2
+activate a4
+a4 ->> a5: updateGrupo(institución, posgrado, generacion, fechaLimite, enlaceZoom, hidden)
+activate a5 
+a5 ->> a6: execute("UPDATE Grupos SET institución = ?, posgrado = ?, generacion = ?, fechaLimite = ?, enlaceZoom = ?, hidden = ? WHERE idGrupo = ?", values)
+activate a6
+a6 -->> a5: Query OK
+deactivate a6
+a5 -->> a4: Query OK
+deactivate a5
+a4 --> a2: response.redirect('/elegirGrupo')
+deactivate a4
+activate a2
+a2 -> a4: get_elegirGrupo(request, response)
+deactivate a2
+activate a4
+a4 --> a7: response.render('elegirGrupo.ejs') 
+deactivate a4
+activate a7
+a7 --> a1: HTML
+deactivate a7
+activate a1
+
+
+@enduml
