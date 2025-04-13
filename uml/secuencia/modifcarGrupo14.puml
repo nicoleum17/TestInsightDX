@@ -10,6 +10,9 @@ database mysql as a6
 autonumber
 activate a1
 a1 -> a2: GET /psicologa/grupo/:id/modificarGrupo
+note right
+request.params.idGrupo
+end note
 deactivate a1
 activate a2
 a2 -> a4: get_modificarGrupo(request, response)
@@ -64,3 +67,4 @@ deactivate a7
 activate a1
 
 
+@enduml
