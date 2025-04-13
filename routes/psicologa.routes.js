@@ -141,4 +141,10 @@ router.get("/grupo/confirmacion/:id", isAuth, psicologaController.getPreguntaSeg
 
 router.post("/grupo/confirmacion/:id", isAuth, psicologaController.postPreguntaSeguridad);
 
+router.get("/pruebasActivas/:valor", isAuth, psicologaController.get_pruebasActivas);
+
+router.get("/kostickActiva/:valor", isAuth, psicologaController.get_kostickActiva);
+
+router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);
+
 module.exports = router;

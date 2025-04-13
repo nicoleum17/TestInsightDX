@@ -48,8 +48,8 @@
       </div>
 
       <div
-        id="suggestions-container"
-        class="suggestions-container"
+        id="contenedor-Sugerencias"
+        class="contenedor-Sugerencias"
         style="display: none"
       ></div>
     </div>
@@ -70,8 +70,8 @@
     </div>
     <br /><br /><br />
 
-    <!--
-      <table class="table">
+    <div style="display: flex; justify-content: center; margin-top: 20px">
+      <table id="pruebas-aspirante" class="table">
         <thead>
           <tr>
             <th>Prueba</th>
@@ -81,82 +81,15 @@
             <th>Respuestas</th>
           </tr>
         </thead>
-  
-        <tbody>
-          <tr>
-            <th>Prueba OTIS</td>
-            <td>21/02/2025</td>
-            <td>29:35 min</td>
-            <td>Completada</td>
-            <td>
-              <a href="consultaRespuestasAspirante">
-                <button class="image-button">
-                  <img
-                    src="https://img.icons8.com/ios7/512/plus.png"
-                    alt=""
-                    width="25px"
-                  /></button
-              ></a>
-            </td>
-          </tr>
-          <tr>
-            <th>Prueba TERMAN</th>
-            <td>27/02/2025</td>
-            <td>-</td>
-            <td>Pendiente</td>
-            <td>
-              <a href="consultaRespuestasAspirante">
-                <button class="image-button">
-                  <img
-                    src="https://img.icons8.com/ios7/512/plus.png"
-                    alt=""
-                    width="25px"
-                  /></button
-              ></a>
-            </td>
-          </tr>
-          <tr>
-            <th>Test de los colores de Lusher</td>
-            <td>27/02/2025</td>
-            <td>-</td>
-            <td>Pendiente</td>
-            <td>
-              <a href="consultaRespuestasAspirante">
-                <button class="image-button">
-                  <img
-                    src="https://img.icons8.com/ios7/512/plus.png"
-                    alt=""
-                    width="25px"
-                  /></button
-              ></a>
-            </ttdh>
-          </tr>
-          <tr>
-            <th>Personalidad 16 Factores</td>
-            <td>27/02/2025</td>
-            <td>-</td>
-            <td>Pendiente</td>
-            <td>
-              <a href="consultaRespuestasAspirante">
-                <button class="image-button">
-                  <img
-                    src="https://img.icons8.com/ios7/512/plus.png"
-                    alt=""
-                    width="25px"
-                  /></button
-              ></a>
-            </td>
-          </tr>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
-    -->
   </section>
 
   <script>
     const buscar = document.getElementById("barra_buscar");
-    const suggestionsContainer = document.getElementById(
-      "suggestions-container"
+    const contenedorSugerencias = document.getElementById(
+      "contenedor-Sugerencias"
     );
 
     buscar.addEventListener("input", function () {
@@ -168,9 +101,9 @@
         })
           .then((result) => result.json())
           .then((data) => {
-            suggestionsContainer.innerHTML = ""; // Clear previous suggestions
+            contenedorSugerencias.innerHTML = "";
 
-            const filteredAspirantes = data.aspirantes.filter((aspirante) => {
+            const aspirantesFiltrados = data.aspirantes.filter((aspirante) => {
               return (
                 aspirante.nombres.toLowerCase().includes(query.toLowerCase()) ||
                 aspirante.apellidoPaterno
@@ -186,11 +119,11 @@
               );
             });
 
-            filteredAspirantes.forEach((aspirante) => {
-              const suggestion = document.createElement("div");
-              suggestion.classList.add("suggestion-item");
-              suggestion.innerHTML = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
-              suggestion.onclick = () => {
+            aspirantesFiltrados.forEach((aspirante) => {
+              const sugerencia = document.createElement("div");
+              sugerencia.classList.add("sugerencia-item");
+              sugerencia.innerHTML = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
+              sugerencia.onclick = () => {
                 const tableBody = document
                   .getElementById("datos-aspirante")
                   .getElementsByTagName("tbody")[0];
@@ -215,37 +148,78 @@
                 correoAspirante.textContent = aspirante.correo;
                 universidadAspirante.textContent = aspirante.universidadOrigen;
 
-                suggestionsContainer.style.display = "none";
+                contenedorSugerencias.style.display = "none";
+                bodyPrueba = document
+                    .getElementById("pruebas-aspirante")
+                    .getElementsByTagName("tbody")[0];
+                    bodyPrueba.innerHTML = "";
+                fetch("/psicologa/pruebasActivas/" + aspirante.idUsuario, {
+                  method: "GET",
+                })
+                .then((result) => result.json())
+                .then((data) => {
+                  for(let prueba of data.pruebas) {
+                    const filaPrueba = bodyPrueba.insertRow();
+                    const nombrePrueba = filaPrueba.insertCell(0);
+                    const fechaPrueba = filaPrueba.insertCell(1);
+                    const tiempoPrueba = filaPrueba.insertCell(2);
+                    const estatusPrueba = filaPrueba.insertCell(3);
+                    const respuestasPrueba = filaPrueba.insertCell(4);
+
+                    fechaPrueba.textContent = prueba.fecha;
+                    estatusPrueba.textContent = prueba.estatus;
+                    if(prueba.idPrueba == 1){
+                      fetch("/psicologa/kostickActiva/" + aspirante.idUsuario, {
+                        method: "GET",
+                      })
+                      .then((result) => result.json())
+                      .then((data) => {
+                      nombrePrueba.textContent = "Kostick";
+                      tiempoPrueba.textContent = data.kostickTiempo.tiempo;
+                    })
+                    }
+                    else if(prueba.idPrueba == 2){
+                      fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
+                        method: "GET",
+                      })
+                      .then((result) => result.json())
+                      .then((data) => {
+                      nombrePrueba.textContent = "16PF";
+                      tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
+                    })
+                    }
+                };
+              })
               };
-              suggestionsContainer.appendChild(suggestion);
+              contenedorSugerencias.appendChild(sugerencia);
             });
 
-            if (filteredAspirantes.length > 0) {
-              suggestionsContainer.style.display = "block";
+            if (aspirantesFiltrados.length > 0) {
+              contenedorSugerencias.style.display = "block";
             } else {
-              suggestionsContainer.style.display = "none";
+              contenedorSugerencias.style.display = "none";
             }
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
-        suggestionsContainer.style.display = "none";
+        contenedorSugerencias.style.display = "none";
       }
     });
 
     document.addEventListener("click", function (event) {
       if (
-        !suggestionsContainer.contains(event.target) &&
+        !contenedorSugerencias.contains(event.target) &&
         event.target !== buscar
       ) {
-        suggestionsContainer.style.display = "none";
+        contenedorSugerencias.style.display = "none";
       }
     });
   </script>
 
   <style>
-    .suggestions-container {
+    .contenedor-Sugerencias {
       position: absolute;
       top: 100%;
       left: 0;
@@ -257,16 +231,16 @@
       border-radius: 5px;
     }
 
-    .suggestion-item {
+    .sugerencia-item {
       padding: 8px;
       cursor: pointer;
     }
 
-    .suggestion-item:hover {
+    .sugerencia-item:hover {
       background-color: #f0f0f0;
     }
 
-    .suggestion-item a {
+    .sugerencia-item a {
       text-decoration: none;
       color: black;
     }

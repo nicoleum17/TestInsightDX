@@ -420,3 +420,39 @@ exports.postPreguntaSeguridad = (request, response, next) => {
     }
   });
 };
+
+exports.get_pruebasActivas = (request, response, next) => {
+  Prueba.pruebasActivas(request.params.valor)
+    .then(([rows]) => {
+      response.status(200).json({ pruebas: rows });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_kostickActiva = (request, response, next) => {
+  Prueba.kostickActiva(request.params.valor)
+    .then(([rows]) => {
+      const kostickTiempo = {
+        tiempo: rows[0].tiempo || "N/A",
+      };
+      response.status(200).json({ kostickTiempo })
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_P16PFActiva = (request, response, next) => {
+  Prueba.P16PFActiva(request.params.valor)
+    .then(([rows]) => {
+      const P16PFTiempo = {
+        tiempo: rows[0].tiempo || "N/A",
+      };
+      response.status(200).json({ P16PFTiempo })
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};

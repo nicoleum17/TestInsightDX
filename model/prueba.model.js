@@ -31,4 +31,40 @@ module.exports = class Prueba {
   static fetchAll() {
     return db.execute("SELECT * FROM Pruebas");
   }
+
+  static pruebasPorAspirante(idUsuario) {
+    return db.execute(
+      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombrePrueba FROM perteneceGrupo pg JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
+      [idUsuario]
+    );
+  }
+
+  static pruebasActivas(idUsuario) {
+    return db.execute(
+      `SELECT tp.idPrueba as idPrueba, tp.fechaLimitePrueba as fecha, pa.estatus as estatus
+      FROM perteneceGrupo pg
+      JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo
+      JOIN pruebasAspirante pa ON pa.idPrueba = tp.idPrueba
+      WHERE pg.idUsuario = ?`,
+      [idUsuario]
+    );
+  }
+
+  static kostickActiva(idUsuario) {
+    return db.execute(
+      `SELECT MAX(tiempo)
+      FROM respondeKostick
+      WHERE idUsuario = ?;`,
+      [idUsuario]
+    );
+  }
+
+  static P16PFActiva(idUsuario) {
+    return db.execute(
+      `SELECT MAX(tiempo)
+      FROM respondeKostick
+      WHERE idUsuario = ?;`,
+      [idUsuario]
+    );
+  }
 };
