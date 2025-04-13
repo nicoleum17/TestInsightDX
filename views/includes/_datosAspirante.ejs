@@ -30,7 +30,7 @@
           <input
             class="input"
             type="text"
-            placeholder="<%=aspirante.apellidoPaterno%>"
+            value="<%=aspirante.apellidoPaterno%>"
             disabled />
         </div>
         <div class="column">
@@ -57,7 +57,7 @@
             <label for="selectAge" class="label">Edad:</label>
 
             <div class="is-primary">
-              <input class="input" type="text" placeholder="25" disabled />
+              <input class="input" type="text" value="25" disabled />
             </div>
           </div>
           <div class="column">
@@ -106,7 +106,10 @@
             id="idPrueba"
             name="idPrueba"
             value="<%= prueba.idPrueba%>" />
-          <button class="button is-primary has-text-warning ml-6" type="submit">
+          <button
+            class="button is-primary has-text-warning ml-6"
+            style="height: 40px"
+            type="submit">
             Comenzar
           </button>
         </div>
