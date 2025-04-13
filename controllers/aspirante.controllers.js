@@ -18,6 +18,7 @@ exports.get_root = (request, response, next) => {
       Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
         PruebaAspirante.fetchOne(request.session.idUsuario).then(
           ([pruebasAspirante]) => {
+            console.log(pruebasAspirante);
             response.render("inicioAspirante", {
               pruebas: rows,
               isLoggedIn: request.session.isLoggedIn || false,
@@ -25,7 +26,7 @@ exports.get_root = (request, response, next) => {
               csrfToken: request.csrfToken(),
               privilegios: request.session.privilegios || [],
               grupo: request.session.grupo,
-              pruebasAspirante: pruebasAspirante[0],
+              pruebasAspirante: pruebasAspirante,
               idUsuario: request.session.idUsuario,
               aspirante: aspirante[0],
             });
@@ -331,12 +332,16 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = (request, response, next) => {
-  response.render("finPrueba", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-    idUsuario: request.session.idUsuario,
+  Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
+    console.log(idUsuario);
+    response.render("finPrueba", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      idUsuario: request.session.idUsuario,
+      aspirante: aspirante[0],
+    });
   });
 };
 
