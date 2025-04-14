@@ -397,6 +397,9 @@ exports.post_modificarAspirante = (request, response, next) => {
   lugarOrigen = request.body.lugarOrigen;
   correo = request.body.correo;
   universidadOrigen = request.body.universidadOrigen;
+  fechaZoomIndividual =
+    request.body.fechaZoomIndividual + " " + request.body.horaSesionIndividual;
+  enlaceZoom = request.body.enlaceZoom;
   idUsuario = request.params.idUsuario;
   Aspirante.updateAspirante(
     codigoIdentidad,
@@ -409,7 +412,13 @@ exports.post_modificarAspirante = (request, response, next) => {
     universidadOrigen,
     idUsuario
   ).then(() => {
-    response.redirect("/psicologa/consultaAspirante");
+    PerteneceGrupo.updatePerteneceGrupo(
+      fechaZoomIndividual,
+      enlaceZoom,
+      idUsuario
+    ).then(() => {
+      response.redirect("/psicologa/consultaAspirante");
+    });
   });
 };
 

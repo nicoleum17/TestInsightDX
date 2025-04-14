@@ -42,10 +42,13 @@
         <div class="title">Sesión Individual</div>
         <div class="box has-background-info" >
             <label class="label">Fecha</label>
-            <input class="input" type="date" name="fechaSesionIndividual" />
+            <input class="input" type="date" name="fechaZoomIndividual" value = "<%= perteneceGrupo.fechaZoomIndividual.toISOString().split('T')[0]%>" />
             <br><br>
             <label class="label">Hora</label>
-            <input class="input" type="time" name="horaSesionIndividual" />
+            <% const dateTime = new Date(perteneceGrupo.fechaZoomIndividual); const
+            hours = String(dateTime.getHours()).padStart(2, '0'); const
+            minutes = String(dateTime.getMinutes()).padStart(2, '0'); %>
+            <input class="input" type="time" name="horaSesionIndividual" value="<%= hours %>:<%= minutes %>" />
             <br><br>
             <label class="label">Link</label>
             <input class="input" type="text" name="enlaceZoom" value="<%= perteneceGrupo.enlaceZoom %>" />

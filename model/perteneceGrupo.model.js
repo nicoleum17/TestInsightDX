@@ -25,4 +25,11 @@ module.exports = class PerteneceGrupo {
       idUsuario,
     ]);
   }
+
+  static updatePerteneceGrupo() {
+    return db.execute(
+      "UPDATE perteneceGrupo SET fechaZoomIndividual = ?, enlaceZoom = ? WHERE idUsuario = ?",
+      [fechaZoomIndividual, enlaceZoom, idUsuario]
+    );
+  }
 };
