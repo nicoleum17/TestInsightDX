@@ -34,20 +34,19 @@ module.exports = class formatoEntrevista {
     this.correo = mi_correo;
     this.idFormato = mi_idFormato;
     this.estatus = "Empezado";
-
   }
-  static getID(idUsuario){
-    return db
-      .execute(
-        "SELECT idFormato FROM formatoEntrevista WHERE idUsuario = ?", [idUsuario]
-      )
+  static getID(idUsuario) {
+    return db.execute(
+      "SELECT idFormato FROM formatoentrevista WHERE idUsuario = ?",
+      [idUsuario]
+    );
   }
   save() {
     return db
       .execute(
-        "UPDATE formatoentrevista SET nombre = ?, apellidoP = ?, apellidoM = ?, fechaNacimiento = ?, "+
-        "genero = ?, nacionalidad = ?, edad = ?, estadoCivil = ?, origen = ?, telefono = ?, celular = ?, "+
-        "correo = ?, direccionA = ?, estatus = ? WHERE idFormato = ?",
+        "UPDATE formatoentrevista SET nombre = ?, apellidoP = ?, apellidoM = ?, fechaNacimiento = ?, " +
+          "genero = ?, nacionalidad = ?, edad = ?, estadoCivil = ?, origen = ?, telefono = ?, celular = ?, " +
+          "correo = ?, direccionA = ?, estatus = ? WHERE idFormato = ?",
         [
           this.nombre,
           this.apellidoP,
@@ -63,7 +62,7 @@ module.exports = class formatoEntrevista {
           this.correo,
           this.direccionA,
           this.estatus,
-          this.idFormato
+          this.idFormato,
         ]
       )
       .then(([result]) => {
@@ -83,16 +82,27 @@ module.exports = class formatoEntrevista {
     mi_cursos,
     mi_idiomas,
     mi_id
-  ){
-    return db.execute(
-                "UPDATE formatoEntrevista SET nombreLicenciatura=?,institucion=?, promedio=?, generacion=?, gradoMax=?, maestria=?, institucionMaestria=?,  promedioMaestria=?, cursos=?, idiomas=? WHERE idFormato=?",
-                [
-                  mi_nombreLicenciatura,mi_institucion,mi_promedio,mi_generacion,mi_gradoMax,mi_maestria,mi_institucionMaestria,mi_promedioMaestria,
-                  mi_cursos,mi_idiomas,mi_id
-                ]
-              ).then(([result]) => {
-                return mi_id;
-              });
+  ) {
+    return db
+      .execute(
+        "UPDATE formatoentrevista SET nombreLicenciatura=?,institucion=?, promedio=?, generacion=?, gradoMax=?, maestria=?, institucionMaestria=?,  promedioMaestria=?, cursos=?, idiomas=? WHERE idFormato=?",
+        [
+          mi_nombreLicenciatura,
+          mi_institucion,
+          mi_promedio,
+          mi_generacion,
+          mi_gradoMax,
+          mi_maestria,
+          mi_institucionMaestria,
+          mi_promedioMaestria,
+          mi_cursos,
+          mi_idiomas,
+          mi_id,
+        ]
+      )
+      .then(([result]) => {
+        return mi_id;
+      });
   }
 
   static saveDL(
@@ -104,29 +114,43 @@ module.exports = class formatoEntrevista {
     mi_sueldo,
     mi_personal,
     mi_idFormato
-  ){
-    return db.execute("UPDATE formatoEntrevista SET lugarTrabajo=?, empresa=?, puesto=?, años=?, actividades=?, sueldo=?, personal=? WHERE idFormato=?",
-      [mi_lugarTrabajo, mi_empresa, mi_puesto, mi_años, mi_actividades, mi_sueldo, mi_personal, mi_idFormato])
+  ) {
+    return db
+      .execute(
+        "UPDATE formatoentrevista SET lugarTrabajo=?, empresa=?, puesto=?, años=?, actividades=?, sueldo=?, personal=? WHERE idFormato=?",
+        [
+          mi_lugarTrabajo,
+          mi_empresa,
+          mi_puesto,
+          mi_años,
+          mi_actividades,
+          mi_sueldo,
+          mi_personal,
+          mi_idFormato,
+        ]
+      )
       .then(([result]) => {
         return mi_idFormato;
       });
   }
 
-  static finish(
-    mi_idFormato
-  ){
-    return db.execute("UPDATE formatoEntrevista SET estatus=? WHERE idFormato=?", ["Finalizado",mi_idFormato])
-    .then(([result]) => {
-      return mi_idFormato;
-    });
+  static finish(mi_idFormato) {
+    return db
+      .execute("UPDATE formatoentrevista SET estatus=? WHERE idFormato=?", [
+        "Finalizado",
+        mi_idFormato,
+      ])
+      .then(([result]) => {
+        return mi_idFormato;
+      });
   }
 
-  static formato_activo(idUsuario){
+  static formato_activo(idUsuario) {
     return db.execute(
       `SELECT estatus, idFormato
-      FROM formatoEntrevista
+      FROM formatoentrevista
       WHERE idUsuario = ?`,
       [idUsuario]
     );
-  }   
+  }
 };

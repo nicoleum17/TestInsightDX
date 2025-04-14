@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const db = require("../util/database");
+const { v4: uuidv4 } = require("uuid");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
@@ -89,9 +90,16 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.enlaceZoom
   );
 
+  const nombreUsuario = mi_aspirante.codigoIdentidad + new Date().getFullYear();
+  const contraseñaBase = uuidv4();
+
+  console.log("Usuario", nombreUsuario);
+  console.log("Contraseña Base: " + contraseñaBase);
+
   const mi_usuario = new Usuario(
     mi_aspirante.idUsuario,
-    mi_aspirante.codigoIdentidad + new Date().getTime(),
+    nombreUsuario,
+    contraseñaBase,
     "2"
   );
 
@@ -99,6 +107,7 @@ exports.post_registrarAspirante = (request, response, next) => {
     mi_perteneceGrupo.save().then(() => {
       request.session.infoAspirante = "Aspirante registrado exitosamente";
       mi_usuario.save().then(() => {
+        mi_usuario.correo;
         response.redirect("inicio");
       });
     });

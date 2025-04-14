@@ -3,10 +3,10 @@ const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
 module.exports = class Usuario {
-  constructor(mi_idUsuario, mi_usuario, mi_idRol) {
+  constructor(mi_idUsuario, mi_usuario, mi_contraseña, mi_idRol) {
     this.idUsuario = mi_idUsuario;
     this.usuario = mi_usuario;
-    this.contraseña = uuidv4();
+    this.contraseña = mi_contraseña;
     this.idRol = mi_idRol;
   }
 
@@ -22,6 +22,10 @@ module.exports = class Usuario {
       .catch((error) => {
         console.log("Error al guardar un nuevo usuario", error);
       });
+  }
+
+  static forCorreo() {
+    return this.contraseña;
   }
 
   static fetchAll() {
