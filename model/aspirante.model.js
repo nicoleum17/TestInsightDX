@@ -40,11 +40,42 @@ module.exports = class Aspirante {
     );
   }
 
-  static updateAspirante(puestoSolicitado, idUsuario) {
+  static updateAspirante(
+    codigoIdentidad,
+    nombres,
+    apellidoPaterno,
+    apellidoMaterno,
+    numTelefono,
+    lugarOrigen,
+    correo,
+    universidadOrigen,
+    idUsuario
+  ) {
+    console.log(
+      codigoIdentidad,
+      nombres,
+      apellidoPaterno,
+      apellidoMaterno,
+      numTelefono,
+      lugarOrigen,
+      correo,
+      universidadOrigen,
+      idUsuario
+    );
     return db
       .execute(
-        "UPDATE aspirantes SET puestoSolicitado = ? WHERE idUsuario = ?",
-        [puestoSolicitado, idUsuario]
+        "UPDATE aspirantes SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ? WHERE idUsuario = ?",
+        [
+          codigoIdentidad,
+          nombres,
+          apellidoPaterno,
+          apellidoMaterno,
+          numTelefono,
+          lugarOrigen,
+          correo,
+          universidadOrigen,
+          idUsuario,
+        ]
       )
       .then(([result]) => {
         return idUsuario;

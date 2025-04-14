@@ -18,15 +18,6 @@
               width="20px" /></button
         ></a>
       </div>
-      <div class="column is-1">
-        <a href="modifica_grupo">
-          <button class="image-button">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
-              alt=""
-              width="20px" /></button
-        ></a>
-      </div>
     </div>
   </section>
 
@@ -47,8 +38,7 @@
       <div
         id="contenedor-Sugerencias"
         class="contenedor-Sugerencias"
-        style="display: none"
-      ></div>
+        style="display: none"></div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px">
       <table id="datos-aspirante" class="table">
@@ -60,6 +50,7 @@
             <th>Lugar de Origen</th>
             <th>Correo</th>
             <th>Universidad de Procedencia</th>
+            <th>Modificar</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -132,6 +123,7 @@
                 const lugarOrigenAspirante = row.insertCell(3);
                 const correoAspirante = row.insertCell(4);
                 const universidadAspirante = row.insertCell(5);
+                const modificaAspirante = row.insertCell(6);
 
                 (nombreAspirante.textContent = aspirante.nombres),
                   " ",
@@ -144,49 +136,61 @@
                 lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
                 correoAspirante.textContent = aspirante.correo;
                 universidadAspirante.textContent = aspirante.universidadOrigen;
+                modificaAspirante.innerHTML = `
+        <a href="modificarAspirante/${aspirante.idUsuario}">
+          <button class="image-button">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
+              alt=""
+              width="20px" /></button
+        > </a>`;
 
                 contenedorSugerencias.style.display = "none";
                 bodyPrueba = document
-                    .getElementById("pruebas-aspirante")
-                    .getElementsByTagName("tbody")[0];
-                    bodyPrueba.innerHTML = "";
+                  .getElementById("pruebas-aspirante")
+                  .getElementsByTagName("tbody")[0];
+                bodyPrueba.innerHTML = "";
                 fetch("/psicologa/pruebasActivas/" + aspirante.idUsuario, {
                   method: "GET",
                 })
-                .then((result) => result.json())
-                .then((data) => {
-                  for(let prueba of data.pruebas) {
-                    const filaPrueba = bodyPrueba.insertRow();
-                    const nombrePrueba = filaPrueba.insertCell(0);
-                    const fechaPrueba = filaPrueba.insertCell(1);
-                    const tiempoPrueba = filaPrueba.insertCell(2);
-                    const estatusPrueba = filaPrueba.insertCell(3);
-                    const respuestasPrueba = filaPrueba.insertCell(4);
+                  .then((result) => result.json())
+                  .then((data) => {
+                    for (let prueba of data.pruebas) {
+                      const filaPrueba = bodyPrueba.insertRow();
+                      const nombrePrueba = filaPrueba.insertCell(0);
+                      const fechaPrueba = filaPrueba.insertCell(1);
+                      const tiempoPrueba = filaPrueba.insertCell(2);
+                      const estatusPrueba = filaPrueba.insertCell(3);
+                      const respuestasPrueba = filaPrueba.insertCell(4);
 
-                    fechaPrueba.textContent = prueba.fecha;
-                    estatusPrueba.textContent = prueba.estatus;
-                    if(prueba.idPrueba == 1){
-                      fetch("/psicologa/kostickActiva/" + aspirante.idUsuario, {
-                        method: "GET",
-                      })
-                      .then((result) => result.json())
-                      .then((data) => {
-                      nombrePrueba.textContent = "Kostick";
-                      tiempoPrueba.textContent = data.kostickTiempo.tiempo;
-                    })
+                      fechaPrueba.textContent = prueba.fecha;
+                      estatusPrueba.textContent = prueba.estatus;
+
+                      if (prueba.idPrueba == 1) {
+                        fetch(
+                          "/psicologa/kostickActiva/" + aspirante.idUsuario,
+                          {
+                            method: "GET",
+                          }
+                        )
+                          .then((result) => result.json())
+                          .then((data) => {
+                            nombrePrueba.textContent = "Kostick";
+                            tiempoPrueba.textContent =
+                              data.kostickTiempo.tiempo;
+                          });
+                      } else if (prueba.idPrueba == 2) {
+                        fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
+                          method: "GET",
+                        })
+                          .then((result) => result.json())
+                          .then((data) => {
+                            nombrePrueba.textContent = "16PF";
+                            tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
+                          });
+                      }
                     }
-                    else if(prueba.idPrueba == 2){
-                      fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
-                        method: "GET",
-                      })
-                      .then((result) => result.json())
-                      .then((data) => {
-                      nombrePrueba.textContent = "16PF";
-                      tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
-                    })
-                    }
-                };
-              })
+                  });
               };
               contenedorSugerencias.appendChild(sugerencia);
             });
