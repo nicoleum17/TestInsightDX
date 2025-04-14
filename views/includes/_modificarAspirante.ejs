@@ -8,30 +8,33 @@
     <div class="container" style="width: 60%">
       <!-- Título -->
       <h2 class="title is-3 mt-5 has-text-weight-semibold">Modificar Aspirante</h2>
+      <form action="/psicologa/modificarAspirante/<%= aspirante.idUsuario%> " method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
+        <input type="hidden" name="idUsuario" value="<%= aspirante.idUsuario%>" />
       <div class="box has-background-info has-text-white">
         <label class="label">Nombre(s):</label>
-        <input type="text" class="input" name="nombre" placeholder="ingresa los nombres" required>
+        <input type="text" class="input" name="nombres" value="<%= aspirante.nombres %>" >
         <br><br>
         <label class="label">Apellido Paterno:</label>
-        <input type="text" class="input" name="apellidoP" placeholder="ingresa el apellido paterno" required>
+        <input type="text" class="input" name="apellidoPaterno" value="<%= aspirante.apellidoPaterno %>" >
         <br><br>
         <label class="label">Apellido Materno:</label>
-        <input type="text" class="input" name="apellidoM" placeholder="ingresa el apellido materno" required>
+        <input type="text" class="input" name="apellidoMaterno" value="<%= aspirante.apellidoMaterno %>" >
         <br><br>
         <label class="label">Código de Identidad:</label>
-        <input type="text" class="input" name="codigoI" placeholder="ingresa el codigo de Identidad" required>
+        <input type="text" class="input" name="codigoIdentidad" value="<%= aspirante.codigoIdentidad %>" >
         <br><br>
         <label class="label">Correo Electrónico:</label>
-        <input type="text" class="input" name="correo" placeholder="ingresa el correo electrónico" required>
+        <input type="text" class="input" name="correo" value="<%= aspirante.correo %>" >
         <br><br>
         <label class="label">Número de Teléfono:</label>
-        <input type="text" class="input" name="numeroTel" placeholder="ingresa el número telefónico" required>
+        <input type="text" class="input" name="numTelefono" value="<%= aspirante.numTelefono %>" >
         <br><br>
         <label class="label">Lugar de origen:</label>
-        <input type="text" class="input" name="lugarO" placeholder="ingresa el lugar de origen" required>
+        <input type="text" class="input" name="lugarOrigen" value="<%= aspirante.lugarOrigen %>" >
         <br><br>
         <label class="label">Universidad de Procedencia:</label>
-        <input type="text" class="input" name="universidad" placeholder="ingresa la universidad de procedencia" required>
+        <input type="text" class="input" name="universidadOrigen" value="<%= aspirante.universidadOrigen %>" >
         <br><br>
     </div>
     <br><br>
@@ -39,13 +42,13 @@
         <div class="title">Sesión Individual</div>
         <div class="box has-background-info" >
             <label class="label">Fecha</label>
-            <input class="input" type="date" name="fechaSesionIndividual" required/>
+            <input class="input" type="date" name="fechaSesionIndividual" />
             <br><br>
             <label class="label">Hora</label>
-            <input class="input" type="time" name="horaSesionIndividual" required/>
+            <input class="input" type="time" name="horaSesionIndividual" />
             <br><br>
             <label class="label">Link</label>
-            <input class="input" type="text" name="enlaceZoom" placeholder="Ingresa un link" required/>
+            <input class="input" type="text" name="enlaceZoom" value="<%= perteneceGrupo.enlaceZoom %>" />
         </div>
     </section> 
     <div class="columns">
@@ -54,3 +57,4 @@
         </div>
     </div>
   </form>
+</section>
