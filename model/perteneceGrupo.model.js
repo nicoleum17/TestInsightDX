@@ -20,10 +20,9 @@ module.exports = class PerteneceGrupo {
   static fetchAll() {
     return db.execute("SELECT * FROM perteneceGrupo");
   }
-  static fecthOne(idUsuario) {
-    return db.execute(
-      "SELECT idGrupo FROM perteneceGrupo WHERE idUsuario = ?",
-      [idUsuario]
-    );
+  static fetchOne(idUsuario) {
+    return db.execute("SELECT * FROM perteneceGrupo WHERE idUsuario = ?", [
+      idUsuario,
+    ]);
   }
 };

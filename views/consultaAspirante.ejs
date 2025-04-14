@@ -18,15 +18,6 @@
               width="20px" /></button
         ></a>
       </div>
-      <div class="column is-1">
-        <a href="modifica_grupo">
-          <button class="image-button">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
-              alt=""
-              width="20px" /></button
-        ></a>
-      </div>
     </div>
   </section>
 
@@ -59,6 +50,7 @@
             <th>Lugar de Origen</th>
             <th>Correo</th>
             <th>Universidad de Procedencia</th>
+            <th>Modificar</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -132,6 +124,7 @@
                 const lugarOrigenAspirante = row.insertCell(3);
                 const correoAspirante = row.insertCell(4);
                 const universidadAspirante = row.insertCell(5);
+                const modificaAspirante = row.insertCell(6);
 
                 (nombreAspirante.textContent = aspirante.nombres),
                   " ",
@@ -144,6 +137,14 @@
                 lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
                 correoAspirante.textContent = aspirante.correo;
                 universidadAspirante.textContent = aspirante.universidadOrigen;
+                modificaAspirante.innerHTML = `
+        <a href="modificarAspirante/${aspirante.idUsuario}">
+          <button class="image-button">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
+              alt=""
+              width="20px" /></button
+        > </a>`;
 
                 contenedorSugerencias.style.display = "none";
                 bodyPrueba = document
@@ -162,7 +163,6 @@
                       const tiempoPrueba = filaPrueba.insertCell(2);
                       const estatusPrueba = filaPrueba.insertCell(3);
                       const respuestasPrueba = filaPrueba.insertCell(4);
-
                       fechaPrueba.textContent = prueba.fecha;
                       estatusPrueba.textContent = prueba.estatus;
                       if (prueba.idPrueba == 1) {
@@ -191,6 +191,7 @@
                     }
                   });
               };
+
               contenedorSugerencias.appendChild(sugerencia);
             });
 

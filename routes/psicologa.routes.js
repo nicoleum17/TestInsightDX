@@ -131,6 +131,18 @@ router.post(
   psicologaController.post_modificarGrupo
 );
 
+router.get(
+  "/modificarAspirante/:idUsuario",
+  isAuth,
+  psicologaController.get_modificarAspirante
+);
+
+router.post(
+  "/modificarAspirante/:idUsuario",
+  isAuth,
+  psicologaController.post_modificarAspirante
+);
+
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
 router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
@@ -149,9 +161,17 @@ router.post(
   psicologaController.postPreguntaSeguridad
 );
 
-router.get("/pruebasActivas/:valor", isAuth, psicologaController.get_pruebasActivas);
+router.get(
+  "/pruebasActivas/:valor",
+  isAuth,
+  psicologaController.get_pruebasActivas
+);
 
-router.get("/kostickActiva/:valor", isAuth, psicologaController.get_kostickActiva);
+router.get(
+  "/kostickActiva/:valor",
+  isAuth,
+  psicologaController.get_kostickActiva
+);
 
 router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);
 

@@ -106,8 +106,6 @@ exports.post_registrarAspirante = (request, response, next) => {
 };
 
 exports.get_aspirantes = (request, response, next) => {
-  console.log(request.session.privilegios);
-
   const mensaje = request.session.info || "";
   if (request.session.info) {
     request.session.info = "";
@@ -115,8 +113,6 @@ exports.get_aspirantes = (request, response, next) => {
 
   Aspirante.fetchAll(request.session.idUsuario)
     .then(([rows, fieldData]) => {
-      console.log(fieldData);
-      console.log(rows);
       response.render("consultaAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
@@ -369,6 +365,51 @@ exports.post_modificarGrupo = (request, response, next) => {
     TienePruebas.updateGrupo(fechaLimitePrueba, idGrupo).then(() => {
       response.redirect("/psicologa/grupo/elegir");
     });
+  });
+};
+
+exports.get_modificarAspirante = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([perteneceGrupo]) => {
+      console.log(perteneceGrupo);
+      request.session.idUsuario = idUsuario;
+      response.render("modificarAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        perteneceGrupo: perteneceGrupo[0],
+        idUsuario: request.session.idUsuario,
+      });
+    });
+  });
+};
+
+exports.post_modificarAspirante = (request, response, next) => {
+  console.log("Modificar Aspirante", request.body);
+  nombres = request.body.nombres;
+  apellidoPaterno = request.body.apellidoPaterno;
+  apellidoMaterno = request.body.apellidoMaterno;
+  codigoIdentidad = request.body.codigoIdentidad;
+  numTelefono = request.body.numTelefono;
+  lugarOrigen = request.body.lugarOrigen;
+  correo = request.body.correo;
+  universidadOrigen = request.body.universidadOrigen;
+  idUsuario = request.params.idUsuario;
+  Aspirante.updateAspirante(
+    codigoIdentidad,
+    nombres,
+    apellidoPaterno,
+    apellidoMaterno,
+    numTelefono,
+    lugarOrigen,
+    correo,
+    universidadOrigen,
+    idUsuario
+  ).then(() => {
+    response.redirect("/psicologa/consultaAspirante");
   });
 };
 
