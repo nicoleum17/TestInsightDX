@@ -1,0 +1,56 @@
+<style>
+    .fullHeight {
+      min-height: 90vh;
+      margin-top: 20px;
+    }
+  </style>
+  <section class="section has-background-warning fullHeight">
+    <div class="container" style="width: 60%">
+      <!-- Título -->
+      <h2 class="title is-3 mt-5 has-text-weight-semibold">Modificar Aspirante</h2>
+      <div class="box has-background-info has-text-white">
+        <label class="label">Nombre(s):</label>
+        <input type="text" class="input" name="nombre" placeholder="ingresa los nombres" required>
+        <br><br>
+        <label class="label">Apellido Paterno:</label>
+        <input type="text" class="input" name="apellidoP" placeholder="ingresa el apellido paterno" required>
+        <br><br>
+        <label class="label">Apellido Materno:</label>
+        <input type="text" class="input" name="apellidoM" placeholder="ingresa el apellido materno" required>
+        <br><br>
+        <label class="label">Código de Identidad:</label>
+        <input type="text" class="input" name="codigoI" placeholder="ingresa el codigo de Identidad" required>
+        <br><br>
+        <label class="label">Correo Electrónico:</label>
+        <input type="text" class="input" name="correo" placeholder="ingresa el correo electrónico" required>
+        <br><br>
+        <label class="label">Número de Teléfono:</label>
+        <input type="text" class="input" name="numeroTel" placeholder="ingresa el número telefónico" required>
+        <br><br>
+        <label class="label">Lugar de origen:</label>
+        <input type="text" class="input" name="lugarO" placeholder="ingresa el lugar de origen" required>
+        <br><br>
+        <label class="label">Universidad de Procedencia:</label>
+        <input type="text" class="input" name="universidad" placeholder="ingresa la universidad de procedencia" required>
+        <br><br>
+    </div>
+    <br><br>
+    <section id="SesionIndividual">
+        <div class="title">Sesión Individual</div>
+        <div class="box has-background-info" >
+            <label class="label">Fecha</label>
+            <input class="input" type="date" name="fechaSesionIndividual" required/>
+            <br><br>
+            <label class="label">Hora</label>
+            <input class="input" type="time" name="horaSesionIndividual" required/>
+            <br><br>
+            <label class="label">Link</label>
+            <input class="input" type="text" name="enlaceZoom" placeholder="Ingresa un link" required/>
+        </div>
+    </section> 
+    <div class="columns">
+        <div class="column has-text-centered">
+            <input class="button m-5 is-primary has-text-white" type="submit" value="Confirmar">
+        </div>
+    </div>
+  </form>
