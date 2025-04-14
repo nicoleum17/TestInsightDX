@@ -9,14 +9,19 @@ const Usuario = require("../model/testInsight.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 
 exports.inicio_psicologa = (request, response, next) => {
-  const mensaje = request.session.infoBorrado;
+  const mensajeBorrado = request.session.infoBorrado;
   request.session.infoBorrado = undefined;
+
+  const mensajeAspirante = request.session.infoAspirante;
+  request.session.infoAspirante = undefined;
+
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
-    infoBorrado: mensaje,
+    infoBorrado: mensajeBorrado,
+    infoAspirante: mensajeAspirante,
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
@@ -82,6 +87,7 @@ exports.post_registrarAspirante = (request, response, next) => {
 
   mi_aspirante.save().then(() => {
     mi_perteneceGrupo.save().then(() => {
+      request.session.infoAspirante = "Aspirante registrado exitosamente";
       response.redirect("inicio");
     });
   });
