@@ -282,7 +282,6 @@ exports.registra_reporte_grupo = (request, response, next) => {
 exports.post_registra_reporte_grupo = (request, response, next) => {
   const idGrupo = request.params.id;
   let archivoPdf = request.file.filename;
-
   Grupo.update_subirReporte(idGrupo, archivoPdf).then(() => {
     response.redirect("/psicologa/grupo/" + idGrupo);
   });
@@ -333,49 +332,23 @@ exports.get_modificarGrupo = (request, response, next) => {
 
 exports.post_modificarGrupo = (request, response, next) => {
   console.log(request.body);
-
-  const mi_grupo = new Grupo(request.body.posgrado, request.body.generacion);
-
-  mi_grupo
-    .updateGrupo()
-    .then(() => {
-      const pruebas = Array.isArray(request.body.pruebasOpcion)
-        ? request.body.pruebasOpcion
-        : [request.body.pruebasOpcion];
-
-      const promesas = pruebas.map((prueba) => {
-        return Prueba.fetchOneNombre(prueba).then(([rows]) => {
-          const idPrueba = rows[0]?.idPrueba;
-
-          const mi_tienePruebas = new TienePruebas(
-            mi_grupo.idGrupo,
-            idPrueba,
-            request.body.fechaLimite,
-            request.body.fechaPruebaGrupal +
-              " " +
-              request.body.horaPruebaGrupal,
-            request.body.enlaceZoom
-          );
-
-          return mi_tienePruebas.updateGrupo();
-        });
-      });
-
-      return Promise.all(promesas);
-    })
-    .then(() => {
-      request.session.info = "Grupo actualizado exitosamente";
-      request.session.grupoCreado = {
-        id: mi_grupo.idGrupo,
-        posgrado: mi_grupo.posgrado,
-        generacion: mi_grupo.generacion,
-      };
-      response.redirect("inicio");
-    })
-    .catch((error) => {
-      console.log("Error al crear grupo o asignar pruebas:", error);
-      response.status(500).send("Error al procesar la creación del grupo.");
-    });
+  (institucion = request.body.institucion),
+    (posgrado = request.body.posgrado),
+    (generacion = request.body.generacion),
+    (fechaPruebaGrupal =
+      request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal),
+    (enlaceZoom = request.body.enlaceZoom),
+    (idGrupo = request.body.idGrupo);
+  Grupo.updateGrupo(
+    institucion,
+    posgrado,
+    generacion,
+    fechaPruebaGrupal,
+    enlaceZoom,
+    idGrupo
+  ).then(() => {
+    response.redirect("/psicologa/grupo/elegir");
+  });
 };
 
 exports.get_logout = (request, response, next) => {

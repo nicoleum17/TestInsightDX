@@ -5,9 +5,8 @@
     margin-top: 20px;
   }
 </style>
-<section class="section fullHeight">
- 
-  <div class="container mt-5">
+<section class="section fullHeight has-background-warning">
+  <div class="container " style="width: 60%;">
     <% if (info) { %>
       <article class="message is-success">
         <div class="message-header">
@@ -22,7 +21,7 @@
 
     <% if (grupo) { %>
       <div class="box">
-        <h3 class="title is-4">Detalles del Grupo</h3>
+        <h3 class="title has-text-weight-semibold">Detalles del Grupo</h3>
         <p><strong>Institución:</strong> <%= grupo.institucion %></p>
         <p><strong>Posgrado:</strong> <%= grupo.posgrado %></p>
         <p><strong>Generación:</strong> <%= grupo.generacion %></p>
@@ -31,9 +30,6 @@
   </div>
 
   <div class="buttons is-centered">
-    <a href="/psicologa/crearGrupo"
-      ><button class="button m-5 is-primary has-text-white">Regresar</button></a
-    >
     <a href="/psicologa/inicio"
       ><button class="button m-5 is-primary has-text-white">
         Confirmar

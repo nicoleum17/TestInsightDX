@@ -126,7 +126,7 @@ router.get(
 );
 
 router.post(
-  "grupo/:id/modificar",
+  "/grupo/:id/modificar",
   isAuth,
   psicologaController.post_modificarGrupo
 );
@@ -137,9 +137,17 @@ router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
 
 router.get("/buscar", isAuth, psicologaController.get_buscar);
 
-router.get("/grupo/confirmacion/:id", isAuth, psicologaController.getPreguntaSeguridad);
+router.get(
+  "/grupo/confirmacion/:id",
+  isAuth,
+  psicologaController.getPreguntaSeguridad
+);
 
-router.post("/grupo/confirmacion/:id", isAuth, psicologaController.postPreguntaSeguridad);
+router.post(
+  "/grupo/confirmacion/:id",
+  isAuth,
+  psicologaController.postPreguntaSeguridad
+);
 
 router.get("/pruebasActivas/:valor", isAuth, psicologaController.get_pruebasActivas);
 
