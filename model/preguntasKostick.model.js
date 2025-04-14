@@ -1,27 +1,26 @@
 const db = require("../util/database.js");
 
 module.exports = class PreguntaKostick {
-  constructor(mi_preguntaKostick, mi_idPrueba, mi_numeroPreguntaKostick) {
+  constructor(mi_idPrueba, mi_numeroPreguntaKostick) {
     this.idPreguntaKostick = uuidv4();
-    this.preguntaKostick = mi_preguntaKostick;
     this.idPrueba = mi_idPrueba;
     this.numeroPreguntaKostick = mi_numeroPreguntaKostick;
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM preguntasKostick");
+    return db.execute("SELECT * FROM preguntaskostick");
   }
 
   static fetchOne(index) {
     return db.execute(
-      "SELECT * FROM preguntasKostick WHERE numeroPreguntaKostick = ?",
+      "SELECT * FROM preguntaskostick WHERE numeroPreguntaKostick = ?",
       [index]
     );
   }
 
   static getOpciones(idPreguntaKostick) {
     return db.execute(
-      "SELECT * FROM opcionesKostick WHERE idPreguntaKostick = ?",
+      "SELECT * FROM opcioneskostick WHERE idPreguntaKostick = ?",
       [idPreguntaKostick]
     );
   }

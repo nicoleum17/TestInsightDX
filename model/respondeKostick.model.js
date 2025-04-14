@@ -1,5 +1,6 @@
 const db = require("../util/database");
 const bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
 
 module.exports = class RespondeKostick {
   constructor(
@@ -9,6 +10,7 @@ module.exports = class RespondeKostick {
     mi_idOpcionKostick,
     mi_tiempo
   ) {
+    this.idRespuestaKostick = uuidv4();
     this.idPreguntaKostick = mi_idPreguntaKostick;
     this.idGrupo = mi_idGrupo;
     this.idUsuario = mi_idUsuario;
@@ -18,8 +20,9 @@ module.exports = class RespondeKostick {
   save() {
     return db
       .execute(
-        "INSERT INTO respondeKostick (idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?)",
+        "INSERT INTO respondekostick (idRespuestaKostick, idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?)",
         [
+          this.idRespuestaKostick,
           this.idPreguntaKostick,
           this.idGrupo,
           this.idUsuario,
