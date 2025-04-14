@@ -1,5 +1,5 @@
 const { response } = require("express");
-const Usuario = require("../model/testInsight.model");
+const Usuario = require("../model/usuarios.model");
 
 exports.get_login = (request, response, next) => {
   const mensaje = request.session.info || "";
