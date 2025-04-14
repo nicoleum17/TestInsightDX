@@ -5,7 +5,7 @@ const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
-const Usuario = require("../model/testInsight.model");
+const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 
 exports.inicio_psicologa = (request, response, next) => {
@@ -15,6 +15,9 @@ exports.inicio_psicologa = (request, response, next) => {
   const mensajeAspirante = request.session.infoAspirante;
   request.session.infoAspirante = undefined;
 
+  const mensajeUsuario = request.session.infoUsuario;
+  request.session.infoUsuario = undefined;
+
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
@@ -22,6 +25,7 @@ exports.inicio_psicologa = (request, response, next) => {
     privilegios: request.session.privilegios || [],
     infoBorrado: mensajeBorrado,
     infoAspirante: mensajeAspirante,
+    infoUsuario: mensajeUsuario,
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
@@ -85,10 +89,18 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.enlaceZoom
   );
 
+  const mi_usuario = new Usuario(
+    mi_aspirante.idUsuario,
+    mi_aspirante.codigoIdentidad + new Date().getTime(),
+    "2"
+  );
+
   mi_aspirante.save().then(() => {
     mi_perteneceGrupo.save().then(() => {
       request.session.infoAspirante = "Aspirante registrado exitosamente";
-      response.redirect("inicio");
+      mi_usuario.save().then(() => {
+        response.redirect("inicio");
+      });
     });
   });
 };
@@ -419,7 +431,7 @@ exports.get_kostickActiva = (request, response, next) => {
       const kostickTiempo = {
         tiempo: rows[0].tiempo || "N/A",
       };
-      response.status(200).json({ kostickTiempo })
+      response.status(200).json({ kostickTiempo });
     })
     .catch((error) => {
       response.status(500).json({ message: "Sin pruebas" });
@@ -432,7 +444,7 @@ exports.get_P16PFActiva = (request, response, next) => {
       const P16PFTiempo = {
         tiempo: rows[0].tiempo || "N/A",
       };
-      response.status(200).json({ P16PFTiempo })
+      response.status(200).json({ P16PFTiempo });
     })
     .catch((error) => {
       response.status(500).json({ message: "Sin pruebas" });
