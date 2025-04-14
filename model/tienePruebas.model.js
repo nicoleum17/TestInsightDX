@@ -25,10 +25,11 @@ module.exports = class TienePruebas {
     return db.execute("SELECT * FROM tienePruebas");
   }
 
-  static updateGrupo(idPrueba, fechaLimitePrueba, idGrupo) {
+  static updateGrupo(fechaLimitePrueba, idGrupo) {
+    console.log("Update parameters", fechaLimitePrueba, idGrupo);
     return db.execute(
-      "UPDATE tienepruebas SET idPrueba = ?, fechaLimitePrueba = ? WHERE idGrupo = ?",
-      [idPrueba, fechaLimitePrueba, idGrupo]
+      "UPDATE tienepruebas SET fechaLimitePrueba = ? WHERE idGrupo = ?",
+      [fechaLimitePrueba, idGrupo]
     );
   }
 };
