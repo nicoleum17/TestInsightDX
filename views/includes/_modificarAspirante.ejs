@@ -13,28 +13,28 @@
         <input type="hidden" name="idUsuario" value="<%= aspirante.idUsuario%>" />
       <div class="box has-background-info has-text-white">
         <label class="label">Nombre(s):</label>
-        <input type="text" class="input" name="nombres" value="<%= aspirante.nombres %>" >
+        <input type="text" class="input" name="nombres" value="<%= aspirante.nombres %>" required >
         <br><br>
         <label class="label">Apellido Paterno:</label>
-        <input type="text" class="input" name="apellidoPaterno" value="<%= aspirante.apellidoPaterno %>" >
+        <input type="text" class="input" name="apellidoPaterno" value="<%= aspirante.apellidoPaterno %>" required >
         <br><br>
         <label class="label">Apellido Materno:</label>
-        <input type="text" class="input" name="apellidoMaterno" value="<%= aspirante.apellidoMaterno %>" >
+        <input type="text" class="input" name="apellidoMaterno" value="<%= aspirante.apellidoMaterno %>" required>
         <br><br>
         <label class="label">Código de Identidad:</label>
-        <input type="text" class="input" name="codigoIdentidad" value="<%= aspirante.codigoIdentidad %>" >
+        <input type="text" class="input" name="codigoIdentidad" value="<%= aspirante.codigoIdentidad %>" required>
         <br><br>
         <label class="label">Correo Electrónico:</label>
-        <input type="text" class="input" name="correo" value="<%= aspirante.correo %>" >
+        <input type="text" class="input" name="correo" value="<%= aspirante.correo %>" required>
         <br><br>
         <label class="label">Número de Teléfono:</label>
-        <input type="text" class="input" name="numTelefono" value="<%= aspirante.numTelefono %>" >
+        <input type="text" class="input" name="numTelefono" value="<%= aspirante.numTelefono %>" required>
         <br><br>
         <label class="label">Lugar de origen:</label>
-        <input type="text" class="input" name="lugarOrigen" value="<%= aspirante.lugarOrigen %>" >
+        <input type="text" class="input" name="lugarOrigen" value="<%= aspirante.lugarOrigen %>" required>
         <br><br>
         <label class="label">Universidad de Procedencia:</label>
-        <input type="text" class="input" name="universidadOrigen" value="<%= aspirante.universidadOrigen %>" >
+        <input type="text" class="input" name="universidadOrigen" value="<%= aspirante.universidadOrigen %>" required>
         <br><br>
     </div>
     <br><br>
@@ -42,16 +42,16 @@
         <div class="title">Sesión Individual</div>
         <div class="box has-background-info" >
             <label class="label">Fecha</label>
-            <input class="input" type="date" name="fechaZoomIndividual" value = "<%= perteneceGrupo.fechaZoomIndividual.toISOString().split('T')[0]%>" />
+            <input class="input" type="date" name="fechaZoomIndividual" value = "<%= perteneceGrupo.fechaZoomIndividual.toISOString().split('T')[0]%>" required/>
             <br><br>
             <label class="label">Hora</label>
             <% const dateTime = new Date(perteneceGrupo.fechaZoomIndividual); const
             hours = String(dateTime.getHours()).padStart(2, '0'); const
             minutes = String(dateTime.getMinutes()).padStart(2, '0'); %>
-            <input class="input" type="time" name="horaSesionIndividual" value="<%= hours %>:<%= minutes %>" />
+            <input class="input" type="time" name="horaSesionIndividual" value="<%= hours %>:<%= minutes %>" required/>
             <br><br>
             <label class="label">Link</label>
-            <input class="input" type="text" name="enlaceZoom" value="<%= perteneceGrupo.enlaceZoom %>" />
+            <input class="input" type="text" name="enlaceZoom" value="<%= perteneceGrupo.enlaceZoom %>" required/>
         </div>
     </section> 
     <div class="columns">
