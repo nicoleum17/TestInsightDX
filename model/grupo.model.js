@@ -73,14 +73,6 @@ module.exports = class Grupo {
     enlaceZoom,
     idGrupo
   ) {
-    console.log("Update Parameters:", {
-      institucion,
-      posgrado,
-      generacion,
-      fechaPruebaGrupal,
-      enlaceZoom,
-      idGrupo,
-    });
     return db.execute(
       "UPDATE Grupos SET institucion = ?, posgrado = ?, generacion = ?, fechaPruebaGrupal = ?, enlaceZoom = ? WHERE idGrupo = ?",
       [

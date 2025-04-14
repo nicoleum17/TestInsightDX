@@ -13,85 +13,93 @@
     enctype="multipart/form-data"">
     <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
     <input type="hidden" name="idGrupo" value="<%= grupo.idGrupo%>" />
-    <label class="label">Institución:</label>
-    <input
-      type="text"
-      class="input"
-      name="institucion"
-      value="<%= grupo.institucion%>" />
-    <br />
-    <br />
-    <label class="label">Posgrado:</label>
-    <input
-      type="text"
-      class="input"
-      name="posgrado"
-      value="<%= grupo.posgrado%>" />
-    <br /><br />
-    <label class="label">Generación:</label>
-    <input
-      type="text"
-      class="input"
-      name="generacion"
-      value="<%= grupo.generacion%>" />
-    <br /><br />
+    <div class="box has-background-info has-text-white">
+      <label class="label">Institución:</label>
+      <input
+        type="text"
+        class="input"
+        name="institucion"
+        value="<%= grupo.institucion%>" />
+      <br />
+      <br />
+      <label class="label">Posgrado:</label>
+      <input
+        type="text"
+        class="input"
+        name="posgrado"
+        value="<%= grupo.posgrado%>" />
+      <br /><br />
+      <div class="columns is-flex is-justify-content-center">
+        <div class="column is-half is-centered">
+          <label class="label">Generación:</label>
+          <input
+            type="text"
+            class="input"
+            name="generacion"
+            value="<%= grupo.generacion%>" />
+        </div>
+      </div>
 
-    <label class="label">Fecha Límite:</label>
-    <input
-      type="date"
-      class="input"
-      name="fechaLimite"
-      value="<%= tienePruebas.fechaLimitePrueba.toISOString().split('T')[0]%>" /><br /><br />
-
+      <div class="columns is-flex is-justify-content-center">
+        <div class="column is-half is-centered">
+          <label class="label">Fecha Límite:</label>
+          <input
+            type="date"
+            class="input"
+            name="fechaLimite"
+            value="<%= tienePruebas.fechaLimitePrueba.toISOString().split('T')[0]%>" /><br /><br />
+        </div>
+      </div>
+    </div>
     <br /><br />
 
     <!-- Botones de acción -->
     <section id="SesionGrupal">
-      <div class="title has-text-weight-semibold has-text-centered">
-        Sesión Grupal
-      </div>
-      <div class="columns is-flex is-justify-content-center">
-        <div class="column is-one-fifth is-centered">
-          <div class="field">
-            <label class="label">Fecha</label>
-            <div class="control">
-              <input
-                class="input"
-                type="date"
-                name="fechaPruebaGrupal"
-                value="<%= grupo.fechaPruebaGrupal.toISOString().split('T')[0]%>" />
+      <div class="title is-4 has-text-weight-semibold">Sesión Grupal</div>
+      <div class="box has-background-info has-text-white">
+        <div class="columns is-flex is-justify-content-center">
+          <div class="column is-half is-centered">
+            <div class="field">
+              <label class="label">Fecha</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="date"
+                  name="fechaPruebaGrupal"
+                  value="<%= grupo.fechaPruebaGrupal.toISOString().split('T')[0]%>" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="columns is-flex is-justify-content-center">
-        <div class="column is-one-fifth is-centered">
-          <div class="field">
-            <label class="label">Hora</label>
-            <div class="control">
-              <% const dateTime = new Date(grupo.fechaPruebaGrupal); const hours
-              = String(dateTime.getHours()).padStart(2, '0'); const minutes =
-              String(dateTime.getMinutes()).padStart(2, '0'); %>
-              <input
-                class="input"
-                type="time"
-                name="horaPruebaGrupal"
-                value="<%= hours %>:<%= minutes %>" />
+        <div class="columns is-flex is-justify-content-center">
+          <div class="column is-half is-centered">
+            <div class="field">
+              <label class="label">Hora</label>
+              <div class="control">
+                <% const dateTime = new Date(grupo.fechaPruebaGrupal); const
+                hours = String(dateTime.getHours()).padStart(2, '0'); const
+                minutes = String(dateTime.getMinutes()).padStart(2, '0'); %>
+                <input
+                  class="input"
+                  type="time"
+                  name="horaPruebaGrupal"
+                  value="<%= hours %>:<%= minutes %>" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="columns is-flex is-justify-content-center">
-        <div class="column is-half is-centered">
-          <div class="field">
-            <label class="label">Link</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                name="enlaceZoom"
-                value="<%= grupo.enlaceZoom%>"
-                required />
+        <div class="columns is-flex is-justify-content-center">
+          <div class="column is-half is-centered">
+            <div class="field">
+              <label class="label">Link</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  name="enlaceZoom"
+                  value="<%= grupo.enlaceZoom%>"
+                  required />
+              </div>
             </div>
           </div>
         </div>
