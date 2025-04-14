@@ -47,8 +47,7 @@
       <div
         id="contenedor-Sugerencias"
         class="contenedor-Sugerencias"
-        style="display: none"
-      ></div>
+        style="display: none"></div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px">
       <table id="datos-aspirante" class="table">
@@ -76,6 +75,7 @@
             <th>Tiempo</th>
             <th>Estatus</th>
             <th>Respuestas</th>
+            <th>Modificar</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -147,46 +147,49 @@
 
                 contenedorSugerencias.style.display = "none";
                 bodyPrueba = document
-                    .getElementById("pruebas-aspirante")
-                    .getElementsByTagName("tbody")[0];
-                    bodyPrueba.innerHTML = "";
+                  .getElementById("pruebas-aspirante")
+                  .getElementsByTagName("tbody")[0];
+                bodyPrueba.innerHTML = "";
                 fetch("/psicologa/pruebasActivas/" + aspirante.idUsuario, {
                   method: "GET",
                 })
-                .then((result) => result.json())
-                .then((data) => {
-                  for(let prueba of data.pruebas) {
-                    const filaPrueba = bodyPrueba.insertRow();
-                    const nombrePrueba = filaPrueba.insertCell(0);
-                    const fechaPrueba = filaPrueba.insertCell(1);
-                    const tiempoPrueba = filaPrueba.insertCell(2);
-                    const estatusPrueba = filaPrueba.insertCell(3);
-                    const respuestasPrueba = filaPrueba.insertCell(4);
+                  .then((result) => result.json())
+                  .then((data) => {
+                    for (let prueba of data.pruebas) {
+                      const filaPrueba = bodyPrueba.insertRow();
+                      const nombrePrueba = filaPrueba.insertCell(0);
+                      const fechaPrueba = filaPrueba.insertCell(1);
+                      const tiempoPrueba = filaPrueba.insertCell(2);
+                      const estatusPrueba = filaPrueba.insertCell(3);
+                      const respuestasPrueba = filaPrueba.insertCell(4);
 
-                    fechaPrueba.textContent = prueba.fecha;
-                    estatusPrueba.textContent = prueba.estatus;
-                    if(prueba.idPrueba == 1){
-                      fetch("/psicologa/kostickActiva/" + aspirante.idUsuario, {
-                        method: "GET",
-                      })
-                      .then((result) => result.json())
-                      .then((data) => {
-                      nombrePrueba.textContent = "Kostick";
-                      tiempoPrueba.textContent = data.kostickTiempo.tiempo;
-                    })
+                      fechaPrueba.textContent = prueba.fecha;
+                      estatusPrueba.textContent = prueba.estatus;
+                      if (prueba.idPrueba == 1) {
+                        fetch(
+                          "/psicologa/kostickActiva/" + aspirante.idUsuario,
+                          {
+                            method: "GET",
+                          }
+                        )
+                          .then((result) => result.json())
+                          .then((data) => {
+                            nombrePrueba.textContent = "Kostick";
+                            tiempoPrueba.textContent =
+                              data.kostickTiempo.tiempo;
+                          });
+                      } else if (prueba.idPrueba == 2) {
+                        fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
+                          method: "GET",
+                        })
+                          .then((result) => result.json())
+                          .then((data) => {
+                            nombrePrueba.textContent = "16PF";
+                            tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
+                          });
+                      }
                     }
-                    else if(prueba.idPrueba == 2){
-                      fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
-                        method: "GET",
-                      })
-                      .then((result) => result.json())
-                      .then((data) => {
-                      nombrePrueba.textContent = "16PF";
-                      tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
-                    })
-                    }
-                };
-              })
+                  });
               };
               contenedorSugerencias.appendChild(sugerencia);
             });
