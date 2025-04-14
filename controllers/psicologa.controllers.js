@@ -332,13 +332,14 @@ exports.get_modificarGrupo = (request, response, next) => {
 
 exports.post_modificarGrupo = (request, response, next) => {
   console.log(request.body);
-  (institucion = request.body.institucion),
-    (posgrado = request.body.posgrado),
-    (generacion = request.body.generacion),
-    (fechaPruebaGrupal =
-      request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal),
-    (enlaceZoom = request.body.enlaceZoom),
-    (idGrupo = request.body.idGrupo);
+  institucion = request.body.institucion;
+  posgrado = request.body.posgrado;
+  generacion = request.body.generacion;
+  fechaPruebaGrupal =
+    request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal;
+  enlaceZoom = request.body.enlaceZoom;
+  idGrupo = request.body.idGrupo;
+  fechaLimitePrueba = request.body.fechaLimite;
   Grupo.updateGrupo(
     institucion,
     posgrado,
@@ -347,7 +348,9 @@ exports.post_modificarGrupo = (request, response, next) => {
     enlaceZoom,
     idGrupo
   ).then(() => {
-    response.redirect("/psicologa/grupo/elegir");
+    TienePruebas.updateGrupo(fechaLimitePrueba, idGrupo).then(() => {
+      response.redirect("/psicologa/grupo/elegir");
+    });
   });
 };
 

@@ -25,11 +25,32 @@ router.get(
 );
 
 router.get(
-  "/calendarioAspirante",
+  "/calendarioAspiranteAuth",
   isAuth,
   consultarCalendario,
-  aspiranteController.get_calendarioA
+  aspiranteController.getOauthAuthenticator
 );
+
+router.get(
+  "/redirect",
+  isAuth,
+  consultarCalendario,
+  aspiranteController.getRedirectOauth
+)
+
+router.get(
+  "/calendarios/calendario",
+  isAuth,
+  consultarCalendario,
+  aspiranteController.getCalendario
+)
+
+router.get(
+  "/calendarios/eventos",
+  isAuth,
+  consultarCalendario,
+  aspiranteController.getEventoCalendario
+)
 
 router.get(
   "/datosAspirante/:idPrueba",
@@ -283,5 +304,6 @@ router.get(
   isAuth,
   aspiranteController.get_formato_activo
 );
+
 
 module.exports = router;
