@@ -22,7 +22,7 @@ module.exports = class Grupo {
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO Grupos (idGrupo, institucion, posgrado, generacion, fechaPruebaGrupal, enlaceZoom, hidden) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO grupos (idGrupo, institucion, posgrado, generacion, fechaPruebaGrupal, enlaceZoom, hidden) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
         this.idGrupo,
         this.institucion,
@@ -37,18 +37,18 @@ module.exports = class Grupo {
 
   //Este método servirá para devolver los objetos del almacenamiento persistente.
   static fetchOneId(idGrupo) {
-    return db.execute("SELECT * FROM Grupos WHERE idGrupo = ?", [idGrupo]);
+    return db.execute("SELECT * FROM grupos WHERE idGrupo = ?", [idGrupo]);
   }
 
   static fetchOneNombre(posgrado, generacion) {
     return db.execute(
-      "SELECT idGrupo FROM Grupos WHERE posgrado = ? AND generacion = ?",
+      "SELECT idGrupo FROM grupos WHERE posgrado = ? AND generacion = ?",
       [posgrado, generacion]
     );
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM Grupos WHERE hidden = 0");
+    return db.execute("SELECT * FROM grupos WHERE hidden = 0");
   }
 
   static update_subirReporte(idGrupo, archivoPdf) {
@@ -74,7 +74,7 @@ module.exports = class Grupo {
     idGrupo
   ) {
     return db.execute(
-      "UPDATE Grupos SET institucion = ?, posgrado = ?, generacion = ?, fechaPruebaGrupal = ?, enlaceZoom = ? WHERE idGrupo = ?",
+      "UPDATE grupos SET institucion = ?, posgrado = ?, generacion = ?, fechaPruebaGrupal = ?, enlaceZoom = ? WHERE idGrupo = ?",
       [
         institucion,
         posgrado,
