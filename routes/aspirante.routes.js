@@ -36,21 +36,21 @@ router.get(
   isAuth,
   consultarCalendario,
   aspiranteController.getRedirectOauth
-)
+);
 
 router.get(
   "/calendarios/calendario",
   isAuth,
   consultarCalendario,
   aspiranteController.getCalendario
-)
+);
 
 router.get(
   "/calendarios/eventos",
   isAuth,
   consultarCalendario,
   aspiranteController.getEventoCalendario
-)
+);
 
 router.get(
   "/datosAspirante/:idPrueba",
@@ -73,9 +73,9 @@ router.post(
 );
 
 router.post(
-  "/siguiente_pregunta",
+  "/siguientePregunta",
   isAuth,
-  aspiranteController.post_siguiente_pregunta
+  aspiranteController.post_siguientePregunta
 );
 
 router.post("/pruebaCompletada", isAuth, aspiranteController.pruebaCompletada);
@@ -87,9 +87,9 @@ router.get(
 );
 
 router.post(
-  "/siguiente_pregunta1",
+  "/siguientePregunta1",
   isAuth,
-  aspiranteController.post_siguiente_pregunta1
+  aspiranteController.post_siguientePregunta1
 );
 
 router.post(
@@ -304,6 +304,5 @@ router.get(
   isAuth,
   aspiranteController.get_formato_activo
 );
-
 
 module.exports = router;

@@ -1,22 +1,32 @@
 const { response, request } = require("express");
 const db = require("../util/database");
+const { v4: uuidv4 } = require("uuid");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
-const Usuario = require("../model/testInsight.model");
+const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 
 exports.inicio_psicologa = (request, response, next) => {
-  const mensaje = request.session.infoBorrado;
+  const mensajeBorrado = request.session.infoBorrado;
   request.session.infoBorrado = undefined;
+
+  const mensajeAspirante = request.session.infoAspirante;
+  request.session.infoAspirante = undefined;
+
+  const mensajeUsuario = request.session.infoUsuario;
+  request.session.infoUsuario = undefined;
+
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
-    infoBorrado: mensaje,
+    infoBorrado: mensajeBorrado,
+    infoAspirante: mensajeAspirante,
+    infoUsuario: mensajeUsuario,
   });
 };
 exports.notificaciones_psicologa = (request, response, next) => {
@@ -80,16 +90,31 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.enlaceZoom
   );
 
+  const nombreUsuario = mi_aspirante.codigoIdentidad + new Date().getFullYear();
+  const contraseñaBase = uuidv4();
+
+  console.log("Usuario", nombreUsuario);
+  console.log("Contraseña Base: " + contraseñaBase);
+
+  const mi_usuario = new Usuario(
+    mi_aspirante.idUsuario,
+    nombreUsuario,
+    contraseñaBase,
+    "2"
+  );
+
   mi_aspirante.save().then(() => {
     mi_perteneceGrupo.save().then(() => {
-      response.redirect("inicio");
+      request.session.infoAspirante = "Aspirante registrado exitosamente";
+      mi_usuario.save().then(() => {
+        mi_usuario.correo;
+        response.redirect("inicio");
+      });
     });
   });
 };
 
 exports.get_aspirantes = (request, response, next) => {
-  console.log(request.session.privilegios);
-
   const mensaje = request.session.info || "";
   if (request.session.info) {
     request.session.info = "";
@@ -97,8 +122,6 @@ exports.get_aspirantes = (request, response, next) => {
 
   Aspirante.fetchAll(request.session.idUsuario)
     .then(([rows, fieldData]) => {
-      console.log(fieldData);
-      console.log(rows);
       response.render("consultaAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
@@ -354,6 +377,60 @@ exports.post_modificarGrupo = (request, response, next) => {
   });
 };
 
+exports.get_modificarAspirante = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([perteneceGrupo]) => {
+      console.log(perteneceGrupo);
+      request.session.idUsuario = idUsuario;
+      response.render("modificarAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        perteneceGrupo: perteneceGrupo[0],
+        idUsuario: request.session.idUsuario,
+      });
+    });
+  });
+};
+
+exports.post_modificarAspirante = (request, response, next) => {
+  console.log("Modificar Aspirante", request.body);
+  nombres = request.body.nombres;
+  apellidoPaterno = request.body.apellidoPaterno;
+  apellidoMaterno = request.body.apellidoMaterno;
+  codigoIdentidad = request.body.codigoIdentidad;
+  numTelefono = request.body.numTelefono;
+  lugarOrigen = request.body.lugarOrigen;
+  correo = request.body.correo;
+  universidadOrigen = request.body.universidadOrigen;
+  fechaZoomIndividual =
+    request.body.fechaZoomIndividual + " " + request.body.horaSesionIndividual;
+  enlaceZoom = request.body.enlaceZoom;
+  idUsuario = request.params.idUsuario;
+  Aspirante.updateAspirante(
+    codigoIdentidad,
+    nombres,
+    apellidoPaterno,
+    apellidoMaterno,
+    numTelefono,
+    lugarOrigen,
+    correo,
+    universidadOrigen,
+    idUsuario
+  ).then(() => {
+    PerteneceGrupo.updatePerteneceGrupo(
+      fechaZoomIndividual,
+      enlaceZoom,
+      idUsuario
+    ).then(() => {
+      response.redirect("/psicologa/consultaAspirante");
+    });
+  });
+};
+
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
     response.redirect("/");
@@ -413,7 +490,7 @@ exports.get_kostickActiva = (request, response, next) => {
       const kostickTiempo = {
         tiempo: rows[0].tiempo || "N/A",
       };
-      response.status(200).json({ kostickTiempo })
+      response.status(200).json({ kostickTiempo });
     })
     .catch((error) => {
       response.status(500).json({ message: "Sin pruebas" });
@@ -426,7 +503,7 @@ exports.get_P16PFActiva = (request, response, next) => {
       const P16PFTiempo = {
         tiempo: rows[0].tiempo || "N/A",
       };
-      response.status(200).json({ P16PFTiempo })
+      response.status(200).json({ P16PFTiempo });
     })
     .catch((error) => {
       response.status(500).json({ message: "Sin pruebas" });

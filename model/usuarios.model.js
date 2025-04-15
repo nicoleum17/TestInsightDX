@@ -1,11 +1,31 @@
 const db = require("../util/database");
+const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
 module.exports = class Usuario {
-  constructor(mi_usuario, mi_contraseña, mi_Rol) {
-    this.usuario = uuidv4();
+  constructor(mi_idUsuario, mi_usuario, mi_contraseña, mi_idRol) {
+    this.idUsuario = mi_idUsuario;
+    this.usuario = mi_usuario;
     this.contraseña = mi_contraseña;
-    this.idRol = mi_Rol;
+    this.idRol = mi_idRol;
+  }
+
+  save() {
+    return bcrypt
+      .hash(this.contraseña, 12)
+      .then((contraseña_cifrada) => {
+        return db.execute(
+          "INSERT INTO usuarios (idUsuario, usuario, contraseña, idRol) VALUES (?, ?, ?, ?)",
+          [this.idUsuario, this.usuario, contraseña_cifrada, this.idRol]
+        );
+      })
+      .catch((error) => {
+        console.log("Error al guardar un nuevo usuario", error);
+      });
+  }
+
+  static forCorreo() {
+    return this.contraseña;
   }
 
   static fetchAll() {

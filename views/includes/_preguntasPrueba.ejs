@@ -162,7 +162,7 @@
         tiempo,
       };
 
-      fetch(`/aspirante/siguiente_pregunta`, {
+      fetch(`/aspirante/siguientePregunta`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -342,7 +342,7 @@
         tiempo,
       };
 
-      fetch(`/aspirante/siguiente_pregunta1`, {
+      fetch(`/aspirante/siguientePregunta1`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -487,8 +487,8 @@
   </script>
 
   <script>
-    let duracionMinutos = <%=prueba.duracion%>;
-    let totalSegundos = duracionMinutos * 60;
+
+    let totalSegundos =  <%=prueba.duracion%>;
     let cuentaRegresiva = setInterval(function() {
         let horas = Math.floor(totalSegundos / 3600);
         let minutos = Math.floor((totalSegundos % 3600) / 60);

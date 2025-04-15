@@ -12,29 +12,29 @@ module.exports = class Prueba {
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO Pruebas(idPrueba, duracion, instrucciones, nombre) VALUES (?, ?, ?, ?)",
+      "INSERT INTO pruebas(idPrueba, duracion, instrucciones, nombre) VALUES (?, ?, ?, ?)",
       [this.idPrueba, this.duracion, this.instrucciones, this.nombre]
     );
   }
 
   //Este método servirá para devolver los objetos del almacenamiento persistente.
   static fetchOne(idPrueba) {
-    return db.execute("SELECT * FROM Pruebas WHERE idPrueba = ?", [idPrueba]);
+    return db.execute("SELECT * FROM pruebas WHERE idPrueba = ?", [idPrueba]);
   }
 
-  static fetchOneNombre(nombrePrueba) {
-    return db.execute("SELECT idPrueba FROM Pruebas WHERE nombrePrueba = ?", [
-      nombrePrueba,
+  static fetchOneNombre(nombre) {
+    return db.execute("SELECT idPrueba FROM pruebas WHERE nombre = ?", [
+      nombre,
     ]);
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM Pruebas");
+    return db.execute("SELECT * FROM pruebas");
   }
 
   static pruebasPorAspirante(idUsuario) {
     return db.execute(
-      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombrePrueba FROM perteneceGrupo pg JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
+      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombre FROM pertenecegrupo pg JOIN tienepruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
       [idUsuario]
     );
   }
@@ -42,9 +42,9 @@ module.exports = class Prueba {
   static pruebasActivas(idUsuario) {
     return db.execute(
       `SELECT tp.idPrueba as idPrueba, tp.fechaLimitePrueba as fecha, pa.estatus as estatus
-      FROM perteneceGrupo pg
-      JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo
-      JOIN pruebasAspirante pa ON pa.idPrueba = tp.idPrueba
+      FROM pertenecegrupo pg
+      JOIN tienepruebas tp ON pg.idGrupo = tp.idGrupo
+      JOIN pruebasaspirante pa ON pa.idPrueba = tp.idPrueba
       WHERE pg.idUsuario = ?`,
       [idUsuario]
     );
@@ -53,7 +53,7 @@ module.exports = class Prueba {
   static kostickActiva(idUsuario) {
     return db.execute(
       `SELECT MAX(tiempo)
-      FROM respondeKostick
+      FROM respondekostick
       WHERE idUsuario = ?;`,
       [idUsuario]
     );
@@ -62,7 +62,7 @@ module.exports = class Prueba {
   static P16PFActiva(idUsuario) {
     return db.execute(
       `SELECT MAX(tiempo)
-      FROM respondeKostick
+      FROM respondekostick
       WHERE idUsuario = ?;`,
       [idUsuario]
     );

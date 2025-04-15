@@ -10,7 +10,7 @@
     <h2 class="title is-3 mt-5 has-text-weight-semibold">Modificar Grupo</h2>
     <% if (grupo) {%> <form
     action="/psicologa/grupo/<%=grupo.idGrupo%>/modificar" method="POST"
-    enctype="multipart/form-data"">
+    enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
     <input type="hidden" name="idGrupo" value="<%= grupo.idGrupo%>" />
     <div class="box has-background-info has-text-white">
@@ -19,7 +19,7 @@
         type="text"
         class="input"
         name="institucion"
-        value="<%= grupo.institucion%>" />
+        value="<%= grupo.institucion%>" required />
       <br />
       <br />
       <label class="label">Posgrado:</label>
@@ -27,7 +27,7 @@
         type="text"
         class="input"
         name="posgrado"
-        value="<%= grupo.posgrado%>" />
+        value="<%= grupo.posgrado%>" required/>
       <br /><br />
       <div class="columns is-flex is-justify-content-center">
         <div class="column is-half is-centered">
@@ -36,7 +36,7 @@
             type="text"
             class="input"
             name="generacion"
-            value="<%= grupo.generacion%>" />
+            value="<%= grupo.generacion%>" required/>
         </div>
       </div>
 
@@ -47,7 +47,7 @@
             type="date"
             class="input"
             name="fechaLimite"
-            value="<%= tienePruebas.fechaLimitePrueba.toISOString().split('T')[0]%>" /><br /><br />
+            value="<%= tienePruebas.fechaLimitePrueba.toISOString().split('T')[0]%>"  required/><br /><br />
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@
                   class="input"
                   type="date"
                   name="fechaPruebaGrupal"
-                  value="<%= grupo.fechaPruebaGrupal.toISOString().split('T')[0]%>" />
+                  value="<%= grupo.fechaPruebaGrupal.toISOString().split('T')[0]%>" required />
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@
                   class="input"
                   type="time"
                   name="horaPruebaGrupal"
-                  value="<%= hours %>:<%= minutes %>" />
+                  value="<%= hours %>:<%= minutes %>" required />
               </div>
             </div>
           </div>
