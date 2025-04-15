@@ -22,9 +22,9 @@ module.exports = class Prueba {
     return db.execute("SELECT * FROM Pruebas WHERE idPrueba = ?", [idPrueba]);
   }
 
-  static fetchOneNombre(nombrePrueba) {
-    return db.execute("SELECT idPrueba FROM Pruebas WHERE nombrePrueba = ?", [
-      nombrePrueba,
+  static fetchOneNombre(nombre) {
+    return db.execute("SELECT idPrueba FROM Pruebas WHERE nombre = ?", [
+      nombre,
     ]);
   }
 
@@ -34,7 +34,7 @@ module.exports = class Prueba {
 
   static pruebasPorAspirante(idUsuario) {
     return db.execute(
-      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombrePrueba FROM perteneceGrupo pg JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
+      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombre FROM perteneceGrupo pg JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
       [idUsuario]
     );
   }
