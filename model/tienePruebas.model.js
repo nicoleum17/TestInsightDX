@@ -22,7 +22,7 @@ module.exports = class TienePruebas {
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM tienePruebas");
+    return db.execute("SELECT * FROM tienepruebas");
   }
 
   static updateGrupo(fechaLimitePrueba, idGrupo) {
