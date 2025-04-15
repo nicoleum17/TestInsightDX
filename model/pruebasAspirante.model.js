@@ -9,12 +9,12 @@ module.exports = class PruebaAspirante {
   }
   terminarPrueba() {
     return db.execute(
-      "UPDATE pruebasAspirante SET estatus = ? WHERE idUsuario = ? AND idGrupo = ? AND idPrueba = ?",
+      "UPDATE pruebasaspirante SET estatus = ? WHERE idUsuario = ? AND idGrupo = ? AND idPrueba = ?",
       ["Completada", this.idUsuario, this.idGrupo, this.idPrueba]
     );
   }
   static fetchOne(idUsuario) {
-    return db.execute("SELECT * FROM pruebasAspirante WHERE idUsuario = ?", [
+    return db.execute("SELECT * FROM pruebasaspirante WHERE idUsuario = ?", [
       idUsuario,
     ]);
   }
