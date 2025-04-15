@@ -34,7 +34,7 @@ module.exports = class Prueba {
 
   static pruebasPorAspirante(idUsuario) {
     return db.execute(
-      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombrePrueba FROM perteneceGrupo pg JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
+      "SELECT pg.idUsuario, tp.idPrueba, p.instrucciones, p.nombre FROM perteneceGrupo pg JOIN tienePruebas tp ON pg.idGrupo = tp.idGrupo JOIN pruebas p ON p.idPrueba = tp.idPrueba WHERE pg.idUsuario = ?",
       [idUsuario]
     );
   }

@@ -13,11 +13,11 @@ module.exports = class OpcionKostick {
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM opcionesKostick");
+    return db.execute("SELECT * FROM opcioneskostick");
   }
   static fetchOne(idPreguntaKostick) {
     return db.execute(
-      "SELECT * FROM opcionesKostick WHERE idPreguntaKostick = ?",
+      "SELECT * FROM opcionesKostick WHERE idPreguntakostick = ?",
       [idPreguntaKostick]
     );
   }

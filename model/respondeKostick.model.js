@@ -20,7 +20,7 @@ module.exports = class RespondeKostick {
   save() {
     return db
       .execute(
-        "INSERT INTO respondekostick (idRespuestaKostick, idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?)",
+        "INSERT INTO respondekostick (idRespuestaKostick, idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?,?)",
         [
           this.idRespuestaKostick,
           this.idPreguntaKostick,
