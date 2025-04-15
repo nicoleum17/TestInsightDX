@@ -27,7 +27,7 @@ g-->>a4:rows
 deactivate g
 
 
-a4->a3: response.render\n('registraReporteGrupo.ejs', rows)
+a4->a3: response.render\n('consultaResultadosAspirante.ejs', rows)
 deactivate a4
 activate a3
 a3->a1: HTML
