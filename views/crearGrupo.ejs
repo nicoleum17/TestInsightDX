@@ -55,8 +55,8 @@
               <select class="dynamic-select" name="pruebasOpcion" required>
                 <option value="" selected disabled>Selecciona una de las pruebas</option>
                 <% pruebas.forEach(prueba => {%>
-                <option value="<%= prueba.nombrePrueba%>">
-                  <%= prueba.nombrePrueba%>
+                <option value="<%= prueba.nombre%>">
+                  <%= prueba.nombre%>
                 </option>
                 <%})%>
               </select>
@@ -130,8 +130,8 @@
               <select class="dynamic-select" name="pruebasOpcion" required>
                 <option value="" selected disabled>Selecciona una prueba</option>
                 <% pruebas.forEach(prueba => {%>
-                <option class="prueba" value="<%= prueba.nombrePrueba%>">
-                  <%= prueba.nombrePrueba%>
+                <option class="prueba" value="<%= prueba.nombre%>">
+                  <%= prueba.nombre%>
                 </option>
                 <%})%>
               </select>
