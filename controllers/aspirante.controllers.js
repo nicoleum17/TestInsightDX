@@ -12,7 +12,11 @@ const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
 const { google } = require("googleapis");
-const oauth2Client = new google.auth.OAuth2(process.env.CLIENT_ID,process.env.SECRET,process.env.REDIRECT);
+const oauth2Client = new google.auth.OAuth2(
+  process.env.CLIENT_ID,
+  process.env.SECRET,
+  process.env.REDIRECT
+);
 
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
@@ -166,7 +170,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
   }
 };
 
-exports.post_siguiente_pregunta = (request, response, next) => {
+exports.post_siguientePregunta = (request, response, next) => {
   if (!request.session.index) {
     return response.redirect("/login");
   }
@@ -205,7 +209,7 @@ exports.post_siguiente_pregunta = (request, response, next) => {
     });
 };
 
-exports.post_siguiente_pregunta1 = (request, response, next) => {
+exports.post_siguientePregunta1 = (request, response, next) => {
   const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
     request.body;
   if (!request.session.index) {
@@ -1023,55 +1027,57 @@ exports.get_formato_activo = (request, response, next) => {
 
 exports.getOauthAuthenticator = (request, response, next) => {
   const url = oauth2Client.generateAuthUrl({
-    acces_type:'offline',
-    scope:'https://www.googleapis.com/auth/calendar.readonly'
+    acces_type: "offline",
+    scope: "https://www.googleapis.com/auth/calendar.readonly",
   });
   response.redirect(url);
 };
 
-exports.getRedirectOauth = (request,response,next) => {
+exports.getRedirectOauth = (request, response, next) => {
   const code = request.query.code;
-  oauth2Client.getToken(code,(err,token)=>{
-    if(err){
-      console.error("NO TOKEN;", err)
-      response.send('error');
+  oauth2Client.getToken(code, (err, token) => {
+    if (err) {
+      console.error("NO TOKEN;", err);
+      response.send("error");
       return;
     }
     oauth2Client.setCredentials(token);
-    response.send("Succes in LOGIN")
-  })
+    response.send("Succes in LOGIN");
+  });
 };
 
-exports.getCalendario = (request,response,next) => {
-  const calenario = google.calendar({version:'v3', auth:oauth2Client});
-  calenario.calendarList.list({},(err,response)=>{
-    if(err){
-      console.error("Error fetching calendar;", err)
-      res.send('error');
+exports.getCalendario = (request, response, next) => {
+  const calenario = google.calendar({ version: "v3", auth: oauth2Client });
+  calenario.calendarList.list({}, (err, response) => {
+    if (err) {
+      console.error("Error fetching calendar;", err);
+      res.send("error");
       return;
     }
     const calenarios = response.data.items;
     res.json(calenarios);
-  })
-}
+  });
+};
 
-exports.getEventoCalendario = (request,response,next) => {
-  const idCalendario = request.query.calendar??'primary'
-  const calendario = google.calendar({version:'v3', auth:oauth2Client});
-  calendario.events.list({
-    idCalendario,
-    timeMin: (new Date()).toISOString(),
-    maxResults:15,
-    singleEvents:true,
-    orderBy:'startTime'
-  },(err, res)=>{
-    if(err){
-      console.error("Error fetching events", err)
-      res.send('error');
-      return;
+exports.getEventoCalendario = (request, response, next) => {
+  const idCalendario = request.query.calendar ?? "primary";
+  const calendario = google.calendar({ version: "v3", auth: oauth2Client });
+  calendario.events.list(
+    {
+      idCalendario,
+      timeMin: new Date().toISOString(),
+      maxResults: 15,
+      singleEvents: true,
+      orderBy: "startTime",
+    },
+    (err, res) => {
+      if (err) {
+        console.error("Error fetching events", err);
+        res.send("error");
+        return;
+      }
+      const eventos = response.data.items;
+      res.json(events);
     }
-    const eventos = response.data.items;
-    res.json(events);
-  })
-}
-
+  );
+};
