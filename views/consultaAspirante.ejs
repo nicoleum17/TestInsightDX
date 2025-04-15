@@ -15,7 +15,8 @@
             <img
               src="https://cdn-icons-png.flaticon.com/512/1828/1829031.png"
               alt=""
-              width="20px" /></button
+              width="20px"
+            /></button
         ></a>
       </div>
       <div class="column is-1">
@@ -24,7 +25,8 @@
             <img
               src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
               alt=""
-              width="20px" /></button
+              width="20px"
+            /></button
         ></a>
       </div>
     </div>
@@ -40,7 +42,8 @@
             class="input"
             type="text"
             placeholder="Ingresa el parámetro"
-            autocomplete="off" />
+            autocomplete="off"
+          />
         </div>
       </div>
 
@@ -147,62 +150,65 @@
 
                 contenedorSugerencias.style.display = "none";
                 bodyPrueba = document
-                    .getElementById("pruebas-aspirante")
-                    .getElementsByTagName("tbody")[0];
-                    bodyPrueba.innerHTML = "";
+                  .getElementById("pruebas-aspirante")
+                  .getElementsByTagName("tbody")[0];
+                bodyPrueba.innerHTML = "";
                 fetch("/psicologa/pruebasActivas/" + aspirante.idUsuario, {
                   method: "GET",
                 })
-                .then((result) => result.json())
-                .then((data) => {
-                  for(let prueba of data.pruebas) {
-                    const filaPrueba = bodyPrueba.insertRow();
-                    const nombrePrueba = filaPrueba.insertCell(0);
-                    const fechaPrueba = filaPrueba.insertCell(1);
-                    const tiempoPrueba = filaPrueba.insertCell(2);
-                    const estatusPrueba = filaPrueba.insertCell(3);
-                    const respuestasPrueba = filaPrueba.insertCell(4);
+                  .then((result) => result.json())
+                  .then((data) => {
+                    for (let prueba of data.pruebas) {
+                      const filaPrueba = bodyPrueba.insertRow();
+                      const nombrePrueba = filaPrueba.insertCell(0);
+                      const fechaPrueba = filaPrueba.insertCell(1);
+                      const tiempoPrueba = filaPrueba.insertCell(2);
+                      const estatusPrueba = filaPrueba.insertCell(3);
+                      const respuestasPrueba = filaPrueba.insertCell(4);
 
-                    fechaPrueba.textContent = prueba.fecha;
-                    estatusPrueba.textContent = prueba.estatus;
-                    if(prueba.idPrueba == 1){
-                      fetch("/psicologa/kostickActiva/" + aspirante.idUsuario, {
-                        method: "GET",
-                      })
-                      .then((result) => result.json())
-                      .then((data) => {
-                      nombrePrueba.textContent = "Kostick";
-                      tiempoPrueba.textContent = data.kostickTiempo.tiempo;
-                      respuestasPrueba.innerHTML = `<a href="consulta_respuestas_aspirante">
+                      fechaPrueba.textContent = prueba.fecha;
+                      estatusPrueba.textContent = prueba.estatus;
+                      if (prueba.idPrueba == 1) {
+                        fetch(
+                          "/psicologa/kostickActiva/" + aspirante.idUsuario,
+                          {
+                            method: "GET",
+                          }
+                        )
+                          .then((result) => result.json())
+                          .then((data) => {
+                            nombrePrueba.textContent = "Kostick";
+                            tiempoPrueba.textContent =
+                              data.kostickTiempo.tiempo;
+                            respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante">
                                                       <button class="image-button">
                                                         <img
                                                           src="https://img.icons8.com/ios7/512/plus.png"
                                                           alt=""
                                                           width="25px"
                                                         /></button
-                                                    ></a>`
-                    })
-                    }
-                    else if(prueba.idPrueba == 2){
-                      fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
-                        method: "GET",
-                      })
-                      .then((result) => result.json())
-                      .then((data) => {
-                      nombrePrueba.textContent = "16PF";
-                      tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
-                      respuestasPrueba.innerHTML = `<a href="consulta_respuestas_aspirante">
+                                                    ></a>`;
+                          });
+                      } else if (prueba.idPrueba == 2) {
+                        fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
+                          method: "GET",
+                        })
+                          .then((result) => result.json())
+                          .then((data) => {
+                            nombrePrueba.textContent = "16PF";
+                            tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
+                            respuestasPrueba.innerHTML = `<a href="consulta_respuestas_aspirante">
                                                       <button class="image-button">
                                                         <img
                                                           src="https://img.icons8.com/ios7/512/plus.png"
                                                           alt=""
                                                           width="25px"
                                                         /></button
-                                                    ></a>`
-                    })
+                                                    ></a>`;
+                          });
+                      }
                     }
-                };
-              })
+                  });
               };
               contenedorSugerencias.appendChild(sugerencia);
             });

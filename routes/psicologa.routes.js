@@ -64,10 +64,6 @@ router.get(
   psicologaController.get_respuestasG
 );
 
-router.get("/sesionGrupal", isAuth, psicologaController.sesion_grupal);
-
-router.get("/sesionIndividual", isAuth, psicologaController.sesion_individual);
-
 router.get(
   "/pruebas",
   isAuth,

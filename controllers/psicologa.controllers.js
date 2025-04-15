@@ -164,24 +164,6 @@ exports.get_respuestasG = (request, response, next) => {
   });
 };
 
-exports.sesion_grupal = (request, response, next) => {
-  response.render("sesionGrupal", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-  });
-};
-
-exports.sesion_individual = (request, response, next) => {
-  response.render("sesionIndividual", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-  });
-};
-
 exports.crear_grupo = (request, response, next) => {
   Prueba.fetchAll().then(([rows]) => {
     response.render("crearGrupo", {
