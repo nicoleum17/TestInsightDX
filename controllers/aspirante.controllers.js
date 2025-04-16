@@ -1044,22 +1044,22 @@ exports.getRedirectOauth = (request,response,next) => {
 
 exports.getCalendario = (request,response,next) => {
   const calenario = google.calendar({version:'v3', auth:oauth2Client});
-  calenario.calendarList.list({},(err,response)=>{
+  calenario.calendarList.list({},(err,res)=>{
     if(err){
       console.error("Error fetching calendar;", err)
-      res.send('error');
+      res.end('error');
       return;
     }
-    const calenarios = response.data.items;
-    res.json(calenarios);
-  })
-}
+    const calenarios = res.data.items;
+    response.json(calenarios);
+  });
+};
 
 exports.getEventoCalendario = (request,response,next) => {
-  const idCalendario = request.query.calendar??'primary'
+  const calendarId = request.query.calendar??'primary'
   const calendario = google.calendar({version:'v3', auth:oauth2Client});
   calendario.events.list({
-    idCalendario,
+    calendarId,
     timeMin: (new Date()).toISOString(),
     maxResults:15,
     singleEvents:true,
@@ -1067,11 +1067,11 @@ exports.getEventoCalendario = (request,response,next) => {
   },(err, res)=>{
     if(err){
       console.error("Error fetching events", err)
-      res.send('error');
+      response.send('error');
       return;
     }
-    const eventos = response.data.items;
-    res.json(events);
+    const eventos = res.data.items;
+    response.json(eventos);
   })
 }
 
