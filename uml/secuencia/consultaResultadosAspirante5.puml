@@ -1,0 +1,36 @@
+@startuml consultaResultadosAspirante 5
+actor       Psicologa                   as a1
+boundary    psicologa.routes            as a2
+boundary    consultaResultadosAspirante.ejs  as a3
+control     psicologa.controllers       as a4
+entity      Grupo                       as g
+database    mysql                       as a5
+
+
+autonumber
+activate a1
+a1->a2: GET /psicologa/aspirante/consultaRespuestas/:id
+deactivate a1
+activate a2
+a2->a4: consultaResultadosAspirante(response, request)
+deactivate a2
+
+
+activate a4
+a4->>g: fetchRespuesta\n(request.session.idUsuario, \nrequest.session.idGrupo, pregunta)
+activate g
+g->>a5: execute("SELECT opcionKostick \nFROM opcioneskostick WHERE \nidOpcionKostick = \n(SELECT idOpcionKostick FROM \nrespondekostick WHERE idGrupo = ? \nAND idUsuario = ? AND idPreguntaKostick = \n(SELECT idPreguntaKostick FROM \npreguntaskostick WHERE \nnumeroPreguntaKostick = ?))", [this.idGrupo, \nthis.idUsuario, this.numeroPreguntaKostick])
+activate a5
+a5-->>g: rows
+deactivate a5
+g-->>a4:rows
+deactivate g
+
+
+a4->a3: response.render\n('consultaResultadosAspirante.ejs', rows)
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+activate a1
+@enduml

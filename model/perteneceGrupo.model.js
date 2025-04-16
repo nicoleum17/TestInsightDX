@@ -12,23 +12,23 @@ module.exports = class PerteneceGrupo {
 
   save() {
     return db.execute(
-      "INSERT INTO perteneceGrupo (idGrupo, idUsuario, fechaZoomIndividual, enlaceZoom) VALUES (?, ?, ?, ?)",
+      "INSERT INTO pertenecegrupo (idGrupo, idUsuario, fechaZoomIndividual, enlaceZoom) VALUES (?, ?, ?, ?)",
       [this.idGrupo, this.idUsuario, this.fechaZoomIndividual, this.enlaceZoom]
     );
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM perteneceGrupo");
+    return db.execute("SELECT * FROM pertenecegrupo");
   }
   static fetchOne(idUsuario) {
-    return db.execute("SELECT * FROM perteneceGrupo WHERE idUsuario = ?", [
+    return db.execute("SELECT * FROM pertenecegrupo WHERE idUsuario = ?", [
       idUsuario,
     ]);
   }
 
   static updatePerteneceGrupo() {
     return db.execute(
-      "UPDATE perteneceGrupo SET fechaZoomIndividual = ?, enlaceZoom = ? WHERE idUsuario = ?",
+      "UPDATE pertenecegrupo SET fechaZoomIndividual = ?, enlaceZoom = ? WHERE idUsuario = ?",
       [fechaZoomIndividual, enlaceZoom, idUsuario]
     );
   }

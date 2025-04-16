@@ -38,4 +38,11 @@ module.exports = class RespondeKostick {
         };
       });
   }
+
+  static fetchRespuesta(idGrupo, idUsuario, numeroPreguntaKostick) {
+    return db.execute(
+      "SELECT opcionKostick FROM opcioneskostick WHERE idOpcionKostick = (SELECT idOpcionKostick FROM respondekostick WHERE idGrupo = ? AND idUsuario = ? AND idPreguntaKostick = (SELECT idPreguntaKostick FROM preguntaskostick WHERE numeroPreguntaKostick = ?))",
+      [idGrupo, idUsuario, numeroPreguntaKostick]
+    );
+  }
 };

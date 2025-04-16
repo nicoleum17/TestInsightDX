@@ -10,7 +10,7 @@ module.exports = class TienePruebas {
   //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
-      "INSERT INTO tienePruebas (idGrupo, idPrueba, fechaLimitePrueba) VALUES (?, ?, ?)",
+      "INSERT INTO tienepruebas (idGrupo, idPrueba, fechaLimitePrueba) VALUES (?, ?, ?)",
       [this.idGrupo, this.idPrueba, this.fechaLimitePrueba]
     );
   }
@@ -22,7 +22,7 @@ module.exports = class TienePruebas {
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM tienePruebas");
+    return db.execute("SELECT * FROM tienepruebas");
   }
 
   static updateGrupo(fechaLimitePrueba, idGrupo) {

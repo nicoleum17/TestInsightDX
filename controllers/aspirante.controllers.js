@@ -12,7 +12,11 @@ const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
 const { google } = require("googleapis");
-const oauth2Client = new google.auth.OAuth2(process.env.CLIENT_ID,process.env.SECRET,process.env.REDIRECT);
+const oauth2Client = new google.auth.OAuth2(
+  process.env.CLIENT_ID,
+  process.env.SECRET,
+  process.env.REDIRECT
+);
 
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
@@ -166,7 +170,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
   }
 };
 
-exports.post_siguiente_pregunta = (request, response, next) => {
+exports.post_siguientePregunta = (request, response, next) => {
   if (!request.session.index) {
     return response.redirect("/login");
   }
@@ -205,7 +209,7 @@ exports.post_siguiente_pregunta = (request, response, next) => {
     });
 };
 
-exports.post_siguiente_pregunta1 = (request, response, next) => {
+exports.post_siguientePregunta1 = (request, response, next) => {
   const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
     request.body;
   if (!request.session.index) {
@@ -333,6 +337,136 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = (request, response, next) => {
+  //Calificar
+  const letras = [
+    "G",
+    "L",
+    "I",
+    "T",
+    "V",
+    "S",
+    "R",
+    "D",
+    "C",
+    "E",
+    "W",
+    "F",
+    "K",
+    "Z",
+    "O",
+    "B",
+    "X",
+    "P",
+    "A",
+    "N",
+  ];
+
+  const m = [
+    // G
+    [[1, 11, 21, 31, 41, 51, 61, 71, 81], []],
+    // L
+    [[12, 22, 32, 42, 52, 62, 72, 82], [81]],
+    // I
+    [
+      [23, 33, 43, 53, 63, 73, 83],
+      [82, 71],
+    ],
+    // T
+    [
+      [34, 44, 54, 64, 74, 84],
+      [83, 72, 61],
+    ],
+    // V
+    [
+      [45, 55, 65, 75, 85],
+      [84, 73, 62, 51],
+    ],
+    // S
+    [
+      [56, 66, 76, 86],
+      [85, 74, 63, 52, 41],
+    ],
+    // R
+    [
+      [67, 77, 87],
+      [86, 75, 64, 53, 42, 31],
+    ],
+    // D
+    [
+      [78, 88],
+      [87, 76, 65, 54, 43, 32, 21],
+    ],
+    // C
+    [[89], [88, 77, 66, 55, 44, 33, 22, 11]],
+    // E
+    [[], [89, 78, 67, 56, 45, 34, 23, 12, 1]],
+    // W
+    [[90, 80, 70, 60, 50, 40, 30, 20, 10], []],
+    // F
+    [[79, 69, 59, 49, 39, 29, 19, 9], [10]],
+    // K
+    [
+      [68, 58, 48, 38, 28, 18, 8],
+      [9, 20],
+    ],
+    // Z
+    [
+      [57, 47, 37, 27, 17, 7],
+      [8, 19, 30],
+    ],
+    // O
+    [
+      [46, 36, 26, 16, 6],
+      [7, 18, 29, 40],
+    ],
+    // B
+    [
+      [35, 25, 15, 5],
+      [6, 17, 28, 39, 50],
+    ],
+    // X
+    [
+      [24, 14, 4],
+      [5, 16, 27, 38, 49, 60],
+    ],
+    // P
+    [
+      [13, 3],
+      [4, 15, 26, 37, 48, 59, 70],
+    ],
+    // A
+    [[2], [3, 14, 25, 36, 47, 58, 69, 80]],
+    // N
+    [[], [2, 13, 24, 35, 46, 57, 68, 79, 90]],
+  ];
+
+  let suma = new Array(m.length).fill(0);
+  let opcion = "a";
+  const size = m.length;
+
+  for (let l = 0; l < size; l++) {
+    for (let o = 0; o <= 1; o++) {
+      if (o == 0) {
+        opcion = "a";
+      } else {
+        opcion = "b";
+      }
+      for (let p = 0; p < 10; p++) {
+        pregunta = m[l][o][p];
+        RespondeKostick.fetchRespuesta(
+          request.session.grupo,
+          request.session.idUsuario.idUsuario,
+          pregunta
+        ).then((respuesta) => {
+          if (respuesta == opcion) {
+            suma[l]++;
+          }
+        });
+      }
+    }
+    console.log(letras[l] + ": " + suma[l]);
+  }
+
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
     response.render("finPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
@@ -1023,23 +1157,23 @@ exports.get_formato_activo = (request, response, next) => {
 
 exports.getOauthAuthenticator = (request, response, next) => {
   const url = oauth2Client.generateAuthUrl({
-    acces_type:'offline',
-    scope:'https://www.googleapis.com/auth/calendar.readonly'
+    acces_type: "offline",
+    scope: "https://www.googleapis.com/auth/calendar.readonly",
   });
   response.redirect(url);
 };
 
-exports.getRedirectOauth = (request,response,next) => {
+exports.getRedirectOauth = (request, response, next) => {
   const code = request.query.code;
-  oauth2Client.getToken(code,(err,token)=>{
-    if(err){
-      console.error("NO TOKEN;", err)
-      response.send('error');
+  oauth2Client.getToken(code, (err, token) => {
+    if (err) {
+      console.error("NO TOKEN;", err);
+      response.send("error");
       return;
     }
     oauth2Client.setCredentials(token);
-    response.send("Succes in LOGIN")
-  })
+    response.send("Succes in LOGIN");
+  });
 };
 
 exports.getCalendario = (request,response,next) => {

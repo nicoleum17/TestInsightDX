@@ -100,14 +100,14 @@ module.exports = class Aspirante {
 
   static update_subirKardex(idUsuario, kardex) {
     return db.execute(
-      "UPDATE `perteneceGrupo` SET `kardex` = ? WHERE `idUsuario` = ?",
+      "UPDATE `pertenecegrupo` SET `kardex` = ? WHERE `idUsuario` = ?",
       [kardex, idUsuario]
     );
   }
 
   static update_subirCV(idUsuario, CV) {
     return db.execute(
-      "UPDATE `perteneceGrupo` SET `curriculumVitae` = ? WHERE `idUsuario` = ?",
+      "UPDATE `pertenecegrupo` SET `curriculumVitae` = ? WHERE `idUsuario` = ?",
       [CV, idUsuario]
     );
   }
@@ -115,7 +115,7 @@ module.exports = class Aspirante {
   static documentos_activos(idUsuario) {
     return db.execute(
       `SELECT kardex, curriculumVitae
-      FROM perteneceGrupo
+      FROM pertenecegrupo
       WHERE idUsuario = ?`,
       [idUsuario]
     );
