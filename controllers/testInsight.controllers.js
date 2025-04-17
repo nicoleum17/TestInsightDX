@@ -1,5 +1,7 @@
 const { response } = require("express");
 const Usuario = require("../model/usuarios.model");
+const OTP = require("../model/otp.model");
+const MS = require("../util/emailSender");
 
 exports.get_login = (request, response, next) => {
   const mensaje = request.session.info || "";
@@ -23,6 +25,10 @@ exports.get_login = (request, response, next) => {
   });
 };
 
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
 exports.post_login = (request, response, next) => {
   Usuario.fetchOne(request.body.usuario)
     .then(([rows, fieldData]) => {
@@ -43,10 +49,34 @@ exports.post_login = (request, response, next) => {
                   if (rows[0].idRol === 1) {
                     response.redirect("/psicologa/inicio");
                   } else if (rows[0].idRol === 2) {
-                    Usuario.getGrupo(rows[0].idUsuario).then(([grupo]) => {
-                      (request.session.grupo = grupo[0].idGrupo),
-                        response.redirect("/aspirante/inicio");
-                    });
+                    Usuario.getAspirante(rows[0].idUsuario).then(
+                      ([aspirante]) => {
+                        aspiranteDatos = aspirante[0];
+                        const otp = generateOTP();
+                        const expiraEn = new Date(Date.now() + 10 * 60000);
+                        const newOTP = new OTP(
+                          rows[0].idUsuario,
+                          otp,
+                          expiraEn
+                        );
+                        newOTP.save().then((uuid) => {
+                          console.log("OTP saved successfully:");
+                          /*return MS.sendEmail(
+                              aspiranteDatos.correo,
+                              aspiranteDatos.nombres,
+                              otp
+                            );
+                          })
+                          .then((response) => {
+                            console.log("Email sent successfully:", response);
+                            response.redirect("/aspirante/verificarOtp");*/
+                        });
+                        Usuario.getGrupo(rows[0].idUsuario).then(([grupo]) => {
+                          (request.session.grupo = grupo[0].idGrupo),
+                            response.redirect("/aspirante/verificarOtp");
+                        });
+                      }
+                    );
                   }
                 }
               );

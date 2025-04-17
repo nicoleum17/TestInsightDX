@@ -9,6 +9,10 @@ const registrarRespuestasFE = require("../util/puedeRegistrarRespuestasFormatoEn
 const consultarPrueba = require("../util/puedeConsultarPrueba");
 const verificarDatosPersonales = require("../util/puedeVerificarDatosPersonales");
 
+router.get("/verificarOtp", aspiranteController.get_verificarOtp);
+
+router.post("/verificarOtp", aspiranteController.post_verificarOtp);
+
 router.get("/inicio", isAuth, inicioAspirante, aspiranteController.get_root);
 
 router.get(
