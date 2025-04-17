@@ -1,4 +1,5 @@
 const db = require("../util/database");
+/* modelo de las opciones de respuesta de la prueba Kostick */
 
 module.exports = class OpcionKostick {
   constructor(
@@ -15,16 +16,13 @@ module.exports = class OpcionKostick {
   static fetchAll() {
     return db.execute("SELECT * FROM opcioneskostick");
   }
+
+  /* query que obtiene las opciones que pretencen a cierta pregunta mediante el id de la pregunta */
+
   static fetchOne(idPreguntaKostick) {
     return db.execute(
       "SELECT * FROM opcionesKostick WHERE idPreguntakostick = ?",
       [idPreguntaKostick]
     );
   }
-  /*  static fetchByNumPregunta(idPreguntaKostick) {
-    return db.execute(
-      "SELECT * FROM opcionesKostick WHERE idPreguntaKostick = ?",
-      [idPreguntaKostick]
-    );
-  }*/
 };

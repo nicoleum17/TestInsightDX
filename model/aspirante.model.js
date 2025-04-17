@@ -39,7 +39,7 @@ module.exports = class Aspirante {
       ]
     );
   }
-
+  /* query para modificar la información del aspirante */
   static updateAspirante(
     codigoIdentidad,
     nombres,

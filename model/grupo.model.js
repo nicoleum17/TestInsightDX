@@ -2,7 +2,6 @@ const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
 
 module.exports = class Grupo {
-  //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
   constructor(
     mi_institucion,
     mi_posgrado,
@@ -19,7 +18,6 @@ module.exports = class Grupo {
     this.hidden = 0;
   }
 
-  //Este método servirá para guardar de manera persistente el nuevo objeto.
   save() {
     return db.execute(
       "INSERT INTO grupos (idGrupo, institucion, posgrado, generacion, fechaPruebaGrupal, enlaceZoom, hidden) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -64,7 +62,7 @@ module.exports = class Grupo {
       [archivoFoda, idGrupo]
     );
   }
-
+  /* query para modificar la información del grupo */
   static updateGrupo(
     institucion,
     posgrado,
