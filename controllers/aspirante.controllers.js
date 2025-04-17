@@ -19,12 +19,14 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.REDIRECT
 );
 
+/* Función que sirve como controlador que permite verificar la vista para verificar el Token de seguridad*/
 exports.get_verificarOtp = (request, response, next) => {
   response.render("verificarOtp", {
     csrfToken: request.csrfToken(),
   });
 };
 
+/* Función que sirve como controlador que permite verificar el token de seguridad */
 exports.post_verificarOtp = (request, response, next) => {
   OTP.fetchOne(request.session.idUsuario).then(([otp]) => {
     if (
@@ -45,6 +47,8 @@ exports.post_verificarOtp = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para permitir renderizar la vista de inicio del rol de aspirante.
+ Necesita la información de aspirante, qué pruebas tiene asignadas, y el status de dichas pruebas */
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
     Prueba.fetchAll().then(([rows]) => {
@@ -69,6 +73,7 @@ exports.get_root = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para obtener las notificaciones que tiene el aspirante */
 exports.get_notificacionA = (request, response, next) => {
   response.render("notificacionesAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
@@ -78,6 +83,7 @@ exports.get_notificacionA = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para obtener la vista en la que el aspirante carga sus documentos (CV y Kardex) */
 exports.get_documentosA = (request, response, next) => {
   response.render("documentosAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
@@ -87,6 +93,7 @@ exports.get_documentosA = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para obtener el calendario con las fechas límites o fechas de reunión con las psicólogas */
 exports.get_calendarioA = (request, response, next) => {
   response.render("calendarioAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
@@ -96,6 +103,8 @@ exports.get_calendarioA = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para mostrar las instrucciones de cada una de las pruebas. 
+Necesita la información de la pruebas guardadas en base de datos para obtener las instrucciones */
 exports.get_instrucciones = (request, response, next) => {
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
     response.render("instruccionesPrueba", {
@@ -109,6 +118,8 @@ exports.get_instrucciones = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para obtener los datos personales del aspirante, y que éste solamente los verifique.
+Necesita la información del aspirante guardada en base de datos, como nombre, apellidos y el grupo al que pertenece */
 exports.get_datosA = (request, response, next) => {
   Prueba.fetchOne(request.params.idPrueba).then(([rows]) => {
     Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
@@ -129,8 +140,11 @@ exports.get_datosA = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para obtener la primera pregunta de la prueba, y que el aspirante la pueda responder. 
+Guarda la respuesta seleccionada en la base de de datos y aumenta un índice para que el siguiente controlador pueda obtener la pregutna que sigue*/
 exports.post_preguntasPrueba = (request, response, next) => {
   if (request.params.idPrueba == 1) {
+    //En caso de que el id de la prueba sea 1, que es la prueba Kostick, recupera las preguntas y opciones pertenecientes a cada pregunta
     Prueba.fetchOne(request.params.idPrueba)
       .then(([prueba]) => {
         request.session.index = 1;
@@ -163,6 +177,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
         console.log(error);
       });
   } else if (request.params.idPrueba == 2) {
+    //En caso de que el id de la prueba sea 2, que es la prueba 16PF, recupera las preguntas y opciones pertenecientes a cada pregunta
     Prueba.fetchOne(request.params.idPrueba)
       .then(([prueba]) => {
         request.session.index = 1;
@@ -197,6 +212,8 @@ exports.post_preguntasPrueba = (request, response, next) => {
   }
 };
 
+/* Función que funciona como controlador para renderizar las preguntas de la 2 a la última, utilizando AJAX, para la prueba 16PF. 
+También guarda las respuestas seleccionadas por el aspirante en ese rango de preguntas*/
 exports.post_siguientePregunta = (request, response, next) => {
   if (!request.session.index) {
     return response.redirect("/login");
@@ -236,6 +253,8 @@ exports.post_siguientePregunta = (request, response, next) => {
     });
 };
 
+/* Función que funciona como controlador para renderizar las preguntas de la 2 a la última, utilizando AJAX, para la prueba 16PF. 
+También guarda las respuestas seleccionadas por el aspirante en ese rango de preguntas*/
 exports.post_siguientePregunta1 = (request, response, next) => {
   const { idOpcion16PF, idGrupo, idUsuario, idPregunta16PF, tiempo } =
     request.body;
@@ -278,6 +297,7 @@ exports.post_siguientePregunta1 = (request, response, next) => {
     });
 };
 
+/* Función que funciona como controlador para guardar la última respuesta del aspirante, utilizando AJAX, para la prueba Kostick*/
 exports.pruebaCompletada = (request, response, next) => {
   const idOpcionKostick = request.body.idOpcionKostick;
   const idGrupo = request.body.idGrupo;
@@ -321,6 +341,7 @@ exports.pruebaCompletada = (request, response, next) => {
   });
 };
 
+/* Función que funciona como controlador para guardar la última respuesta del aspirante, utilizando AJAX, para la prueba 16PF*/
 exports.pruebaCompletada1 = (request, response, next) => {
   const idOpcion16PF = request.body.idOpcion16PF;
   const idGrupo = request.body.idGrupo;
@@ -584,6 +605,8 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       });
   }
 };
+
+/* /* Función que funciona como controlador para cerrar la sesión del aspirante */
 
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
@@ -1203,12 +1226,12 @@ exports.getRedirectOauth = (request, response, next) => {
   });
 };
 
-exports.getCalendario = (request,response,next) => {
-  const calenario = google.calendar({version:'v3', auth:oauth2Client});
-  calenario.calendarList.list({},(err,res)=>{
-    if(err){
-      console.error("Error fetching calendar;", err)
-      res.end('error');
+exports.getCalendario = (request, response, next) => {
+  const calenario = google.calendar({ version: "v3", auth: oauth2Client });
+  calenario.calendarList.list({}, (err, res) => {
+    if (err) {
+      console.error("Error fetching calendar;", err);
+      res.end("error");
       return;
     }
     const calenarios = res.data.items;
@@ -1216,23 +1239,25 @@ exports.getCalendario = (request,response,next) => {
   });
 };
 
-exports.getEventoCalendario = (request,response,next) => {
-  const calendarId = request.query.calendar??'primary'
-  const calendario = google.calendar({version:'v3', auth:oauth2Client});
-  calendario.events.list({
-    calendarId,
-    timeMin: (new Date()).toISOString(),
-    maxResults:15,
-    singleEvents:true,
-    orderBy:'startTime'
-  },(err, res)=>{
-    if(err){
-      console.error("Error fetching events", err)
-      response.send('error');
-      return;
+exports.getEventoCalendario = (request, response, next) => {
+  const calendarId = request.query.calendar ?? "primary";
+  const calendario = google.calendar({ version: "v3", auth: oauth2Client });
+  calendario.events.list(
+    {
+      calendarId,
+      timeMin: new Date().toISOString(),
+      maxResults: 15,
+      singleEvents: true,
+      orderBy: "startTime",
+    },
+    (err, res) => {
+      if (err) {
+        console.error("Error fetching events", err);
+        response.send("error");
+        return;
+      }
+      const eventos = res.data.items;
+      response.json(eventos);
     }
-    const eventos = res.data.items;
-    response.json(eventos);
-  })
-}
-
+  );
+};
