@@ -3,6 +3,7 @@ const Usuario = require("../model/usuarios.model");
 const OTP = require("../model/otp.model");
 const MS = require("../util/emailSender");
 
+/* Función que sirve como controlador para renderizar la página de login */
 exports.get_login = (request, response, next) => {
   const mensaje = request.session.info || "";
   if (request.session.info) {
@@ -25,10 +26,14 @@ exports.get_login = (request, response, next) => {
   });
 };
 
+/* Función para generar los OTP del aspirante */
 function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
+/* Función que sirve como controlador para verificar el login del usuario. 
+Necesita verificar que el usuario exista, verificar su contraseña, verificar los priviliegios que tiene el usuario, su rol, y en caso de que el rol de 
+un usuario sea el de 'aspirante', enviar un OTP por correo, y obtener a qué grupo pertenece el aspirante*/
 exports.post_login = (request, response, next) => {
   Usuario.fetchOne(request.body.usuario)
     .then(([rows, fieldData]) => {
@@ -81,6 +86,7 @@ exports.post_login = (request, response, next) => {
                 }
               );
             } else {
+              //verificar los intentos de inicio de sesión
               request.session.attempts = request.session.attempts + 1;
               console.log(request.session.attempts);
               if (request.session.attempts > 2) {
@@ -96,6 +102,7 @@ exports.post_login = (request, response, next) => {
             console.log(error);
           });
       } else {
+        //verificar los intentos de inicio de sesión
         request.session.attempts1 = request.session.attempts1 + 1;
         console.log(request.session.attempts1);
         if (request.session.attempts1 > 2) {
