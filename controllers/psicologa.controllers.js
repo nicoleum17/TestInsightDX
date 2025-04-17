@@ -147,11 +147,17 @@ exports.get_buscar = (request, response, next) => {
 };
 
 exports.get_respuestasA = (request, response, next) => {
-  response.render("consultaRespuestasAspirante", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
+  console.log(request.session);
+  const idP = request.params.idPrueba;
+
+  Prueba.fetchOne(idP).then((rows) => {
+    response.render("consultaRespuestasAspirante", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      prueba: rows[0],
+    });
   });
 };
 
