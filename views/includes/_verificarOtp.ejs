@@ -62,6 +62,7 @@
         color: #fff9f0;
       }
       .button {
+        background-color: #dddddc;
         color: black;
       }
       .fullHeight {
@@ -146,31 +147,24 @@
           </figure>
           <h2
             class="loginTitle title is-size-4-mobile is-size-4-tablet-only is-2 has-text-weight-semibold has-text-centered pt-5">
-            Inicia sesión
+            Ingresa tu token <br />de verificación
           </h2>
-          <form action="/login" method="POST" class="formLogin">
-            <div class="columns usuario">
-              <div class="column usuarioColumn is-two-thirds">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                <label for="usuario" class="label">Nombre de usuario</label>
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="AALF031220MMCNRA8"
-                  id="usuario"
-                  name="usuario" />
-              </div>
-            </div>
-
+          <form
+            action="/aspirante/verificarOtp"
+            method="POST"
+            class="formLogin">
             <div class="columns contraseña">
               <div class="column is-two-thirds">
-                <label for="contraseña" class="label">Contraseña</label>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <label for="contraseña" class="label">Token</label>
                 <input
                   class="input"
                   type="password"
-                  placeholder="*********"
-                  id="contraseña"
-                  name="contraseña" />
+                  placeholder="******"
+                  id="token"
+                  name="token" />
+                <br />
+                <br />
                 <br />
               </div>
             </div>
@@ -183,15 +177,6 @@
               </div>
             </div>
             <br /><br />
-            <% if (info != '') { %>
-            <div class="notification has-text-centered is-info">
-              <%= info %>
-            </div>
-            <% } %> <% if (warning != '') { %>
-            <div class="notification has-text-centered is-info">
-              <%= warning %>
-            </div>
-            <% } %>
           </form>
         </div>
       </div>

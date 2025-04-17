@@ -61,4 +61,10 @@ module.exports = class Usuario {
       [idUsuario]
     );
   }
+
+  static getAspirante(idUsuario) {
+    return db.execute("SELECT * FROM aspirantes WHERE idUsuario = ?", [
+      idUsuario,
+    ]);
+  }
 };

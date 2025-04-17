@@ -11,12 +11,39 @@ const RespondeKostick = require("../model/respondeKostick.model");
 const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
+const OTP = require("../model/otp.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.SECRET,
   process.env.REDIRECT
 );
+
+exports.get_verificarOtp = (request, response, next) => {
+  response.render("verificarOtp", {
+    csrfToken: request.csrfToken(),
+  });
+};
+
+exports.post_verificarOtp = (request, response, next) => {
+  OTP.fetchOne(request.session.idUsuario).then(([otp]) => {
+    if (
+      otp[0].contraseña === request.body.token &&
+      new Date(otp[0].expiraEn).getTime() > Date.now() &&
+      otp[0].estaActivo === 1
+    ) {
+      csrfToken: request.csrfToken();
+      grupo: request.session.grupo;
+      OTP.updateOtp(otp[0].idOTP).then(() => {
+        response.redirect("/aspirante/inicio");
+      });
+    } else
+      OTP.updateOtp(otp[0].idOTP).then(() => {
+        console.log("OTP inválido");
+        response.redirect("/login");
+      });
+  });
+};
 
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
