@@ -1,18 +1,19 @@
 <%- include('includes/_navbarP')%>
 <style>
   .fullHeight {
-    min-height: 90vh;
+    min-height: 130vh;
     margin-top: 20px;
   }
 </style>
-<section class="section fullHeight">
-  <div class="container">
-    <br />
-    <h1 class="title">Lista de Pruebas</h1>
+<section class="fullHeight has-background-warning">
+  <div class="container is-max-desktop mt-5">
+    <br><br>
+    <h1 class="title has-text-weight-semibold mb-2">Lista de Pruebas</h1>
+    <br>
 
     <% pruebas.forEach(prueba => { %>
     <div class="box">
-      <div class="title"><%= prueba.nombre %></div>
+      <div class="title has-text-weight-semibold mb-2"><%= prueba.nombre %></div>
       <br />
       <div class="subtitle">Instrucciones:</div>
       <br />
@@ -21,11 +22,12 @@
       <p>Duración: <%= prueba.duracion %> min</p>
     </div>
     <% }) %>
-  </div>
 
-  <a href="inicio">
-    <button class="button m-5 is-primary has-text-white">Regresar</button>
-  </a>
+    <a href="inicio">
+      <button class="button m-5 is-primary has-text-white">Regresar</button>
+    </a>
+
+  </div>
 </section>
 
 <%- include('includes/_footer')%>

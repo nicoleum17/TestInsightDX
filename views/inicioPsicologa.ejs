@@ -1,73 +1,142 @@
 <%- include('includes/_navbarP')%>
+
 <style>
   .fullHeight {
     min-height: 90vh;
     margin-top: 60px;
   }
+  .card-option {
+    width: 220px;
+    border-radius: 16px;
+    transition: all 0.3s ease-in-out;
+    background-color: white;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(38, 88, 206, 0.1);
+    background-color: #fdfdfd;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dashboard-title {
+    animation: fadeInUp 0.6s ease-out;
+  }
 </style>
 
 <section class="fullHeight has-background-warning">
   <div class="container is-max-desktop mt-5">
-    <% if (infoBorrado) { %>
-      <article class="message is-success">
-        <div class="message-header">
-          <p>Éxito</p>
-          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
-        </div>
-        <div class="message-body">
-          <%= infoBorrado %>
-        </div>
-      </article>
-    <% } %>
-    <% if (infoAspirante) { %>
-      <article class="message is-success">
-        <div class="message-header">
-          <p>Éxito</p>
-          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
-        </div>
-        <div class="message-body">
-          <%= infoAspirante %>
-        </div>
-      </article>
-    <% } %>
+    <br><br>
+    <div class="mensajes">
+      <% if (infoBorrado) { %>
+        <article class="message is-success">
+          <div class="message-header">
+            <p>Éxito</p>
+            <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
+          </div>
+          <div class="message-body">
+            <%= infoBorrado %>
+          </div>
+        </article>
+      <% } %>
+      <% if (infoAspirante) { %>
+        <article class="message is-success">
+          <div class="message-header">
+            <p>Éxito</p>
+            <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
+          </div>
+          <div class="message-body">
+            <%= infoAspirante %>
+          </div>
+        </article>
+      <% } %>
+    </div>
     
     <div class="title is-2 has-text-weight-semibold">
-      Bienvenida Claudia Cook
+      Bienvenida <%= usuario %>
     </div>
-    <div class="columns has-text-centered mt-6">
-      <div class="column">
-        <a href="crearGrupo"
-          ><button class="button m-5 is-primary has-text-white">
-            Crear Grupo
-          </button>
+    <br>
+    <div class="columns is-multiline is-centered">
+      <!-- Crear Grupo -->
+      <div class="column is-narrow">
+        <a href="crearGrupo"> 
+          <div class="card card-option has-text-centered">
+            <div class="card-content">
+              <span class="icon is-large has-text-primary mb-3">
+                <i class="fas fa-users fa-2x"></i>
+              </span>
+              <p class="title is-6">Crear Grupo</p>
+            </div>
+          </div>
         </a>
       </div>
-      <div class="column">
-        <a href="grupo/elegir"
-          ><button class="button m-5 is-primary has-text-white">
-            Consultar grupo
-          </button>
+
+      <!-- Registrar Aspirante -->
+      <div class="column is-narrow">
+        <a href="registrarAspirante"> 
+          <div class="card card-option has-text-centered">
+            <div class="card-content">
+              <span class="icon is-large has-text-primary mb-3">
+                <i class="fas fa-user-plus fa-2x"></i>
+              </span>
+              <p class="title is-6">Registrar Aspirante</p>
+            </div>
+          </div>
         </a>
       </div>
-      <div class="column">
-        <a href="consultaAspirante"
-          ><button class="button m-5 is-primary has-text-white">
-            Consultar aspirante
-          </button>
+
+      <!-- Consultar Grupo -->
+      <div class="column is-narrow">
+        <a href="grupo/elegir"> 
+          <div class="card card-option has-text-centered">
+            <div class="card-content">
+              <span class="icon is-large has-text-primary mb-3">
+                <i class="fas fa-search fa-2x"></i>
+              </span>
+              <p class="title is-6">Consultar Grupo</p>
+            </div>
+          </div>
         </a>
       </div>
-      <div class="column">
-        <a href="registrarAspirante"
-          ><button class="button m-5 is-primary has-text-white">
-            Registra Aspirante
-          </button>
+
+      <!-- Consultar Aspirante -->
+      <div class="column is-narrow">
+        <a href="consultaAspirante"> 
+          <div class="card card-option has-text-centered">
+            <div class="card-content">
+              <span class="icon is-large has-text-primary mb-3">
+                <i class="fas fa-user-check fa-2x"></i>
+              </span>
+              <p class="title is-6">Consultar Aspirante</p>
+            </div>
+          </div>
         </a>
       </div>
-      <div class="column">
-        <a href="pruebas"
-          ><button class="button m-5 is-primary has-text-white">
-            Consultar pruebas
-          </button>
+
+      <!-- Pruebas -->
+      <div class="column is-narrow">
+        <a href="pruebas"> 
+          <div class="card card-option has-text-centered">
+            <div class="card-content">
+              <span class="icon is-large has-text-primary mb-3">
+                <i class="fas fa-clipboard fa-2x"></i>
+              </span>
+              <p class="title is-6">Pruebas</p>
+            </div>
+          </div>
         </a>
       </div>
     </div>
