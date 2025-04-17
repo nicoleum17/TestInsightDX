@@ -177,7 +177,7 @@
                             nombrePrueba.textContent = "Kostick";
                             tiempoPrueba.textContent =
                               data.kostickTiempo.tiempo;
-                            respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante">
+                            respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/1">
                                                       <button class="image-button">
                                                         <img
                                                           src="https://img.icons8.com/ios7/512/plus.png"
@@ -194,7 +194,7 @@
                           .then((data) => {
                             nombrePrueba.textContent = "16PF";
                             tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
-                            respuestasPrueba.innerHTML = `<a href="consulta_respuestas_aspirante">
+                            respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/2">
                                                       <button class="image-button">
                                                         <img
                                                           src="https://img.icons8.com/ios7/512/plus.png"

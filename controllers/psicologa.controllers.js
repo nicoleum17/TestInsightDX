@@ -148,8 +148,8 @@ exports.get_buscar = (request, response, next) => {
 };
 
 exports.get_respuestasA = (request, response, next) => {
-  const idUsuario = "e735f343-c8f1-45fe-b0a0-ba5246dabab4";
-  const idPrueba = "1";
+  const idUsuario = request.params.idusuario;
+  const idPrueba = request.params.idprueba;
 
   if (idPrueba == 1) {
     Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {

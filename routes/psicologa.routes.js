@@ -52,7 +52,7 @@ router.post(
 );
 
 router.get(
-  "/consultaRespuestasAspirante",
+  "/consultaRespuestasAspirante/:idusuario/:idprueba",
   isAuth,
   consultarRespuestasAspirante,
   psicologaController.get_respuestasA
