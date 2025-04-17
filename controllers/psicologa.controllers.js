@@ -8,6 +8,7 @@ const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
+const ResultadosKostick = require("../model/resultadosKostick.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -540,16 +541,16 @@ exports.getRedirectOauth = (request, response, next) => {
       return;
     }
     oauth2Client.setCredentials(token);
-    response.redirect("calendarios/eventos")
+    response.redirect("calendarios/eventos");
   });
 };
 
-exports.getCalendario = (request,response,next) => {
-  const calenario = google.calendar({version:'v3', auth:oauth2Client});
-  calenario.calendarList.list({},(err,res)=>{
-    if(err){
-      console.error("Error fetching calendar;", err)
-      res.end('error');
+exports.getCalendario = (request, response, next) => {
+  const calenario = google.calendar({ version: "v3", auth: oauth2Client });
+  calenario.calendarList.list({}, (err, res) => {
+    if (err) {
+      console.error("Error fetching calendar;", err);
+      res.end("error");
       return;
     }
     const calenarios = res.data.items;
@@ -557,29 +558,32 @@ exports.getCalendario = (request,response,next) => {
   });
 };
 
-exports.getEventoCalendario = (request,response,next) => {
-  const calendarId = request.query.calendar??'primary'
-  const calendario = google.calendar({version:'v3', auth:oauth2Client});
-  calendario.events.list({
-    calendarId,
-    timeMin: (new Date()).toISOString(),
-    maxResults:15,
-    singleEvents:true,
-    orderBy:'startTime'
-  },(err, res)=>{
-    if(err){
-      console.error("Error fetching events", err)
-      response.send('error');
-      return;
+exports.getEventoCalendario = (request, response, next) => {
+  const calendarId = request.query.calendar ?? "primary";
+  const calendario = google.calendar({ version: "v3", auth: oauth2Client });
+  calendario.events.list(
+    {
+      calendarId,
+      timeMin: new Date().toISOString(),
+      maxResults: 15,
+      singleEvents: true,
+      orderBy: "startTime",
+    },
+    (err, res) => {
+      if (err) {
+        console.error("Error fetching events", err);
+        response.send("error");
+        return;
+      }
+      request.session.eventos = res.data.items;
+      response.render("calendarioPsicologa", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
+        infoEventos: request.session.eventos,
+      });
     }
-    request.session.eventos = res.data.items;
-    response.render("calendarioPsicologa", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      idUsuario: request.session.idUsuario || "",
-      infoEventos: request.session.eventos,
-    });
-  })
-}
+  );
+};
