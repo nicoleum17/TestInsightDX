@@ -1172,7 +1172,7 @@ exports.getRedirectOauth = (request, response, next) => {
       return;
     }
     oauth2Client.setCredentials(token);
-    response.send("Succes in LOGIN");
+    response.redirect("calendarios/eventos")
   });
 };
 
@@ -1204,8 +1204,14 @@ exports.getEventoCalendario = (request,response,next) => {
       response.send('error');
       return;
     }
-    const eventos = res.data.items;
-    response.json(eventos);
+    request.session.eventos = res.data.items;
+    response.render("calendario", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      idUsuario: request.session.idUsuario || "",
+    });
   })
 }
 

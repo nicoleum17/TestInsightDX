@@ -26,10 +26,31 @@ router.get(
 );
 
 router.get(
-  "/calendario",
+  "/calendarioPsicologaAuth",
   isAuth,
   consultarCalendario,
-  psicologaController.calendario_psicologa
+  psicologaController.getOauthAuthenticator
+);
+
+router.get(
+  "/redirect",
+  isAuth,
+  consultarCalendario,
+  psicologaController.getRedirectOauth
+);
+
+router.get(
+  "/calendarios/calendario",
+  isAuth,
+  consultarCalendario,
+  psicologaController.getCalendario
+);
+
+router.get(
+  "/calendarios/eventos",
+  isAuth,
+  consultarCalendario,
+  psicologaController.getEventoCalendario
 );
 
 router.get(

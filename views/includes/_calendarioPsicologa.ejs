@@ -8,14 +8,56 @@
   <div class="container">
     <div class="test1 columns is-vcentered ml-5">
       <div class="column">
-        <p>Consultar calendario</p>
-        <li>Entrevista clinica: Arturo Díaz 27/03/2025 12:00</li>
-        <li>Entrevista clinica: Luisa Ramírez 27/03/2025 13:00</li>
-        <li>
-          Aplicación prueba grupal: Maestría en Administración Pública y
-          Política Públic 28/03/2025 11:00
-        </li>
+        <div class="box" id="contenedorEventos">
+
+
+        </div>
+        
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  const eventos = <%- JSON.stringify(infoEventos) %>;
+  eventos.map(evento => {
+    mostrarEvento(evento.summary, evento.start.dateTime);
+    console.log(evento.start.dateTime);
+  });
+  function mostrarEvento(nombre, fecha){
+    const _dia = new Date(fecha).toLocaleString("es-MX", {
+      month:"short",
+      day: "numeric",
+      timeZone: "America/Mexico_City"
+    });
+    const _hora = new Date(fecha).toLocaleString("es-MX", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+    const contenedor = document.getElementById("contenedorEventos");
+    const nuevoEvento = document.createElement("div");
+    nuevoEvento.classList.add("tarjeta", "mt-3");
+    nuevoEvento.innerHTML = ` 
+    <div class="box">
+      <div class="columns is-vcentered ml-1">
+        <div class="column">
+          <div class="columns is-vcentered ml-5"> 
+            <div class="column">
+              <h2 class="title is-4 has-text-weight-semibold"> 
+                ${_dia}
+              </h2>
+            </div>
+            <div class="column">
+              ${nombre}
+            </div>
+        </div>
+        <div class="column">
+          Hora de inicio: ${_hora}
+        </div>
+      </div>
+    </div>
+    `
+    contenedor.appendChild(nuevoEvento);
+  }
+</script>
