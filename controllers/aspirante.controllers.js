@@ -1222,7 +1222,7 @@ exports.getRedirectOauth = (request, response, next) => {
       return;
     }
     oauth2Client.setCredentials(token);
-    response.send("Succes in LOGIN");
+    response.redirect("calendarios/eventos")
   });
 };
 
@@ -1239,25 +1239,29 @@ exports.getCalendario = (request, response, next) => {
   });
 };
 
-exports.getEventoCalendario = (request, response, next) => {
-  const calendarId = request.query.calendar ?? "primary";
-  const calendario = google.calendar({ version: "v3", auth: oauth2Client });
-  calendario.events.list(
-    {
-      calendarId,
-      timeMin: new Date().toISOString(),
-      maxResults: 15,
-      singleEvents: true,
-      orderBy: "startTime",
-    },
-    (err, res) => {
-      if (err) {
-        console.error("Error fetching events", err);
-        response.send("error");
-        return;
-      }
-      const eventos = res.data.items;
-      response.json(eventos);
+exports.getEventoCalendario = (request,response,next) => {
+  const calendarId = request.query.calendar??'primary'
+  const calendario = google.calendar({version:'v3', auth:oauth2Client});
+  calendario.events.list({
+    calendarId,
+    timeMin: (new Date()).toISOString(),
+    maxResults:15,
+    singleEvents:true,
+    orderBy:'startTime'
+  },(err, res)=>{
+    if(err){
+      console.error("Error fetching events", err)
+      response.send('error');
+      return;
     }
-  );
-};
+    request.session.eventos = res.data.items;
+    response.render("calendario", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      idUsuario: request.session.idUsuario || "",
+    });
+  })
+}
+
