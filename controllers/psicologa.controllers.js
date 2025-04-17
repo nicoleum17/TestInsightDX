@@ -152,19 +152,26 @@ exports.get_respuestasA = (request, response, next) => {
   const idPrueba = "1";
 
   if (idPrueba == 1) {
-    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
-      ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
-        (resultados) => {
-          response.render("consultaRespuestasAspirante", {
-            isLoggedIn: request.session.isLoggedIn || false,
-            usuario: request.session.usuario || "",
-            csrfToken: request.csrfToken(),
-            privilegios: request.session.privilegios || [],
-            prueba: "El inventario de Percepción Kostick",
-            valores: resultados[0][0],
-          });
-        }
-      );
+    Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+      PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+        Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+          //console.log("Grupo: ", grupoRows);
+          ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
+            (resultados) => {
+              response.render("consultaRespuestasAspirante", {
+                isLoggedIn: request.session.isLoggedIn || false,
+                usuario: request.session.usuario || "",
+                csrfToken: request.csrfToken(),
+                privilegios: request.session.privilegios || [],
+                prueba: "El inventario de Percepción Kostick",
+                grupo: grupoRows,
+                valores: resultados[0][0],
+                datos: datosAspirante[0],
+              });
+            }
+          );
+        });
+      });
     });
   }
 };
