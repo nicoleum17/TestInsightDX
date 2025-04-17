@@ -8,6 +8,7 @@ const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
+const ResultadosKostick = require("../model/resultadosKostick.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   const mensajeBorrado = request.session.infoBorrado;
@@ -147,12 +148,25 @@ exports.get_buscar = (request, response, next) => {
 };
 
 exports.get_respuestasA = (request, response, next) => {
-  response.render("consultaRespuestasAspirante", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-  });
+  const idUsuario = "e735f343-c8f1-45fe-b0a0-ba5246dabab4";
+  const idPrueba = "1";
+
+  if (idPrueba == 1) {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
+        (resultados) => {
+          response.render("consultaRespuestasAspirante", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: "El inventario de Percepción Kostick",
+            valores: resultados[0][0],
+          });
+        }
+      );
+    });
+  }
 };
 
 exports.get_respuestasG = (request, response, next) => {

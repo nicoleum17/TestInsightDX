@@ -10,7 +10,145 @@
     <div class="title has-text-weight-semibold mb-2">
       Respuestas del Aspirante
     </div>
-    <div class="subtitle">Prueba:<%= prueba.nombre; %></div>
-    <%- include('includes/_footer')%>
+    <br />
+    <div class="subtitle has-text-centered"><%= prueba %></div>
+
+    <div class="has-items-centered">
+      <canvas id="graph"> </canvas>
+    </div>
   </div>
 </div>
+
+<script>
+  const valores = <%- JSON.stringify(valores) %>;
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script class="grafica">
+  const ctx = document.getElementById("graph").getContext("2d");
+
+  const data = {
+    labels: [
+      "C",
+      "D",
+      "R",
+      "O",
+      "B",
+      "S",
+      "X",
+      "V",
+      "T",
+      "I",
+      "P",
+      "L",
+      "A",
+      "G",
+      "N",
+      "W",
+      "F",
+      "K",
+      "E",
+      "Z",
+    ],
+    datasets: [
+      {
+        label: "Adaptación al trabajo",
+        data: [
+          valores.C,
+          valores.D,
+          valores.R,
+          valores.O,
+          valores.B,
+          valores.S,
+          valores.X,
+          valores.V,
+          valores.T,
+          valores.I,
+          valores.P,
+          valores.L,
+          valores.A,
+          valores.G,
+          valores.N,
+          valores.W,
+          valores.F,
+          valores.K,
+          valores.E,
+          valores.Z,
+        ],
+        backgroundColor: [
+          "rgba(173, 216, 230, 0.7)",
+          "rgba(173, 216, 230, 0.7)",
+          "rgba(173, 216, 230, 0.7)",
+          "rgba(70, 130, 180, 0.7)",
+          "rgba(70, 130, 180, 0.7)",
+          "rgba(70, 130, 180, 0.7)",
+          "rgba(70, 130, 180, 0.7)",
+          "rgba(135, 206, 235, 0.7)",
+          "rgba(135, 206, 235, 0.7)",
+          "rgba(30, 144, 255, 0.7)",
+          "rgba(30, 144, 255, 0.7)",
+          "rgba(30, 144, 255, 0.7)",
+          "rgba(0, 0, 205, 0.7)",
+          "rgba(0, 0, 205, 0.7)",
+          "rgba(0, 0, 205, 0.7)",
+          "rgba(65, 105, 225, 0.7)",
+          "rgba(65, 105, 225, 0.7)",
+          "rgba(25, 25, 112, 0.7)",
+          "rgba(25, 25, 112, 0.7)",
+          "rgba(25, 25, 112, 0.7)",
+        ],
+        borderColor: [
+          "rgba(173, 216, 230, 1)",
+          "rgba(173, 216, 230, 1)",
+          "rgba(173, 216, 230, 1)",
+          "rgba(70, 130, 180, 1)",
+          "rgba(70, 130, 180, 1)",
+          "rgba(70, 130, 180, 1)",
+          "rgba(70, 130, 180, 1)",
+          "rgba(135, 206, 235, 1)",
+          "rgba(135, 206, 235, 1)",
+          "rgba(30, 144, 255, 1)",
+          "rgba(30, 144, 255, 1)",
+          "rgba(30, 144, 255, 1)",
+          "rgba(0, 0, 205, 1)",
+          "rgba(0, 0, 205, 1)",
+          "rgba(0, 0, 205, 1)",
+          "rgba(65, 105, 225, 1)",
+          "rgba(65, 105, 225, 1)",
+          "rgba(25, 25, 112, 1)",
+          "rgba(25, 25, 112, 1)",
+          "rgba(25, 25, 112, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const config = {
+    type: "bar",
+    data: data,
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Valores",
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: "Factores",
+          },
+        },
+      },
+    },
+  };
+
+  new Chart(ctx, config);
+</script>
+
+<%- include('includes/_footer')%>
