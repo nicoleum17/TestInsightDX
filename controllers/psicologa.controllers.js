@@ -336,6 +336,7 @@ exports.post_registra_foda_grupo = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para renderizar la vista para modificar la información de un grupo */
 exports.get_modificarGrupo = (request, response, next) => {
   const idGrupo = request.params.id;
   Prueba.fetchAll().then(([pruebas]) => {
@@ -356,6 +357,7 @@ exports.get_modificarGrupo = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para guardar los cambios realizados en la información de un grupo */
 exports.post_modificarGrupo = (request, response, next) => {
   console.log(request.body);
   institucion = request.body.institucion;
@@ -380,6 +382,7 @@ exports.post_modificarGrupo = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para renderizar la vista para modificar la información de un aspirante */
 exports.get_modificarAspirante = (request, response, next) => {
   const idUsuario = request.params.idUsuario;
   Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
@@ -399,6 +402,7 @@ exports.get_modificarAspirante = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para guardar los cambios realizados en la información de un aspirante */
 exports.post_modificarAspirante = (request, response, next) => {
   console.log("Modificar Aspirante", request.body);
   nombres = request.body.nombres;
@@ -434,6 +438,7 @@ exports.post_modificarAspirante = (request, response, next) => {
   });
 };
 
+/* Función que sirve como controlador para cerrar la sesión */
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
     response.redirect("/");
