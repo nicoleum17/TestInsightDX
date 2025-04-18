@@ -51,6 +51,7 @@
             <th>Correo</th>
             <th>Universidad de Procedencia</th>
             <th>Modificar</th>
+            <th>Reporte</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -124,6 +125,7 @@
                 const correoAspirante = row.insertCell(4);
                 const universidadAspirante = row.insertCell(5);
                 const modificarAspirante = row.insertCell(6);
+                const reporte = row.insertCell(7);
 
                 (nombreAspirante.textContent = aspirante.nombres),
                   " ",
@@ -144,6 +146,10 @@
                         alt=""
                         width="20px" /></button
                   > </a>`;
+                reporte.innerHTML = `<a href="reporteAspirante/${aspirante.idUsuario}">
+                  <button class="image-button">
+                    <i class="fa-regular fa-file" style="color: #000000;"></i>
+                    </button></a>`;
 
                 contenedorSugerencias.style.display = "none";
                 bodyPrueba = document
@@ -193,7 +199,8 @@
                           .then((result) => result.json())
                           .then((data) => {
                             nombrePrueba.textContent = "16PF";
-                            tiempoPrueba.textContent = data.P16PFTiempo.tiempo + " hrs";
+                            tiempoPrueba.textContent =
+                              data.P16PFTiempo.tiempo + " hrs";
                             respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/2">
                                                       <button class="image-button">
                                                         <img
