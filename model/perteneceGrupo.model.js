@@ -32,4 +32,11 @@ module.exports = class PerteneceGrupo {
       [fechaZoomIndividual, enlaceZoom, idUsuario]
     );
   }
+
+  static consultarReporte(idUsuario) {
+    return db.execute(
+      "SELECT reporte FROM perteneceGrupo WHERE idUsuario = ?",
+      [idUsuario]
+    );
+  }
 };

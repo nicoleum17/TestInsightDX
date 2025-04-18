@@ -1,3 +1,26 @@
+<style>
+  .fullHeight {
+    min-height: 90vh;
+    margin-top: 20px;
+  }
+</style>
 <section class="section fullHeight">
-  <div class="container"></div>
+  <div class="container">
+    <div class="columns">
+      <div class="column has-text-centered">
+        <h1 class="title has-text-weight-semibold">
+          Reporte - <%= aspirante.nombres%> <%= aspirante.apellidoPaterno%> <%=
+          aspirante.apellidoMaterno%>
+        </h1>
+        <div class="columns">
+          <div class="column has-text-centered">
+            <% if (reporte.reporte === null) { %>
+              <p>Aún no hay un reporte registrado para este aspirante</p>
+            <%} else {%>  
+              <p>Not null</p>
+              <%}%>
+          </div>
+
+        </div>
+  </div>
 </section>

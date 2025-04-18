@@ -1,6 +1,7 @@
 const { response, request } = require("express");
 const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
+const path = require("path");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
@@ -458,6 +459,37 @@ exports.get_reporteAspirante = (request, response, next) => {
   });
 };
 
+exports.get_consultarReporteAspirante = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    PerteneceGrupo.consultarReporte(idUsuario).then(([reporte]) => {
+      console.log(reporte[0]);
+      request.session.idUsuario = idUsuario;
+      response.render("consultarReporteAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        idUsuario: request.session.idUsuario,
+        reporte: reporte[0],
+      });
+    });
+  });
+};
+
+exports.getPdfFile = (request, response, next) => {
+  const filename = request.params.filename;
+  const filePath = path.join(__dirname, "../public/uploads", filename);
+
+  response.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending file:", err);
+      res.status(err.status).end();
+    }
+  });
+};
+
 /* Función que sirve como controlador para cerrar la sesión */
 exports.get_logout = (request, response, next) => {
   request.session.destroy(() => {
@@ -601,7 +633,6 @@ exports.getEventoCalendario = (request, response, next) => {
     }
   );
 };
-
 
 exports.post_registraReporte = (request, response, next) => {
   let reporte = request.file.filename;

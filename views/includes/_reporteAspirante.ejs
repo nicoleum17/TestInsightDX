@@ -4,7 +4,6 @@
     margin-top: 20px;
   }
 
-
   .card-option {
     width: 220px;
     border-radius: 16px;
@@ -20,8 +19,6 @@
     box-shadow: 0 10px 25px rgba(38, 88, 206, 0.1);
     background-color: #fdfdfd;
   }
-
-  
 </style>
 <section class="section has-background-warning fullHeight">
   <div class="container" style="width: 60%">
@@ -33,38 +30,36 @@
         </h1>
         <!-- Registrar reporte y consultar reporte-->
         <div class="columns is-multiline is-centered">
-
-
-        <div class="column is-narrow">
-          <a href="subirReporte"> 
-            <div class="card card-option has-text-centered">
-              <div class="card-content">
-                <span class="icon is-large has-text-primary mb-3">
-                  <img
-                src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
-                alt="Kardex"
-              />
-                </span>
-                <p class="title is-6">Subir Reporte</p>
+          <div class="column is-narrow">
+            <a href="subirReporte">
+              <div class="card card-option has-text-centered">
+                <div class="card-content">
+                  <span class="icon is-large has-text-primary mb-3">
+                    <img
+                      src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
+                      alt="Kardex" />
+                  </span>
+                  <p class="title is-6">Subir Reporte</p>
+                </div>
               </div>
-            </div>
-          </a>
-        </div>
+            </a>
+          </div>
 
-
-        <div class="column is-narrow">
-          <a href=""> 
-            <div class="card card-option has-text-centered">
-              <div class="card-content">
-                <span class="icon is-large has-text-primary mb-3">
-                  <i class="fas fa-users fa-2x"></i>
-                </span>
-                <p class="title is-6">Consultar Reporte</p>
+          <div class="column is-narrow">
+            <a
+              href="/psicologa/consultarReporteAspirante/<%= aspirante.idUsuario%>">
+              <div class="card card-option has-text-centered">
+                <div class="card-content">
+                  <span class="icon is-large has-text-primary mb-3">
+                    <i
+                      class="fa-solid fa-user fa-2xl"
+                      style="color: #000000"></i>
+                  </span>
+                  <p class="title is-6">Consultar Reporte</p>
+                </div>
               </div>
-            </div>
-          </a>
-        </div>
-
+            </a>
+          </div>
         </div>
       </div>
     </div>

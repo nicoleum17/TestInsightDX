@@ -48,7 +48,19 @@
         </form>
       </div>
     </div>
-    <div></div>
+    <div class="columns">
+      <div class="column has-text-centered">
+        <% if (grupo.archivoPdf === null) { %>
+        <p>Aún no hay un reporte registrado para este grupo</p>
+        <%} else {%>
+        <a href="/psicologa/pdf/<%= grupo.archivoPdf%>">
+          <button class="button is-primary has-text-warning mt-6">
+            Ver reporte
+          </button>
+        </a>
+        <%}%>
+      </div>
+    </div>
   </div>
 </section>
 
