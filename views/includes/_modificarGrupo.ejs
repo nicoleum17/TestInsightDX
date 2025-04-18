@@ -118,3 +118,20 @@
     </section>
   </div>
 </section>
+<script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const hoy = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+
+    const fechaLimite = document.querySelector('input[name="fechaLimite"]').value;
+    const fechaSesion = document.querySelector('input[name="fechaPruebaGrupal"]').value;
+
+    if (fechaLimite < hoy) {
+      e.preventDefault(); 
+      alert("La fecha límite de las pruebas NO puede ser anterior al día de hoy.");
+    }
+    if (fechaSesion < hoy) {
+      e.preventDefault(); 
+      alert("La fecha de la sesión grupal NO puede ser anterior al día de hoy.");
+    }
+  })
+</script>
