@@ -61,3 +61,16 @@
     </div>
   </form>
 </section>
+<script>
+   document.querySelector('form').addEventListener('submit', function (e) {
+    const hoy = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+
+    const fechaZoomIndividual = document.querySelector('input[name="fechaZoomIndividual"]').value;
+
+    if (fechaZoomIndividual < hoy) {
+      e.preventDefault(); 
+      alert("La fecha de la prueba no puede ser anterior a la fecha de hoy.");
+    }
+
+});
+</script>
