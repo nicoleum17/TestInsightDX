@@ -7,7 +7,7 @@
 </style>
 <section class="section fullHeight">
   <div class="container">
-    <div class="title">Subir Reporte - Grupo</div>
+    <div class="title has-text-weight-semibold">Subir Reporte - Grupo</div>
     <div class="columns is-mobile">
       <div class="column">
         <div class="has-text-weight-bold">Posgrado: <%= grupo.posgrado %></div>
@@ -23,24 +23,21 @@
         <form
           action="/psicologa/grupo/registra_foda/<%= grupo.idGrupo%>"
           method="POST"
-          enctype="multipart/form-data"
-        >
-        <%}%>
+          enctype="multipart/form-data"></form>
+          <%}%>
           <div class="file is-boxed">
             <label class="file-label">
-              <input type="hidden" name="_csrf" value=<%= csrfToken%> />
+              <input type="hidden" name="_csrf" value="<%=csrfToken%>"/>
               <input
                 class="file-input"
                 type="file"
                 name="archivo"
                 accept=".xls, .xlsx, .csv"
-                required
-              />
+                required />
               <span class="file-cta">
                 <span class="file-icon">
                   <img
-                    src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png"
-                  />
+                    src="https://images.icon-icons.com/3858/PNG/512/upload_file_icon_238365.png" />
                 </span>
                 <span class="file-label"> Elige un archivo </span>
               </span>
@@ -49,6 +46,19 @@
           <br />
           <input class="button is-info" type="submit" value="Subir" />
         </form>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column has-text-centered">
+        <% if (grupo.archivoFoda === null) { %>
+        <p>Aún no hay un reporte registrado para este grupo</p>
+        <%} else {%>
+        <a href="/psicologa/pdf/<%= grupo.archivoFoda%>">
+          <button class="button is-primary has-text-warning mt-6">
+            Ver reporte
+          </button>
+        </a>
+        <%}%>
       </div>
     </div>
   </div>
