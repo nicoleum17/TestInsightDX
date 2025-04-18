@@ -505,11 +505,11 @@ exports.get_pruebaCompletada = async (request, response, next) => {
         }
         for (let p = 0; p < m[l][o].length; p++) {
           pregunta = m[l][o][p];
-
+          const letra = l;
           promesas.push(
             RespondeKostick.fetchRespuesta(
               request.session.grupo,
-              request.session.idUsuario,
+              request.session.idUsuario.idUsuario,
               pregunta
             )
               .then((respuesta) => {
@@ -518,7 +518,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
                   respuesta[0] &&
                   respuesta[0][0]?.opcionKostick === opcion
                 ) {
-                  suma[l]++;
+                  suma[letra]++;
                 }
               })
               .catch((err) => {
@@ -527,7 +527,6 @@ exports.get_pruebaCompletada = async (request, response, next) => {
           );
         }
       }
-      console.log(letras[l] + ": " + suma[l]);
     }
     await Promise.all(promesas);
 
