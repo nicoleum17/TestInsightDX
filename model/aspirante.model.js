@@ -120,4 +120,11 @@ module.exports = class Aspirante {
       [idUsuario]
     );
   }
+
+  static update_subirReporte(idUsuario, reporte) {
+    return db.execute(
+      "UPDATE `pertenecegrupo` SET `reporte` = ? WHERE `idUsuario` = ?",
+      [reporte, idUsuario]
+    );
+  }
 };
