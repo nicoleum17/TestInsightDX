@@ -393,7 +393,6 @@ exports.get_modificarAspirante = (request, response, next) => {
   const idUsuario = request.params.idUsuario;
   Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
     PerteneceGrupo.fetchOne(idUsuario).then(([perteneceGrupo]) => {
-      console.log(perteneceGrupo);
       request.session.idUsuario = idUsuario;
       response.render("modificarAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
@@ -440,6 +439,21 @@ exports.post_modificarAspirante = (request, response, next) => {
       idUsuario
     ).then(() => {
       response.redirect("/psicologa/consultaAspirante");
+    });
+  });
+};
+
+exports.get_reporteAspirante = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    request.session.idUsuario = idUsuario;
+    response.render("reporteAspirante", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      aspirante: aspirante[0],
+      idUsuario: request.session.idUsuario,
     });
   });
 };

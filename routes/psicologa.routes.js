@@ -160,6 +160,12 @@ router.post(
   psicologaController.post_modificarAspirante
 );
 
+router.get(
+  "/reporteAspirante/:idUsuario",
+  isAuth,
+  psicologaController.get_reporteAspirante
+);
+
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
 router.get("/buscar/:valor", isAuth, psicologaController.get_buscar);
