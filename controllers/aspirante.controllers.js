@@ -13,6 +13,7 @@ const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
 const OTP = require("../model/otp.model");
 const { google } = require("googleapis");
+const ResultadosKostick = require("../model/resultadosKostick.model");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.SECRET,
@@ -538,14 +539,40 @@ exports.get_pruebaCompletada = async (request, response, next) => {
     response.status(500).send("Ocurrió un error al calificar la prueba");
   }
 
-  Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-    response.render("finPrueba", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      idUsuario: request.session.idUsuario,
-      aspirante: aspirante[0],
+  const mis_resultadosKostick = new ResultadosKostick(
+    request.session.idUsuario.idUsuario,
+    request.session.grupo,
+    suma[0],
+    suma[1],
+    suma[2],
+    suma[3],
+    suma[4],
+    suma[5],
+    suma[6],
+    suma[7],
+    suma[8],
+    suma[9],
+    suma[10],
+    suma[11],
+    suma[12],
+    suma[13],
+    suma[14],
+    suma[15],
+    suma[16],
+    suma[17],
+    suma[18],
+    suma[19]
+  );
+  mis_resultadosKostick.save().then(() => {
+    Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
+      response.render("finPrueba", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario,
+        aspirante: aspirante[0],
+      });
     });
   });
 };
