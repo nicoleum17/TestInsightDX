@@ -26,16 +26,14 @@ router.get(
 );
 
 router.get(
-  "/calendarioPsicologaAuth",
+  "/PsicologaAuth",
   isAuth,
-  consultarCalendario,
   psicologaController.getOauthAuthenticator
 );
 
 router.get(
   "/redirect",
   isAuth,
-  consultarCalendario,
   psicologaController.getRedirectOauth
 );
 
