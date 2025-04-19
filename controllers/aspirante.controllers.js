@@ -386,6 +386,7 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = async (request, response, next) => {
+  console.log(request.session);
   //agregar un if para validar que sea kostick!!!!!!!!!!!!!!!!!!!!!!!
   const letras = [
     "G",
@@ -496,13 +497,13 @@ exports.get_pruebaCompletada = async (request, response, next) => {
 
     const promesas = [];
 
-    let opcion = "a";
     let pregunta = 0;
     const size = m.length;
 
     for (let l = 0; l < size; l++) {
       for (let o = 0; o <= 1; o++) {
-        if (o == 0) {
+        let opcion = "a";
+        if (o === 0) {
           opcion = "a";
         } else {
           opcion = "b";
@@ -517,11 +518,9 @@ exports.get_pruebaCompletada = async (request, response, next) => {
               pregunta
             )
               .then((respuesta) => {
-                if (
-                  respuesta &&
-                  respuesta[0] &&
-                  respuesta[0][0]?.opcionKostick === opcion
-                ) {
+                console.log("Opción Kostick: ", respuesta[0][0].opcionKostick);
+                console.log("Opción: ", opcion);
+                if (respuesta[0][0].opcionKostick === opcion) {
                   suma[letra]++;
                 }
               })
