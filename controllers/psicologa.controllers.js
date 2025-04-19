@@ -158,6 +158,9 @@ exports.get_respuestasA = (request, response, next) => {
   const idUsuario = request.params.idusuario;
   const idPrueba = request.params.idprueba;
 
+  console.log("Usuario: ", idUsuario);
+  console.log("Prueba: ", idPrueba);
+
   if (idPrueba == 1) {
     Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
       PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {

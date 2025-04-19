@@ -386,6 +386,7 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = async (request, response, next) => {
+  //agregar un if para validar que sea kostick!!!!!!!!!!!!!!!!!!!!!!!
   const letras = [
     "G",
     "L",
@@ -542,8 +543,8 @@ exports.get_pruebaCompletada = async (request, response, next) => {
   }
 
   const mis_resultadosKostick = new ResultadosKostick(
-    request.session.idUsuario.idUsuario,
     request.session.grupo,
+    request.session.idUsuario.idUsuario,
     suma[0],
     suma[1],
     suma[2],
