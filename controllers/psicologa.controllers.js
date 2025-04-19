@@ -477,8 +477,7 @@ exports.get_reporteAspirante = (request, response, next) => {
 exports.get_consultarReporteAspirante = (request, response, next) => {
   const idUsuario = request.params.idUsuario;
   Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
-    PerteneceGrupo.consultarReporte(idUsuario).then(([reporte]) => {
-      console.log(reporte[0]);
+    PerteneceGrupo.consultarReporte(idUsuario).then(([documentos]) => {
       request.session.idUsuario = idUsuario;
       response.render("consultarReporteAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
@@ -487,7 +486,7 @@ exports.get_consultarReporteAspirante = (request, response, next) => {
         privilegios: request.session.privilegios || [],
         aspirante: aspirante[0],
         idUsuario: request.session.idUsuario,
-        reporte: reporte[0],
+        documentos: documentos[0],
       });
     });
   });
@@ -500,7 +499,7 @@ exports.getPdfFile = (request, response, next) => {
   response.sendFile(filePath, (err) => {
     if (err) {
       console.error("Error sending file:", err);
-      res.status(err.status).end();
+      response.status(err.status).end();
     }
   });
 };
@@ -651,15 +650,15 @@ exports.getEventoCalendario = (request, response, next) => {
 
 exports.registraReporte = (request, response, next) => {
   const idUsuario = request.params.idUsuario;
-    Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
-      response.render("registraReporte", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        aspirante: aspirante[0],
-        idUsuario: request.session.idUsuario || "",
-      });
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    response.render("registraReporte", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      aspirante: aspirante[0],
+      idUsuario: request.session.idUsuario || "",
+    });
   });
 };
 
