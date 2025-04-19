@@ -637,19 +637,24 @@ exports.getEventoCalendario = (request, response, next) => {
   );
 };
 
-exports.post_registraReporte = (request, response, next) => {
-  let reporte = request.file.filename;
-  Aspirante.update_subirReporte(request.session.idUsuario, reporte).then(() => {
-    response.redirect("/psicologa/reporteAspirante/subirReporte");
+exports.registraReporte = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+    Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+      response.render("registraReporte", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        idUsuario: request.session.idUsuario || "",
+      });
   });
 };
 
-exports.registraReporte = (request, response, next) => {
-  response.render("registrarReporte", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-    idUsuario: request.session.idUsuario || "",
+exports.post_registraReporte = (request, response, next) => {
+  let reporte = request.file.filename;
+  let idUsuario = request.params.idUsuario;
+  Aspirante.update_subirReporte(idUsuario, reporte).then(() => {
+    response.redirect("/psicologa/reporteAspirante/" + idUsuario);
   });
 };

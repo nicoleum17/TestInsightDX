@@ -204,6 +204,14 @@ router.get(
   psicologaController.get_kostickActiva
 );
 
+router.get("/registraReporte/:idUsuario", isAuth, psicologaController.registraReporte);
+
+router.post(
+  "/registraReporte/:idUsuario",
+  isAuth,
+  psicologaController.post_registraReporte
+);
+
 router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);
 
 module.exports = router;
