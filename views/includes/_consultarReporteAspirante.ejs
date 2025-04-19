@@ -9,18 +9,71 @@
     <div class="columns">
       <div class="column has-text-centered">
         <h1 class="title has-text-weight-semibold">
-          Reporte - <%= aspirante.nombres%> <%= aspirante.apellidoPaterno%> <%=
+          Documentos: <%= aspirante.nombres%> <%= aspirante.apellidoPaterno%> <%=
           aspirante.apellidoMaterno%>
         </h1>
-        <div class="columns">
-          <div class="column has-text-centered">
-            <% if (reporte.reporte === null) { %>
+        <br>
+        <br>
+        <div class="columns is-centered">
+          <div class="column has-text-centered is-narrow">
+            <% if (documentos.reporte === null) { %>
               <p>Aún no hay un reporte registrado para este aspirante</p>
-            <%} else {%>  
-              <p>Not null</p>
-              <%}%>
+            <% } else { %>
+              <a href="/psicologa/pdf/<%= documentos.reporte %>">
+                <div class="card card-option has-text-centered">
+                  <div class="card-content">
+                    <span class="icon is-large has-text-primary mb-3">
+                      <i class="fa-solid fa-file fa-2xl" style="color: #000000;"></i>
+                    </span>
+                    <p class="title is-6 has-text-weight-semibold">
+                      Consultar reporte
+                    </p>
+                  </div>
+                </div>
+              </a>
+            <% } %>
           </div>
-
+        
+          <div class="column has-text-centered is-narrow">
+            <% if (documentos.kardex === null) { %>
+              <p>Aún no hay kardex registrado <br>para este aspirante</p>
+            <% } else { %>
+              <a href="/psicologa/pdf/<%= documentos.kardex %>">
+                <div class="card card-option has-text-centered">
+                  <div class="card-content">
+                    <span class="icon is-large has-text-primary mb-3">
+                      <i class="fa-solid fa-file-lines fa-2xl" style="color: #000000;"></i>
+                    </span>
+                    <p class="title is-6 has-text-weight-semibold">
+                      Consultar kardex
+                    </p>
+                  </div>
+                </div>
+              </a>
+            <% } %>
+          </div>
+        
+          <div class="column has-text-centered is-narrow">
+            <% if (documentos.curriculumVitae === null) { %>
+              <p>Aún no hay CV registrado <br>para este aspirante</p>
+            <% } else { %>
+              <a href="/psicologa/pdf/<%= documentos.curriculumVitae %>">
+                <div class="card card-option has-text-centered">
+                  <div class="card-content">
+                    <span class="icon is-large has-text-primary mb-3">
+                      <i class="fa-solid fa-file-invoice fa-2xl" style="color: #000000;"></i>
+                    </span>
+                    <p class="title is-6 has-text-weight-semibold">
+                      Consultar CV
+                    </p>
+                  </div>
+                </div>
+              </a>
+            <% } %>
+          </div>
         </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

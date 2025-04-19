@@ -167,7 +167,7 @@ router.get(
 );
 
 router.get(
-  "/consultarReporteAspirante/:idUsuario",
+  "/consultarDocumentosAspirante/:idUsuario",
   isAuth,
   psicologaController.get_consultarReporteAspirante
 );
@@ -204,7 +204,11 @@ router.get(
   psicologaController.get_kostickActiva
 );
 
-router.get("/registraReporte/:idUsuario", isAuth, psicologaController.registraReporte);
+router.get(
+  "/registraReporte/:idUsuario",
+  isAuth,
+  psicologaController.registraReporte
+);
 
 router.post(
   "/registraReporte/:idUsuario",
