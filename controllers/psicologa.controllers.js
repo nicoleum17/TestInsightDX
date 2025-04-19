@@ -10,6 +10,7 @@ const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/resultadosKostick.model");
+const Resultados16PF = require("../model/resultados16PF.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -158,14 +159,10 @@ exports.get_respuestasA = (request, response, next) => {
   const idUsuario = request.params.idusuario;
   const idPrueba = request.params.idprueba;
 
-  console.log("Usuario: ", idUsuario);
-  console.log("Prueba: ", idPrueba);
-
-  if (idPrueba == 1) {
     Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
       PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
         Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
-          //console.log("Grupo: ", grupoRows);
+          if (idPrueba == 1) {
           ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
             (resultados) => {
               response.render("consultaRespuestasAspirante", {
@@ -180,10 +177,25 @@ exports.get_respuestasA = (request, response, next) => {
               });
             }
           );
+        } else if (idPrueba == 2) {
+          Resultados16PF.fetchAll(rows[0].idGrupo, idUsuario).then(
+            (resultados) => {
+              response.render("consultaRespuestasAspirante", {
+                isLoggedIn: request.session.isLoggedIn || false,
+                usuario: request.session.usuario || "",
+                csrfToken: request.csrfToken(),
+                privilegios: request.session.privilegios || [],
+                prueba: "Personalidad 16 Factores (16 PF)",
+                grupo: grupoRows,
+                valores: resultados[0][0],
+                datos: datosAspirante[0],
+              });
+            }
+          );
+        }
         });
       });
     });
-  }
 };
 
 exports.get_respuestasG = (request, response, next) => {

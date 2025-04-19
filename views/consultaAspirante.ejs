@@ -127,13 +127,8 @@
                 const modificarAspirante = row.insertCell(6);
                 const reporte = row.insertCell(7);
 
-                (nombreAspirante.textContent = aspirante.nombres),
-                  " ",
-                  aspirante.apellidoPaterno,
-                  " ",
-                  aspirante.apellidoMaterno;
-                codigoIdentidadAspirante.textContent =
-                  aspirante.codigoIdentidad;
+                (nombreAspirante.textContent = aspirante.nombres + " " + aspirante.apellidoPaterno + " " + aspirante.apellidoMaterno);
+                codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
                 telefonoAspirante.textContent = aspirante.numTelefono;
                 lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
                 correoAspirante.textContent = aspirante.correo;
