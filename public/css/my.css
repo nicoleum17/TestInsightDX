@@ -157,3 +157,17 @@
     margin-top: 5px;
     font-size: 10px;
   }
+
+  .tarjeta {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 6px solid #00d1b2; 
+  }
+
+  .tarjeta:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
