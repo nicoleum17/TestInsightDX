@@ -165,7 +165,6 @@ exports.get_respuestasA = (request, response, next) => {
     Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
       PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
         Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
-          //console.log("Grupo: ", grupoRows);
           ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
             (resultados) => {
               response.render("consultaRespuestasAspirante", {
@@ -174,7 +173,7 @@ exports.get_respuestasA = (request, response, next) => {
                 csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 prueba: "El inventario de Percepción Kostick",
-                grupo: grupoRows,
+                grupo: grupoRows[0],
                 valores: resultados[0][0],
                 datos: datosAspirante[0],
               });
