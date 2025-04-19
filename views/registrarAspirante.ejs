@@ -77,9 +77,18 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const hoy = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+
+    const fecha = document.querySelector('input[name="fechaSesionIndividual"]').value;
+
+    if (fecha < hoy) {
+      e.preventDefault(); 
+      alert("Las fechas de la sesión individual NO pueden ser anterior al día actual.");
+    }
+});
+</script>
+
 <%- include('includes/_footer') %>
-
-
-:80 {
-    reverse_proxy localhost:3001
-}
