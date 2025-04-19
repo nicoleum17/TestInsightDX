@@ -5,7 +5,7 @@ const mailerSend = new MailerSend({
 });
 
 const sentFrom = new Sender(
-  "testinsightdx@softsync.psicodx.com",
+  "testinsightdx@test-68zxl27rjd34j905.mlsender.net",
   "TestInsight DX"
 );
 
@@ -23,15 +23,16 @@ const sendEmail = async (correo, nombre, token) => {
       .setTo([new Recipient(correo)])
       .setPersonalization([
         {
-          correo: correo,
-          nombre: nombre,
-          token: token,
+          email: correo,
+          data: {
+            nombre: nombre,
+            token: token,
+          },
         },
       ]);
     const response = await mailerSend.email.send(emailParams);
     return response;
   } catch (error) {
-    console.error("Error sending email:", error); // Log the error
     throw new Error("Error al enviar correo");
   }
 };
