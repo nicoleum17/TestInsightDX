@@ -214,28 +214,61 @@
     };
   }
 
-  const config = {
-    type: "bar",
-    data: data,
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: "Valores",
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            text: "Factores",
-          },
-        },
+  const descripciones = {
+  A: "Afiabilidad",
+  B: "Razonamiento",
+  C: "Estabilidad emocional",
+  E: "Dominancia",
+  F: "Vivacidad",
+  G: "Atención a las normas",
+  H: "Audacia social",
+  I: "Sensibilidad",
+  L: "Confianza",
+  M: "Abstracción",
+  N: "Astucia",
+  O: "Aprensión",
+  Q1: "Apertura al cambio",
+  Q2: "Autosuficiencia",
+  Q3: "Perfeccionismo",
+  Q4: "Tensión",
+};
+
+const config = {
+  type: "bar",
+  data: data,
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Valores"
+        }
       },
+      x: {
+        title: {
+          display: true,
+          text: "Factores"
+        }
+      }
     },
-  };
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const factor = context.label;
+            const valor = context.raw;
+            const descripcion = descripciones[factor] || factor;
+            return `${descripcion}: ${valor}`;
+          }
+        }
+      }
+    }
+  }
+};
+
+const myChart = new Chart(document.getElementById("grafico16PF"), config);
 
   new Chart(ctx, config);
 </script>
