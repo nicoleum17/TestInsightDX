@@ -511,6 +511,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
         for (let p = 0; p < m[l][o].length; p++) {
           pregunta = m[l][o][p];
           const letra = l;
+          console.log(request.session.idUsuario);
           promesas.push(
             RespondeKostick.fetchRespuesta(
               request.session.grupo,

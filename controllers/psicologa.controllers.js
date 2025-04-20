@@ -81,7 +81,7 @@ exports.registrarAspirante = (request, response, next) => {
 };
 
 exports.post_registrarAspirante = (request, response, next) => {
-  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+  const calendar = google.calendar({ version: "v3", auth: oauth2Client });
   const mi_aspirante = new Aspirante(
     request.body.codigoI,
     request.body.nombre,
@@ -101,44 +101,44 @@ exports.post_registrarAspirante = (request, response, next) => {
       request.body.horaSesionIndividual,
     request.body.enlaceZoom
   );
-  const fechaInicioIOS = `${request.body.fechaSesionIndividual}T${request.body.horaSesionIndividual}:00`
+  const fechaInicioIOS = `${request.body.fechaSesionIndividual}T${request.body.horaSesionIndividual}:00`;
   const inicioDate = new Date(fechaInicioIOS);
-  const finalDate = new Date(inicioDate.getTime()+90*60000);
+  const finalDate = new Date(inicioDate.getTime() + 90 * 60000);
   const fechaFinalIOS = finalDate.toISOString();
   const eventoNuevo = new eventoGoogle(
     `Sesion Individual de: ${request.body.nombre} ${request.body.apellidoP}`,
-    'Zoom',
+    "Zoom",
     `Sesion Individual con ${request.body.nombre}`,
     fechaInicioIOS,
     fechaFinalIOS
-  )
-
-
+  );
 
   const eventoCreado = {
     summary: eventoNuevo.nombre,
     location: eventoNuevo.lugar,
     description: eventoNuevo.descripcion,
     start: {
-      dateTime:eventoNuevo.inicio,
-      timeZone:'America/Mexico_City'
+      dateTime: eventoNuevo.inicio,
+      timeZone: "America/Mexico_City",
     },
     end: {
-      dateTime:eventoNuevo.final,
-      timeZone:'America/Mexico_City'
+      dateTime: eventoNuevo.final,
+      timeZone: "America/Mexico_City",
+    },
+  };
+  calendar.events.insert(
+    {
+      calendarId: "primary",
+      resource: eventoCreado,
+    },
+    (err, ev) => {
+      if (err) {
+        console.error("Error creando evento: " + err);
+      } else {
+        console.log("EXITO AL CREAR EVENTO");
+      }
     }
-  }
-  calendar.events.insert({
-    calendarId: 'primary',
-    resource: eventoCreado,
-  }, (err, ev) =>{
-    if (err) {
-      console.error('Error creando evento: ' + err);
-    }
-    else {
-      console.log("EXITO AL CREAR EVENTO");
-    }
-  })
+  );
   const nombreUsuario = mi_aspirante.codigoIdentidad + new Date().getFullYear();
   const contraseñaBase = uuidv4();
 
@@ -146,7 +146,6 @@ exports.post_registrarAspirante = (request, response, next) => {
   console.log("Contraseña Base: " + contraseñaBase);
 
   const fehcaZoom = new Date(request.body.fechaSesionIndividual);
-
 
   const mi_usuario = new Usuario(
     mi_aspirante.idUsuario,

@@ -52,7 +52,10 @@ exports.post_login = (request, response, next) => {
                   request.session.privilegios = privilegios;
                   request.session.idUsuario = rows[0].idUsuario;
                   if (rows[0].idRol === 1) {
-                    response.redirect("/psicologa/inicio");
+                    response.redirect("psicologa/PsicologaAuth");
+                    //TARABAJAR AQUI!
+
+
                   } else if (rows[0].idRol === 2) {
                     Usuario.getAspirante(rows[0].idUsuario).then(
                       ([aspirante]) => {
