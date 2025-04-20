@@ -14,6 +14,7 @@ const Grupo = require("../model/grupo.model");
 const OTP = require("../model/otp.model");
 const { google } = require("googleapis");
 const ResultadosKostick = require("../model/resultadosKostick.model");
+const TienePruebas = require("../model/tienePruebas.model");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.SECRET,
@@ -56,17 +57,22 @@ exports.get_root = (request, response, next) => {
       Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
         PruebaAspirante.fetchOne(request.session.idUsuario).then(
           ([pruebasAspirante]) => {
-            response.render("inicioAspirante", {
-              pruebas: rows,
-              isLoggedIn: request.session.isLoggedIn || false,
-              usuario: request.session.usuario || "",
-              csrfToken: request.csrfToken(),
-              privilegios: request.session.privilegios || [],
-              grupo: request.session.grupo,
-              pruebasAspirante: pruebasAspirante,
-              idUsuario: request.session.idUsuario,
-              aspirante: aspirante[0],
-            });
+            TienePruebas.getFechaLimite(request.session.idUsuario).then(
+              ([fechaLimite]) => {
+                response.render("inicioAspirante", {
+                  pruebas: rows,
+                  isLoggedIn: request.session.isLoggedIn || false,
+                  usuario: request.session.usuario || "",
+                  csrfToken: request.csrfToken(),
+                  privilegios: request.session.privilegios || [],
+                  grupo: request.session.grupo,
+                  pruebasAspirante: pruebasAspirante,
+                  idUsuario: request.session.idUsuario,
+                  aspirante: aspirante[0],
+                  fechaLimite: fechaLimite[0],
+                });
+              }
+            );
           }
         );
       });

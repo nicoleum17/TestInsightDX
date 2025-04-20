@@ -32,4 +32,11 @@ module.exports = class TienePruebas {
       [fechaLimitePrueba, idGrupo]
     );
   }
+
+  static getFechaLimite(idUsuario) {
+    return db.execute(
+      "SELECT pg.idUsuario, tp.idPrueba, tp.fechaLimitePrueba FROM tienePruebas tp JOIN perteneceGrupo pg ON tp.idGrupo = pg.idGrupo WHERE idUsuario = ?",
+      [idUsuario]
+    );
+  }
 };

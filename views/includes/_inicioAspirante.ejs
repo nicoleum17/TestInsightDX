@@ -36,8 +36,8 @@
                 <p class="has-text-link">¡Importante!</p>
               </div>
               <div class="message-body">
-                Tienes <strong>7 días</strong> para realizar tus pruebas y
-                cargar tu documentación.
+                Tienes <strong><span id="days-left"></span> días</strong> para
+                realizar tus pruebas y cargar tu documentación.
               </div>
             </article>
           </div>
@@ -73,3 +73,20 @@
     <% }); %>
   </div>
 </section>
+<script>
+  function calculateDaysUntilFutureDate(futureDate) {
+    const currentDate = new Date();
+    const endDate = new Date(futureDate);
+    const timeDifference = endDate - currentDate;
+    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+    return daysDifference;
+  }
+
+  // Get the future date from your server-side variable
+  const futureDate =
+    "<%= fechaLimite.fechaLimitePrueba.toISOString().split('T')[0] %>"; // Ensure this is in a valid date format
+  const daysLeft = calculateDaysUntilFutureDate(futureDate);
+
+  // Render the days left in the HTML
+  document.getElementById("days-left").textContent = daysLeft;
+</script>
