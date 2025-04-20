@@ -262,6 +262,12 @@ exports.crear_grupo = (request, response, next) => {
 };
 
 exports.post_grupo = (request, response, next) => {
+  const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+  const fechaGrupoInicioIOS = `${request.body.fechaPruebaGrupal}T${request.body.horaPruebaGrupal}:00`;
+  const inicioDateGrupo = new Date(fechaGrupoInicioIOS);
+  const finalDateGrupo = new Date(inicioDateGrupo.getTime() + 90 * 60000);
+  const fechaGrupoFinalIOS = finalDateGrupo.toISOString();
+  //TRABAJO AQUI
   const mi_grupo = new Grupo(
     request.body.institucion,
     request.body.posgrado,
@@ -269,7 +275,39 @@ exports.post_grupo = (request, response, next) => {
     request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal,
     request.body.enlaceZoom
   );
-
+  const eventoNuevo = new eventoGoogle(
+    `Sesion Grupal de: ${request.body.institucion} para el posgrado ${request.body.posgrado}`,
+    "Zoom",
+    `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
+    fechaGrupoInicioIOS,
+    fechaGrupoFinalIOS
+  );  
+  const eventoCreado = {
+    summary: eventoNuevo.nombre,
+    location: eventoNuevo.lugar,
+    description: eventoNuevo.descripcion,
+    start: {
+      dateTime: eventoNuevo.inicio,
+      timeZone: "America/Mexico_City",
+    },
+    end: {
+      dateTime: eventoNuevo.final,
+      timeZone: "America/Mexico_City",
+    },
+  };
+  calendar.events.insert(
+    {
+      calendarId: "primary",
+      resource: eventoCreado,
+    },
+    (err, ev) => {
+      if (err) {
+        console.error("Error creando evento: " + err);
+      } else {
+        console.log("EXITO AL CREAR EVENTO");
+      }
+    }
+  );
   mi_grupo
     .save()
     .then(() => {
