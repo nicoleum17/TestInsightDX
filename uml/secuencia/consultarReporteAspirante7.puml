@@ -5,6 +5,7 @@ boundary    vistas__consultarAspirante.ejs  as a3
 boundary    vistas_consultarReporte.ejs as a6
 control     psicologa.controllers        as a4
 entity      aspirante.model              as a7
+entity      perteneceGrupo.model         as a8
 database    mysql                        as a5
 
 autonumber
@@ -27,6 +28,16 @@ deactivate a5
 a7 -->> a4: rows
 deactivate a7
 
+a4 ->> a8: consultarReporte(idUsuario)
+activate a8
+a8 ->> a5: execute("SELECT * FROM perteneceGrupo WHERE idUsuario = ?", [idUsuario]
+activate a5
+a5 -->> a8: documentos
+deactivate a5
+a8 -->> a4: documentos
+deactivate a8
+
+
 a4->a6: response.render('consultarReporteAspirante.ejs')
 note right
       isLoggedIn: request.session.isLoggedIn || false,
@@ -34,6 +45,7 @@ note right
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       idUsuario: idUsuario[0],
+      documentos: documentos[0],
 end note
 deactivate a4
 activate a6
