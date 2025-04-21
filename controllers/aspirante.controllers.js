@@ -53,29 +53,29 @@ exports.post_verificarOtp = (request, response, next) => {
  Necesita la información de aspirante, qué pruebas tiene asignadas, y el status de dichas pruebas */
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-    Prueba.fetchAll().then(([rows]) => {
-      Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
-        PruebaAspirante.fetchOne(request.session.idUsuario).then(
-          ([pruebasAspirante]) => {
-            TienePruebas.getFechaLimite(request.session.idUsuario).then(
-              ([fechaLimite]) => {
-                response.render("inicioAspirante", {
-                  pruebas: rows,
-                  isLoggedIn: request.session.isLoggedIn || false,
-                  usuario: request.session.usuario || "",
-                  csrfToken: request.csrfToken(),
-                  privilegios: request.session.privilegios || [],
-                  grupo: request.session.grupo,
-                  pruebasAspirante: pruebasAspirante,
-                  idUsuario: request.session.idUsuario,
-                  aspirante: aspirante[0],
-                  fechaLimite: fechaLimite[0],
-                });
-              }
-            );
-          }
-        );
-      });
+    console.log("Aspirante", aspirante[0]);
+    console.log("idUsuario", request.session.idUsuario);
+    Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
+      PruebaAspirante.fetchOne(request.session.idUsuario).then(
+        ([pruebasAspirante]) => {
+          TienePruebas.getFechaLimite(request.session.idUsuario).then(
+            ([fechaLimite]) => {
+              response.render("inicioAspirante", {
+                pruebas: rows,
+                isLoggedIn: request.session.isLoggedIn || false,
+                usuario: request.session.usuario || "",
+                csrfToken: request.csrfToken(),
+                privilegios: request.session.privilegios || [],
+                grupo: request.session.grupo,
+                pruebasAspirante: pruebasAspirante,
+                idUsuario: request.session.idUsuario,
+                aspirante: aspirante[0],
+                fechaLimite: fechaLimite[0],
+              });
+            }
+          );
+        }
+      );
     });
   });
 };
