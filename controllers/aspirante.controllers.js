@@ -640,8 +640,9 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasP = (request, response, next) => {
+exports.post_formato_entrevista_preguntasP = async (request, response, next) => {
   let numPregunta = 1;
+  const promesas = []
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -652,17 +653,21 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       request.body.idFormato
     );
     numPregunta += 1;
-    newPregunta
-      .save()
-      .then((id) => {
-        request.session.idFormato = id;
-        response.redirect("formatoEntrevistaFamilia");
-        console.log("Pregunta_Guardada");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
+
+    promesas.push(newPregunta.save())}
+
+    try{
+      const idPreguntas = await Promise.all(promesas);
+      console.log(promesas)
+      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+      response.redirect("formatoEntrevistaFamilia");
+      console.log("Pregunta Guardada");
+
+    }
+    catch (error){
+      console.error("Error al guardar preguntas:", error);
+    }
 };
 
 /* /* Función que funciona como controlador para cerrar la sesión del aspirante */
@@ -722,6 +727,7 @@ exports.post_formato_entrevista_preguntasDA = async (
   next
 ) => {
   let numPregunta = 7;
+  const promesas = []
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -729,20 +735,23 @@ exports.post_formato_entrevista_preguntasDA = async (
     const newPregunta = new preguntasFormato(
       request.body[a],
       numPregunta,
-      request.body.idFormato || ""
+      request.body.idFormato
     );
     numPregunta += 1;
-    await newPregunta
-      .save()
-      .then((id) => {
-        request.session.idFormato = id;
-        response.redirect("formatoEntrevistaDL");
-        console.log("Pregunta_Guardada");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
+
+    promesas.push(newPregunta.save())}
+
+    try{
+      const idPreguntas = await Promise.all(promesas);
+      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+      response.redirect("formatoEntrevistaFamilia");
+      console.log("Pregunta Guardada");
+
+    }
+    catch (error){
+      console.error("Error al guardar preguntas:", error);
+    }
 };
 
 exports.formato_entrevista_DL = (request, response, next) => {
@@ -785,8 +794,9 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
+exports.post_formato_entrevista_preguntasDL = async (request, response, next) => {
   let numPregunta = 14;
+  const promesas = []
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -794,20 +804,23 @@ exports.post_formato_entrevista_preguntasDL = (request, response, next) => {
     const newPregunta = new preguntasFormato(
       request.body[a],
       numPregunta,
-      request.body.idFormato || ""
+      request.body.idFormato
     );
     numPregunta += 1;
-    newPregunta
-      .save()
-      .then((id) => {
-        request.session.idFormato = id;
-        response.redirect("formatoEntrevista/confirmacion");
-        console.log("Pregunta_Guardada");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
+
+    promesas.push(newPregunta.save())}
+
+    try{
+      const idPreguntas = await Promise.all(promesas);
+      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+      response.redirect("formatoEntrevistaFamilia");
+      console.log("Pregunta Guardada");
+
+    }
+    catch (error){
+      console.error("Error al guardar preguntas:", error);
+    }
 };
 
 exports.formato_entrevista_familia = (request, response, next) => {
@@ -887,7 +900,7 @@ exports.formato_entrevista_familiar_TioP = (request, response, next) => {
 };
 
 exports.formato_entrevista_familiar_Padres = (request, response, next) => {
-  response.render("formatoEntrevistaFamiliar", {
+  response.render("formatoEntrevistaFamiliarObligatorio", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
     csrfToken: request.csrfToken(),

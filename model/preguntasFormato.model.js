@@ -12,11 +12,15 @@ module.exports = class preguntasFormato{
         this.idPregunta=mi_idPregunta;
         this.idEntrevista=mi_idEntrevista;
     }
-    save(){
-        return db.execute("INSERT INTO respuestaspreguntasformatos(idFormato,idPregunta,respuesta) VALUES(?,?,?)",
-            [this.idEntrevista,this.idPregunta,this.respuesta])
-            .then(([result]) => {
-                return this.idEntrevista;
-              });;
+    async save(){
+        const query = `INSERT INTO respuestaspreguntasformatos(idFormato,idPregunta,respuesta) VALUES(?,?,?) ON DUPLICATE KEY UPDATE respuesta = VALUES(respuesta)`;
+
+        const [resultado] = await db.execute(query, [
+            this.idEntrevista,
+            this.idPregunta,
+            this.respuesta, 
+        ]);
+
+        return this.idEntrevista;
     }
 }
