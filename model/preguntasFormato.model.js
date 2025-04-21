@@ -21,6 +21,6 @@ module.exports = class preguntasFormato{
             this.respuesta, 
         ]);
 
-        return this.idFormato;
+        return this.idEntrevista;
     }
 }
