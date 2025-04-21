@@ -640,8 +640,9 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasP = (request, response, next) => {
+exports.post_formato_entrevista_preguntasP = async (request, response, next) => {
   let numPregunta = 1;
+  const promesas = []
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -652,17 +653,20 @@ exports.post_formato_entrevista_preguntasP = (request, response, next) => {
       request.body.idFormato
     );
     numPregunta += 1;
-    newPregunta
-      .save()
-      .then((id) => {
-        request.session.idFormato = id;
-        response.redirect("formatoEntrevistaFamilia");
-        console.log("Pregunta_Guardada");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
+
+    promesas.push(newPregunta.save())}
+
+    try{
+      const idPreguntas = await Promise.all(promesas);
+      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+      response.redirect("formatoEntrevistaFamilia");
+      console.log("Pregunta Guardada");
+
+    }
+    catch (error){
+      console.error("Error al guardar preguntas:", error);
+    }
 };
 
 /* /* Función que funciona como controlador para cerrar la sesión del aspirante */
