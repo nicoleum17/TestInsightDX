@@ -39,6 +39,7 @@ module.exports = class Aspirante {
       ]
     );
   }
+
   /* query para modificar la información del aspirante */
   static updateAspirante(
     codigoIdentidad,
@@ -51,17 +52,6 @@ module.exports = class Aspirante {
     universidadOrigen,
     idUsuario
   ) {
-    console.log(
-      codigoIdentidad,
-      nombres,
-      apellidoPaterno,
-      apellidoMaterno,
-      numTelefono,
-      lugarOrigen,
-      correo,
-      universidadOrigen,
-      idUsuario
-    );
     return db
       .execute(
         "UPDATE aspirantes SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ? WHERE idUsuario = ?",

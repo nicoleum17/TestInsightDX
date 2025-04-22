@@ -5,6 +5,7 @@ boundary vistas_modificarAspirante as a3
 boundary vistas_consultarAspirante as a7
 control psicologa.controllers as a4
 entity aspirante as a5
+entity perteneceGrupo as a8
 database mysql as a6
 
 autonumber
@@ -45,14 +46,24 @@ activate a2
 a2 -> a4: post_modificarAspirante(request, response)
 deactivate a2
 activate a4
-a4 ->> a5: updateAspirante(codigoIdentidad, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen, hidden)
+a4 ->> a5: updateAspirante(codigoIdentidad, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen)
 activate a5 
-a5 ->> a6: execute("UPDATE Aspirante SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ?, hidden = ?", values)
+a5 ->> a6: execute("UPDATE aspirantes SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ?, hidden = ? WHERE idUsuario = ?", values)
 activate a6
 a6 -->> a5: Query OK
 deactivate a6
 a5 -->> a4: Query OK
 deactivate a5
+
+a4 ->> a8: updatePerteneceGrupo(fechaZoomIndividual, enlaceZoom)
+activate a8 
+a8 ->> a6: execute("UPDATE perteneceGrupo SET fechaZoomIndividual = ?, enlaceZoom = ? WHERE idUsuario = ?", values)
+activate a6
+a6 -->> a8: Query OK
+deactivate a6
+a8 -->> a4: Query OK
+deactivate a8
+
 a4 --> a2: response.redirect('/consultarAspirante')
 deactivate a4
 activate a2

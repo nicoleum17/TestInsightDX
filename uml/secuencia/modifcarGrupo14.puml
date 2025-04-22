@@ -5,6 +5,7 @@ boundary vistas_modificarGrupo as a3
 boundary vistas_elegirGrupo as a7
 control psicologa.controllers as a4
 entity grupo as a5
+entity tienePruebas as a8
 database mysql as a6
 
 autonumber
@@ -45,14 +46,23 @@ activate a2
 a2 -> a4: post_modificarGrupo(request, response)
 deactivate a2
 activate a4
-a4 ->> a5: updateGrupo(institución, posgrado, generacion, fechaLimite, enlaceZoom, hidden)
+a4 ->> a5: updateGrupo(institución, posgrado, generacion, enlaceZoom)
 activate a5 
-a5 ->> a6: execute("UPDATE Grupos SET institución = ?, posgrado = ?, generacion = ?, fechaLimite = ?, enlaceZoom = ?, hidden = ? WHERE idGrupo = ?", values)
+a5 ->> a6: execute("UPDATE Grupos SET institución = ?, posgrado = ?, generacion = ?, enlaceZoom = ?, WHERE idGrupo = ?", values)
 activate a6
 a6 -->> a5: Query OK
 deactivate a6
 a5 -->> a4: Query OK
 deactivate a5
+a4 ->> a8: updateGrupo(fechaLimite)
+activate a8
+a8 ->> a6: execute("UPDATE tienePruebas SET fechaLimitePrueba = ? WHERE idGrupo = ?", fechaLimitePrueba, idGrupo)
+activate a6
+a6 -->> a8: Query OK
+deactivate a6
+a8 -->> a4: Query OK
+deactivate a8
+
 a4 --> a2: response.redirect('/elegirGrupo')
 deactivate a4
 activate a2

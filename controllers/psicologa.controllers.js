@@ -395,7 +395,6 @@ exports.get_grupo = (request, response, next) => {
 
 exports.registra_reporte_grupo = (request, response, next) => {
   const numGrupo = request.params.id;
-
   Grupo.fetchOneId(numGrupo).then(([rows]) => {
     response.render("registrarReporteGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,

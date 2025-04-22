@@ -62,6 +62,7 @@ module.exports = class Grupo {
       [archivoFoda, idGrupo]
     );
   }
+
   /* query para modificar la información del grupo */
   static updateGrupo(
     institucion,
