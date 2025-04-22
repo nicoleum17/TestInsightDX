@@ -63,7 +63,7 @@
         <thead>
           <tr>
             <th>Prueba</th>
-            <th>Fecha</th>
+            <th>Fecha Límite</th>
             <th>Tiempo</th>
             <th>Estatus</th>
             <th>Respuestas</th>
@@ -137,13 +137,13 @@
                 correoAspirante.textContent = aspirante.correo;
                 universidadAspirante.textContent = aspirante.universidadOrigen;
                 modificarAspirante.innerHTML = `
-         <a href="modificarAspirante/${aspirante.idUsuario}">
-           <button class="image-button">
-             <img
-               src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
-               alt=""
-               width="20px" /></button
-         > </a>`;
+                  <a href="modificarAspirante/${aspirante.idUsuario}">
+                    <button class="image-button">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
+                        alt=""
+                        width="20px" /></button
+                  > </a>`;
 
                 contenedorSugerencias.style.display = "none";
                 bodyPrueba = document
@@ -176,7 +176,7 @@
                           .then((data) => {
                             nombrePrueba.textContent = "Kostick";
                             tiempoPrueba.textContent =
-                              data.kostickTiempo.tiempo;
+                              data.kostickTiempo.tiempo + " hrs";
                             respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/1">
                                                       <button class="image-button">
                                                         <img
@@ -193,7 +193,7 @@
                           .then((result) => result.json())
                           .then((data) => {
                             nombrePrueba.textContent = "16PF";
-                            tiempoPrueba.textContent = data.P16PFTiempo.tiempo;
+                            tiempoPrueba.textContent = data.P16PFTiempo.tiempo + " hrs";
                             respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/2">
                                                       <button class="image-button">
                                                         <img

@@ -41,18 +41,17 @@ module.exports = class Prueba {
 
   static pruebasActivas(idUsuario) {
     return db.execute(
-      `SELECT tp.idPrueba as idPrueba, tp.fechaLimitePrueba as fecha, pa.estatus as estatus
-      FROM pertenecegrupo pg
-      JOIN tienepruebas tp ON pg.idGrupo = tp.idGrupo
-      JOIN pruebasaspirante pa ON pa.idPrueba = tp.idPrueba
-      WHERE pg.idUsuario = ?`,
+      `SELECT pa.idPrueba as idPrueba, DATE_FORMAT(fechaLimitePrueba, '%Y-%m-%d %H:%i:%s') as fecha, pa.estatus as estatus
+        FROM pruebasAspirante pa
+        JOIN tienepruebas tp ON pa.idGrupo = tp.idGrupo AND pa.idPrueba = tp.idPrueba
+        WHERE pa.idUsuario = ?`,
       [idUsuario]
     );
   }
 
   static kostickActiva(idUsuario) {
     return db.execute(
-      `SELECT MAX(tiempo)
+      `SELECT SEC_TO_TIME(FLOOR(MAX(tiempo))) as tiempo
       FROM respondekostick
       WHERE idUsuario = ?;`,
       [idUsuario]
@@ -61,9 +60,9 @@ module.exports = class Prueba {
 
   static P16PFActiva(idUsuario) {
     return db.execute(
-      `SELECT MAX(tiempo)
-      FROM respondekostick
-      WHERE idUsuario = ?;`,
+      `SELECT SEC_TO_TIME(FLOOR(MAX(tiempo))) as tiempo
+      FROM responde16PF
+      WHERE idUsuario = ?`,
       [idUsuario]
     );
   }
