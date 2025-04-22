@@ -1,4 +1,5 @@
 const { response, request } = require("express");
+const bcrypt = require("bcryptjs");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
 const familia = require("../model/familiaEntrevista.model");
@@ -30,23 +31,32 @@ exports.get_verificarOtp = (request, response, next) => {
 
 /* Función que sirve como controlador que permite verificar el token de seguridad */
 exports.post_verificarOtp = (request, response, next) => {
-  OTP.fetchOne(request.session.idUsuario).then(([otp]) => {
-    if (
-      otp[0].contraseña === request.body.token &&
-      new Date(otp[0].expiraEn).getTime() > Date.now() &&
-      otp[0].estaActivo === 1
-    ) {
-      csrfToken: request.csrfToken();
-      grupo: request.session.grupo;
-      OTP.updateOtp(otp[0].idOTP).then(() => {
-        response.redirect("/aspirante/inicio");
+  OTP.fetchOne(request.session.idUsuario)
+    .then(([otp]) => {
+      bcrypt.compare(request.body.token, otp[0].contraseña).then((doMatch) => {
+        if (
+          doMatch &&
+          new Date(otp[0].expiraEn).getTime() > Date.now() &&
+          otp[0].estaActivo === 1
+        ) {
+          csrfToken: request.csrfToken();
+          grupo: request.session.grupo;
+
+          OTP.updateOtp(otp[0].idOTP).then(() => {
+            response.redirect("/aspirante/inicio");
+          });
+        } else {
+          OTP.updateOtp(otp[0].idOTP).then(() => {
+            console.log("OTP inválido");
+            response.redirect("/login");
+          });
+        }
       });
-    } else
-      OTP.updateOtp(otp[0].idOTP).then(() => {
-        console.log("OTP inválido");
-        response.redirect("/login");
-      });
-  });
+    })
+    .catch((err) => {
+      console.error(err);
+      response.status(500).send("An error occurred");
+    });
 };
 
 /* Función que sirve como controlador para permitir renderizar la vista de inicio del rol de aspirante.
