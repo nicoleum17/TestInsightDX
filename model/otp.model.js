@@ -1,5 +1,6 @@
 const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcryptjs");
 /*modelo de la tabla que guarda los otp de un aspirante */
 module.exports = class OTP {
   constructor(idUsuario, contraseña, expiraEn) {
@@ -9,10 +10,17 @@ module.exports = class OTP {
     this.expiraEn = expiraEn;
   }
   save() {
-    return db.execute(
-      "INSERT INTO otp (idOTP, idUsuario, contraseña, expiraEn) VALUES (?, ?, ?, ?)",
-      [this.idOTP, this.idUsuario, this.contraseña, this.expiraEn]
-    );
+    return bcrypt
+      .hash(this.contraseña, 12)
+      .then((otp_cifrado) => {
+        return db.execute(
+          "INSERT INTO otp (idOTP, idUsuario, contraseña, expiraEn) VALUES (?, ?, ?, ?)",
+          [this.idOTP, this.idUsuario, otp_cifrado, this.expiraEn]
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   /* query que obtiene el otp más reciente por aspirante para la comparación al momento de verificar */
   static fetchOne(idUsuario) {

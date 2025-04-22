@@ -54,8 +54,6 @@ exports.post_login = (request, response, next) => {
                   if (rows[0].idRol === 1) {
                     response.redirect("psicologa/PsicologaAuth");
                     //TARABAJAR AQUI!
-
-
                   } else if (rows[0].idRol === 2) {
                     Usuario.getAspirante(rows[0].idUsuario).then(
                       ([aspirante]) => {
@@ -67,18 +65,17 @@ exports.post_login = (request, response, next) => {
                           otp,
                           expiraEn
                         );
-                        newOTP.save().then((uuid) => {
-                          console.log("OTP saved successfully:");
-                          /*return MS.sendEmail(
+                        newOTP
+                          .save()
+                          .then((uuid) => {
+                            console.log("OTP saved successfully:");
+                            return MS.sendEmail(
                               aspiranteDatos.correo,
                               aspiranteDatos.nombres,
                               otp
                             );
                           })
-                          .then((response) => {
-                            console.log("Email sent successfully:", response);
-                            response.redirect("/aspirante/verificarOtp");*/
-                        });
+                          .then((response) => {});
                         Usuario.getGrupo(rows[0].idUsuario).then(([grupo]) => {
                           (request.session.grupo = grupo[0].idGrupo),
                             response.redirect("/aspirante/verificarOtp");
