@@ -5,16 +5,16 @@ const formatoEntrevista = require("../model/formatoEntrevista.model");
 const familia = require("../model/familiaEntrevista.model");
 const familiar = require("../model/familiar.model");
 const preguntasFormato = require("../model/preguntasFormato.model");
-const Pregunta16PF = require("../model/preguntas16pf.model");
-const PreguntaKostick = require("../model/preguntasKostick.model");
-const Responde16PF = require("../model/responde16pf.model");
-const RespondeKostick = require("../model/respondeKostick.model");
+const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
+const PreguntaKostick = require("../model/kostick/preguntasKostick.model");
+const Responde16PF = require("../model/16pf/responde16pf.model");
+const RespondeKostick = require("../model/kostick/respondeKostick.model");
 const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
 const OTP = require("../model/otp.model");
 const { google } = require("googleapis");
-const ResultadosKostick = require("../model/resultadosKostick.model");
+const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -226,6 +226,8 @@ exports.post_preguntasPrueba = (request, response, next) => {
       .catch((error) => {
         console.log(error);
       });
+  } else if (request.params.idPrueba == 3) {
+    // Para Hartman
   }
 };
 
@@ -650,9 +652,13 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasP = async (request, response, next) => {
+exports.post_formato_entrevista_preguntasP = async (
+  request,
+  response,
+  next
+) => {
   let numPregunta = 1;
-  const promesas = []
+  const promesas = [];
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -664,20 +670,18 @@ exports.post_formato_entrevista_preguntasP = async (request, response, next) => 
     );
     numPregunta += 1;
 
+    promesas.push(newPregunta.save());
+  }
 
-    promesas.push(newPregunta.save())}
-
-    try{
-      const idPreguntas = await Promise.all(promesas);
-      console.log(promesas)
-      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
-      response.redirect("formatoEntrevistaFamilia");
-      console.log("Pregunta Guardada");
-
-    }
-    catch (error){
-      console.error("Error al guardar preguntas:", error);
-    }
+  try {
+    const idPreguntas = await Promise.all(promesas);
+    console.log(promesas);
+    request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+    response.redirect("formatoEntrevistaFamilia");
+    console.log("Pregunta Guardada");
+  } catch (error) {
+    console.error("Error al guardar preguntas:", error);
+  }
 };
 
 /* /* Función que funciona como controlador para cerrar la sesión del aspirante */
@@ -737,7 +741,7 @@ exports.post_formato_entrevista_preguntasDA = async (
   next
 ) => {
   let numPregunta = 7;
-  const promesas = []
+  const promesas = [];
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -749,19 +753,17 @@ exports.post_formato_entrevista_preguntasDA = async (
     );
     numPregunta += 1;
 
+    promesas.push(newPregunta.save());
+  }
 
-    promesas.push(newPregunta.save())}
-
-    try{
-      const idPreguntas = await Promise.all(promesas);
-      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
-      response.redirect("formatoEntrevistaFamilia");
-      console.log("Pregunta Guardada");
-
-    }
-    catch (error){
-      console.error("Error al guardar preguntas:", error);
-    }
+  try {
+    const idPreguntas = await Promise.all(promesas);
+    request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+    response.redirect("formatoEntrevistaFamilia");
+    console.log("Pregunta Guardada");
+  } catch (error) {
+    console.error("Error al guardar preguntas:", error);
+  }
 };
 
 exports.formato_entrevista_DL = (request, response, next) => {
@@ -804,9 +806,13 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
   });
 };
 
-exports.post_formato_entrevista_preguntasDL = async (request, response, next) => {
+exports.post_formato_entrevista_preguntasDL = async (
+  request,
+  response,
+  next
+) => {
   let numPregunta = 14;
-  const promesas = []
+  const promesas = [];
   for (const a in request.body) {
     if (a == "_csrf" || a == "idFormato") {
       continue;
@@ -818,19 +824,17 @@ exports.post_formato_entrevista_preguntasDL = async (request, response, next) =>
     );
     numPregunta += 1;
 
+    promesas.push(newPregunta.save());
+  }
 
-    promesas.push(newPregunta.save())}
-
-    try{
-      const idPreguntas = await Promise.all(promesas);
-      request.session.idFormato = idPreguntas[idPreguntas.length - 1];
-      response.redirect("formatoEntrevistaFamilia");
-      console.log("Pregunta Guardada");
-
-    }
-    catch (error){
-      console.error("Error al guardar preguntas:", error);
-    }
+  try {
+    const idPreguntas = await Promise.all(promesas);
+    request.session.idFormato = idPreguntas[idPreguntas.length - 1];
+    response.redirect("formatoEntrevistaFamilia");
+    console.log("Pregunta Guardada");
+  } catch (error) {
+    console.error("Error al guardar preguntas:", error);
+  }
 };
 
 exports.formato_entrevista_familia = (request, response, next) => {

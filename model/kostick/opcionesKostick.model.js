@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../../util/database");
 /* modelo de las opciones de respuesta de la prueba Kostick */
 
 module.exports = class OpcionKostick {

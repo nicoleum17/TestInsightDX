@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../../util/database");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
@@ -22,7 +22,7 @@ module.exports = class Resultados16PF {
     mi_Q2,
     mi_Q3,
     mi_Q4,
-    mi_IM,
+    mi_IM
   ) {
     this.mi_idGrupo = mi_idGrupo;
     this.mi_idUsuario = mi_idUsuario;

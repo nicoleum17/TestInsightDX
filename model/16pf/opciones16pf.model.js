@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../../util/database");
 /* modelo de las opciones de respuesta de la prueba 16pf */
 module.exports = class Opcion16PF {
   constructor(mi_opcion16PF, mi_descripcionOpcion16PF, mi_idPregunta16PF) {

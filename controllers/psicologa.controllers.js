@@ -9,8 +9,8 @@ const Aspirante = require("../model/aspirante.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
-const ResultadosKostick = require("../model/resultadosKostick.model");
-const Resultados16PF = require("../model/resultados16PF.model");
+const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
+const Resultados16PF = require("../model/16pf/resultados16PF.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -281,7 +281,7 @@ exports.post_grupo = (request, response, next) => {
     `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
     fechaGrupoInicioIOS,
     fechaGrupoFinalIOS
-  );  
+  );
   const eventoCreado = {
     summary: eventoNuevo.nombre,
     location: eventoNuevo.lugar,

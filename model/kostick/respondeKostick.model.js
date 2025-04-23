@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../../util/database");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 
