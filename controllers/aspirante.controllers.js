@@ -535,7 +535,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
               )
                 .then((respuesta) => {
                   if (respuesta[0][0].opcionKostick === opcion) {
-                    suma[letra]++;
+                    suma[letra] = suma[letra] + 10;
                   }
                 })
                 .catch((err) => {
