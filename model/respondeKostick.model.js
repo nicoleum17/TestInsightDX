@@ -31,11 +31,7 @@ module.exports = class RespondeKostick {
         ]
       )
       .then(([result]) => {
-        return {
-          idPreguntaKostick: this.idPreguntaKostick,
-          idGrupo: this.idGrupo,
-          idUsuario: this.idUsuario,
-        };
+        return this.idUsuario;
       });
   }
 

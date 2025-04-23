@@ -68,7 +68,7 @@ exports.post_login = (request, response, next) => {
                         newOTP
                           .save()
                           .then((uuid) => {
-                            console.log("OTP saved successfully:");
+                            console.log("OTP saved successfully:", otp);
                             return MS.sendEmail(
                               aspiranteDatos.correo,
                               aspiranteDatos.nombres,

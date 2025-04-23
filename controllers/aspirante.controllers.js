@@ -245,8 +245,6 @@ exports.post_siguientePregunta = (request, response, next) => {
     request.body.tiempo
   );
   newRespondeKostick.save().then((uuid) => {
-    request.session.idPregunta16PF = uuid;
-    request.session.idGrupo = uuid;
     request.session.idUsuario = uuid;
   });
   PreguntaKostick.fetchOne(request.session.index)
@@ -288,8 +286,6 @@ exports.post_siguientePregunta1 = (request, response, next) => {
     request.body.tiempo
   );
   newResponde16pf.save().then((uuid) => {
-    request.session.idPregunta16PF = uuid;
-    request.session.idGrupo = uuid;
     request.session.idUsuario = uuid;
   });
 
@@ -560,7 +556,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
 
   const mis_resultadosKostick = new ResultadosKostick(
     request.session.grupo,
-    request.session.idUsuario.idUsuario,
+    request.session.idUsuario,
     suma[0],
     suma[1],
     suma[2],
