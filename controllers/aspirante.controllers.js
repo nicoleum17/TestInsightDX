@@ -400,7 +400,8 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = async (request, response, next) => {
-  console.log(request.session);
+  console.log("Sesion: ", request.session);
+  console.log("Params: ", request.params);
   //agregar un if para validar que sea kostick!!!!!!!!!!!!!!!!!!!!!!!
   const letras = [
     "G",
@@ -525,22 +526,19 @@ exports.get_pruebaCompletada = async (request, response, next) => {
         for (let p = 0; p < m[l][o].length; p++) {
           pregunta = m[l][o][p];
           const letra = l;
-          console.log(request.session.idUsuario);
           promesas.push(
             RespondeKostick.fetchRespuesta(
               request.session.grupo,
-              request.session.idUsuario.idUsuario,
+              request.session.idUsuario,
               pregunta
             )
               .then((respuesta) => {
-                console.log("Opción Kostick: ", respuesta[0][0].opcionKostick);
-                console.log("Opción: ", opcion);
                 if (respuesta[0][0].opcionKostick === opcion) {
                   suma[letra]++;
                 }
               })
               .catch((err) => {
-                console.error(`Error en pregunta ${pregunta}:`, err);
+                //console.error(`Error en pregunta ${pregunta}:`, err);
               })
           );
         }
