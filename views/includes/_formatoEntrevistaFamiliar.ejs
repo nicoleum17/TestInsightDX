@@ -1,8 +1,10 @@
 <section class="section">
   <div class="container mt-4">
+    <br />
     <h1 class="title is-3 has-text-weight-semibold">
       Familia <%= tipoFamiliar %>
     </h1>
+    <br />
     <div class="interviewFormat columns is-vcentered ml-5"></div>
     <form action="<%= rutaPost %>" method="POST">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
@@ -16,12 +18,13 @@
             >
             <button
               onclick="agregarFamiliar()"
+              class="ml-6"
               id="button-agregar-familiar"
               type="button">
               <img
                 src="https://img.icons8.com/m_rounded/512/plus.png"
-                width="40"
-                height="40" />
+                width="30px"
+                height="30px" />
             </button>
           </div>
         </div>
@@ -47,7 +50,11 @@
   const MaxFamiliares = 15;
   function agregarFamiliar() {
     if (contadorFamiliares >= MaxFamiliares) {
-      alert("Has alcanzado el número máximo de familiares permitidos (" + MAX_FAMILIARES + ").");
+      alert(
+        "Has alcanzado el número máximo de familiares permitidos (" +
+          MAX_FAMILIARES +
+          ")."
+      );
       return;
     }
     contadorFamiliares += 1;
@@ -94,7 +101,7 @@
                     <div class="columns is-vcentered ml-5">
                         <div class="column">
                             <label for="estadoCivil" class="label">Estado Civil:</label>
-                            <div class="select is-danger">
+                            <div class="select is-link">
                             <select name="estadoCivil" id="estadoCivil" required>
                                 <option value="" disabled hidden selected>Seleccione una opción</option>
                                 <option value="soltero">Soltero/a</option>
@@ -107,8 +114,8 @@
                             </div>
                         </div>
                         <div class="has-text-right">
-                            <button class="button" onclick="eliminarFamiliar(this)">
-                                <img src="https://static.thenounproject.com/png/2456540-200.png" width="30" height="30" />
+                            <button class="button mr-3" onclick="eliminarFamiliar(this)">
+                                <img src="https://static.thenounproject.com/png/2456540-200.png" width="25px" height="25px" />
                             </button>
                         </div>
                     </div>
