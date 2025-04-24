@@ -1243,7 +1243,7 @@ exports.getAnalisisColores = async (request, response, next) => {
           // nombre aspirante analisis
           informacionAspirante: informacionAspiranteRows[0]
       });
-  } .catch(error) {
+  } catch (error) {
       console.error('Error al obtener análisis de colores:', error);
   }
 };
