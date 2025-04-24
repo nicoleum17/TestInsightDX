@@ -611,13 +611,36 @@ exports.get_pruebaCompletada = async (request, response, next) => {
 };
 
 exports.formato_entrevista = (request, response, next) => {
-  response.render("formatoEntrevista", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-    idUsuario: request.session.idUsuario,
-  });
+  formatoEntrevista
+  .formato_activo(request.session.idUsuario)
+  .then(([row, fieldData]) => {
+    if(row[0].estatus == 'Empezado'){
+      console.log("YA ESTA EMPEZADO")
+      formatoEntrevista.fetch(row[0].idFormato)
+      .then((info) => {
+        response.render("formatoEntrevista", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+          idUsuario: request.session.idUsuario,
+          formato: info[0][0] || ""
+        });
+      })
+    }
+    else{
+      response.render("formatoEntrevista", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario,
+        formato: null
+    });
+  }
+  })
+  console.log(request.session.formatoEmpezado);
+
 };
 
 exports.post_formato_entrevista = (request, response, next) => {

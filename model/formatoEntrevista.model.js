@@ -69,7 +69,14 @@ module.exports = class formatoEntrevista {
         return this.idFormato;
       });
   }
-
+  static fetch(idFormato){
+    return db
+      .execute(
+        "SELECT nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, " +
+        "estadoCivil, origen, telefono, celular, correo, direccionA FROM formatoentrevista WHERE idFormato = ?",
+        [idFormato]
+      );
+  }
   static saveDA(
     mi_nombreLicenciatura,
     mi_institucion,
