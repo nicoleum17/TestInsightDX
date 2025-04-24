@@ -117,4 +117,15 @@ module.exports = class Aspirante {
       [reporte, idUsuario]
     );
   }
+
+  static notificacion(idUsuario){
+    return db.execute(
+    `SELECT g.fechaPruebaGrupal as pruebaGrupal, pg.fechaZoomIndividual as zoomIndividual, tp.fechaLimitePrueba as limitePrueba
+    FROM perteneceGrupo pg
+    JOIN grupos g ON g.idGrupo = pg.idGrupo
+    JOIN tienePruebas tp ON g.idGrupo = tp.idGrupo
+    WHERE pg.idUsuario = ?`,
+    [idUsuario]
+    );
+  }
 };

@@ -92,12 +92,17 @@ exports.get_root = (request, response, next) => {
 
 /* Función que sirve como controlador para obtener las notificaciones que tiene el aspirante */
 exports.get_notificacionA = (request, response, next) => {
-  response.render("notificacionesAspirante", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
-  });
+  Aspirante.notificacion(request.session.idUsuario).then(([rows])=> {
+    response.render("notificacionesAspirante", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      pruebaGrupal: rows[0].pruebaGrupal || null,
+      zoomIndividual: rows[0].zoomIndividual|| null,
+      limitePrueba: rows[0].limitePrueba || null,
+    });
+  })
 };
 
 /* Función que sirve como controlador para obtener la vista en la que el aspirante carga sus documentos (CV y Kardex) */
