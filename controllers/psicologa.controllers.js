@@ -11,6 +11,9 @@ const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
+const Prueba = require("../model/vaultTech/prueba.model");
+const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
+const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
