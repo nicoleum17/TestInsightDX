@@ -294,9 +294,8 @@ module.exports = class Prueba {
   static getInformacionAspirante(idAspirante) {
     return db.execute(
       `
-            SELECT u.nombreUsuario, u.apellidoPaterno, u.apellidoMaterno
-            FROM usuarios u
-            JOIN aspirantes a ON u.idUsuario = a.idUsuario
+            SELECT a.nombres, a.apellidoPaterno, a.apellidoMaterno
+            FROM aspirantes a
             WHERE a.idAspirante = ?
         `,
       [idAspirante]
