@@ -322,9 +322,9 @@ router.post(
   aspiranteController.postDatosPersonalesOtis
 );
 
-router.get("/prueba-otis", aspiranteController.getPruebaOtis);
-router.post("/prueba-otis", aspiranteController.obtenerPreguntas);
-router.post("/prueba-otis", aspiranteController.postPruebaOtis);
+router.get("/prueba-otis", isAuth, aspiranteController.getPruebaOtis);
+router.post("/prueba-otis", isAuth, aspiranteController.obtenerPreguntas);
+router.post("/prueba-otis", isAuth, aspiranteController.postPruebaOtis);
 router.post(
   "/guardar-selecciones-otis",
   aspiranteController.postGuardarRespuestas

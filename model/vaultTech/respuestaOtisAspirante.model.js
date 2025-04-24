@@ -3,7 +3,7 @@ const db = require("../util/database.js");
 module.exports = class RespuestaOtisAspirante {
   constructor(
     idRespuestaOtis,
-    idAspirante,
+    idUsuario,
     idGrupo,
     idPreguntaOtis,
     idOpcionOtis,
@@ -12,7 +12,7 @@ module.exports = class RespuestaOtisAspirante {
     tiempoRespuesta
   ) {
     this.idRespuestaOtis = idRespuestaOtis;
-    this.idAspirante = idAspirante;
+    this.idUsuario = idUsuario;
     this.idGrupo = idGrupo;
     this.idPreguntaOtis = idPreguntaOtis;
     this.idOpcionOtis = idOpcionOtis;
@@ -24,11 +24,11 @@ module.exports = class RespuestaOtisAspirante {
   save() {
     const sql = `
             INSERT INTO respuestasotisaspirantes
-            (idAspirante, idGrupo, idPreguntaOtis, idOpcionOtis, idPrueba, respuestaAbierta, tiempoRespuesta)
+            (idUsuario, idGrupo, idPreguntaOtis, idOpcionOtis, idPrueba, respuestaAbierta, tiempoRespuesta)
             VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     return db.execute(sql, [
-      this.idAspirante,
+      this.idUsuario,
       this.idGrupo,
       this.idPreguntaOtis,
       this.idOpcionOtis,

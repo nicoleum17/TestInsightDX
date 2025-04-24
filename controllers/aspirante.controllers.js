@@ -19,6 +19,7 @@ const OpcionOtis = require("../model/vaultTech/opcionOtis.model.js");
 const { google } = require("googleapis");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const TienePruebas = require("../model/tienePruebas.model");
+const Usuario = require("../model/usuarios.model");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.SECRET,
@@ -28,7 +29,7 @@ const oauth2Client = new google.auth.OAuth2(
 /* Función que sirve como controlador que permite verificar la vista para verificar el Token de seguridad*/
 exports.get_verificarOtp = (request, response, next) => {
   response.render("verificarOtp", {
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
   });
 };
 
@@ -42,7 +43,7 @@ exports.post_verificarOtp = (request, response, next) => {
           new Date(otp[0].expiraEn).getTime() > Date.now() &&
           otp[0].estaActivo === 1
         ) {
-          csrfToken: request.csrfToken();
+          //csrfToken: request.csrfToken();
           grupo: request.session.grupo;
 
           OTP.updateOtp(otp[0].idOTP).then(() => {
@@ -77,7 +78,7 @@ exports.get_root = (request, response, next) => {
                 pruebas: rows,
                 isLoggedIn: request.session.isLoggedIn || false,
                 usuario: request.session.usuario || "",
-                csrfToken: request.csrfToken(),
+                //csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 grupo: request.session.grupo,
                 pruebasAspirante: pruebasAspirante,
@@ -98,7 +99,7 @@ exports.get_notificacionA = (request, response, next) => {
   response.render("notificacionesAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -108,7 +109,7 @@ exports.get_documentosA = (request, response, next) => {
   response.render("documentosAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -118,7 +119,7 @@ exports.get_calendarioA = (request, response, next) => {
   response.render("calendarioAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -130,7 +131,7 @@ exports.get_instrucciones = (request, response, next) => {
     response.render("instruccionesPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       prueba: rows[0],
       idUsuario: request.session.idUsuario,
@@ -148,7 +149,7 @@ exports.get_datosA = (request, response, next) => {
         response.render("datosAspirante", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
+          //csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           prueba: rows[0],
           idUsuario: request.session.idUsuario,
@@ -177,7 +178,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
                 return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
-                  csrfToken: request.csrfToken(),
+                  //csrfToken: request.csrfToken(),
                   privilegios: request.session.privilegios || [],
                   prueba: prueba[0],
                   pregunta: pregunta[0],
@@ -210,7 +211,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
                 return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
-                  csrfToken: request.csrfToken(),
+                  //csrfToken: request.csrfToken(),
                   privilegios: request.session.privilegios || [],
                   prueba: prueba[0],
                   pregunta: pregunta[0],
@@ -258,7 +259,7 @@ exports.post_siguientePregunta = (request, response, next) => {
       PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
         .then(([opciones]) => {
           return response.status(200).json({
-            csrfToken: request.csrfToken(),
+            //csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
             idGrupo: request.session.grupo,
@@ -300,7 +301,7 @@ exports.post_siguientePregunta1 = (request, response, next) => {
       Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
         .then(([opciones]) => {
           return response.status(200).json({
-            csrfToken: request.csrfToken(),
+            //csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
             idGrupo: request.session.grupo,
@@ -587,7 +588,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
         response.render("finPrueba", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
+          //csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           idUsuario: request.session.idUsuario,
           aspirante: aspirante[0],
@@ -599,7 +600,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
       response.render("finPrueba", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
+        //csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario,
         aspirante: aspirante[0],
@@ -612,7 +613,7 @@ exports.formato_entrevista = (request, response, next) => {
   response.render("formatoEntrevista", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario,
   });
@@ -657,7 +658,7 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasP", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -706,7 +707,7 @@ exports.formato_entrevista_DA = (request, response, next) => {
   response.render("formatoEntrevistaDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -740,7 +741,7 @@ exports.formato_entrevista_preguntasDA = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -780,7 +781,7 @@ exports.formato_entrevista_DL = (request, response, next) => {
   response.render("formatoEntrevistaDL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -811,7 +812,7 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasDL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -851,7 +852,7 @@ exports.formato_entrevista_familia = (request, response, next) => {
   response.render("formatoEntrevistaFamilia", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -875,7 +876,7 @@ exports.formato_entrevista_familiar_abueloM = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Maternos",
@@ -888,7 +889,7 @@ exports.formato_entrevista_familiar_abueloP = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Paternos",
@@ -901,7 +902,7 @@ exports.formato_entrevista_familiar_TioM = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Maternos/as",
@@ -914,7 +915,7 @@ exports.formato_entrevista_familiar_TioP = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Paternos/as",
@@ -927,7 +928,7 @@ exports.formato_entrevista_familiar_Padres = (request, response, next) => {
   response.render("formatoEntrevistaFamiliarObligatorio", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Padres",
@@ -940,7 +941,7 @@ exports.formato_entrevista_familiar_Pareja = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Pareja",
@@ -953,7 +954,7 @@ exports.formato_entrevista_familiar_Hijos = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Hijos",
@@ -1212,7 +1213,7 @@ exports.getConfirmacionFormato = (request, response) => {
   response.render("formatoEntrevistaConfirmar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -1245,7 +1246,7 @@ exports.registra_kardex = (request, response, next) => {
   response.render("registrarKardex", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario || "",
   });
@@ -1262,7 +1263,7 @@ exports.registra_CV = (request, response, next) => {
   response.render("registrarCV", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario || "",
   });
@@ -1356,7 +1357,7 @@ exports.getEventoCalendario = (request, response, next) => {
       response.render("calendario", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
+        //csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario || "",
       });
@@ -1420,7 +1421,6 @@ exports.obtenerPreguntas = async (req, res, next) => {
     const [areasDB] = await PruebaOtis.getAreaOtis();
     const [preguntasDB] = await PruebaOtis.getPreguntasOtis();
     const [opcionesDB] = await OpcionOtis.fetchAll();
-
     const preguntas = preguntasDB.map((pregunta) => {
       const opciones = opcionesDB
         .filter((opcion) => opcion.idPreguntaOtis === pregunta.idPreguntaOtis)
@@ -1457,17 +1457,13 @@ exports.obtenerPreguntas = async (req, res, next) => {
 
 // Obtener toda la prueba
 exports.getPruebaOtis = (request, response, next) => {
-  if (!request.session.datosPersonalesOtis) {
-    return response.redirect("/aspirante/datos-personales-otis");
-  }
-
   const idPrueba = 5;
-
   // Obtener el idGrupo y idPrueba por la sesión
-  PruebaOtis.getGrupoPrueba(request.session.idAspirante, idPrueba)
-    .then(([rows, fieldData]) => {
-      if (rows.length > 0) {
-        request.session.idGrupo = rows[0].idGrupo;
+
+  Usuario.getGrupo(request.session.idUsuario)
+    .then(([grupo]) => {
+      if (grupo.length > 0) {
+        request.session.idGrupo = grupo[0];
         request.session.idPrueba = idPrueba;
       } else {
         console.log("No se encontró grupo para este aspirante y prueba");
@@ -1476,36 +1472,47 @@ exports.getPruebaOtis = (request, response, next) => {
       // Función para obtener las preguntas del model
       return PruebaOtis.getPreguntasOtis();
     })
-    .then(([rows, fieldData]) => {
-      const preguntas = rows;
-      response.render("Aspirantes/pruebaOtis", {
+    .then(([grupo, fieldData]) => {
+      const preguntas = grupo;
+      console.log(request.session.grupo);
+      response.render("pruebaOtis", {
         preguntas: preguntas || [],
+        grupo: request.session.grupo,
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
         error: null,
       });
     })
     .catch((error) => {
       console.error("Error al cargar la prueba OTIS:", error);
-      response.render("Aspirantes/pruebaOtis", {
+      response.render("pruebaOtis", {
         preguntas: [],
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
         error: "Error al cargar la prueba OTIS",
       });
     });
 };
 
 exports.postPruebaOtis = (request, response, next) => {
-  response.redirect("/aspirante/prueba-completada");
+  response.redirect("finPrueba");
 };
 
 const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
 
 exports.postGuardarRespuestas = async (request, response) => {
-  const idAspirante = request.session.idAspirante;
-  const idGrupo = request.session.idGrupo;
+  const idUsuario = request.session.idUsuario;
+  const idGrupo = request.session.grupo;
   const idPrueba = request.session.idPrueba;
+  console.log("GRUPO", request.session.grupo);
 
-  // Si no se encuentra el idAspirante
-  if (!request.session.idAspirante) {
+  // Si no se encuentra el idUsuario
+  if (!request.session.idUsuario) {
     return response.redirect("/aspirante/datos-personales-otis");
   }
 
@@ -1515,7 +1522,7 @@ exports.postGuardarRespuestas = async (request, response) => {
     // Armar el array de valores para insertar
     const values = respuestas.map((r) => [
       uuidv4(), // para generar el idRespuestaOtis
-      idAspirante,
+      idUsuario,
       idGrupo,
       r.idPreguntaOtis,
       r.idOpcionOtis,
@@ -1526,7 +1533,7 @@ exports.postGuardarRespuestas = async (request, response) => {
     // Insertar valores en la tabla respuestaOtisAspirante
     await db.query(
       `INSERT INTO respuestaotisaspirante
-          (idRespuestaOtis, idAspirante, idGrupo, idPreguntaOtis, idOpcionOtis, idPrueba, tiempoRespuesta)
+          (idRespuestaOtis, idUsuario, idGrupo, idPreguntaOtis, idOpcionOtis, idPrueba, tiempoRespuesta)
           VALUES ?`,
       [values]
     );
@@ -1540,34 +1547,24 @@ exports.postGuardarRespuestas = async (request, response) => {
       fecha: new Date(),
     };
 
-    // Guardar datos personales
-    await PruebaOtis.saveDatosPersonales(
-      idAspirante,
-      idGrupo,
-      idPrueba,
-      datosPersonales
-    );
-
-    console.log("Datos personales guardados correctamente");
-
     // Verificar si ya existe el registro en aspirantesGruposPruebas
     const [rows] = await PruebaOtis.verificarExistencia(
-      idAspirante,
+      idUsuario,
       idGrupo,
       idPrueba
     );
 
-    if (rows.length === 0) {
-      console.log("No existe registro, insertando...");
-      await db.execute(
-        `INSERT INTO aspirantesgrupospruebas (idAspirante, idGrupo, idPrueba, idEstatus)
-              VALUES (?, ?, ?, 2)`,
-        [idAspirante, idGrupo, idPrueba]
-      );
-    } else {
-      console.log("Registro encontrado, actualizando estado...");
-      await PruebaOtis.updateEstatusPrueba(idAspirante, idGrupo, idPrueba);
-    }
+    console.log("Registro encontrado, actualizando estado...");
+    const newPruebaAspirante = new PruebaAspirante(
+      idUsuario,
+      idGrupo,
+      idPrueba
+    );
+
+    newPruebaAspirante.terminarPrueba().then((uuid) => {
+      request.session.idGrupo = uuid;
+      request.session.idUsuario = uuid;
+    });
   } catch (error) {
     console.error("Error al guardar respuestas:", error);
   }
@@ -1603,7 +1600,7 @@ exports.getPruebaColores = (request, response, next) => {
   const idPrueba = 6;
 
   // Obtener el idGrupo aspirante y prueba
-  PruebaColores.getGrupoPrueba(request.session.idAspirante, idPrueba)
+  PruebaColores.getGrupoPrueba(request.session.idUsuario, idPrueba)
     .then(([rows, fieldData]) => {
       if (rows.length > 0) {
         // Guardar el idGrupo
@@ -1641,8 +1638,8 @@ exports.postPruebaColores = (request, response, next) => {
 exports.postGuardarSeleccionesColores = (request, response) => {
   console.log("1. Iniciando controlador postGuardarSeleccionesColores");
 
-  if (!request.session.idAspirante) {
-    console.log("2. Error: No se encontró idAspirante en la sesión");
+  if (!request.session.idUsuario) {
+    console.log("2. Error: No se encontró idUsuario en la sesión");
     return response.redirect("/aspirante/datos-personales-colores");
   }
 
@@ -1687,7 +1684,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
 
   const idPrueba = 6;
 
-  PruebaColores.getGrupoPrueba(request.session.idAspirante, idPrueba)
+  PruebaColores.getGrupoPrueba(request.session.idUsuario, idPrueba)
     .then(([rows]) => {
       if (rows.length === 0) {
         throw new Error("No se encontró grupo para este aspirante y prueba");
@@ -1714,7 +1711,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
 
       // Guardar en base
       return PruebaColores.saveDatosPersonales(
-        request.session.idAspirante,
+        request.session.idUsuario,
         idGrupo,
         idPrueba,
         datosPersonales
@@ -1723,7 +1720,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
           console.log("8. Datos personales guardados correctamente");
           // const pruebaColores1 = new PruebaColores(seleccionesFase1);
           return PruebaColores.saveSeleccion(
-            request.session.idAspirante,
+            request.session.idUsuario,
             idGrupo,
             idPrueba,
             1,
@@ -1734,7 +1731,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
           console.log("9. Primera selección guardada");
           // const pruebaColores2 = new PruebaColores(seleccionesFase2);
           return PruebaColores.saveSeleccion(
-            request.session.idAspirante,
+            request.session.idUsuario,
             idGrupo,
             idPrueba,
             2,
@@ -1744,7 +1741,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
         .then(() => {
           console.log("10. Segunda selección guardada");
           return PruebaColores.verificarExistencia(
-            request.session.idAspirante,
+            request.session.idUsuario,
             idGrupo,
             idPrueba
           );
@@ -1753,14 +1750,14 @@ exports.postGuardarSeleccionesColores = (request, response) => {
           if (rows.length === 0) {
             console.log("11. No existe registro, insertando...");
             return db.execute(
-              `INSERT INTO aspirantesgrupospruebas (idAspirante, idGrupo, idPrueba, idEstatus)
+              `INSERT INTO aspirantesgrupospruebas (idUsuario, idGrupo, idPrueba, idEstatus)
                       VALUES (?, ?, ?, 2)`,
-              [request.session.idAspirante, idGrupo, idPrueba]
+              [request.session.idUsuario, idGrupo, idPrueba]
             );
           } else {
             console.log("12. Registro encontrado, actualizando estado...");
             return PruebaColores.updateEstatusPrueba(
-              request.session.idAspirante,
+              request.session.idUsuario,
               idGrupo,
               idPrueba
             );

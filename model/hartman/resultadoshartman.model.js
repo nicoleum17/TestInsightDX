@@ -2,8 +2,8 @@
 const db = require("../../util/database.js");
 
 class hartmanAnalysisModel {
-  constructor(idAspirante, idGrupo, resultadosAnalisis) {
-    this.idAspirante = idAspirante;
+  constructor(idUsuario, idGrupo, resultadosAnalisis) {
+    this.idUsuario = idUsuario;
     this.idGrupo = idGrupo;
     this.resultadosAnalisis = resultadosAnalisis;
   }
@@ -17,7 +17,7 @@ class hartmanAnalysisModel {
     try {
       const query = `
         INSERT INTO resultadoshartman (
-        idAspirante, idGrupo, fraseDimI, fraseDimE, fraseDimS, fraseDif, fraseDimGeneral,
+        idUsuario, idGrupo, fraseDimI, fraseDimE, fraseDimS, fraseDif, fraseDimGeneral,
         fraseDimPorcentaje, fraseIntI, fraseIntE, fraseIntS, fraseIntGeneral, fraseIntPorcentaje,
         \`fraseDi\`, fraseDIS, fraseAiPorcentaje ,fraseVQ1, fraseVQ2, citaDimI, citaDimE, citaDimS, citaDif,
         citaDimGeneral, citaDimPorcentaje, citaIntI, citaIntE, citaIntS, citaIntGeneral,
@@ -27,7 +27,7 @@ class hartmanAnalysisModel {
         `;
 
       const values = [
-        this.idAspirante,
+        this.idUsuario,
         this.idGrupo,
         this.resultadosAnalisis.FraseDimI
           ? this.resultadosAnalisis.FraseDimI[0]

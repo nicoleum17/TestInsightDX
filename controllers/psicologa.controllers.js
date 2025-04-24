@@ -755,11 +755,11 @@ exports.post_registraReporte = (request, response, next) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.getAnalisisOtis = (request, response, next) => {
-  Prueba.getRespuestasOtis(request.params.idAspirante, request.params.idGrupo)
+  Prueba.getRespuestasOtis(request.params.idUsuario, request.params.idGrupo)
     .then(([rows, fieldData]) => {
       const informacionAnalisis = rows;
       PruebaV.getPuntajeBrutoOtis(
-        request.params.idAspirante,
+        request.params.idUsuario,
         request.params.idGrupo
       )
         .then(([rows, fieldData]) => {
@@ -769,7 +769,7 @@ exports.getAnalisisOtis = (request, response, next) => {
           response.render("Psicologos/analisisOtis.ejs", {
             informacionAnalisis: informacionAnalisis || [],
             puntajeBruto: puntajeBruto || 0,
-            idAspirante: request.params.idAspirante || null,
+            idUsuario: request.params.idUsuario || null,
             idGrupo: request.params.idGrupo || null,
             idInstitucion: request.params.idInstitucion || null,
           });
@@ -791,28 +791,28 @@ exports.getCuadernilloOtis = (request, response, next) => {
   // Obtiene los datos personales del aspirante
   PruebaV.getDatosPersonalesAspiranteOtis(
     request.params.idGrupo,
-    request.params.idAspirante
+    request.params.idUsuario
   )
     .then(([rows, fieldData]) => {
       const datosPersonales = rows;
       // Obtiene las respuestas correctas del aspirante
       Cuadernillo.getRespuestasCorrectas(
         request.params.idGrupo,
-        request.params.idAspirante
+        request.params.idUsuario
       )
         .then(([rows, fieldData]) => {
           const respuestasCorrectas = rows[0].RespuestasCorrectas;
           // Obtiene el tiempo total que tomo el aspirante para completar la prueba
           Cuadernillo.getTiempoTotal(
             request.params.idGrupo,
-            request.params.idAspirante
+            request.params.idUsuario
           )
             .then(([rows, fieldData]) => {
               const tiempoTotal = rows[0].Tiempo;
               // Obtiene las preguntas, opciones y la respuesta del aspirante
               Cuadernillo.getRespuestasOtisAspirante(
                 request.params.idGrupo,
-                request.params.idAspirante
+                request.params.idUsuario
               )
                 .then(([rows, fieldData]) => {
                   const preguntasAgrupadas = {};
@@ -860,7 +860,7 @@ exports.getCuadernilloOtis = (request, response, next) => {
                     respuestasCorrectas: respuestasCorrectas || 0,
                     tiempoTotal: tiempoTotal || 0,
                     respuestasAspitanteOtis: respuestasAspitanteOtis || [],
-                    aspirante: request.params.idAspirante || null,
+                    aspirante: request.params.idUsuario || null,
                     grupo: request.params.idGrupo || null,
                     idInstitucion: request.params.idInstitucion || null,
                   });
@@ -898,7 +898,7 @@ exports.getCuadernilloColores = (request, response, next) => {
   // Obtener los datos personales del aspirante
   PruebaV.getDatosPersonalesAspiranteColores(
     request.params.idGrupo,
-    request.params.idAspirante
+    request.params.idUsuario
   )
     .then(([rows, fieldData]) => {
       const datosPersonales = rows;
@@ -906,7 +906,7 @@ exports.getCuadernilloColores = (request, response, next) => {
       // Obtener todas las selecciones de colores
       CuadernilloColores.getSeleccionesColores(
         request.params.idGrupo,
-        request.params.idAspirante
+        request.params.idUsuario
       )
         .then(([rows, fieldData]) => {
           // Separar las selecciones por fase
@@ -921,7 +921,7 @@ exports.getCuadernilloColores = (request, response, next) => {
             datosPersonales: datosPersonales || [],
             seleccionesFase1: seleccionesFase1 || [],
             seleccionesFase2: seleccionesFase2 || [],
-            aspirante: request.params.idAspirante || null,
+            aspirante: request.params.idUsuario || null,
             grupo: request.params.idGrupo || null,
             idInstitucion: request.params.idInstitucion || null,
           });
@@ -1201,16 +1201,16 @@ function obtenerParejasClasificadas(seleccionesFase1, seleccionesFase2) {
 }
 
 exports.getAnalisisColores = async (request, response, next) => {
-  const { idGrupo, idAspirante, idInstitucion } = request.params;
+  const { idGrupo, idUsuario, idInstitucion } = request.params;
   try {
     // Obtener información del aspirante
     const [informacionAspiranteRows] = await Prueba.getInformacionAspirante(
-      idAspirante
+      idUsuario
     );
 
     // Obtener selecciones de colores completas
     const [seleccionesColoresRows] =
-      await CuadernilloColores.getSeleccionesColores(idGrupo, idAspirante);
+      await CuadernilloColores.getSeleccionesColores(idGrupo, idUsuario);
 
     // Separar selecciones por fase
     const seleccionesFase1 = seleccionesColoresRows
@@ -1227,7 +1227,7 @@ exports.getAnalisisColores = async (request, response, next) => {
     );
 
     // Obtener resultados de análisis
-    const [rows] = await Prueba.getRespuestasColores(idAspirante, idGrupo);
+    const [rows] = await Prueba.getRespuestasColores(idUsuario, idGrupo);
 
     // Calcular movilidad
     const movilidad = calcularMovilidad(seleccionesFase1, seleccionesFase2);
@@ -1334,7 +1334,7 @@ exports.getAnalisisColores = async (request, response, next) => {
       interpretacionMovilidad,
       parejas: parejasConInterpretaciones,
       idGrupo,
-      idAspirante,
+      idUsuario,
       idInstitucion,
       // nombre aspirante analisis
       informacionAspirante: informacionAspiranteRows[0],

@@ -1,30 +1,30 @@
-const db = require("../util/database");
+const db = require("../../util/database");
 module.exports = class Cuadernillo {
   // Obtiene las respuestas correctas que el aspirante tuvo en la prueba
-  static getRespuestasCorrectas(idGrupo, idAspirante) {
+  static getRespuestasCorrectas(idGrupo, idUsuario) {
     return db.execute(
       `SELECT COUNT(*) AS RespuestasCorrectas 
             FROM respuestaotisaspirante ROA JOIN opcionesotis OO ON ROA.idOpcionOtis = OO.idOpcionOtis 
-            WHERE ROA.idAspirante = ? AND ROA.idPrueba = 5 AND ROA.idGrupo = ? AND OO.esCorrecta = TRUE
+            WHERE ROA.idUsuario = ? AND ROA.idPrueba = 5 AND ROA.idGrupo = ? AND OO.esCorrecta = TRUE
             `,
-      [idAspirante, idGrupo]
+      [idUsuario, idGrupo]
     );
   }
 
   // Obtiene el timpo en que el aspirante respindio la prueba
-  static getTiempoTotal(idGrupo, idAspirante) {
+  static getTiempoTotal(idGrupo, idUsuario) {
     return db.execute(
       `SELECT SUM(tiempoRespuesta) AS Tiempo 
             FROM respuestaotisaspirante 
-            WHERE idAspirante = ? 
+            WHERE idUsuario = ? 
             AND idPrueba = 5 
             AND idGrupo = ?`,
-      [idAspirante, idGrupo]
+      [idUsuario, idGrupo]
     );
   }
 
   // Obtiene las preguntas, opciones y la respuesta del aspirante
-  static getRespuestasOtisAspirante(idGrupo, idAspirante) {
+  static getRespuestasOtisAspirante(idGrupo, idUsuario) {
     return db.execute(
       `SELECT PO.idPreguntaOtis, PO.numeroPregunta, PO.preguntaOtis,
             OO.idOpcionOtis, OO.opcionOtis ,OO.descripcionOpcion, OO.esCorrecta,
@@ -32,10 +32,10 @@ module.exports = class Cuadernillo {
             FROM preguntasotis PO 
             JOIN opcionesotis OO ON PO.idPreguntaOtis = OO.idPreguntaOtis
             LEFT JOIN respuestaotisaspirante ROA ON OO.idOpcionOtis = ROA.idOpcionOtis 
-            AND ROA.idAspirante = ?
+            AND ROA.idUsuario = ?
             AND ROA.idGrupo = ?
             AND ROA.idPrueba = 5`,
-      [idAspirante, idGrupo]
+      [idUsuario, idGrupo]
     );
   }
 };

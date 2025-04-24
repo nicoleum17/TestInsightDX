@@ -22,11 +22,11 @@ module.exports = class Aspirante {
     this.lugarOrigen = mi_lugarOrigen;
     this.correo = mi_correo;
     this.universidadOrigen = mi_universidadOrigen;
-    this.idAspirante = uuidv4();
+    this.idUsuario = uuidv4();
   }
   save() {
     return db.execute(
-      "INSERT INTO aspirantes (codigoIdentidad, idUsuario, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen, idAspirante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO aspirantes (codigoIdentidad, idUsuario, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen, idUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         this.codigoIdentidad,
         this.idUsuario,
@@ -37,7 +37,7 @@ module.exports = class Aspirante {
         this.lugarOrigen,
         this.correo,
         this.universidadOrigen,
-        this.idAspirante,
+        this.idUsuario,
       ]
     );
   }

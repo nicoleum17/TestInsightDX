@@ -109,7 +109,6 @@ async function cargarPreguntas() {
     const response = await fetch("/aspirante/prueba-otis", { method: "POST" });
     const data = await response.json();
     preguntas = data.preguntas;
-
     if (preguntas.length > 0) {
       ensenarPregunta(0);
       pregContador(1);
@@ -201,7 +200,7 @@ let respuestasSeleccionadas = [];
 // Ocultar el botón de enviar respuestas inicialmente
 enviarRespuestas.classList.add("d-none");
 
-const idAspirante = sessionStorage.getItem("idAspirante");
+const idUsuario = sessionStorage.getItem("idUsuario");
 const idGrupo = sessionStorage.getItem("idGrupo");
 
 function guardarUltimaRespuesta() {
@@ -242,7 +241,7 @@ async function sendRespuestas() {
   }
 
   const datosRespuestas = respuestasSeleccionadas.map((respuesta) => ({
-    idAspirante: idAspirante,
+    idUsuario: idUsuario,
     idGrupo: idGrupo,
     idPrueba: 5,
     idPreguntaOtis: respuesta.idPreguntaOtis,
