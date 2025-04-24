@@ -1,4 +1,4 @@
-const db = require("../util/database");
+const db = require("../../util/database");
 
 module.exports = class Prueba {
   // Ya no leera archivos, que devolvera promesa vacia
