@@ -25,17 +25,9 @@ router.get(
   psicologaController.notificaciones_psicologa
 );
 
-router.get(
-  "/PsicologaAuth",
-  isAuth,
-  psicologaController.getOauthAuthenticator
-);
+router.get("/PsicologaAuth", isAuth, psicologaController.getOauthAuthenticator);
 
-router.get(
-  "/redirect",
-  isAuth,
-  psicologaController.getRedirectOauth
-);
+router.get("/redirect", isAuth, psicologaController.getRedirectOauth);
 
 router.get(
   "/calendarios/calendario",
@@ -217,3 +209,27 @@ router.post(
 router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);
 
 module.exports = router;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Cuadernillo de respuestas de la prueba OTIS por aspirante
+router.get(
+  "/cuadernillo-otis/:idGrupo/:idUsuario/:idInstitucion",
+  controller.getCuadernilloOtis
+);
+
+// Vista con el análisis de la prueba otis del aspirante
+router.get(
+  "/analisis-otis/:idGrupo/:idUsuario/:idInstitucion",
+  controller.getAnalisisOtis
+);
+
+// Vista con el análisis de la prueba Colores del aspirante
+router.get(
+  "/analisis-colores/:idGrupo/:idUsuario/:idInstitucion",
+  controller.getAnalisisColores
+);
+// CUADERNILLO COLORES
+router.get(
+  "/cuadernillo-colores/:idGrupo/:idUsuario/:idInstitucion",
+  controller.getCuadernilloColores
+);
