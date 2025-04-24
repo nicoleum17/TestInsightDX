@@ -30,11 +30,7 @@ module.exports = class Responde16PF {
         ]
       )
       .then(([result]) => {
-        return {
-          idPregunta16PF: this.idPregunta16PF,
-          idGrupo: this.idGrupo,
-          idUsuario: this.idUsuario,
-        };
+        return this.idUsuario;
       });
   }
 };

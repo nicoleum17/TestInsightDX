@@ -228,7 +228,7 @@ exports.get_respuestasA = (request, response, next) => {
                 csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 prueba: "Personalidad 16 Factores (16 PF)",
-                grupo: grupoRows,
+                grupo: grupoRows[0],
                 valores: resultados[0][0],
                 datos: datosAspirante[0],
               });

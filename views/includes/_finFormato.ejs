@@ -1,21 +1,29 @@
 <style>
-    .fullHeight {
-      min-height: 90vh;
-      margin-top: 20px;
-    }
-  </style>
-  <section class="section fullHeight">
-    <div class="container mt-5 is-max-desktop">
-      <div class="notification is-info is-size-3">¡Haz completado tu formato!</div>
+  .fullHeight {
+    min-height: 90vh;
+    margin-top: 20px;
+  }
+</style>
+<section class="section fullHeight has-background-warning">
+  <div class="container mt-5 is-max-desktop">
+    <br />
+    <div class="notification is-info is-size-3 has-text-centered">
+      ¡Haz completado tu formato!
     </div>
-    <FORM action="confirmacion" method="POST">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-        <input type="hidden" name="idFormato" value="<%= formato %>" />
-        <input type="hidden" name="user" value="<%= usuario %>" />
+  </div>
+  <FORM action="confirmacion" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <input type="hidden" name="idFormato" value="<%= formato %>" />
+    <input type="hidden" name="user" value="<%= usuario %>" />
 
+    <br />
+    <br />
+    <div class="columns">
+      <div class="column has-text-centered">
         <button type="submit" class="button is-primary has-text-warning ml-6">
-            Volver al inicio
+          Volver al inicio
         </button>
-    </FORM>
-
-  </section>
+      </div>
+    </div>
+  </FORM>
+</section>

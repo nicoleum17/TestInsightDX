@@ -34,7 +34,7 @@ module.exports = class PerteneceGrupo {
   }
 
   static consultarReporte(idUsuario) {
-    return db.execute("SELECT * FROM perteneceGrupo WHERE idUsuario = ?", [
+    return db.execute("SELECT * FROM pertenecegrupo WHERE idUsuario = ?", [
       idUsuario,
     ]);
   }
