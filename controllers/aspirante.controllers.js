@@ -759,7 +759,7 @@ exports.post_formato_entrevista_preguntasDA = async (
   try {
     const idPreguntas = await Promise.all(promesas);
     request.session.idFormato = idPreguntas[idPreguntas.length - 1];
-    response.redirect("formatoEntrevistaFamilia");
+    response.redirect("formatoEntrevistaDL");
     console.log("Pregunta Guardada");
   } catch (error) {
     console.error("Error al guardar preguntas:", error);
@@ -830,7 +830,7 @@ exports.post_formato_entrevista_preguntasDL = async (
   try {
     const idPreguntas = await Promise.all(promesas);
     request.session.idFormato = idPreguntas[idPreguntas.length - 1];
-    response.redirect("formatoEntrevistaFamilia");
+    response.redirect("confirmacion");
     console.log("Pregunta Guardada");
   } catch (error) {
     console.error("Error al guardar preguntas:", error);
