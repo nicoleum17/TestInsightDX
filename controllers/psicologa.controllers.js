@@ -442,7 +442,7 @@ exports.get_modificarGrupo = (request, response, next) => {
   const idGrupo = request.params.id;
   Prueba.fetchAll().then(([pruebas]) => {
     Grupo.fetchOneId(idGrupo).then(([rows]) => {
-      TienePruebas.getFechaLimite(idGrupo).then(([tienePruebas]) => {
+      TienePruebas.getFecha(idGrupo).then(([tienePruebas]) => {
         response.render("modificarGrupo", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
