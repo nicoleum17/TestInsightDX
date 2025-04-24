@@ -1,0 +1,163 @@
+/* Botones Colores */
+:root {
+  --primary: #95b6bc;
+  --secondary: #294969;
+  --third: #c1c1c1;
+  --font-primary: #000;
+  --font-secondary: #fff;
+  --primary-hover: #7ba1a8;
+  --secondary-hover: #193858;
+  --third-hover: #b1b1b1;
+}
+
+.btn-color--primary {
+  background: var(--primary);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary {
+  background: var(--secondary);
+  color: var(--font-secondary);
+}
+
+.btn-color--third {
+  background: var(--third);
+  color: var(--font-primary);
+}
+
+.btn-color--third:hover {
+  background: var(--third-hover);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary:hover {
+  background: var(--secondary-hover);
+  color: var(--font-secondary);
+}
+
+.btn-color--primary:hover {
+  background: var(--primary-hover);
+  color: var(--font-primary);
+}
+
+.headerOtis {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+
+.progresoOtis {
+  flex-grow: 1;
+  max-width: 80%;
+}
+
+.progresoLabel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.tituloProgreso {
+  font-weight: 600;
+  font-size: 18px; /* más grande */
+}
+
+#textoProgreso {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.barraExterna {
+  background-color: #e0edf1;
+  height: 16px; /* más alta */
+  border-radius: 8px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.barraInterna {
+  height: 100%;
+  width: 0%;
+  background-color: #76a9c3;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+.temporizadorOtis {
+  background-color: #e0edf1;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px; /* más grande */
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.iconoReloj {
+  margin-right: 6px;
+  font-size: 18px;
+}
+
+/* Area */
+.areaTexto {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #193858;
+}
+
+/* Pregunta */
+.pregtext {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Lista de opciones */
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* Contenedor de cada opción */
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px solid #e1eaf4;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+  font-size: 16px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Hover bonito */
+.option-item:hover {
+  border-color: #76a9c3;
+  background-color: #f5fbff;
+}
+
+/* Estilo del radio */
+.option-item input[type="radio"] {
+  accent-color: #457ba1;
+  width: 18px;
+  height: 18px;
+}
+
+.sigbtn {
+  display: flex;
+  justify-content: flex-start; /* Alinea el contenido a la izquierda */
+  align-items: center; /* Centra el contenido verticalmente si es necesario */
+}

@@ -1,0 +1,423 @@
+@media print {
+  /* CONFIGURACION DE LA PAG DE IMPRIMIR (Tamaño y margen de la hoja) */
+  @page {
+    size: portrait;
+    margin: 15mm;
+  }
+
+  /* ESTILOS GENERALES DEL DOCUMENTO (Fondo blanco y texto negro */
+  body {
+    background: white !important;
+    font-size: 11pt !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important; /* Imprime los colores exactos en (Chrome, Firefox, Edge, Safari) */
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Cosas a ocultar */
+  nav,
+  button,
+  .btn,
+  .boton-imprimir,
+  .boton-container,
+  .boton-regresar-abajo,
+  .button-cerrar-sesion,
+  .fixed-button,
+  .floating-button,
+  #botonImprimir,
+  [class*="navside"],
+  body > .main > *:not(.container),
+  body > .main > div:first-child {
+    display: none !important;
+  }
+
+  /* AJUSTES DEL CONTENEDOR PRINCIPAL */
+  .main {
+    width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* ESTILOS DE HEADER Y TITULO */
+  .text-center {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+    font-size: 22pt !important;
+  }
+
+  .nombre-aspirante-texto {
+    margin-bottom: 20px !important;
+    font-size: 16pt !important;
+  }
+
+  /* CONTENEDORES DE LAS SECCIONES (Hace q las secciones no se corten entre pags) */
+  .prueba-colores-container,
+  .movilidad-container,
+  .personalidad-y-adaptacion-container,
+  .interpretacion-container {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    margin: 25px 0 !important;
+    width: 100% !important;
+  }
+
+  /* TITULOS DE LAS SECCIONES */
+  .titulo-seccion {
+    color: var(--secondary) !important;
+    font-size: 18pt !important;
+    margin-top: 30px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  hr {
+    border: 1px solid #ddd !important;
+    margin: 10px 0 20px 0 !important;
+  }
+
+  /* SECCION PRUEBA DE COLORES */
+  .fase-titulo {
+    color: var(--secondary) !important;
+    font-size: 16pt !important;
+    margin-top: 25px !important;
+    margin-bottom: 15px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Fila de cuadros de colores */
+  .colores-row {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 15px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 30px !important;
+    width: 100% !important;
+  }
+
+  /* Contenedor individual de cada color y su numero */
+  .color-item-container {
+    width: 60px !important;
+  }
+
+  /* Cuadro de color */
+  .color-box {
+    width: 60px !important;
+    height: 60px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    border: 1px solid #bbb !important;
+    border-radius: 8px !important;
+  }
+
+  /* Numero abajo del cuadro de color */
+  .color-number {
+    font-size: 16pt !important;
+    font-weight: 600 !important;
+    margin-top: 5px !important;
+  }
+
+  /* TARJETAS DE GRAFICA Y TABLA */
+  .chart-card,
+  .table-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    margin-bottom: 30px !important;
+    background-color: white !important;
+  }
+
+  /* Headers tarjetas */
+  .chart-header,
+  .table-header {
+    background-color: var(--secondary) !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Texto headers */
+  .chart-header h5,
+  .chart-header h6,
+  .table-header h5,
+  .table-header h6 {
+    font-size: 12pt !important;
+    margin: 0 !important;
+  }
+
+  .chart-body {
+    padding: 15px !important;
+    height: auto !important;
+  }
+
+  /* SECCION DE RESULTADOS DE MOVILIDAD */
+  .resultado-movilidad {
+    font-size: 14pt !important;
+    font-weight: 700 !important;
+    margin-top: 15px !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+  }
+
+  .interpretacion-movilidad {
+    font-size: 16pt !important;
+    font-weight: 700 !important;
+    color: #62868c !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    text-align: center !important;
+  }
+
+  /* ACOMODAR LA SECCIÓN DE PERSONALIDAD Y ADAPTACION */
+  /* Pasa filas a columnas */
+  .personalidad-y-adaptacion-container .row {
+    flex-direction: column !important;
+  }
+
+  .personalidad-y-adaptacion-container .col-md-7,
+  .personalidad-y-adaptacion-container .col-md-5 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Cambio tamaño de la grafica */
+  #graficaMixta {
+    height: 280px !important;
+    width: 100% !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 20px !important;
+  }
+
+  .personalidad-y-adaptacion-container .chart-card {
+    margin-bottom: 25px !important;
+  }
+
+  /* TABLA */
+  .table-responsive {
+    overflow: visible !important;
+    padding: 10px !important;
+  }
+
+  .comparison-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 10px !important;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 6px 8px !important;
+    border: 1px solid #eee !important;
+  }
+
+  /* DISTRIBUCION COLUMNAS TABLA */
+  .comparison-table th:first-child,
+  .comparison-table td:first-child {
+    width: 25% !important; /* SIGNIFICADO */
+  }
+
+  .comparison-table th:nth-child(2),
+  .comparison-table td:nth-child(2),
+  .comparison-table th:nth-child(3),
+  .comparison-table td:nth-child(3) {
+    width: 37.5% !important; /* PERSONALIDAD/ADAPTACION */
+  }
+
+  /* Estilo para header de tabla */
+  .comparison-table th {
+    border: 1px solid #ddd !important;
+    font-size: 10pt !important;
+    color: var(--secondary) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Estilo significado */
+  .significado-cell {
+    font-weight: 500 !important;
+    color: var(--secondary) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* BARRAS DE PROGRESO */
+  .progress-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Contenedor de barra de progreso */
+  .progress {
+    flex-grow: 1 !important;
+    height: 8px !important;
+    background-color: #e9ecef !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    min-width: 150px !important;
+    max-width: 250px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Barra personalidad (azul) */
+  .personalidad-bar {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Barra adaptación (verde) */
+  .adaptacion-bar {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Porcentajes */
+  .percent-value {
+    font-weight: 600 !important;
+    font-size: 10pt !important;
+    min-width: 40px !important;
+    text-align: right !important;
+  }
+
+  /* TARJETAS INTERPRETACIÓN */
+  .interpretacion-horizontal {
+    display: flex !important;
+    flex-direction: column !important; /* Cambia a columna para apilar verticalmente */
+    gap: 20px !important;
+    margin-bottom: 30px !important;
+    width: 100% !important;
+  }
+
+  /* Cada tarjeta debe ocupar el ancho completo */
+  .interpretacion-card {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    margin-bottom: 20px !important;
+    overflow: hidden !important;
+    min-height: auto !important;
+  }
+
+  /* Borde izquierdo */
+  .interpretacion-seccion {
+    margin-bottom: 15px !important;
+    border-left: 3px solid #294969 !important;
+    padding-left: 12px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Titulo tipo */
+  .tipo-contenido {
+    font-weight: 600 !important;
+    font-size: 10pt !important;
+    margin-bottom: 5px !important;
+    color: #294969 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Texto interpretacion */
+  .interpretacion-seccion p {
+    text-align: justify !important;
+    font-size: 9pt !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* SISTEMA CUADRICULA (layout responsive) */
+  .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+    width: 100% !important;
+  }
+
+  /* Columnas para diferentes anchos */
+  .col-md-6,
+  .col-md-7,
+  .col-md-5 {
+    position: relative !important;
+    width: 100% !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
+
+  .col-md-5 {
+    flex: 0 0 41.666667% !important; /* 5/12 del ancho */
+    max-width: 41.666667% !important;
+  }
+
+  .col-md-6 {
+    flex: 0 0 50% !important; /* 6/12 = mitad del ancho */
+    max-width: 50% !important;
+  }
+
+  .col-md-7 {
+    flex: 0 0 58.333333% !important; /* 7/12 del ancho */
+    max-width: 58.333333% !important;
+  }
+
+  /* SALTOS DE PAGINA */
+  /* Evita saltos de pagina inapropiados */
+  /* Elementos que no deben quedar al final de una página */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .titulo-seccion,
+  .fase-titulo,
+  .chart-header,
+  .table-header {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* Deja que estos elementos se dividan si es necesario */
+  tr,
+  td,
+  th,
+  li,
+  p,
+  .card-body {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  /* SALTOS DE PÁGINA FORZADOS */
+  /* Inserta saltos de pagina entre las secciones */
+  .prueba-colores-container {
+    page-break-after: always !important;
+    break-after: always !important;
+  }
+}

@@ -1,0 +1,110 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.main-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-box-wrapper {
+  border: 2px solid #d2d2d2;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 90%;
+  max-width: 1000px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.circle-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.color-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.color-box {
+  width: 100px;
+  height: 100px;
+  border-radius: 16px;
+  cursor: pointer;
+  border: 3px solid #fff;
+  transition: transform 0.2s;
+}
+
+.color-box:hover {
+  transform: scale(1.05);
+}
+
+.color-number {
+  font-size: 22px;
+  font-weight: bold;
+  color: #000;
+}
+
+.btn-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Botones Colores */
+:root {
+  --primary: #95b6bc;
+  --secondary: #294969;
+  --third: #c1c1c1;
+  --font-primary: #000;
+  --font-secondary: #fff;
+  --primary-hover: #7ba1a8;
+  --secondary-hover: #193858;
+  --third-hover: #b1b1b1;
+}
+
+.btn-color--primary {
+  background: var(--primary);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary {
+  background: var(--secondary);
+  color: var(--font-secondary);
+}
+
+.btn-color--third {
+  background: var(--third);
+  color: var(--font-primary);
+}
+
+.btn-color--third:hover {
+  background: var(--third-hover);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary:hover {
+  background: var(--secondary-hover);
+  color: var(--font-secondary);
+}
+
+.btn-color--primary:hover {
+  background: var(--primary-hover);
+  color: var(--font-primary);
+}
