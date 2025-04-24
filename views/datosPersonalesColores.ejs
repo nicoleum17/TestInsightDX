@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba de Colores de Lüscher</title>
+
+    <link rel="stylesheet" href="/css/aspirantes/datosPersonalesColores.css" />
+  </head>
+  <%- include('includes/_navbar.ejs') %>
+
+  <body class="bg-light">
+    <div class="container py-5">
+      <h2 class="text-center mb-5 fw-bold">Test de los colores de Lüscher</h2>
+
+      <div class="mx-auto" style="max-width: 800px">
+        <h4 class="pb-2 mb-4 border-bottom">Datos personales</h4>
+
+        <form action="/aspirante/datos-personales-colores" method="POST">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" required />
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="apellidoPaterno" class="form-label"
+                >Apellido Paterno</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="apellidoPaterno"
+                required />
+            </div>
+            <div class="col-md-6">
+              <label for="apellidoMaterno" class="form-label"
+                >Apellido Materno</label
+              >
+              <input type="text" class="form-control" name="apellidoMaterno" />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="puestoSolicitado" class="form-label"
+              >Postgrado solicitado</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="puestoSolicitado"
+              required />
+          </div>
+
+          <div class="text-end mt-4">
+            <button type="submit" class="btn btn-color--secondary">
+              Continuar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- (POPSTATE Y BEFOREUNLOAD) -->
+    <script>
+      // Intentar prevenir la navegacion hacia atras
+      window.addEventListener("load", function () {
+        // Hacer que el boton "Atras" no lleve a la pagina anterior
+        window.history.pushState(null, document.title, window.location.href);
+
+        // Cada vez que el usuario intente navegar hacia atras volver a pushState
+        window.addEventListener("popstate", function () {
+          window.history.pushState(null, document.title, window.location.href);
+          // Mostrar mensaje
+          alert(
+            "No es posible regresar a la página anterior durante el proceso."
+          );
+        });
+      });
+
+      // Variable para controlar si el formulario se esta enviando correctamente
+      let isFormSubmitting = false;
+
+      // Cuando se envia el formulario marcar que esta siendo enviado
+      document.querySelector("form").addEventListener("submit", function () {
+        isFormSubmitting = true;
+      });
+
+      // Detectar cuando el usuario intenta salir de la pagina
+      window.addEventListener("beforeunload", function (e) {
+        // Si el formulario se esta enviando correctamente no se muestra nada
+        if (isFormSubmitting) {
+          return;
+        }
+
+        // Verificar si hay datos en el formulario
+        const formFields = document.querySelectorAll("form input");
+        let hasData = false;
+
+        for (let field of formFields) {
+          if (field.value.trim() !== "") {
+            hasData = true;
+            break;
+          }
+        }
+
+        // Solo mostrar el mensaje si hay datos en el formulario
+        if (hasData) {
+          const message =
+            "¿Está seguro que desea salir? Los datos ingresados no se guardarán.";
+          e.returnValue = message;
+          return message;
+        }
+      });
+    </script>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>

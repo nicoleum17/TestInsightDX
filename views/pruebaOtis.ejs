@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test de aptitud mental OTIS</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <!-- CSS link -->
+    <link rel="stylesheet" href="/css/aspirantes/pruebaOtis.css" />
+  </head>
+  <%- include('includes/_navbar.ejs') %>
+
+  <body>
+    <div class="container mt-4">
+      <div class="preguntasCaja">
+        <div class="cabeceraTest">
+          <h2 class="tituloTest text-center">Test de aptitud mental OTIS</h2>
+          <div class="headerOtis">
+            <div class="progresoOtis">
+              <label class="tituloProgreso">Progreso</label>
+              <span id="textoProgreso">0%</span>
+              <div class="barraExterna">
+                <div class="barraInterna" id="barraProgreso"></div>
+              </div>
+            </div>
+
+            <div class="temporizadorOtis">
+              <span class="iconoReloj">⏱</span>
+              <span class="tiempoRestante" id="tiempoRestante">30:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Área de la pregunta -->
+        <div class="areaTexto"></div>
+
+        <!-- Preguntas de la prueba OTIS -->
+        <div class="pregtext"></div>
+        <div class="optionList"></div>
+        <hr />
+        <footer>
+          <div class="text-end mt-4">
+            <button class="sigbtn btn btn-color--secondary">Siguiente</button>
+
+            <button class="btn btn-color--secondary" id="enviarRespuestas">
+              Enviar respuestas
+            </button>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- JS -->
+    <script src="/js/aspirantes/pruebaOtis.js"></script>
+
+    <script>
+      // Bloquear boton de regresar
+      window.addEventListener("load", function () {
+        history.pushState(null, "", location.href);
+        window.addEventListener("popstate", function () {
+          history.pushState(null, "", location.href);
+          alert("No puedes regresar durante la prueba.");
+        });
+      });
+    </script>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>

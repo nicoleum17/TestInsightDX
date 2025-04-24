@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba Mental de Otis</title>
+
+    <!-- CSS link -->
+    <link rel="stylesheet" href="/css/aspirantes/instruccionesOtis.css" />
+  </head>
+  <%- include('includes/_navbar.ejs') %>
+
+  <body class="bg-light">
+    <div class="container">
+      <h1 class="text-center">Prueba mental de OTIS</h1>
+
+      <h4 class="fw-bold">INSTRUCCIONES</h4>
+      <p>
+        Lea esta página y haga lo que se le indica. No dé vuelta la página,
+        mientras no se le diga. Esta es una prueba para conocer su capacidad
+        para pensar. Contiene preguntas de diferentes tipos. Aquí hay un ejemplo
+        contestando correctamente. Observe cómo se ha contestado la pregunta:
+      </p>
+
+      <p>
+        <strong
+          >1. ¿Cuál de las cinco palabras anotadas a continuación expresa lo que
+          es una manzana?</strong
+        >
+      </p>
+      <ul>
+        <li>
+          1. <strong>Flor</strong> 2. <strong>Árbol</strong> 3.
+          <strong>Vegetal</strong> 4. <strong>Fruta</strong> 5.
+          <strong>Animal</strong>
+        </li>
+      </ul>
+      <p>
+        La respuesta correcta es, por supuesto, "fruta". Y como la palabra fruta
+        lleva el número 4, se escribe 4 en el paréntesis. Esta es la forma en
+        que usted contestará las preguntas.
+      </p>
+
+      <p>
+        <strong
+          >2. ¿Cuál de las cinco palabras que van a continuación significa lo
+          opuesto de norte?</strong
+        >
+      </p>
+      <ul>
+        <li>
+          1. <strong>Polo</strong> 2. <strong>Ecuador</strong> 3.
+          <strong>Sur</strong> 4. <strong>Oeste</strong> 5.
+          <strong>Este</strong>
+        </li>
+      </ul>
+      <p>
+        La respuesta es, por supuesto, "sur". De modo que usted colocará el
+        número 3 en el paréntesis.
+      </p>
+
+      <p><strong>Ensaye este otro ejemplo:</strong></p>
+      <p>
+        3. El pie es al hombre y la garra es al gato, como la pezuña es al...?
+      </p>
+      <ul>
+        <li>
+          1. <strong>Perro</strong> 2. <strong>Caballo</strong> 3.
+          <strong>Zapato</strong> 4. <strong>Herrero</strong> 5.
+          <strong>Silla de montar</strong>
+        </li>
+      </ul>
+      <p>
+        La respuesta es, por supuesto, "caballo"; de modo que usted colocará un
+        número 2 en el paréntesis.
+      </p>
+
+      <p><strong>Ensaye este otro:</strong></p>
+      <p>4. ¿Cuánto costarán cuatro lapiceros a $60 cada uno?</p>
+      <p>
+        La respuesta es, por supuesto, $240; y aquí no hay nada subrayar; de
+        modo que usted escribirá 240 en el paréntesis. Si la respuesta a una
+        pregunta es un número o letra, escriba el número o la letra en los
+        paréntesis, sin subrayar nada. Haga todas las letras mayúsculas y de
+        tipo de imprenta.
+      </p>
+
+      <p class="fw-bold">
+        La prueba contiene 75 preguntas. No espere que usted sea capaz de
+        contestarlas todas, pero haga todo lo mejor que pueda. Dispondrá de 30
+        minutos después que el examinador le diga que empiece. Trate de
+        contestar correctamente el mayor número de preguntas. No se detenga
+        mucho tiempo en una consulta. El examinador no contestará ninguna
+        consulta después de iniciada la prueba.
+      </p>
+
+      <div class="d-flex justify-content-between mt-5">
+        <a href="/aspirante/mis-pruebas" class="btn btn-secondary">Regresar</a>
+
+        <form action="/aspirante/instrucciones-otis" method="POST">
+          <button type="submit" class="btn btn-color--secondary">
+            Iniciar Prueba
+          </button>
+        </form>
+      </div>
+    </div>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>

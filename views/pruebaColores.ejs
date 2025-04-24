@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test de los colores de Lüscher</title>
+
+    <link rel="stylesheet" href="/css/aspirantes/pruebaColores.css" />
+  </head>
+  <%- include('includes/_navbar.ejs') %>
+
+  <body class="bg-light">
+    <div class="main-wrapper">
+      <h2 class="fw-bold text-center mb-3">Test de los colores de Lüscher</h2>
+      <div class="text-center mb-4">
+        <p class="mb-1">
+          Observe bien estos ocho colores y seleccione el color que más llame su
+          atención.
+        </p>
+        <p class="mb-1">
+          Concéntrese en elegir el color que más le atraiga visualmente.
+        </p>
+        <p class="mb-1">
+          Una vez que haya elegido, repita la misma operación con los colores
+          restantes, de tal manera que el último que escoja sea el que menos
+          llame su atención.
+        </p>
+      </div>
+
+      <div class="color-box-wrapper">
+        <div id="colorContainer" class="circle-container"></div>
+      </div>
+
+      <!-- Formulario para enviar los datos -->
+      <form
+        id="colorSelectionForm"
+        action="/aspirante/guardar-selecciones-colores"
+        method="POST">
+        <!-- Campos para guardar las selecciones -->
+        <div id="seleccionesContainer"></div>
+
+        <div class="btn-container">
+          <button
+            id="terminarBtn"
+            type="submit"
+            class="btn btn-color--secondary d-none">
+            Terminar prueba
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal segunda ronda -->
+    <div
+      class="modal fade"
+      id="segundaRondaModal"
+      tabindex="-1"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+          <div class="modal-header">
+            <h5 class="modal-title w-100">Instrucciones</h5>
+          </div>
+          <div class="modal-body">
+            Ahora selecciona nuevamente los colores, en orden de atracción.
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button
+              type="button"
+              class="btn btn-color--secondary"
+              data-bs-dismiss="modal">
+              Entendido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- (HISTORY.PUSHSTATE, POPSTATE Y BEFOREUNLOAD) -->
+    <script>
+      // Intentar prevenir la navegacion hacia atras
+      window.addEventListener("load", function () {
+        // Hacer que el boton "Atras" no lleve a la pagina anterior
+        window.history.pushState(null, document.title, window.location.href);
+
+        // Cada vez que el usuario intente navegar hacia atras volver a pushState
+        window.addEventListener("popstate", function () {
+          window.history.pushState(null, document.title, window.location.href);
+          // Mostrar mensaje
+          alert(
+            "No es posible regresar a la página anterior durante la prueba."
+          );
+        });
+      });
+
+      // Beforeunload para advertir al usuario
+      window.addEventListener("beforeunload", function (e) {
+        // No interrumpir cuando se envia el formulario
+        if (
+          document
+            .querySelector("#colorSelectionForm")
+            .getAttribute("data-submitting") === "true"
+        ) {
+          return;
+        }
+
+        // Si la prueba esta en progreso (hay selecciones) mostrar advertencia
+        if (seleccionados && seleccionados.length > 0) {
+          const message =
+            "¿Está seguro que desea salir? Su progreso en la prueba se perderá.";
+          e.returnValue = message;
+          return message;
+        }
+      });
+
+      // Marcar el formulario como en envio cuando se hace submit
+      document
+        .querySelector("#colorSelectionForm")
+        .addEventListener("submit", function () {
+          this.setAttribute("data-submitting", "true");
+        });
+    </script>
+
+    <script src="/js/aspirantes/pruebaColores.js"></script>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>
