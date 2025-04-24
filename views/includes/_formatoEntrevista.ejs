@@ -250,15 +250,19 @@
         </div>
         <div class="column is-one-third">
           <label for="gender" class="label">Género:</label>
-          <input
-            class="input"
-            type="text"
-            placeholder="Mujer"
-            id="genero"
-            name="genero"
-            required />
-        </div>
+          <div class="select is-primary">
+            <select name="genero" id="genero" required>
+              <option value="" disabled hidden selected>
+                Seleccione una opción
+              </option>
+              <option value="Hombre">Hombre</option>
+              <option value="Mujer">Mujer</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
       </div>
+    </div>
+    <div class="column"
       <br />
       <div class="columns is-vcentered ml-5">
         <div class="column is-one-third">
@@ -308,7 +312,7 @@
             placeholder="123 456 7890"
             id="telefono"
             name="telefono"
-            required />
+            />
         </div>
         <div class="column is-one-third">
           <label for="email" class="label">Correo:</label>

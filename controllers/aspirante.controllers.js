@@ -631,7 +631,7 @@ exports.post_formato_entrevista = (request, response, next) => {
         request.body.estadoCivil,
         request.body.direccionA,
         request.body.celular,
-        request.body.telefono,
+        request.body.telefono || null,
         request.body.correo,
         row[0].idFormato
       );
@@ -716,9 +716,9 @@ exports.post_formato_entrevista_DA = (request, response, next) => {
       request.body.promedio,
       request.body.generacion,
       request.body.gradoMax,
-      request.body.maestria,
-      request.body.institucionMaestria,
-      request.body.promedioMaestria,
+      request.body.maestria || null,
+      request.body.institucionMaestria || null,
+      request.body.promedioMaestria || null,
       request.body.cursos,
       request.body.idiomas,
       request.body.idFormato
@@ -837,7 +837,7 @@ exports.post_formato_entrevista_preguntasDL = async (
   try {
     const idPreguntas = await Promise.all(promesas);
     request.session.idFormato = idPreguntas[idPreguntas.length - 1];
-    response.redirect("confirmacion");
+    response.redirect("formatoEntrevista/confirmacion");
     console.log("Pregunta Guardada");
   } catch (error) {
     console.error("Error al guardar preguntas:", error);
