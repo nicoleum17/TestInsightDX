@@ -19,6 +19,10 @@ const oauth2Client = new google.auth.OAuth2(
 );
 const evento = require("../model/event.model");
 const eventoGoogle = require("../model/event.model");
+const PreguntaKostick = require("../model/kostick/preguntasKostick.model");
+const OpcionKostick = require("../model/kostick/opcionesKostick.model");
+const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
+const Opcion16PF = require("../model/16pf/opciones16pf.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   const mensajeBorrado = request.session.infoBorrado;
@@ -65,6 +69,44 @@ exports.get_prueba = (request, response, next) => {
       privilegios: request.session.privilegios || [],
       pruebas: rows,
     });
+  });
+};
+
+exports.get_preguntas = (request, response, next) => {
+  const idPrueba = parseInt(request.params.id);
+
+  Prueba.fetchOne(idPrueba).then(([pruebaInfo]) => {
+    if (idPrueba === 1) {
+      PreguntaKostick.fetchAll().then(([preguntasKostick]) => {
+        OpcionKostick.fetchAll().then(([opcionesKostick]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntasKostick,
+            opciones: opcionesKostick,
+          });
+        });
+      });
+    } else if (idPrueba === 2) {
+      Pregunta16PF.fetchAll().then(([preguntas16PF]) => {
+        Opcion16PF.fetchAll().then(([opciones16Pf]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntas16PF,
+            opciones: opciones16Pf,
+          });
+        });
+      });
+    } else {
+      response.status(404).send("Tipo de prueba no reconocido.");
+    }
   });
 };
 

@@ -25,17 +25,9 @@ router.get(
   psicologaController.notificaciones_psicologa
 );
 
-router.get(
-  "/PsicologaAuth",
-  isAuth,
-  psicologaController.getOauthAuthenticator
-);
+router.get("/PsicologaAuth", isAuth, psicologaController.getOauthAuthenticator);
 
-router.get(
-  "/redirect",
-  isAuth,
-  psicologaController.getRedirectOauth
-);
+router.get("/redirect", isAuth, psicologaController.getRedirectOauth);
 
 router.get(
   "/calendarios/calendario",
@@ -88,6 +80,13 @@ router.get(
   isAuth,
   consultarPruebas,
   psicologaController.get_prueba
+);
+
+router.get(
+  "/pruebas/:id",
+  isAuth,
+  consultarPruebas,
+  psicologaController.get_preguntas
 );
 
 router.get("/crearGrupo", isAuth, crearGrupo, psicologaController.crear_grupo);

@@ -1,0 +1,86 @@
+<%- include('includes/_navbar') %>
+
+<style>
+  .fullHeight {
+    min-height: 1450vh;
+    margin-top: 60px;
+    padding-bottom: 40px;
+  }
+  .preguntas-wrapper {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .titulo-prueba {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .pregunta-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .numero-pregunta {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  .opcion-item {
+    margin-left: 1.5rem;
+    font-size: 1rem;
+    color: #444;
+  }
+</style>
+
+<section class="fullHeight">
+  <div class="container is-max-desktop mt-5">
+    <div class="titulo-prueba">Preguntas de <%= prueba.nombre %></div>
+    <div>
+        <a href="/psicologa/pruebas">
+            <button class="button m-5 is-primary has-text-white">Regresar</button>
+        </a>
+    </div>
+    <%if(prueba.idPrueba == 1) {%>
+        <div class="preguntas-wrapper">
+            <% preguntas.forEach(pregunta => { %>
+                <div class="pregunta-item">
+                    <div class="numero-pregunta"><%= pregunta.numeroPreguntaKostick %>.</div>
+                    <% opciones.forEach(opcion => { %>
+                        <% if (opcion.idPreguntaKostick === pregunta.idPreguntaKostick) { %>
+                        <div class="opcion-item">
+                            <%= opcion.opcionKostick %>.- <%= opcion.descripcionOpcionKostick %>
+                        </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+            <% }) %>
+        </div>
+    <% } else if(prueba.idPrueba == 2) {%>
+        <div class="preguntas-wrapper">
+            <% preguntas.forEach(pregunta => { %>
+                <div class="pregunta-item">
+                <div class="numero-pregunta"><%=pregunta.numeroPregunta16PF%>. <%=pregunta.pregunta16PF%></div>
+                <% opciones.forEach(opcion => { %>
+                    <% if (opcion.idPregunta16PF === pregunta.idPregunta16PF) { %>
+                        <div class="opcion-item">
+                            <%= opcion.opcion16PF %>.- <%= opcion.descripcionOpcion16PF %>
+                        </div>
+                    <% } %>
+                <% }) %>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+    <div>
+        <a href="/psicologa/pruebas">
+            <button class="button m-5 is-primary has-text-white">Regresar</button>
+        </a>
+    </div>
+  </div>
+</section>
+
+<%- include('includes/_footer') %>

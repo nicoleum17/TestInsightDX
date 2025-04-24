@@ -22,6 +22,11 @@
       <div class="instructions"><%= prueba.instrucciones %></div>
       <br />
       <p>Duración: <%= (prueba.duracion / 60).toFixed(0) %> min</p>
+      <div>
+        <a href="/psicologa/pruebas/<%= prueba.idPrueba%>">
+          <button class="button m-5 is-primary has-text-white">Consultar Preguntas</button>
+        </a>
+      </div>
     </div>
     <% }) %>
 
