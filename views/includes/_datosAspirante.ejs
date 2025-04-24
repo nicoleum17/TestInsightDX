@@ -66,6 +66,21 @@
               disabled />
           </div>
         </div>
+
+        <% if(prueba.idPrueba == 2) { %>
+          <label for="sexo" class="label"
+                >Sexo:</label>
+          <div class="select is-primary">
+            <select name="sexo" id="sexo" required>
+              <option value="" disabled hidden selected>
+                Seleccione una opción
+              </option>
+              <option value="hombre">Hombre</option>
+              <option value="mujer">Mujer</option>
+            </select>
+          </div>
+        <% } %>
+
         <div class="columns mt-5 is-centered">
           <nav class="level-left">
             <div class="level-left">

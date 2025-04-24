@@ -71,6 +71,18 @@ module.exports = class Aspirante {
         return idUsuario;
       });
   }
+
+  static saveSexo(idUsuario, sexo) {
+      return db
+        .execute(
+          "UPDATE aspirantes SET sexo = ? WHERE idUsuario = ?",
+          [sexo, idUsuario]
+        )
+        .then(([result]) => {
+          return idUsuario;
+        });
+    }
+
   static fetchAll() {
     return db.execute("SELECT * FROM aspirantes");
   }

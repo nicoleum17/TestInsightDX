@@ -63,6 +63,12 @@ router.get(
   aspiranteController.get_datosA
 );
 
+router.post(
+  "/datosAspirante/2",
+  isAuth,
+  aspiranteController.post_registraSexo
+);
+
 router.get(
   "/instruccionesPrueba/:idPrueba",
   isAuth,

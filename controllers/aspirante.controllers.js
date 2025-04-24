@@ -1365,3 +1365,8 @@ exports.getEventoCalendario = (request, response, next) => {
     }
   );
 };
+
+exports.post_registraSexo = (request, response, next) => {
+  sexo = request.body.sexo;
+  Aspirante.saveSexo(sexo);
+};
