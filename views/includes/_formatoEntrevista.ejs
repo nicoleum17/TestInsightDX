@@ -259,7 +259,7 @@
           <label for="gender" class="label">Género:</label>
           <div class="select is-primary">
             <select name="genero" id="genero" required>
-              <option value="" disabled hidden selected>
+              <option value="" disabled hidden <%= !formato.genero ? "selected" : "" %>>
                 Seleccione una opción
               </option>
               <option value="Hombre" <%= formato.genero === "Hombre" ? "selected" : "" %>>Hombre</option>
