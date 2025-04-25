@@ -11,6 +11,7 @@ const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
+const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -746,5 +747,16 @@ exports.post_registraReporte = (request, response, next) => {
   let idUsuario = request.params.idUsuario;
   Aspirante.update_subirReporte(idUsuario, reporte).then(() => {
     response.redirect("/psicologa/reporteAspirante/" + idUsuario);
+  });
+};
+
+exports.get_interpretaciones16PF = (request, response, next) => {
+  let columna = request.params.columna;
+  let nivel = request.params.nivel;
+  Interpretaciones16PF.interpretacion(columna, nivel).then(([rows]) => {
+    if (rows.length > 0) {
+      inter = rows[0].resp;
+      response.status(200).json({ inter });
+    }
   });
 };

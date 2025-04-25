@@ -78,6 +78,12 @@ router.get(
 );
 
 router.get(
+  "/interpretacion/:columna/:nivel",
+  isAuth,
+  psicologaController.get_interpretaciones16PF
+);
+
+router.get(
   "/consultaRespuestasGrupo",
   isAuth,
   psicologaController.get_respuestasG
