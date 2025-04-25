@@ -70,6 +70,12 @@ router.get(
 );
 
 router.get(
+  "/interpretacion/:columna/:nivel",
+  isAuth,
+  psicologaController.get_interpretaciones16PF
+);
+
+router.get(
   "/consultaRespuestasGrupo",
   isAuth,
   psicologaController.get_respuestasG
@@ -189,6 +195,16 @@ router.post(
   psicologaController.postPreguntaSeguridad
 );
 
+router.get("/aspirante/confirmacion/:id",
+  isAuth,
+  psicologaController.getPreguntaSeguridadAspirante
+)
+
+router.post(
+  "/aspirante/confirmacion/:id",
+  isAuth,
+  psicologaController.postPreguntaSeguridadAspirante
+);
 router.get(
   "/pruebasActivas/:valor",
   isAuth,

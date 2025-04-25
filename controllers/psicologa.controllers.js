@@ -11,6 +11,7 @@ const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
+const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -788,5 +789,52 @@ exports.post_registraReporte = (request, response, next) => {
   let idUsuario = request.params.idUsuario;
   Aspirante.update_subirReporte(idUsuario, reporte).then(() => {
     response.redirect("/psicologa/reporteAspirante/" + idUsuario);
+  });
+};
+
+exports.get_interpretaciones16PF = (request, response, next) => {
+  let columna = request.params.columna;
+  let nivel = request.params.nivel;
+  Interpretaciones16PF.interpretacion(columna, nivel).then(([rows]) => {
+    if (rows.length > 0) {
+      inter = rows[0].resp;
+      response.status(200).json({ inter });
+    }
+  });
+};
+exports.getPreguntaSeguridadAspirante = (request, response, next) => {
+  const idAspirante = request.params.id;
+  response.render("preguntaSeguridadBorradoAspirante.ejs", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    aspirante: idAspirante,
+  });
+}
+
+exports.postPreguntaSeguridadAspirante = (request, response, next) => {
+  console.log(request.body);
+  Usuario.fetchOne(request.body.usuario).then(([rows, fieldData]) => {
+    if (rows.length > 0) {
+      const bcrypt = require("bcryptjs");
+      bcrypt
+        .compare(request.body.contra, rows[0].contraseña)
+        .then((doMatch) => {
+          if (doMatch) {
+            Aspirante.borrarAspirante(request.body.aspirante);
+            request.session.infoBorrado = "Aspirante borrado exitosamente";
+            response.redirect("/psicologa/inicio");
+            console.log("Aspirante borrado");
+          } else {
+            request.session.infoBorrado =
+              "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
+            response.redirect("/psicologa/grupo/elegir");
+            console.log("Grupo no borrado");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   });
 };

@@ -175,6 +175,7 @@
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="usuario" value="<%= usuario %>" />
       <input type="hidden" name="idUsuario" value="<%= idUsuario %>"/>
+      <input type="hidden" name="estatus" value="<%= estatusFormato %>"/>
       <div class="columns is-vcentered ml-5">
         <div class="column">
           <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
@@ -184,6 +185,7 @@
             placeholder="García"
             id="apellidoP"
             name="apellidoP"
+            value="<%= formato.apellidoP ? formato.apellidoP : '' %>"
             required />
         </div>
         <div class="column">
@@ -194,6 +196,7 @@
             placeholder="López"
             id="apellidoM"
             name="apellidoM"
+            value="<%= formato.apellidoM ? formato.apellidoM : '' %>"
             required />
         </div>
         <div class="column">
@@ -204,6 +207,7 @@
             placeholder="Arturo"
             id="nombre"
             name="nombre"
+            value="<%= formato.nombre ? formato.nombre : '' %>"
             required />
         </div>
       </div>
@@ -216,13 +220,14 @@
             type="date"
             id="fechaNacimiento"
             name="fechaNacimiento"
+            value="<%= formato.fechaNacimiento ? formato.fechaNacimiento.toISOString().split('T')[0] : '' %>"
             required />
         </div>
         <div class="column is-offset-5">
           <label for="age" class="label">Edad (años cumplidos):</label>
 
           <div class="select is-primary">
-            <select id="selectAgeIF" class="m-0" , name="edad"></select>
+            <select id="selectAgeIF" class="m-0" , name="edad" value="<%= formato.edad ? formato.edad : '' %>"></select>
           </div>
         </div>
       </div>
@@ -236,6 +241,7 @@
             placeholder="Mexicana"
             id="nacionalidad"
             name="nacionalidad"
+            value="<%= formato.nacionalidad ? formato.nacionalidad : '' %>"
             required />
         </div>
         <div class="column is-one-third">
@@ -246,18 +252,20 @@
             placeholder="Guerrero"
             id="origen"
             name="origen"
+            value="<%= formato.origen ? formato.origen : '' %>"
             required />
         </div>
         <div class="column is-one-third">
           <label for="gender" class="label">Género:</label>
           <div class="select is-primary">
             <select name="genero" id="genero" required>
-              <option value="" disabled hidden selected>
+              <option value="" disabled hidden <%= !formato.genero ? "selected" : "" %>>
                 Seleccione una opción
               </option>
-              <option value="Hombre">Hombre</option>
-              <option value="Mujer">Mujer</option>
-              <option value="Otro">Otro</option>
+              <option value="Hombre" <%= formato.genero === "Hombre" ? "selected" : "" %>>Hombre</option>
+              <option value="Mujer" <%= formato.genero === "Mujer" ? "selected" : "" %>>Mujer</option>
+              <option value="Otro" <%= formato.genero === "Otro" ? "selected" : "" %>>Otro</option>
+
             </select>
           </div>
       </div>
@@ -268,15 +276,15 @@
           <label for="maritalStatus" class="label">Estado Civil:</label>
           <div class="select is-primary">
             <select name="estadoCivil" id="maritalStatus" required>
-              <option value="" disabled hidden selected>
+              <option value="" disabled hidden <%= !formato.estadoCivil ? "selected" : "" %>>
                 Seleccione una opción
               </option>
-              <option value="soltero">Soltero/a</option>
-              <option value="casado">Casado/a</option>
-              <option value="divorciado">Divorciado/a</option>
-              <option value="separado">Separado/a</option>
-              <option value="viudo">Viudo/a</option>
-              <option value="unionLibre">Unión libre</option>
+              <option value="soltero" <%= formato.estadoCivil === "soltero" ? "selected" : "" %>>Soltero/a</option>
+              <option value="casado" <%= formato.estadoCivil === "casado" ? "selected" : "" %>>Casado/a</option>
+              <option value="divorciado" <%= formato.estadoCivil === "divorciado" ? "selected" : "" %>>Divorciado/a</option>
+              <option value="separado" <%= formato.estadoCivil === "separado" ? "selected" : "" %>>Separado/a</option>
+              <option value="viudo" <%= formato.estadoCivil === "viudo" ? "selected" : "" %>>Viudo/a</option>
+              <option value="unionLibre" <%= formato.estadoCivil === "unionLibre" ? "selected" : "" %>>Unión libre</option>
             </select>
           </div>
         </div>
@@ -288,6 +296,7 @@
             placeholder="Calle del Mármol #32"
             id="dirrecionA"
             name="direccionA"
+            value="<%= formato.direccionA ? formato.direccionA : '' %>"
             required />
         </div>
       </div>
@@ -301,6 +310,7 @@
             placeholder="123 456 7890"
             id="celular"
             name="celular"
+            value="<%= formato.celular ? formato.celular : '' %>"
             required />
         </div>
         <div class="column is-one-third">
@@ -311,6 +321,7 @@
             placeholder="123 456 7890"
             id="telefono"
             name="telefono"
+            value="<%= formato.telefono ? formato.telefono : '' %>"
             />
         </div>
         <div class="column is-one-third">
@@ -321,6 +332,7 @@
             placeholder="ejemplo@gmail.com"
             id="correo"
             name="correo"
+            value="<%= formato.correo ? formato.correo : '' %>"
             required />
         </div>
       </div>

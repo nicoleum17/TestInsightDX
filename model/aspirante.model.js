@@ -84,7 +84,7 @@ module.exports = class Aspirante {
     }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM aspirantes");
+    return db.execute("SELECT * FROM aspirantes WHERE hidden = 0");
   }
 
   static fetchOne(idUsuario) {
@@ -96,7 +96,7 @@ module.exports = class Aspirante {
   static find(valor) {
     return db.execute(
       `SELECT *
-        FROM aspirantes a`
+        FROM aspirantes a WHERE hidden = 0`
     );
   }
 
@@ -139,5 +139,13 @@ module.exports = class Aspirante {
     WHERE pg.idUsuario = ?`,
     [idUsuario]
     );
+  }
+
+  static async borrarAspirante(idAspirante){
+        await db.execute("UPDATE `aspirantes` SET `hidden` = ? WHERE `idUsuario` = ?;", [
+          1,
+          idAspirante,
+        ]);
+        return db.execute("UPDATE `usuarios` SET `hidden` = ? WHERE `idUsuario` = ?", [1, idAspirante]);
   }
 };

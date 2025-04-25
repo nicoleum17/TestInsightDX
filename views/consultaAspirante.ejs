@@ -52,6 +52,7 @@
             <th>Universidad de Procedencia</th>
             <th>Modificar</th>
             <th>Documentos</th>
+            <th>Eliminar</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -90,6 +91,7 @@
       const universidadAspirante = row.insertCell(5);
       const modificarAspirante = row.insertCell(6);
       const documentos = row.insertCell(7);
+      const eliminar = row.insertCell(8);
 
       (nombreAspirante.textContent = aspirante.nombres + " " + aspirante.apellidoPaterno + " " + aspirante.apellidoMaterno);
       codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
@@ -108,6 +110,15 @@
       documentos.innerHTML = `<a href="reporteAspirante/${aspirante.idUsuario}">
         <button class="image-button">
           <i class="fa-regular fa-file" style="color: #000000;"></i>
+          </button></a>`;
+
+          //"https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
+      eliminar.innerHTML = `<a href="aspirante/confirmacion/${aspirante.idUsuario}">
+        <button class="image-button">
+                      <img
+              src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
+              alt=""
+              width="20px" />
           </button></a>`;
           contenedorSugerencias.style.display = "none";
       pruebas = document
@@ -203,6 +214,7 @@
         const universidadAspirante = row.insertCell(5);
         const modificarAspirante = row.insertCell(6);
         const documentos = row.insertCell(7);
+        const eliminar = row.insertCell(8);
 
         nombreAspirante.textContent = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
         codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
@@ -234,6 +246,13 @@
             </button>
           </a>
         `;
+        eliminar.innerHTML = `<a href="aspirante/confirmacion/${aspirante.idUsuario}">
+        <button class="image-button">
+                      <img
+              src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
+              alt=""
+              width="20px" />
+          </button></a>`;
       });
     })
     .catch((error) => {
