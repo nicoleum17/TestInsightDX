@@ -810,7 +810,7 @@ exports.getPreguntaSeguridadAspirante = (request, response, next) => {
     csrfToken: request.csrfToken(),
     aspirante: idAspirante,
   });
-}
+};
 
 exports.postPreguntaSeguridadAspirante = (request, response, next) => {
   console.log(request.body);
