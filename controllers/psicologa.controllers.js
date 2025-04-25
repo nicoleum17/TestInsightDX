@@ -36,7 +36,7 @@ exports.inicio_psicologa = (request, response, next) => {
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     infoBorrado: mensajeBorrado,
     infoAspirante: mensajeAspirante,
@@ -47,7 +47,7 @@ exports.notificaciones_psicologa = (request, response, next) => {
   response.render("notificacionesPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -55,7 +55,7 @@ exports.calendario_psicologa = (request, response, next) => {
   response.render("calendarioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -64,7 +64,7 @@ exports.get_prueba = (request, response, next) => {
     response.render("consultaPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       pruebas: rows,
     });
@@ -76,7 +76,7 @@ exports.registrarAspirante = (request, response, next) => {
     response.render("registrarAspirante", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupos: rows,
     });
@@ -179,7 +179,7 @@ exports.get_aspirantes = (request, response, next) => {
       response.render("consultaAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
+        //csrfToken: request.csrfToken(),
         aspirantes: rows,
         info: mensaje,
         privilegios: request.session.privilegios || [],
@@ -213,7 +213,7 @@ exports.get_respuestasA = (request, response, next) => {
               response.render("consultaRespuestasAspirante", {
                 isLoggedIn: request.session.isLoggedIn || false,
                 usuario: request.session.usuario || "",
-                csrfToken: request.csrfToken(),
+                //csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 prueba: "El inventario de Percepción Kostick",
                 grupo: grupoRows[0],
@@ -228,7 +228,7 @@ exports.get_respuestasA = (request, response, next) => {
               response.render("consultaRespuestasAspirante", {
                 isLoggedIn: request.session.isLoggedIn || false,
                 usuario: request.session.usuario || "",
-                csrfToken: request.csrfToken(),
+                //csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 prueba: "Personalidad 16 Factores (16 PF)",
                 grupo: grupoRows[0],
@@ -247,7 +247,7 @@ exports.get_respuestasG = (request, response, next) => {
   response.render("consultaRespuestasGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -257,7 +257,7 @@ exports.crear_grupo = (request, response, next) => {
     response.render("crearGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       pruebas: rows,
     });
@@ -361,7 +361,7 @@ exports.confirmar_creacion_grupo = (request, response, next) => {
   response.render("confirmarCreacionGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     info: info,
     grupo: grupo,
@@ -375,7 +375,7 @@ exports.elegir_grupo = (request, response, next) => {
     response.render("elegirGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupos: rows,
       infoBorrado: mensaje,
@@ -389,7 +389,7 @@ exports.get_grupo = (request, response, next) => {
     response.render("consultaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
@@ -402,7 +402,7 @@ exports.registra_reporte_grupo = (request, response, next) => {
     response.render("registrarReporteGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
@@ -424,7 +424,7 @@ exports.registra_foda_grupo = (request, response, next) => {
     response.render("registrarFodaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
@@ -449,7 +449,7 @@ exports.get_modificarGrupo = (request, response, next) => {
         response.render("modificarGrupo", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
+          //csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           grupo: rows[0],
           pruebas: pruebas,
@@ -495,7 +495,7 @@ exports.get_modificarAspirante = (request, response, next) => {
       response.render("modificarAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
+        //csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         aspirante: aspirante[0],
         perteneceGrupo: perteneceGrupo[0],
@@ -548,7 +548,7 @@ exports.get_reporteAspirante = (request, response, next) => {
     response.render("reporteAspirante", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       aspirante: aspirante[0],
       idUsuario: request.session.idUsuario,
@@ -564,7 +564,7 @@ exports.get_consultarReporteAspirante = (request, response, next) => {
       response.render("consultarReporteAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
+        //csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         aspirante: aspirante[0],
         idUsuario: request.session.idUsuario,
@@ -598,7 +598,7 @@ exports.getPreguntaSeguridad = (request, response, next) => {
   response.render("preguntaSeguridadBorrado.ejs", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
+    //csrfToken: request.csrfToken(),
     grupo: idGrupo,
   });
 };
@@ -721,7 +721,7 @@ exports.getEventoCalendario = (request, response, next) => {
       response.render("calendarioPsicologa", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
+        //csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario || "",
         infoEventos: request.session.eventos,
@@ -736,7 +736,7 @@ exports.registraReporte = (request, response, next) => {
     response.render("registraReporte", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
+      //csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       aspirante: aspirante[0],
       idUsuario: request.session.idUsuario || "",

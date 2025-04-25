@@ -5,23 +5,41 @@
   }
 </style>
 <section class="section fullHeight has-background-warning">
-<div class="container " style="width: 60%;">
-  <!-- Título -->
-  <h2 class="title is-3 mt-5 has-text-weight-semibold">Crear Grupo</h2>
-  <form 
-    action="/psicologa/grupo/confirmarCreacion"
-    method="POST"
-    enctype="multipart/form-data">
-    <input type="hidden" name="_csrf" value=<%= csrfToken%> />
-    <label class="label">Institución:</label>
-    <input type="text" class="input" name="institucion" placeholder="ingresa la institucion" required/>  <br><br>
-    <label class="label">Posgrado:</label>
-    <input type="text" class="input" name="posgrado" placeholder="ingresa el posgrado" required/> <br><br>
-    <label class="label">Generación:</label>
-    <input type="text" class="input" name="generacion" placeholder="ingresa la generación" required/>  <br><br>
+  <div class="container" style="width: 60%">
+    <!-- Título -->
+    <h2 class="title is-3 mt-5 has-text-weight-semibold">Crear Grupo</h2>
+    <form
+      action="/psicologa/grupo/confirmarCreacion"
+      method="POST"
+      enctype="multipart/form-data">
+      <!--CSRF TOKEN-->
+      <label class="label">Institución:</label>
+      <input
+        type="text"
+        class="input"
+        name="institucion"
+        placeholder="ingresa la institucion"
+        required />
+      <br /><br />
+      <label class="label">Posgrado:</label>
+      <input
+        type="text"
+        class="input"
+        name="posgrado"
+        placeholder="ingresa el posgrado"
+        required />
+      <br /><br />
+      <label class="label">Generación:</label>
+      <input
+        type="text"
+        class="input"
+        name="generacion"
+        placeholder="ingresa la generación"
+        required />
+      <br /><br />
 
-  <!-- Subir archivo y fecha límite -->
-    <!-- <label class="label">Subir Archivo</label>
+      <!-- Subir archivo y fecha límite -->
+      <!-- <label class="label">Subir Archivo</label>
     <div class="file">
       <label class="file-label">
         <input class="file-input" type="file" name="resume" accept=".csv" />
@@ -31,91 +49,104 @@
       </label>
     </div> -->
 
-    <label class="label">Fecha Límite Pruebas:</label>
-    <input type="date" class="input" name="fechaLimite" placeholder="2025-01-01" required/><br><br> 
+      <label class="label">Fecha Límite Pruebas:</label>
+      <input
+        type="date"
+        class="input"
+        name="fechaLimite"
+        placeholder="2025-01-01"
+        required /><br /><br />
 
-  <!-- Batería de Pruebas -->
-  <div class="box">
-    <div class="is-flex is-align-items-center mb-3">
-      <strong class="mr-auto">Batería de Pruebas</strong>
-      <button onclick="agregarPrueba()" id="button-agregar" type="button">
-        <img
-          src="https://img.icons8.com/m_rounded/512/plus.png"
-          width="30"
-          height="30" />
-      </button>
-    </div>
+      <!-- Batería de Pruebas -->
+      <div class="box">
+        <div class="is-flex is-align-items-center mb-3">
+          <strong class="mr-auto">Batería de Pruebas</strong>
+          <button onclick="agregarPrueba()" id="button-agregar" type="button">
+            <img
+              src="https://img.icons8.com/m_rounded/512/plus.png"
+              width="30"
+              height="30" />
+          </button>
+        </div>
 
-    <!-- Lista de pruebas -->
-    <div class="box has-background-primary" id="pruebas-container">
-      <div class="columns">
-        <div class="column">
-          <div>
-            <div class="select is-fullwidth">
-              <select class="dynamic-select" name="pruebasOpcion" required>
-                <option value="" selected disabled>Selecciona una de las pruebas</option>
-                <% pruebas.forEach(prueba => {%>
-                <option value="<%= prueba.nombre%>">
-                  <%= prueba.nombre%>
-                </option>
-                <%})%>
-              </select>
+        <!-- Lista de pruebas -->
+        <div class="box has-background-primary" id="pruebas-container">
+          <div class="columns">
+            <div class="column">
+              <div>
+                <div class="select is-fullwidth">
+                  <select class="dynamic-select" name="pruebasOpcion" required>
+                    <option value="" selected disabled>
+                      Selecciona una de las pruebas
+                    </option>
+                    <% pruebas.forEach(prueba => {%>
+                    <option value="<%= prueba.nombre%>">
+                      <%= prueba.nombre%>
+                    </option>
+                    <%})%>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div
+              class="column is-1"
+              style="text-align: center; margin-top: 5px"></div>
+          </div>
+        </div>
+      </div>
+
+      <br /><br />
+
+      <!-- Botones de acción -->
+      <section id="SesionGrupal">
+        <div class="title has-text-weight-semibold">Sesión Grupal</div>
+        <div class="field">
+          <label class="label">Fecha</label>
+          <div class="control">
+            <input
+              class="input"
+              type="date"
+              name="fechaPruebaGrupal"
+              placeholder="2025-01-01"
+              required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Hora</label>
+          <div class="control">
+            <input
+              class="input"
+              type="time"
+              name="horaPruebaGrupal"
+              placeholder="2:00 PM"
+              required />
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label class="label">Link</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                name="enlaceZoom"
+                placeholder="ingresa un link"
+                required />
             </div>
           </div>
         </div>
-        <div
-          class="column is-1"
-          style="text-align: center; margin-top: 5px"></div>
-      </div>
-    </div>
-  </div>
-
-  <br /><br />
-
-  <!-- Botones de acción -->
-  <section id="SesionGrupal">
-    <div class="title has-text-weight-semibold">Sesión Grupal</div>
-      <div class="field">
-        <label class="label">Fecha</label>
-        <div class="control">
+      </section>
+      <div class="columns">
+        <div class="column has-text-centered">
           <input
-            class="input"
-            type="date"
-            name="fechaPruebaGrupal"
-            placeholder="2025-01-01" 
-            required/>
+            class="button m-5 is-primary has-text-white"
+            type="submit"
+            value="Confirmar" />
         </div>
       </div>
-      <div class="field">
-        <label class="label">Hora</label>
-        <div class="control">
-          <input class="input" type="time" name="horaPruebaGrupal" placeholder="2:00 PM" required/>
-        </div>
-      </div>
-    <div>
-      <div class="field">
-        <label class="label">Link</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            name="enlaceZoom"
-            placeholder="ingresa un link" 
-            required/>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="columns">
-    <div class="column has-text-centered">
-      <input class="button m-5 is-primary has-text-white" type="submit" value="Confirmar">
-    </div>
+    </form>
   </div>
-</form>
-</div>
 </section>
-
-
 
 <script>
   function agregarPrueba() {
@@ -147,30 +178,33 @@
 
     //Se agrega la prueba al contenedor
     contenedor.appendChild(nuevaPrueba);
-    actualizarSelects(); 
+    actualizarSelects();
   }
 
   function eliminarPrueba(boton) {
     boton.closest(".columns").remove();
-    actualizarSelects(); 
+    actualizarSelects();
   }
 
   function actualizarSelects() {
-    const selects = Array.from(document.querySelectorAll('.dynamic-select'));
+    const selects = Array.from(document.querySelectorAll(".dynamic-select"));
 
     function getSelectedValues() {
-      return selects.map(select => select.value).filter(value => value !== "");
+      return selects
+        .map((select) => select.value)
+        .filter((value) => value !== "");
     }
 
     const selectedValues = getSelectedValues();
 
-    selects.forEach(select => {
+    selects.forEach((select) => {
       const currentValue = select.value;
       const allOptions = Array.from(select.options);
 
-      allOptions.forEach(opt => {
+      allOptions.forEach((opt) => {
         if (opt.value === "") return; // No tocar la opción vacía
-        opt.disabled = selectedValues.includes(opt.value) && opt.value !== currentValue;
+        opt.disabled =
+          selectedValues.includes(opt.value) && opt.value !== currentValue;
       });
     });
   }
@@ -178,22 +212,29 @@
   // Inicializar la función al cargar la página
   document.addEventListener("DOMContentLoaded", actualizarSelects);
 
-  document.querySelector('form').addEventListener('submit', function (e) {
-    const hoy = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+  document.querySelector("form").addEventListener("submit", function (e) {
+    const hoy = new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
 
-    const fechaLimite = document.querySelector('input[name="fechaLimite"]').value;
-    const fechaSesion = document.querySelector('input[name="fechaPruebaGrupal"]').value;
+    const fechaLimite = document.querySelector(
+      'input[name="fechaLimite"]'
+    ).value;
+    const fechaSesion = document.querySelector(
+      'input[name="fechaPruebaGrupal"]'
+    ).value;
 
     if (fechaLimite < hoy) {
-      e.preventDefault(); 
-      alert("Las fechas límite de las pruebas NO pueden ser anterior al día actual.");
+      e.preventDefault();
+      alert(
+        "Las fechas límite de las pruebas NO pueden ser anterior al día actual."
+      );
     }
     if (fechaSesion < hoy) {
-      e.preventDefault(); 
-      alert("Las fechas de la sesión grupal NO puede ser anterior al día actual.");
+      e.preventDefault();
+      alert(
+        "Las fechas de la sesión grupal NO puede ser anterior al día actual."
+      );
     }
-});
-
+  });
 </script>
 
 <%- include('includes/_footer') %>

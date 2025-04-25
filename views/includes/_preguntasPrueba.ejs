@@ -49,7 +49,7 @@
       </div>
       <% }) %> <% } %> <% } %>
 
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <!--CSRF TOKEN-->
       <input
         type="hidden"
         id="idUsuario"
@@ -100,7 +100,7 @@
       </div>
       <% }) %> <% } %> <% } %>
 
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <!--CSRF TOKEN-->
       <input
         type="hidden"
         id="idUsuario1"
@@ -166,7 +166,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+          //CSRF
         },
         body: JSON.stringify(data),
       })
@@ -206,7 +206,7 @@
                             `;
             });
           }
-          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          html += ` <!--CSRF TOKEN-->
                 <input
         type="hidden"
         id="idUsuario"
@@ -283,7 +283,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+          //CSRF TOKEN
         },
         body: JSON.stringify(data),
       })
@@ -346,7 +346,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+          //CSRF
         },
         body: JSON.stringify(data),
       })
@@ -389,7 +389,7 @@
                             `;
             });
           }
-          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          html += ` <!--CSRF TOKEN-->
                 <input
         type="hidden"
         id="idUsuario1"
@@ -466,7 +466,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+          //CSRF
         },
         body: JSON.stringify(data),
       })

@@ -329,7 +329,11 @@ router.post(
   "/guardar-selecciones-otis",
   aspiranteController.postGuardarRespuestas
 );
-router.get("/prueba-completada", aspiranteController.getPruebaCompletada);
+router.get(
+  "/prueba-completada",
+  isAuth,
+  aspiranteController.getPruebaCompletada
+);
 
 router.get(
   "/instrucciones-colores",

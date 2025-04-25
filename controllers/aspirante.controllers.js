@@ -1782,7 +1782,13 @@ exports.postGuardarSeleccionesColores = (request, response) => {
 };
 
 exports.getPruebaCompletada = (request, response, next) => {
-  response.render("Aspirantes/pruebaCompletada", {});
+  response.render("finPrueba", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    //csrfToken: request.csrfToken(),
+    privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario,
+  });
 };
 
 exports.getRespuestasEnviadas = (request, response, next) => {
