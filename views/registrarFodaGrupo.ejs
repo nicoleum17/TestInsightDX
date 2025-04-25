@@ -2,12 +2,12 @@
 <style>
   .fullHeight {
     min-height: 90vh;
-    margin-top: 20px;
+    margin-top: 70px;
   }
 </style>
-<section class="section fullHeight">
-  <div class="container">
-    <div class="title has-text-weight-semibold">Subir Reporte - Grupo</div>
+<section class="fullHeight has-background-warning">
+  <div class="container is-max-desktop mt-5">  <div class="container">
+    <div class="title has-text-weight-semibold">Subir Foda del Grupo</div>
     <div class="columns is-mobile">
       <div class="column">
         <div class="has-text-weight-bold">Posgrado: <%= grupo.posgrado %></div>
@@ -52,7 +52,7 @@
     <div class="columns">
       <div class="column has-text-centered">
         <% if (grupo.archivoFoda === null) { %>
-        <p>Aún no hay un reporte registrado para este grupo</p>
+        <p>Aún no hay un reporte foda registrado para este grupo</p>
         <%} else {%>
         <a href="/psicologa/pdf/<%= grupo.archivoFoda%>">
           <button class="button is-primary has-text-warning mt-6">
