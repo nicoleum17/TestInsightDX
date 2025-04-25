@@ -34,6 +34,7 @@
               placeholder="Lugar..."
               id="lugarTrabajo"
               name="lugarTrabajo"
+              value="<%= respuesta.lugarTrabajo ? respuesta.lugarTrabajo : '' %>"
               required />
           </div>
           <div class="column">
@@ -44,6 +45,7 @@
               placeholder="Empresa..."
               id="empresa"
               name="empresa"
+              value="<%= respuesta.empresa ? respuesta.empresa : '' %>"
               required />
           </div>
           <div class="column">
@@ -54,6 +56,7 @@
               placeholder="Encargado de ..."
               id="puesto"
               name="puesto"
+              value="<%= respuesta.puesto ? respuesta.puesto : '' %>"
               required />
           </div>
         </div>
@@ -67,6 +70,7 @@
               placeholder="5"
               id="tiempo"
               name="tiempo"
+              value="<%= respuesta.años ? respuesta.años : '' %>"
               required />
           </div>
           <div class="column is-one-third">
@@ -77,6 +81,7 @@
               placeholder="Organizar las ..."
               id="actividades"
               name="actividades"
+              value="<%= respuesta.actividades ? respuesta.actividades : '' %>"
               required />
           </div>
           <div class="column is-one-third">
@@ -87,6 +92,7 @@
               placeholder="1000 pesos al mes..."
               id="sueldo"
               name="sueldo"
+              value="<%= respuesta.sueldo ? respuesta.sueldo : '' %>"
               required />
           </div>
         </div>
@@ -95,9 +101,9 @@
             <label for="personal" class="label">Tiene personal a su cargo:</label>
             <div class="select is-link">
             <select class="select" name="personal" id="personal" required>
-                <option value="" disabled hidden selected>Seleccione una opción</option>
-                <option value="Si">Si</option>
-                <option value="No">No</option>
+                <option value="" disabled hidden <%= !respuesta.personal ? "selected" : "" %>>Seleccione una opción</option>
+                <option value="Si" <%= respuesta.personal === "Si" ? "selected" : "" %>>Si</option>
+                <option value="No" <%= respuesta.personal === "No" ? "selected" : "" %>>No</option>
             </select>
           </div>
           </div>

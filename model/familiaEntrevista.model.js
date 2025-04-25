@@ -20,4 +20,7 @@ module.exports = class familia {
                 idFamilia: this.idFamilia};
           });
     }
+    static fetchFamilia(idFormato){
+        return db.execute("SELECT idFamilia FROM familia WHERE idFormato = ?", [idFormato])
+    }
 };
