@@ -53,7 +53,7 @@
 -->
 <script>
   const valor = <%- JSON.stringify(valores) %>;
-  const sexo = 'F';
+  const sexo = 'H';
   let ADE = 0;
   let BDE = 0;
   let CDE = 0;
@@ -332,28 +332,28 @@
     }
   } else if (sexo == 'H'){
     switch (true) {
-      case valor.A < 7:
+      case valor.A < 5:
       ADE = 1;
       break;
-      case valor.A < 9:
+      case valor.A < 8:
       ADE = 2;
       break;
-      case valor.A < 12:
+      case valor.A < 10:
       ADE = 3;
       break;
-      case valor.A < 14:
+      case valor.A < 12:
       ADE = 4;
       break;
-      case valor.A < 16:
+      case valor.A < 14:
       ADE = 5;
       break;
-      case valor.A < 18:
+      case valor.A < 16:
       ADE = 6;
       break;
-      case valor.A < 20:
+      case valor.A < 18:
       ADE = 7;
       break;
-      case valor.A < 21:
+      case valor.A < 20:
       ADE = 8;
       break;
       case valor.A < 22:
@@ -364,19 +364,19 @@
       break;
     }
     switch (true) {
-      case valor.C < 4:
+      case valor.C < 6:
       CDE = 1;
       break;
-      case valor.C < 7:
+      case valor.C < 9:
       CDE = 2;
       break;
-      case valor.C < 10:
+      case valor.C < 12:
       CDE = 3;
       break;
-      case valor.C < 13:
+      case valor.C < 15:
       CDE = 4;
       break;
-      case valor.C < 16:
+      case valor.C < 17:
       CDE = 5;
       break;
       case valor.C < 18:
@@ -385,7 +385,7 @@
       case valor.C < 19:
       CDE = 7;
       break;
-      case valor.C < 21:
+      case valor.C < 20:
       CDE = 8;
       break;
       default:
@@ -394,28 +394,28 @@
     }
 
     switch (true) {
-      case valor.E < 4:
+      case valor.E < 6:
       EDE = 1;
       break;
-      case valor.E < 6:
+      case valor.E < 8:
       EDE = 2;
       break;
-      case valor.E < 8:
+      case valor.E < 10:
       EDE = 3;
       break;
-      case valor.E < 11:
+      case valor.E < 13:
       EDE = 4;
       break;
-      case valor.E < 14:
+      case valor.E < 15:
       EDE = 5;
       break;
-      case valor.E < 16:
+      case valor.E < 17:
       EDE = 6;
       break;
-      case valor.E < 18:
+      case valor.E < 19:
       EDE = 7;
       break;
-      case valor.E < 19:
+      case valor.E < 20:
       EDE = 8;
       break;
       default:
@@ -424,25 +424,25 @@
     }
 
     switch (true) {
-      case valor.F < 4:
+      case valor.F < 3:
       FDE = 1;
       break;
-      case valor.F < 6:
+      case valor.F < 5:
       FDE = 2;
       break;
-      case valor.F < 9:
+      case valor.F < 8:
       FDE = 3;
       break;
-      case valor.F < 12:
+      case valor.F < 10:
       FDE = 4;
       break;
-      case valor.F < 14:
+      case valor.F < 13:
       FDE = 5;
       break;
-      case valor.F < 16:
+      case valor.F < 15:
       FDE = 6;
       break;
-      case valor.F < 18:
+      case valor.F < 17:
       FDE = 7;
       break;
       case valor.F < 19:
@@ -457,31 +457,31 @@
     }
 
     switch (true) {
-      case valor.I < 4:
+      case valor.I < 1:
       IDE = 1;
       break;
-      case valor.I < 7:
+      case valor.I < 2:
       IDE = 2;
       break;
-      case valor.I < 9:
+      case valor.I < 4:
       IDE = 3;
       break;
-      case valor.I < 12:
+      case valor.I < 6:
       IDE = 4;
       break;
-      case valor.I < 14:
+      case valor.I < 8:
       IDE = 5;
       break;
-      case valor.I < 17:
+      case valor.I < 11:
       IDE = 6;
       break;
-      case valor.I < 19:
+      case valor.I < 14:
       IDE = 7;
       break;
-      case valor.I < 21:
+      case valor.I < 17:
       IDE = 8;
       break;
-      case valor.I < 22:
+      case valor.I < 20:
       IDE = 9;
       break;
       default:
@@ -490,88 +490,88 @@
     }
 
     switch (true) {
-      case valor.O < 4:
+      case valor.O < 1:
       ODE = 1;
       break;
-      case valor.O < 5:
+      case valor.O < 3:
       ODE = 2;
       break;
-      case valor.O < 7:
+      case valor.O < 5:
       ODE = 3;
       break;
-      case valor.O < 10:
+      case valor.O < 8:
       ODE = 4;
       break;
-      case valor.O < 13:
+      case valor.O < 10:
       ODE = 5;
       break;
-      case valor.O < 16:
+      case valor.O < 13:
       ODE = 6;
       break;
-      case valor.O < 18:
+      case valor.O < 16:
       ODE = 7;
       break;
-      case valor.O < 20:
+      case valor.O < 18:
       ODE = 8;
       break;
-      default:
+      case valor.O < 20:
       ODE = 9;
+      break;
+      default:
+      ODE = 10;
       break;
     }
 
     switch (true) {
-      case valor.Q1 < 11:
+      case valor.Q1 < 10:
       Q1DE = 1;
       break;
-      case valor.Q1 < 14:
+      case valor.Q1 < 13:
       Q1DE = 2;
       break;
-      case valor.Q1 < 17:
+      case valor.Q1 < 15:
       Q1DE = 3;
       break;
-      case valor.Q1 < 20:
+      case valor.Q1 < 18:
       Q1DE = 4;
       break;
       case valor.Q1 < 21:
       Q1DE = 5;
       break;
-      case valor.Q1 < 22:
+      case valor.Q1 < 24:
       Q1DE = 6;
       break;
-      case valor.Q1 < 24:
+      case valor.Q1 < 26:
       Q1DE = 7;
       break;
-      case valor.Q1 < 26:
+      case valor.Q1 < 28:
       Q1DE = 8;
       break;
-      case valor.Q1 < 28:
-      Q1DE = 9;
-      break;
       default:
-      Q1DE = 10;
+      Q1DE = 9;
       break;
     }
 
     switch (true) {
-      case valor.Q4 < 2:
+      case valor.Q4 < 1:
       Q4DE = 1;
       break;
-      case valor.Q4 < 3:
+      case valor.Q4 < 2:
       Q4DE = 2;
       break;
-      case valor.Q4 < 5:
+      case valor.Q4 < 3:
       Q4DE = 3;
       break;
-      case valor.Q4 < 7:
+      case valor.Q4 < 6:
       Q4DE = 4;
       break;
-      case valor.Q4 < 10:
+      case valor.Q4 < 9:
       Q4DE = 5;
       break;
-      case valor.Q4 < 13:
+      case valor.Q4 < 12:
       Q4DE = 6;
       break;
-      case valor.Q4 < 16:
+      case valor.Q4 < 15:
       Q4DE = 7;
       break;
       case valor.Q4 < 18:
@@ -800,22 +800,22 @@
         {
           label: "Personalidad 16 Factores",
           data: [
-            valores.A / 22 * 100,
+            ADE * 10,
             valores.B / 15 * 100,
-            valores.C / 20 * 100,
-            valores.E / 20 * 100,
-            valores.F / 20 * 100,
+            CDE * 10,
+            EDE * 10,
+            FDE * 10,
             valores.G / 22 * 100,
             valores.H / 20 * 100,
-            valores.I / 22 * 100,
+            IDE * 10,
             valores.L / 20 * 100,
             valores.M / 22 * 100,
             valores.N / 20 * 100,
-            valores.O / 20 * 100,
-            valores.Q1 / 28 * 100,
+            ODE * 10,
+            Q1DE * 10,
             valores.Q2 / 20 * 100,
             valores.Q3 / 20 * 100,
-            valores.Q4 / 20 * 100,
+            Q4DE * 10,
           ],
           backgroundColor: [
             "rgba(173, 216, 230, 0.7)",
@@ -878,83 +878,81 @@
     };
 
     const config = {
-  type: "bar",
-  data: data,
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "Valores"
+      type: "bar",
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            title: {
+              display: true,
+              text: "Valores"
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: "Factores"
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const valor = context.raw;
+                return `${valor}%`;
+              }
+            }
+          }
         }
       },
-      x: {
-        title: {
-          display: true,
-          text: "Factores"
-        }
-      }
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            const factor = context.label;
-            const valor = context.raw;
-            const descripcion = descripciones[factor] || factor;
-            return `${descripcion}: ${valor.toFixed(1)}%`;
+      plugins: [
+        {
+          id: 'etiquetasExtremos',
+          afterDraw(chart) {
+            const ctx = chart.ctx;
+            const xAxis = chart.scales.x;
+            const topY = chart.chartArea.top;
+            const bottomY = chart.chartArea.bottom;
+
+            ctx.save();
+            ctx.font = "12px";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+
+            chart.data.labels.forEach((label, index) => {
+              const x = xAxis.getPixelForTick(index);
+              const descripcion = descripciones[label] || label;
+              const labelHeight = 12;
+
+              ctx.save();
+              const labelWidth = ctx.measureText(descripcion).width;
+              ctx.translate(x, topY - labelHeight);
+              ctx.rotate(-Math.PI / 2);
+
+              if (topY - labelHeight - labelWidth <= bottomY) {
+                ctx.fillText(descripcion, -(labelWidth/2 + 15), 0);
+              }
+
+              ctx.restore();
+
+              ctx.save();
+              ctx.translate(x, bottomY + labelHeight);
+              ctx.rotate(-Math.PI / 2);
+
+              if (bottomY + labelHeight + labelWidth >= topY) {
+                ctx.fillText(descripcion, (labelWidth/2 + 15), 0);
+              }
+
+              ctx.restore();
+            });
           }
         }
-      }
-    }
-  },
-  plugins: [
-    {
-      id: 'etiquetasExtremos',
-      afterDraw(chart) {
-        const ctx = chart.ctx;
-        const xAxis = chart.scales.x;
-        const topY = chart.chartArea.top;
-        const bottomY = chart.chartArea.bottom;
-
-        ctx.save();
-        ctx.font = "12px Arial";
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
-
-        chart.data.labels.forEach((label, index) => {
-          const x = xAxis.getPixelForTick(index);
-          const descripcion = descripciones[label] || label;
-
-          const labelWidth = ctx.measureText(descripcion).width;
-          const labelHeight = 12;
-
-          ctx.save();
-          ctx.translate(x, topY - labelHeight);
-          ctx.rotate(-Math.PI / 2);
-
-          if (topY - labelHeight - labelWidth <= bottomY) {
-            ctx.fillText(descripcion, -(labelWidth/2 + 15), 0);
-          }
-
-          ctx.restore();
-
-          ctx.save();
-          ctx.translate(x, bottomY + labelHeight);
-          ctx.rotate(-Math.PI / 2);
-
-          if (bottomY + labelHeight + labelWidth >= topY) {
-            ctx.fillText(descripcion, (labelWidth/2 + 15), 0);
-          }
-
-          ctx.restore();
-        });
-      }
-    }
-  ]
-};
+      ]
+    };
 
 
     const myChart = new Chart(document.getElementById("grafico16PF"), config);
