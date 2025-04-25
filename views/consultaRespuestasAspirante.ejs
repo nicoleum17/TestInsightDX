@@ -44,6 +44,13 @@
   </div>
 </div>
 
+<!-- CALUCULOS 16 PF
+ 
+
+
+
+
+-->
 <script>
   const valor = <%- JSON.stringify(valores) %>;
   const sexo = 'F';
@@ -53,7 +60,7 @@
   let EDE = 0;
   let FDE = 0;
   let GDE = 0;
-  let HDE = 0;
+  let IDE = 0;
   let JDE = 0;
   let LDE = 0;
   let MDE = 0;
@@ -131,6 +138,7 @@
       CDE = 9;
       break;
     }
+
     switch (true) {
       case valor.E < 4:
       EDE = 1;
@@ -158,6 +166,422 @@
       break;
       default:
       EDE = 9;
+      break;
+    }
+
+    switch (true) {
+      case valor.F < 4:
+      FDE = 1;
+      break;
+      case valor.F < 6:
+      FDE = 2;
+      break;
+      case valor.F < 9:
+      FDE = 3;
+      break;
+      case valor.F < 12:
+      FDE = 4;
+      break;
+      case valor.F < 14:
+      FDE = 5;
+      break;
+      case valor.F < 16:
+      FDE = 6;
+      break;
+      case valor.F < 18:
+      FDE = 7;
+      break;
+      case valor.F < 19:
+      FDE = 8;
+      break;
+      case valor.F < 20:
+      FDE = 9;
+      break;
+      default:
+      FDE = 10;
+      break;
+    }
+
+    switch (true) {
+      case valor.I < 4:
+      IDE = 1;
+      break;
+      case valor.I < 7:
+      IDE = 2;
+      break;
+      case valor.I < 9:
+      IDE = 3;
+      break;
+      case valor.I < 12:
+      IDE = 4;
+      break;
+      case valor.I < 14:
+      IDE = 5;
+      break;
+      case valor.I < 17:
+      IDE = 6;
+      break;
+      case valor.I < 19:
+      IDE = 7;
+      break;
+      case valor.I < 21:
+      IDE = 8;
+      break;
+      case valor.I < 22:
+      IDE = 9;
+      break;
+      default:
+      IDE = 10;
+      break;
+    }
+
+    switch (true) {
+      case valor.O < 4:
+      ODE = 1;
+      break;
+      case valor.O < 5:
+      ODE = 2;
+      break;
+      case valor.O < 7:
+      ODE = 3;
+      break;
+      case valor.O < 10:
+      ODE = 4;
+      break;
+      case valor.O < 13:
+      ODE = 5;
+      break;
+      case valor.O < 16:
+      ODE = 6;
+      break;
+      case valor.O < 18:
+      ODE = 7;
+      break;
+      case valor.O < 20:
+      ODE = 8;
+      break;
+      default:
+      ODE = 9;
+      break;
+    }
+
+    switch (true) {
+      case valor.Q1 < 11:
+      Q1DE = 1;
+      break;
+      case valor.Q1 < 14:
+      Q1DE = 2;
+      break;
+      case valor.Q1 < 17:
+      Q1DE = 3;
+      break;
+      case valor.Q1 < 20:
+      Q1DE = 4;
+      break;
+      case valor.Q1 < 21:
+      Q1DE = 5;
+      break;
+      case valor.Q1 < 22:
+      Q1DE = 6;
+      break;
+      case valor.Q1 < 24:
+      Q1DE = 7;
+      break;
+      case valor.Q1 < 26:
+      Q1DE = 8;
+      break;
+      case valor.Q1 < 28:
+      Q1DE = 9;
+      break;
+      default:
+      Q1DE = 10;
+      break;
+    }
+
+    switch (true) {
+      case valor.Q4 < 2:
+      Q4DE = 1;
+      break;
+      case valor.Q4 < 3:
+      Q4DE = 2;
+      break;
+      case valor.Q4 < 5:
+      Q4DE = 3;
+      break;
+      case valor.Q4 < 7:
+      Q4DE = 4;
+      break;
+      case valor.Q4 < 10:
+      Q4DE = 5;
+      break;
+      case valor.Q4 < 13:
+      Q4DE = 6;
+      break;
+      case valor.Q4 < 16:
+      Q4DE = 7;
+      break;
+      case valor.Q4 < 18:
+      Q4DE = 8;
+      break;
+      case valor.Q4 < 20:
+      Q4DE = 9;
+      break;
+      default:
+      Q4DE = 10;
+      break;
+    }
+  } else if (sexo == 'H'){
+    switch (true) {
+      case valor.A < 7:
+      ADE = 1;
+      break;
+      case valor.A < 9:
+      ADE = 2;
+      break;
+      case valor.A < 12:
+      ADE = 3;
+      break;
+      case valor.A < 14:
+      ADE = 4;
+      break;
+      case valor.A < 16:
+      ADE = 5;
+      break;
+      case valor.A < 18:
+      ADE = 6;
+      break;
+      case valor.A < 20:
+      ADE = 7;
+      break;
+      case valor.A < 21:
+      ADE = 8;
+      break;
+      case valor.A < 22:
+      ADE = 9;
+      break;
+      default:
+      ADE = 10;
+      break;
+    }
+    switch (true) {
+      case valor.C < 4:
+      CDE = 1;
+      break;
+      case valor.C < 7:
+      CDE = 2;
+      break;
+      case valor.C < 10:
+      CDE = 3;
+      break;
+      case valor.C < 13:
+      CDE = 4;
+      break;
+      case valor.C < 16:
+      CDE = 5;
+      break;
+      case valor.C < 18:
+      CDE = 6;
+      break;
+      case valor.C < 19:
+      CDE = 7;
+      break;
+      case valor.C < 21:
+      CDE = 8;
+      break;
+      default:
+      CDE = 9;
+      break;
+    }
+
+    switch (true) {
+      case valor.E < 4:
+      EDE = 1;
+      break;
+      case valor.E < 6:
+      EDE = 2;
+      break;
+      case valor.E < 8:
+      EDE = 3;
+      break;
+      case valor.E < 11:
+      EDE = 4;
+      break;
+      case valor.E < 14:
+      EDE = 5;
+      break;
+      case valor.E < 16:
+      EDE = 6;
+      break;
+      case valor.E < 18:
+      EDE = 7;
+      break;
+      case valor.E < 19:
+      EDE = 8;
+      break;
+      default:
+      EDE = 9;
+      break;
+    }
+
+    switch (true) {
+      case valor.F < 4:
+      FDE = 1;
+      break;
+      case valor.F < 6:
+      FDE = 2;
+      break;
+      case valor.F < 9:
+      FDE = 3;
+      break;
+      case valor.F < 12:
+      FDE = 4;
+      break;
+      case valor.F < 14:
+      FDE = 5;
+      break;
+      case valor.F < 16:
+      FDE = 6;
+      break;
+      case valor.F < 18:
+      FDE = 7;
+      break;
+      case valor.F < 19:
+      FDE = 8;
+      break;
+      case valor.F < 20:
+      FDE = 9;
+      break;
+      default:
+      FDE = 10;
+      break;
+    }
+
+    switch (true) {
+      case valor.I < 4:
+      IDE = 1;
+      break;
+      case valor.I < 7:
+      IDE = 2;
+      break;
+      case valor.I < 9:
+      IDE = 3;
+      break;
+      case valor.I < 12:
+      IDE = 4;
+      break;
+      case valor.I < 14:
+      IDE = 5;
+      break;
+      case valor.I < 17:
+      IDE = 6;
+      break;
+      case valor.I < 19:
+      IDE = 7;
+      break;
+      case valor.I < 21:
+      IDE = 8;
+      break;
+      case valor.I < 22:
+      IDE = 9;
+      break;
+      default:
+      IDE = 10;
+      break;
+    }
+
+    switch (true) {
+      case valor.O < 4:
+      ODE = 1;
+      break;
+      case valor.O < 5:
+      ODE = 2;
+      break;
+      case valor.O < 7:
+      ODE = 3;
+      break;
+      case valor.O < 10:
+      ODE = 4;
+      break;
+      case valor.O < 13:
+      ODE = 5;
+      break;
+      case valor.O < 16:
+      ODE = 6;
+      break;
+      case valor.O < 18:
+      ODE = 7;
+      break;
+      case valor.O < 20:
+      ODE = 8;
+      break;
+      default:
+      ODE = 9;
+      break;
+    }
+
+    switch (true) {
+      case valor.Q1 < 11:
+      Q1DE = 1;
+      break;
+      case valor.Q1 < 14:
+      Q1DE = 2;
+      break;
+      case valor.Q1 < 17:
+      Q1DE = 3;
+      break;
+      case valor.Q1 < 20:
+      Q1DE = 4;
+      break;
+      case valor.Q1 < 21:
+      Q1DE = 5;
+      break;
+      case valor.Q1 < 22:
+      Q1DE = 6;
+      break;
+      case valor.Q1 < 24:
+      Q1DE = 7;
+      break;
+      case valor.Q1 < 26:
+      Q1DE = 8;
+      break;
+      case valor.Q1 < 28:
+      Q1DE = 9;
+      break;
+      default:
+      Q1DE = 10;
+      break;
+    }
+
+    switch (true) {
+      case valor.Q4 < 2:
+      Q4DE = 1;
+      break;
+      case valor.Q4 < 3:
+      Q4DE = 2;
+      break;
+      case valor.Q4 < 5:
+      Q4DE = 3;
+      break;
+      case valor.Q4 < 7:
+      Q4DE = 4;
+      break;
+      case valor.Q4 < 10:
+      Q4DE = 5;
+      break;
+      case valor.Q4 < 13:
+      Q4DE = 6;
+      break;
+      case valor.Q4 < 16:
+      Q4DE = 7;
+      break;
+      case valor.Q4 < 18:
+      Q4DE = 8;
+      break;
+      case valor.Q4 < 20:
+      Q4DE = 9;
+      break;
+      default:
+      Q4DE = 10;
       break;
     }
   }
@@ -208,9 +632,17 @@
   .then((data) => {
     if (Anivel != 2){
       document.getElementById("Interpretacion").innerHTML += `<strong>${Aadj}.- </strong> ${data.inter}`;
-      }
+    }
   });
 </script>
+
+<!-- CALUCULOS 16 PF
+ 
+
+
+
+
+-->
 
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script>
@@ -446,39 +878,84 @@
     };
 
     const config = {
-      type: "bar",
-      data: data,
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: "Valores"
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: "Factores"
-            }
-          }
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const factor = context.label;
-                const valor = context.raw;
-                const descripcion = descripciones[factor] || factor;
-                return `${descripcion}: ${valor}`;
-              }
-            }
+  type: "bar",
+  data: data,
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Valores"
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Factores"
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const factor = context.label;
+            const valor = context.raw;
+            const descripcion = descripciones[factor] || factor;
+            return `${descripcion}: ${valor.toFixed(1)}%`;
           }
         }
       }
-    };
+    }
+  },
+  plugins: [
+    {
+      id: 'etiquetasExtremos',
+      afterDraw(chart) {
+        const ctx = chart.ctx;
+        const xAxis = chart.scales.x;
+        const topY = chart.chartArea.top;
+        const bottomY = chart.chartArea.bottom;
+
+        ctx.save();
+        ctx.font = "12px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+
+        chart.data.labels.forEach((label, index) => {
+          const x = xAxis.getPixelForTick(index);
+          const descripcion = descripciones[label] || label;
+
+          const labelWidth = ctx.measureText(descripcion).width;
+          const labelHeight = 12;
+
+          ctx.save();
+          ctx.translate(x, topY - labelHeight);
+          ctx.rotate(-Math.PI / 2);
+
+          if (topY - labelHeight - labelWidth <= bottomY) {
+            ctx.fillText(descripcion, -(labelWidth/2 + 15), 0);
+          }
+
+          ctx.restore();
+
+          ctx.save();
+          ctx.translate(x, bottomY + labelHeight);
+          ctx.rotate(-Math.PI / 2);
+
+          if (bottomY + labelHeight + labelWidth >= topY) {
+            ctx.fillText(descripcion, (labelWidth/2 + 15), 0);
+          }
+
+          ctx.restore();
+        });
+      }
+    }
+  ]
+};
+
 
     const myChart = new Chart(document.getElementById("grafico16PF"), config);
     new Chart(ctx, config);
