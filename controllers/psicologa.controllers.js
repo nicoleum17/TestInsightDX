@@ -131,7 +131,7 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.apellidoP,
     request.body.apellidoM,
     request.body.numeroTel,
-    request.body.lugarO,
+    request.body.estado + ", " + request.body.pais,
     request.body.correo,
     request.body.universidad
   );
@@ -810,7 +810,7 @@ exports.getPreguntaSeguridadAspirante = (request, response, next) => {
     csrfToken: request.csrfToken(),
     aspirante: idAspirante,
   });
-}
+};
 
 exports.postPreguntaSeguridadAspirante = (request, response, next) => {
   console.log(request.body);
