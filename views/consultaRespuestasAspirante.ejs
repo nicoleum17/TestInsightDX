@@ -1,8 +1,16 @@
 <%- include('includes/_navbarP')%>
 <style>
   .fullHeight {
-    min-height: 90vh;
+    min-height: 120vh;
     margin-top: 20px;
+  }
+  @media print {
+    .navbar,
+    .footer,
+    .descargar,
+    footer {
+      display: none;
+    }
   }
 </style>
 <div class="section fullHeight">
@@ -21,18 +29,29 @@
       <canvas id="graph"> </canvas>
     </div>
   </div>
+  <br />
+  <div class="columns">
+    <div class="column has-text-centered">
+      <button
+        class="button descargar is-primary has-text-warning"
+        onclick="descargar()">
+        Descargar
+      </button>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
+<script>
+  function descargar() {
+    window.print();
+  }
+</script>
 <script class="grafica">
   const valores = <%- JSON.stringify(valores) %>;
   const prueba = <%- JSON.stringify(prueba) %>;
-  let data; // Initialize data variable
+  let data;
   const ctx = document.getElementById("graph").getContext("2d");
-
-  console.log(prueba); // Debugging
-  console.log(valores); // Debugging
 
   if (prueba === "El inventario de Percepción Kostick") {
      data = {
