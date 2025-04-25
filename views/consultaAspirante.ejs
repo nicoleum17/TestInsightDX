@@ -4,6 +4,19 @@
   <section class="section">
     <div class="title has-text-weight-semibold">Aspirante</div>
 
+    <div>
+      <a
+        href="consultaRespuestasAspirante/2e5dd5a1-d11e-4f16-9e14-86e63adce6e1/5"
+      >
+        <button class="image-button">
+          <img
+            src="https://img.icons8.com/ios7/512/plus.png"
+            alt=""
+            width="25px"
+          /></button
+      ></a>
+    </div>
+
     <div class="columns">
       <div class="column"></div>
       <div class="column"></div>
@@ -15,7 +28,8 @@
             <img
               src="https://cdn-icons-png.flaticon.com/512/1828/1829031.png"
               alt=""
-              width="20px" /></button
+              width="20px"
+            /></button
         ></a>
       </div>
     </div>
@@ -31,14 +45,16 @@
             class="input"
             type="text"
             placeholder="Ingresa el parámetro"
-            autocomplete="off" />
+            autocomplete="off"
+          />
         </div>
       </div>
 
       <div
         id="contenedor-Sugerencias"
         class="contenedor-Sugerencias"
-        style="display: none"></div>
+        style="display: none"
+      ></div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px">
       <table id="datos-aspirante" class="table">
@@ -127,8 +143,14 @@
                 const modificarAspirante = row.insertCell(6);
                 const documentos = row.insertCell(7);
 
-                (nombreAspirante.textContent = aspirante.nombres + " " + aspirante.apellidoPaterno + " " + aspirante.apellidoMaterno);
-                codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
+                nombreAspirante.textContent =
+                  aspirante.nombres +
+                  " " +
+                  aspirante.apellidoPaterno +
+                  " " +
+                  aspirante.apellidoMaterno;
+                codigoIdentidadAspirante.textContent =
+                  aspirante.codigoIdentidad;
                 telefonoAspirante.textContent = aspirante.numTelefono;
                 lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
                 correoAspirante.textContent = aspirante.correo;

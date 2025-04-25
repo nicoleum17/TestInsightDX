@@ -237,6 +237,38 @@ exports.get_respuestasA = (request, response, next) => {
               });
             }
           );
+        } else if (idPrueba == 5) {
+          Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
+            .then(([informacionAnalisis, fieldData]) => {
+              // const informacionAnalisis = rows;
+              Prueba.getPuntajeBrutoOtis(idUsuario, rows[0].idGrupo)
+                .then(([puntaje, fieldData]) => {
+                  console.log(idUsuario);
+                  const puntajeBruto = puntaje[0].puntajeBruto;
+                  console.log("Informacion Analisis: ", informacionAnalisis);
+                  console.log("Puntaje Bruto: ", puntajeBruto);
+                  response.render("consultaRespuestasAspirante", {
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    usuario: request.session.usuario || "",
+                    //csrfToken: request.csrfToken(),
+                    privilegios: request.session.privilegios || [],
+                    prueba: "OTIS",
+                    grupo: grupoRows[0],
+                    datos: datosAspirante[0],
+                    informacionAnalisis: informacionAnalisis || [],
+                    puntajeBruto: puntajeBruto || 0,
+                    idAspirante: idUsuario || null,
+                    idGrupo: rows[0].idGrupo || null,
+                    idInstitucion: rows[0].institucion || null,
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }
       });
     });
@@ -1204,9 +1236,8 @@ exports.getAnalisisColores = async (request, response, next) => {
   const { idGrupo, idUsuario, idInstitucion } = request.params;
   try {
     // Obtener información del aspirante
-    const [informacionAspiranteRows] = await Prueba.getInformacionAspirante(
-      idUsuario
-    );
+    const [informacionAspiranteRows] =
+      await Prueba.getInformacionAspirante(idUsuario);
 
     // Obtener selecciones de colores completas
     const [seleccionesColoresRows] =

@@ -26,13 +26,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 <script class="grafica">
-  const valores = <%- JSON.stringify(valores) %>;
   const prueba = <%- JSON.stringify(prueba) %>;
+  if(prueba === "El inventario de Percepción Kostick" || prueba === "Personalidad 16 Factores (16 PF)"){
+    let valores = <%- JSON.stringify(prueba) %>;
+  }
   let data; // Initialize data variable
   const ctx = document.getElementById("graph").getContext("2d");
 
   console.log(prueba); // Debugging
-  console.log(valores); // Debugging
+  // console.log(valores); // Debugging
 
   if (prueba === "El inventario de Percepción Kostick") {
      data = {
@@ -292,6 +294,8 @@
 
     const myChart = new Chart(document.getElementById("grafico16PF"), config);
     new Chart(ctx, config);
+  } else if(prueba === 'OTIS'){
+
   }
 </script>
 
