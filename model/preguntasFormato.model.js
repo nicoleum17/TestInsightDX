@@ -23,4 +23,14 @@ module.exports = class preguntasFormato{
 
         return this.idEntrevista;
     }
+
+    static async fetchPregunta(idPregunta, idEntrevista){
+        const query = `SELECT respuesta FROM respuestaspreguntasformatos WHERE idPregunta = ? AND idFormato = ?`;
+        const [resultado] = await db.execute(query, [
+            idPregunta,
+            idEntrevista
+        ]);
+
+        return resultado;
+    }
 }

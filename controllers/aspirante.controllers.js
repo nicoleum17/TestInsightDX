@@ -614,17 +614,20 @@ exports.formato_entrevista = (request, response, next) => {
   formatoEntrevista
   .formato_activo(request.session.idUsuario)
   .then(([row, fieldData]) => {
-    if(row[0].estatus == 'Empezado'){
+    console.log(row[0]);
+    if(row && row[0].estatus == 'Empezado'){
       console.log("YA ESTA EMPEZADO")
       formatoEntrevista.fetch(row[0].idFormato)
       .then((info) => {
+        console.log(row[0].estatus);
         response.render("formatoEntrevista", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
           csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           idUsuario: request.session.idUsuario,
-          formato: info[0][0] || ""
+          formato: info[0][0] || "",
+          estatusFormato: row[0].estatus
         });
       })
     }
@@ -635,7 +638,8 @@ exports.formato_entrevista = (request, response, next) => {
         csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario,
-        formato: null
+        formato: null,
+        estatusFormato: row[0].estatus
     });
   }
   })
@@ -644,6 +648,7 @@ exports.formato_entrevista = (request, response, next) => {
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
+  
   formatoEntrevista
     .getID(request.body.idUsuario)
     .then(([row, fieldData]) => {
@@ -666,6 +671,8 @@ exports.post_formato_entrevista = (request, response, next) => {
       newFormato
         .save()
         .then((uuid) => {
+          console.log(request.body.estatus)
+          request.session.estatus = request.body.estatus;
           request.session.idFormato = uuid;
           response.redirect("formatoEntrevistaPreguntasP");
         })
@@ -678,13 +685,34 @@ exports.post_formato_entrevista = (request, response, next) => {
     });
 };
 
-exports.formato_entrevista_preguntasP = (request, response, next) => {
-  response.render("formatoEntrevistaPreguntasP", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    formato: request.session.idFormato,
-  });
+exports.formato_entrevista_preguntasP = async (request, response, next) => {
+    if(request.session.estatus == 'Empezado'){
+      const promesas = [];
+      for (let i = 1; i<7; i++){
+        promesas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
+      }
+      try{
+        const respuestas = await Promise.all(promesas);
+        console.log(respuestas)
+        response.render("formatoEntrevistaPreguntasP", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          respuesta: respuestas,
+          formato: request.session.idFormato
+        });
+      } catch(error){
+        console.error("Error al guardar preguntas:", error);
+      }
+    }
+    else{
+      response.render("formatoEntrevistaPreguntasP", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        respuesta: null
+      });
+    }
 };
 
 exports.post_formato_entrevista_preguntasP = async (
