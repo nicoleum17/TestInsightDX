@@ -63,6 +63,8 @@ router.get(
   aspiranteController.get_datosA
 );
 
+router.post("/datosAspirante/2", isAuth, aspiranteController.post_registraSexo);
+
 router.get(
   "/instruccionesPrueba/:idPrueba",
   isAuth,
@@ -302,6 +304,8 @@ router.get(
   isAuth,
   aspiranteController.get_documentos_activos
 );
+
+router.get("/pdf/:filename", isAuth, aspiranteController.getPdfFile);
 
 router.get(
   "/formatoEntrevista/:id",
