@@ -303,6 +303,8 @@ router.get(
   aspiranteController.get_documentos_activos
 );
 
+router.get("/pdf/:filename", isAuth, aspiranteController.getPdfFile);
+
 router.get(
   "/formatoEntrevista/:id",
   isAuth,

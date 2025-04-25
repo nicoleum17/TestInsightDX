@@ -89,13 +89,15 @@
                         </div>
                         <div class="column">
                             <label for="genero" class="label">Género:</label>
-                            <input
-                            class="input"
-                            type="text"
-                            placeholder="Hombre"
-                            id="genero"
-                            name="genero"
-                            required />
+                            <div class="select is-primary">
+                              <select name="genero" id="genero" required>
+                                <option value="" disabled hidden selected>
+                                            Seleccione una opción
+                                </option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                                <option value="Otro">Otro</option>
+                              </select>
                         </div>
                     </div>
                     <div class="columns is-vcentered ml-5">

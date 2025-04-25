@@ -14,8 +14,7 @@ module.exports = class TienePruebas {
       [this.idGrupo, this.idPrueba, this.fechaLimitePrueba]
     );
   }
-  static getFechaLimite(idGrupo) {
-    console.log(idGrupo);
+  static getFecha(idGrupo) {
     return db.execute("SELECT * FROM tienepruebas WHERE idGrupo = ?", [
       idGrupo,
     ]);

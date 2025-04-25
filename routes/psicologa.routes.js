@@ -70,6 +70,12 @@ router.get(
 );
 
 router.get(
+  "/interpretacion/:columna/:nivel",
+  isAuth,
+  psicologaController.get_interpretaciones16PF
+);
+
+router.get(
   "/consultaRespuestasGrupo",
   isAuth,
   psicologaController.get_respuestasG
@@ -80,6 +86,13 @@ router.get(
   isAuth,
   consultarPruebas,
   psicologaController.get_prueba
+);
+
+router.get(
+  "/pruebas/:id",
+  isAuth,
+  consultarPruebas,
+  psicologaController.get_preguntas
 );
 
 router.get("/crearGrupo", isAuth, crearGrupo, psicologaController.crear_grupo);
@@ -162,7 +175,7 @@ router.get(
   psicologaController.get_consultarReporteAspirante
 );
 
-router.get("/pdf/:filename", psicologaController.getPdfFile);
+router.get("/pdf/:filename", isAuth, psicologaController.getPdfFile);
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
@@ -182,6 +195,16 @@ router.post(
   psicologaController.postPreguntaSeguridad
 );
 
+router.get("/aspirante/confirmacion/:id",
+  isAuth,
+  psicologaController.getPreguntaSeguridadAspirante
+)
+
+router.post(
+  "/aspirante/confirmacion/:id",
+  isAuth,
+  psicologaController.postPreguntaSeguridadAspirante
+);
 router.get(
   "/pruebasActivas/:valor",
   isAuth,

@@ -71,8 +71,20 @@ module.exports = class Aspirante {
         return idUsuario;
       });
   }
+
+  static saveSexo(idUsuario, sexo) {
+      return db
+        .execute(
+          "UPDATE aspirantes SET sexo = ? WHERE idUsuario = ?",
+          [sexo, idUsuario]
+        )
+        .then(([result]) => {
+          return idUsuario;
+        });
+    }
+
   static fetchAll() {
-    return db.execute("SELECT * FROM aspirantes");
+    return db.execute("SELECT * FROM aspirantes WHERE hidden = 0");
   }
 
   static fetchOne(idUsuario) {
@@ -84,7 +96,7 @@ module.exports = class Aspirante {
   static find(valor) {
     return db.execute(
       `SELECT *
-        FROM aspirantes a`
+        FROM aspirantes a WHERE hidden = 0`
     );
   }
 
@@ -116,5 +128,24 @@ module.exports = class Aspirante {
       "UPDATE `pertenecegrupo` SET `reporte` = ? WHERE `idUsuario` = ?",
       [reporte, idUsuario]
     );
+  }
+
+  static notificacion(idUsuario){
+    return db.execute(
+    `SELECT g.fechaPruebaGrupal as pruebaGrupal, pg.fechaZoomIndividual as zoomIndividual, tp.fechaLimitePrueba as limitePrueba
+    FROM perteneceGrupo pg
+    JOIN grupos g ON g.idGrupo = pg.idGrupo
+    JOIN tienePruebas tp ON g.idGrupo = tp.idGrupo
+    WHERE pg.idUsuario = ?`,
+    [idUsuario]
+    );
+  }
+
+  static async borrarAspirante(idAspirante){
+        await db.execute("UPDATE `aspirantes` SET `hidden` = ? WHERE `idUsuario` = ?;", [
+          1,
+          idAspirante,
+        ]);
+        return db.execute("UPDATE `usuarios` SET `hidden` = ? WHERE `idUsuario` = ?", [1, idAspirante]);
   }
 };

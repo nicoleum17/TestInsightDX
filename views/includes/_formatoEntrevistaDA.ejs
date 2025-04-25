@@ -39,6 +39,7 @@
             placeholder="Cirujano Dentista"
             id="nombreLicenciatura"
             name="nombreLicenciatura"
+            value="<%= respuesta.nombreLicenciatura ? respuesta.nombreLicenciatura : '' %>"
             required />
         </div>
         <div class="column">
@@ -51,6 +52,7 @@
             placeholder="ITESM"
             id="institucion"
             name="institucion"
+            value="<%= respuesta.institucion ? respuesta.institucion : '' %>"
             required />
         </div>
         <div class="column">
@@ -61,6 +63,7 @@
             placeholder="85"
             id="promedio"
             name="promedio"
+            value="<%= respuesta.promedio ? respuesta.promedio : '' %>"
             required />
         </div>
       </div>
@@ -74,6 +77,7 @@
             placeholder="2025"
             id="generacion"
             name="generacion"
+            value="<%= respuesta.generacion ? respuesta.generacion : '' %>"
             required />
         </div>
         <div class="column is-one-third">
@@ -84,6 +88,7 @@
             placeholder="Licenciatura"
             id="gradoMax"
             name="gradoMax"
+            value="<%= respuesta.gradoMax ? respuesta.gradoMax : '' %>"
             required />
         </div>
         <div class="column is-one-third">
@@ -96,7 +101,8 @@
             placeholder="Maestría en Fisioterapia Deportiva"
             id="maestria"
             name="maestria"
-            required />
+            value="<%= respuesta.maestria ? respuesta.maestria : '' %>"
+            />
         </div>
       </div>
       <br />
@@ -111,7 +117,8 @@
             placeholder="ITESM"
             id="institucionMaestria"
             name="institucionMaestria"
-            required />
+            value="<%= respuesta.institucionMaestria ? respuesta.institucionMaestria : '' %>"
+            />
         </div>
 
         <div class="column is-one-third">
@@ -124,7 +131,8 @@
             placeholder="85"
             id="promedioMaestria"
             name="promedioMaestria"
-            required />
+            value="<%= respuesta.promedioMaestria ? respuesta.promedioMaestria : '' %>"
+            />
         </div>
       </div>
       <div class="columns ml-5">
@@ -138,6 +146,7 @@
             placeholder="Escribe aquí..."
             id="cursos"
             name="cursos"
+            value="<%= respuesta.cursos ? respuesta.cursos : '' %>"
             required />
         </div>
       </div>
@@ -150,6 +159,7 @@
             placeholder="Escribe aquí..."
             id="idiomas"
             name="idiomas"
+            value="<%= respuesta.idiomas ? respuesta.idiomas : '' %>"
             required />
         </div>
       </div>

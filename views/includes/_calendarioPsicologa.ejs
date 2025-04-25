@@ -1,62 +1,89 @@
 <style>
   .fullHeight {
     min-height: 90vh;
-    margin-top: 20px;
+    margin-top: 30px;
+  }
+
+  .event-card {
+    border-left: 5px solid #334eac;
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .event-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .event-date {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #334eac;
+  }
+
+  .event-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a4a4a;
+  }
+
+  .event-time {
+    font-size: 0.95rem;
+    color: #7a7a7a;
+    margin-top: 0.25rem;
   }
 </style>
+
 <section class="section fullHeight">
   <div class="container">
-    <div class="test1 columns is-vcentered ml-5">
-      <div class="column">
-        <div class="box" id="contenedorEventos">
-
-
-        </div>
-        
-      </div>
+    <h1 class="title is-3 has-text-centered mb-5">Próximos eventos</h1>
+    <div class="columns is-centered">
+      <div class="column is-10" id="contenedorEventos"></div>
     </div>
   </div>
 </section>
 
 <script>
   const eventos = <%- JSON.stringify(infoEventos) %>;
+
   eventos.map(evento => {
     mostrarEvento(evento.summary, evento.start.dateTime);
-    console.log(evento.start.dateTime);
   });
-  function mostrarEvento(nombre, fecha){
+
+  function mostrarEvento(nombre, fecha) {
     const _dia = new Date(fecha).toLocaleString("es-MX", {
-      month:"short",
+      month: "short",
       day: "numeric",
       timeZone: "America/Mexico_City"
     });
+
     const _hora = new Date(fecha).toLocaleString("es-MX", {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false
+      hour12: false,
+      timeZone: "America/Mexico_City"
     });
+
     const contenedor = document.getElementById("contenedorEventos");
     const nuevoEvento = document.createElement("div");
-    nuevoEvento.classList.add("tarjeta", "mt-3");
-    nuevoEvento.innerHTML = ` 
-    
-      <div class="columns is-vcentered ml-1">
-        <div class="column">
-          <div class="columns is-vcentered ml-5"> 
-            <div class="column">
-              <h2 class="title is-4 has-text-weight-semibold"> 
-                ${_dia}
-              </h2>
-            </div>
-            <div class="column">
-              ${nombre}
-            </div>
+    nuevoEvento.classList.add("event-card", "mb-4");
+
+    nuevoEvento.innerHTML = `
+      <div class="columns is-vcentered">
+        <div class="column is-3 event-date">
+          ${_dia}
         </div>
-        <div class="column">
-          Hora de inicio: ${_hora}
+        <div class="column is-6 event-name">
+          ${nombre}
+        </div>
+        <div class="column is-3 event-time">
+          <strong>Hora de inicio:</strong> ${_hora}
         </div>
       </div>
-    `
+    `;
+
     contenedor.appendChild(nuevoEvento);
   }
 </script>

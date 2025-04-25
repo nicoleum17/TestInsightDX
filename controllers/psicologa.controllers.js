@@ -14,6 +14,7 @@ const Resultados16PF = require("../model/16pf/resultados16PF.model");
 const PruebaV = require("../model/vaultTech/prueba.model");
 const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
+const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -22,6 +23,10 @@ const oauth2Client = new google.auth.OAuth2(
 );
 const evento = require("../model/event.model");
 const eventoGoogle = require("../model/event.model");
+const PreguntaKostick = require("../model/kostick/preguntasKostick.model");
+const OpcionKostick = require("../model/kostick/opcionesKostick.model");
+const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
+const Opcion16PF = require("../model/16pf/opciones16pf.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   const mensajeBorrado = request.session.infoBorrado;
@@ -68,6 +73,44 @@ exports.get_prueba = (request, response, next) => {
       privilegios: request.session.privilegios || [],
       pruebas: rows,
     });
+  });
+};
+
+exports.get_preguntas = (request, response, next) => {
+  const idPrueba = parseInt(request.params.id);
+
+  Prueba.fetchOne(idPrueba).then(([pruebaInfo]) => {
+    if (idPrueba === 1) {
+      PreguntaKostick.fetchAll().then(([preguntasKostick]) => {
+        OpcionKostick.fetchAll().then(([opcionesKostick]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntasKostick,
+            opciones: opcionesKostick,
+          });
+        });
+      });
+    } else if (idPrueba === 2) {
+      Pregunta16PF.fetchAll().then(([preguntas16PF]) => {
+        Opcion16PF.fetchAll().then(([opciones16Pf]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntas16PF,
+            opciones: opciones16Pf,
+          });
+        });
+      });
+    } else {
+      response.status(404).send("Tipo de prueba no reconocido.");
+    }
   });
 };
 
@@ -445,7 +488,7 @@ exports.get_modificarGrupo = (request, response, next) => {
   const idGrupo = request.params.id;
   Prueba.fetchAll().then(([pruebas]) => {
     Grupo.fetchOneId(idGrupo).then(([rows]) => {
-      TienePruebas.getFechaLimite(idGrupo).then(([tienePruebas]) => {
+      TienePruebas.getFecha(idGrupo).then(([tienePruebas]) => {
         response.render("modificarGrupo", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
@@ -1394,3 +1437,49 @@ function interpretarMovilidad(movilidad) {
     return "PERSONA INESTABLE";
   }
 }
+exports.get_interpretaciones16PF = (request, response, next) => {
+  let columna = request.params.columna;
+  let nivel = request.params.nivel;
+  Interpretaciones16PF.interpretacion(columna, nivel).then(([rows]) => {
+    if (rows.length > 0) {
+      inter = rows[0].resp;
+      response.status(200).json({ inter });
+    }
+  });
+};
+exports.getPreguntaSeguridadAspirante = (request, response, next) => {
+  const idAspirante = request.params.id;
+  response.render("preguntaSeguridadBorradoAspirante.ejs", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    aspirante: idAspirante,
+  });
+};
+
+exports.postPreguntaSeguridadAspirante = (request, response, next) => {
+  console.log(request.body);
+  Usuario.fetchOne(request.body.usuario).then(([rows, fieldData]) => {
+    if (rows.length > 0) {
+      const bcrypt = require("bcryptjs");
+      bcrypt
+        .compare(request.body.contra, rows[0].contraseña)
+        .then((doMatch) => {
+          if (doMatch) {
+            Aspirante.borrarAspirante(request.body.aspirante);
+            request.session.infoBorrado = "Aspirante borrado exitosamente";
+            response.redirect("/psicologa/inicio");
+            console.log("Aspirante borrado");
+          } else {
+            request.session.infoBorrado =
+              "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
+            response.redirect("/psicologa/grupo/elegir");
+            console.log("Grupo no borrado");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  });
+};

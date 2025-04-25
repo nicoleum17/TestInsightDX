@@ -1,8 +1,16 @@
 <%- include('includes/_navbarP')%>
 <style>
   .fullHeight {
-    min-height: 90vh;
+    min-height: 120vh;
     margin-top: 20px;
+  }
+  @media print {
+    .navbar,
+    .footer,
+    .descargar,
+    footer {
+      display: none;
+    }
   }
 </style>
 <div class="section fullHeight">
@@ -20,19 +28,201 @@
     <div class="has-items-centered">
       <canvas id="graph"> </canvas>
     </div>
+    <div id = "Interpretacion">
+    <div class="subtitle">Interpretación</div>
+    </div>
+  </div>
+  <br />
+  <div class="columns">
+    <div class="column has-text-centered">
+      <button
+        class="button descargar is-primary has-text-warning"
+        onclick="descargar()">
+        Descargar
+      </button>
+    </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+  const valor = <%- JSON.stringify(valores) %>;
+  const sexo = 'F';
+  let ADE = 0;
+  let BDE = 0;
+  let CDE = 0;
+  let EDE = 0;
+  let FDE = 0;
+  let GDE = 0;
+  let HDE = 0;
+  let JDE = 0;
+  let LDE = 0;
+  let MDE = 0;
+  let NDE = 0;
+  let ODE = 0;
+  let Q1DE = 0;
+  let Q2DE = 0;
+  let Q3DE = 0;
+  let Q4DE = 0;
+  let EXDE = 0;
+  let AXDE = 0;
+  let TMDE = 0;
+  let INDE = 0;
+  let SCDE = 0;
 
+  if (sexo == 'F'){
+    switch (true) {
+      case valor.A < 7:
+      ADE = 1;
+      break;
+      case valor.A < 9:
+      ADE = 2;
+      break;
+      case valor.A < 12:
+      ADE = 3;
+      break;
+      case valor.A < 14:
+      ADE = 4;
+      break;
+      case valor.A < 16:
+      ADE = 5;
+      break;
+      case valor.A < 18:
+      ADE = 6;
+      break;
+      case valor.A < 20:
+      ADE = 7;
+      break;
+      case valor.A < 21:
+      ADE = 8;
+      break;
+      case valor.A < 22:
+      ADE = 9;
+      break;
+      default:
+      ADE = 10;
+      break;
+    }
+    switch (true) {
+      case valor.C < 4:
+      CDE = 1;
+      break;
+      case valor.C < 7:
+      CDE = 2;
+      break;
+      case valor.C < 10:
+      CDE = 3;
+      break;
+      case valor.C < 13:
+      CDE = 4;
+      break;
+      case valor.C < 16:
+      CDE = 5;
+      break;
+      case valor.C < 18:
+      CDE = 6;
+      break;
+      case valor.C < 19:
+      CDE = 7;
+      break;
+      case valor.C < 21:
+      CDE = 8;
+      break;
+      default:
+      CDE = 9;
+      break;
+    }
+    switch (true) {
+      case valor.E < 4:
+      EDE = 1;
+      break;
+      case valor.E < 6:
+      EDE = 2;
+      break;
+      case valor.E < 8:
+      EDE = 3;
+      break;
+      case valor.E < 11:
+      EDE = 4;
+      break;
+      case valor.E < 14:
+      EDE = 5;
+      break;
+      case valor.E < 16:
+      EDE = 6;
+      break;
+      case valor.E < 18:
+      EDE = 7;
+      break;
+      case valor.E < 19:
+      EDE = 8;
+      break;
+      default:
+      EDE = 9;
+      break;
+    }
+  }
+
+  let Anivel = 0;
+  let Bnivel = 0;
+  let Cnivel = 0;
+  let Enivel = 0;
+  let Fnivel = 0;
+  let Gnivel = 0;
+  let Hnivel = 0;
+  let Jnivel = 0;
+  let Lnivel = 0;
+  let Mnivel = 0;
+  let Nnivel = 0;
+  let Onivel = 0;
+  let Q1nivel = 0;
+  let Q2nivel = 0;
+  let Q3nivel = 0;
+  let Q4nivel = 0;
+  let EXnivel = 0;
+  let AXnivel = 0;
+  let TMnivel = 0;
+  let INnivel = 0;
+  let SCnivel = 0;
+  let Aadj = "";
+
+  switch (true){
+    case ADE < 4:
+      Anivel = 1;
+      Aadj = "RETRAIDO"
+      break;
+    case ADE < 6:
+      Anivel = 2;
+      break;
+    default:
+      Anivel = 3;
+      Aadj = "SOCIABLE"
+      break;
+  }
+
+  const reporteInterpretacion = document.getElementById("reporte");
+
+  fetch("../../interpretacion/A/" + Anivel, {
+    method: "GET",
+  })
+  .then((result) => result.json())
+  .then((data) => {
+    if (Anivel != 2){
+      document.getElementById("Interpretacion").innerHTML += `<strong>${Aadj}.- </strong> ${data.inter}`;
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+  function descargar() {
+    window.print();
+  }
+</script>
 <script class="grafica">
   const valores = <%- JSON.stringify(valores) %>;
   const prueba = <%- JSON.stringify(prueba) %>;
-  let data; // Initialize data variable
+  let data;
   const ctx = document.getElementById("graph").getContext("2d");
-
-  console.log(prueba); // Debugging
-  console.log(valores); // Debugging
 
   if (prueba === "El inventario de Percepción Kostick") {
      data = {
@@ -178,22 +368,22 @@
         {
           label: "Personalidad 16 Factores",
           data: [
-            valores.A,
-            valores.B,
-            valores.C,
-            valores.E,
-            valores.F,
-            valores.G,
-            valores.H,
-            valores.I,
-            valores.L,
-            valores.M,
-            valores.N,
-            valores.O,
-            valores.Q1,
-            valores.Q2,
-            valores.Q3,
-            valores.Q4,
+            valores.A / 22 * 100,
+            valores.B / 15 * 100,
+            valores.C / 20 * 100,
+            valores.E / 20 * 100,
+            valores.F / 20 * 100,
+            valores.G / 22 * 100,
+            valores.H / 20 * 100,
+            valores.I / 22 * 100,
+            valores.L / 20 * 100,
+            valores.M / 22 * 100,
+            valores.N / 20 * 100,
+            valores.O / 20 * 100,
+            valores.Q1 / 28 * 100,
+            valores.Q2 / 20 * 100,
+            valores.Q3 / 20 * 100,
+            valores.Q4 / 20 * 100,
           ],
           backgroundColor: [
             "rgba(173, 216, 230, 0.7)",
