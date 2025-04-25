@@ -21,7 +21,7 @@ exports.get_login = (request, response, next) => {
     isNew: false,
     info: mensaje,
     warning: warning,
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };

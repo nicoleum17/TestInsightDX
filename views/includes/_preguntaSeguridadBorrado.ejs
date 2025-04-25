@@ -7,7 +7,7 @@
     </p>
     <form action="<%= grupo %>" method="POST">
       <input type="hidden" name="grupo" value="<%= grupo %>" />
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="usuario" value="<%= usuario %>" />
       <div class="columns is-vcentered ml-5">
         <div class="column">

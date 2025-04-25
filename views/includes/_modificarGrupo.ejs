@@ -11,7 +11,7 @@
     <% if (grupo) {%> <form
     action="/psicologa/grupo/<%=grupo.idGrupo%>/modificar" method="POST"
     enctype="multipart/form-data">
-<!--CSRF TOKEN-->
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
     <input type="hidden" name="idGrupo" value="<%= grupo.idGrupo%>" />
     <div class="box has-background-info has-text-white">
       <label class="label">Institución:</label>

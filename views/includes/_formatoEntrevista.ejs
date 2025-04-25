@@ -172,7 +172,7 @@
     <h3 class="title is-4 has-text-weight-semibold ml-1">Datos Personales</h3>
     <br />
     <form action="formatoEntrevista" method="POST">
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="usuario" value="<%= usuario %>" />
       <input type="hidden" name="idUsuario" value="<%= idUsuario %>" />
       <div class="columns is-vcentered ml-5">

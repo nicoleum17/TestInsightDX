@@ -7,7 +7,7 @@
     <br />
     <div class="interviewFormat columns is-vcentered ml-5"></div>
     <form action="<%= rutaPost %>" method="POST">
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
       <input type="hidden" name="familia" value="<%= familia %>" />
       <div class="box" id="contenedorFamiliares">

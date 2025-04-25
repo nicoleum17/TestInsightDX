@@ -48,9 +48,9 @@ const fileStorage = multer.diskStorage({
 //'archivo' es el nombre del input tipo file de la forma
 app.use(multer({ storage: fileStorage }).single("archivo"));
 
-//const csrf = require("csurf");
-//const csrfProtection = csrf();
-//app.use(csrfProtection);
+const csrf = require("csurf");
+const csrfProtection = csrf();
+app.use(csrfProtection);
 
 const testInsightRoutes = require("./routes/testInsight.routes");
 const aspiranteRoutes = require("./routes/aspirante.routes");

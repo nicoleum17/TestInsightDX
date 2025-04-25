@@ -106,7 +106,13 @@ let preguntas = []; // Arreglo para poder tener las preguntas
 // Función para cargar las preguntas desde la base de datos
 async function cargarPreguntas() {
   try {
-    const response = await fetch("/aspirante/prueba-otis", { method: "POST" });
+    const response = await fetch("/aspirante/prueba-otis", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+      },
+    });
     const data = await response.json();
     preguntas = data.preguntas;
     if (preguntas.length > 0) {
@@ -254,6 +260,7 @@ async function sendRespuestas() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
     },
     body: JSON.stringify(datosRespuestas),
   })

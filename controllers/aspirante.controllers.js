@@ -29,7 +29,7 @@ const oauth2Client = new google.auth.OAuth2(
 /* Función que sirve como controlador que permite verificar la vista para verificar el Token de seguridad*/
 exports.get_verificarOtp = (request, response, next) => {
   response.render("verificarOtp", {
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
   });
 };
 
@@ -43,7 +43,7 @@ exports.post_verificarOtp = (request, response, next) => {
           new Date(otp[0].expiraEn).getTime() > Date.now() &&
           otp[0].estaActivo === 1
         ) {
-          //csrfToken: request.csrfToken();
+          csrfToken: request.csrfToken();
           grupo: request.session.grupo;
 
           OTP.updateOtp(otp[0].idOTP).then(() => {
@@ -78,7 +78,7 @@ exports.get_root = (request, response, next) => {
                 pruebas: rows,
                 isLoggedIn: request.session.isLoggedIn || false,
                 usuario: request.session.usuario || "",
-                //csrfToken: request.csrfToken(),
+                csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 grupo: request.session.grupo,
                 pruebasAspirante: pruebasAspirante,
@@ -99,7 +99,7 @@ exports.get_notificacionA = (request, response, next) => {
   response.render("notificacionesAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -109,7 +109,7 @@ exports.get_documentosA = (request, response, next) => {
   response.render("documentosAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -119,7 +119,7 @@ exports.get_calendarioA = (request, response, next) => {
   response.render("calendarioAspirante", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -131,7 +131,7 @@ exports.get_instrucciones = (request, response, next) => {
     response.render("instruccionesPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       prueba: rows[0],
       idUsuario: request.session.idUsuario,
@@ -149,7 +149,7 @@ exports.get_datosA = (request, response, next) => {
         response.render("datosAspirante", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
-          //csrfToken: request.csrfToken(),
+          csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           prueba: rows[0],
           idUsuario: request.session.idUsuario,
@@ -178,7 +178,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
                 return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
-                  //csrfToken: request.csrfToken(),
+                  csrfToken: request.csrfToken(),
                   privilegios: request.session.privilegios || [],
                   prueba: prueba[0],
                   pregunta: pregunta[0],
@@ -211,7 +211,7 @@ exports.post_preguntasPrueba = (request, response, next) => {
                 return response.render("preguntasPrueba", {
                   isLoggedIn: request.session.isLoggedIn || false,
                   usuario: request.session.usuario || "",
-                  //csrfToken: request.csrfToken(),
+                  csrfToken: request.csrfToken(),
                   privilegios: request.session.privilegios || [],
                   prueba: prueba[0],
                   pregunta: pregunta[0],
@@ -259,7 +259,7 @@ exports.post_siguientePregunta = (request, response, next) => {
       PreguntaKostick.getOpciones(pregunta[0].idPreguntaKostick)
         .then(([opciones]) => {
           return response.status(200).json({
-            //csrfToken: request.csrfToken(),
+            csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
             idGrupo: request.session.grupo,
@@ -301,7 +301,7 @@ exports.post_siguientePregunta1 = (request, response, next) => {
       Pregunta16PF.getOpciones(pregunta[0].idPregunta16PF)
         .then(([opciones]) => {
           return response.status(200).json({
-            //csrfToken: request.csrfToken(),
+            csrfToken: request.csrfToken(),
             pregunta: pregunta[0],
             opciones: opciones,
             idGrupo: request.session.grupo,
@@ -588,7 +588,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
         response.render("finPrueba", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
-          //csrfToken: request.csrfToken(),
+          csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           idUsuario: request.session.idUsuario,
           aspirante: aspirante[0],
@@ -600,7 +600,7 @@ exports.get_pruebaCompletada = async (request, response, next) => {
       response.render("finPrueba", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        //csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario,
         aspirante: aspirante[0],
@@ -613,7 +613,7 @@ exports.formato_entrevista = (request, response, next) => {
   response.render("formatoEntrevista", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario,
   });
@@ -658,7 +658,7 @@ exports.formato_entrevista_preguntasP = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasP", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -707,7 +707,7 @@ exports.formato_entrevista_DA = (request, response, next) => {
   response.render("formatoEntrevistaDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -741,7 +741,7 @@ exports.formato_entrevista_preguntasDA = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasDA", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -781,7 +781,7 @@ exports.formato_entrevista_DL = (request, response, next) => {
   response.render("formatoEntrevistaDL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -812,7 +812,7 @@ exports.formato_entrevista_preguntasDL = (request, response, next) => {
   response.render("formatoEntrevistaPreguntasDL", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -852,7 +852,7 @@ exports.formato_entrevista_familia = (request, response, next) => {
   response.render("formatoEntrevistaFamilia", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -876,7 +876,7 @@ exports.formato_entrevista_familiar_abueloM = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Maternos",
@@ -889,7 +889,7 @@ exports.formato_entrevista_familiar_abueloP = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Abuelos Paternos",
@@ -902,7 +902,7 @@ exports.formato_entrevista_familiar_TioM = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Maternos/as",
@@ -915,7 +915,7 @@ exports.formato_entrevista_familiar_TioP = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Tios/as Paternos/as",
@@ -928,7 +928,7 @@ exports.formato_entrevista_familiar_Padres = (request, response, next) => {
   response.render("formatoEntrevistaFamiliarObligatorio", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Padres",
@@ -941,7 +941,7 @@ exports.formato_entrevista_familiar_Pareja = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Pareja",
@@ -954,7 +954,7 @@ exports.formato_entrevista_familiar_Hijos = (request, response, next) => {
   response.render("formatoEntrevistaFamiliar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
     familia: request.session.idFamilia,
     tipoFamiliar: "Hijos",
@@ -1213,7 +1213,7 @@ exports.getConfirmacionFormato = (request, response) => {
   response.render("formatoEntrevistaConfirmar", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     formato: request.session.idFormato,
   });
 };
@@ -1246,7 +1246,7 @@ exports.registra_kardex = (request, response, next) => {
   response.render("registrarKardex", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario || "",
   });
@@ -1263,7 +1263,7 @@ exports.registra_CV = (request, response, next) => {
   response.render("registrarCV", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario || "",
   });
@@ -1357,7 +1357,7 @@ exports.getEventoCalendario = (request, response, next) => {
       response.render("calendario", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        //csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario || "",
       });
@@ -1367,52 +1367,8 @@ exports.getEventoCalendario = (request, response, next) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-exports.getIntruccionesOtis = (request, response, next) => {
-  response.render("Aspirantes/instruccionesOtis");
-};
-
-exports.postInstruccionesOtis = (req, res) => {
-  res.redirect("/aspirante/datos-personales-otis");
-};
-
-// Mostrar instrucciones colores
-exports.getInstruccionesColores = (request, response, next) => {
-  response.render("Aspirantes/instruccionesColores");
-};
-
-exports.postInstruccionesColores = (req, res) => {
-  res.redirect("/aspirante/datos-personales-colores");
-};
-
-// Formulario datos personales
-exports.getDatosPersonalesOtis = (request, response, next) => {
-  response.render("Aspirantes/datosPersonalesOtis");
-};
-
-exports.getDatosPersonalesColores = (request, response, next) => {
-  response.render("Aspirantes/datosPersonalesColores");
-};
-
 exports.get_respuestas_enviadas = (request, response, next) => {
   response.send("Respuestas enviadas");
-};
-
-// Procesar datos personales y pasar a la prueba
-exports.postDatosPersonalesOtis = (request, response, next) => {
-  const { nombre, apellidoPaterno, apellidoMaterno, puestoSolicitado } =
-    request.body;
-
-  // Guardar en la sesion
-  request.session.datosPersonalesOtis = {
-    nombre,
-    apellidoPaterno,
-    apellidoMaterno,
-    puestoSolicitado,
-    fecha: new Date(),
-  };
-
-  // Redirigir a la prueba
-  response.redirect("/aspirante/prueba-otis");
 };
 
 //Obtener las areas, preguntas y opciones
@@ -1477,6 +1433,7 @@ exports.getPruebaOtis = (request, response, next) => {
       console.log(request.session.grupo);
       response.render("pruebaOtis", {
         preguntas: preguntas || [],
+        csrfToken: request.csrfToken(),
         grupo: request.session.grupo,
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
@@ -1489,6 +1446,7 @@ exports.getPruebaOtis = (request, response, next) => {
       console.error("Error al cargar la prueba OTIS:", error);
       response.render("pruebaOtis", {
         preguntas: [],
+        csrfToken: request.csrfToken(),
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
         privilegios: request.session.privilegios || [],
@@ -1574,38 +1532,15 @@ exports.postGuardarRespuestas = async (request, response) => {
   });
 };
 
-// Procesar datos personales y pasar a la prueba
-exports.postDatosPersonalesColores = (request, response, next) => {
-  const { nombre, apellidoPaterno, apellidoMaterno, puestoSolicitado } =
-    request.body;
-
-  // Guardar en la sesion
-  request.session.datosPersonalesColores = {
-    nombre,
-    apellidoPaterno,
-    apellidoMaterno,
-    puestoSolicitado,
-    fecha: new Date(),
-  };
-
-  // Primera fase de la prueba
-  response.redirect("/aspirante/prueba-colores");
-};
-
 exports.getPruebaColores = (request, response, next) => {
-  if (!request.session.datosPersonalesColores) {
-    return response.redirect("/aspirante/datos-personales-colores");
-  }
-
   const idPrueba = 6;
 
   // Obtener el idGrupo aspirante y prueba
-  PruebaColores.getGrupoPrueba(request.session.idUsuario, idPrueba)
-    .then(([rows, fieldData]) => {
-      if (rows.length > 0) {
-        // Guardar el idGrupo
-        request.session.idGrupo = rows[0].idGrupo;
-        console.log("ID de Grupo establecido:", request.session.idGrupo);
+  Usuario.getGrupo(request.session.idUsuario)
+    .then(([grupo]) => {
+      if (grupo.length > 0) {
+        request.session.idGrupo = grupo[0];
+        request.session.idPrueba = idPrueba;
       } else {
         console.log("No se encontró grupo para este aspirante y prueba");
       }
@@ -1613,20 +1548,32 @@ exports.getPruebaColores = (request, response, next) => {
       // Continuar con colores
       return PruebaColores.fetchColores();
     })
-    .then(([rows, fieldData]) => {
-      const colores = rows;
-      response.render("Aspirantes/pruebaColores", {
+    .then(([grupo, fieldData]) => {
+      const colores = grupo;
+      response.render("pruebaColores", {
         colores: colores || [],
         fase: 1,
         error: null,
+        csrfToken: request.csrfToken(),
+        usuario: request.session.usuario || "",
+        isLoggedIn: request.session.isLoggedIn || false,
+        grupo: request.session.grupo,
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
       });
     })
     .catch((error) => {
       console.log(error);
-      response.render("Aspirantes/pruebaColores", {
+      response.render("pruebaColores", {
         colores: [],
         fase: 1,
         error: "Error al cargar los colores",
+        csrfToken: request.csrfToken(),
+        grupo: request.session.grupo,
+        usuario: request.session.usuario || "",
+        isLoggedIn: request.session.isLoggedIn || false,
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
       });
     });
 };
@@ -1684,13 +1631,15 @@ exports.postGuardarSeleccionesColores = (request, response) => {
 
   const idPrueba = 6;
 
-  PruebaColores.getGrupoPrueba(request.session.idUsuario, idPrueba)
-    .then(([rows]) => {
-      if (rows.length === 0) {
+  Usuario.getGrupo(request.session.idUsuario)
+    .then(([grupo]) => {
+      if (grupo.length > 0) {
+        request.session.idGrupo = grupo[0].idGrupo; // Assuming you want to set the idGrupo from the grupo object
+      } else {
         throw new Error("No se encontró grupo para este aspirante y prueba");
       }
 
-      const idGrupo = rows[0].idGrupo;
+      const idGrupo = request.session.idGrupo;
       console.log("5. ID de Grupo obtenido:", idGrupo);
 
       // Separar las selecciones de fase 1 y 2
@@ -1700,27 +1649,12 @@ exports.postGuardarSeleccionesColores = (request, response) => {
       console.log("6. Selecciones fase 1:", seleccionesFase1.length);
       console.log("7. Selecciones fase 2:", seleccionesFase2.length);
 
-      // Obtener datos personales
-      const datosPersonales = request.session.datosPersonalesColores || {
-        nombre: "Usuario",
-        apellidoPaterno: "",
-        apellidoMaterno: "",
-        puestoSolicitado: "No especificado",
-        fecha: new Date(),
-      };
-
-      // Guardar en base
-      return PruebaColores.saveDatosPersonales(
-        request.session.idUsuario,
-        idGrupo,
-        idPrueba,
-        datosPersonales
-      )
+      return Aspirante.fetchOne(request.session.idUsuario)
         .then(() => {
           console.log("8. Datos personales guardados correctamente");
           // const pruebaColores1 = new PruebaColores(seleccionesFase1);
           return PruebaColores.saveSeleccion(
-            request.session.idUsuario,
+            request.session.idAspirante,
             idGrupo,
             idPrueba,
             1,
@@ -1729,7 +1663,6 @@ exports.postGuardarSeleccionesColores = (request, response) => {
         })
         .then(() => {
           console.log("9. Primera selección guardada");
-          // const pruebaColores2 = new PruebaColores(seleccionesFase2);
           return PruebaColores.saveSeleccion(
             request.session.idUsuario,
             idGrupo,
@@ -1750,17 +1683,22 @@ exports.postGuardarSeleccionesColores = (request, response) => {
           if (rows.length === 0) {
             console.log("11. No existe registro, insertando...");
             return db.execute(
-              `INSERT INTO aspirantesgrupospruebas (idUsuario, idGrupo, idPrueba, idEstatus)
-                      VALUES (?, ?, ?, 2)`,
-              [request.session.idUsuario, idGrupo, idPrueba]
+              `INSERT INTO pruebasaspirante (idUsuario, idGrupo, idPrueba, idEstatus)
+                  VALUES (?, ?, ?, 'En proceso')`,
+              [request.session.idAspirante, idGrupo, idPrueba]
             );
           } else {
             console.log("12. Registro encontrado, actualizando estado...");
-            return PruebaColores.updateEstatusPrueba(
+            const newPruebaAspirante = new PruebaAspirante(
               request.session.idUsuario,
               idGrupo,
               idPrueba
             );
+
+            return newPruebaAspirante.terminarPrueba().then((uuid) => {
+              request.session.idGrupo = uuid;
+              request.session.idUsuario = uuid;
+            });
           }
         });
     })
@@ -1785,7 +1723,7 @@ exports.getPruebaCompletada = (request, response, next) => {
   response.render("finPrueba", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     idUsuario: request.session.idUsuario,
   });

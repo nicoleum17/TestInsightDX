@@ -14,7 +14,7 @@
         action="registrarAspirante"
         method="POST"
         enctype="multipart/form-data">
-        <!--CSRF token-->
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <div class="subtitle">Grupo:</div>
         <div class="select is-fullwidth">
           <select name="grupo" required>

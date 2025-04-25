@@ -37,7 +37,10 @@
         <hr />
         <footer>
           <div class="text-end mt-4">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
             <button class="sigbtn btn btn-color--secondary">Siguiente</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 
             <button class="btn btn-color--secondary" id="enviarRespuestas">
               Enviar respuestas

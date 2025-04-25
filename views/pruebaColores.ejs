@@ -5,77 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test de los colores de Lüscher</title>
 
-    <link rel="stylesheet" href="/css/aspirantes/pruebaColores.css" />
+    <style>
+      .fullHeight {
+        min-height: 110vh;
+        margin-top: 17px;
+      }
+    </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="../css/pruebaColores.css" />
   </head>
   <%- include('includes/_navbar.ejs') %>
 
-  <body class="bg-light">
-    <div class="main-wrapper">
-      <h2 class="fw-bold text-center mb-3">Test de los colores de Lüscher</h2>
-      <div class="text-center mb-4">
-        <p class="mb-1">
-          Observe bien estos ocho colores y seleccione el color que más llame su
-          atención.
-        </p>
-        <p class="mb-1">
-          Concéntrese en elegir el color que más le atraiga visualmente.
-        </p>
-        <p class="mb-1">
-          Una vez que haya elegido, repita la misma operación con los colores
-          restantes, de tal manera que el último que escoja sea el que menos
-          llame su atención.
-        </p>
-      </div>
-
-      <div class="color-box-wrapper">
-        <div id="colorContainer" class="circle-container"></div>
-      </div>
-
-      <!-- Formulario para enviar los datos -->
-      <form
-        id="colorSelectionForm"
-        action="/aspirante/guardar-selecciones-colores"
-        method="POST">
-        <!-- Campos para guardar las selecciones -->
-        <div id="seleccionesContainer"></div>
-
-        <div class="btn-container">
-          <button
-            id="terminarBtn"
-            type="submit"
-            class="btn btn-color--secondary d-none">
-            Terminar prueba
-          </button>
+  <body class="has-background-warning">
+    <section class="section fullHeight has-background-warning">
+      <div class="main-wrapper">
+        <div class="text-center">
+          <li class="subtitle is-5 has-text-weight-normal">
+            Observe bien estos ocho colores y seleccione el color que más llame
+            su atención.
+          </li>
+          <li class="subtitle is-5 has-text-weight-normal">
+            Concéntrese en elegir el color que más le atraiga visualmente.
+          </li>
+          <li class="subtitle is-5 has-text-weight-normal">
+            Una vez que haya elegido, repita la misma operación con los colores
+            restantes, de tal manera que el último que escoja sea el que menos
+            llame su atención.
+          </li>
         </div>
-      </form>
-    </div>
+        <br />
+        <div class="color-box-wrapper">
+          <div id="colorContainer" class="circle-container"></div>
+        </div>
 
-    <!-- Modal segunda ronda -->
-    <div
-      class="modal fade"
-      id="segundaRondaModal"
-      tabindex="-1"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content text-center">
-          <div class="modal-header">
-            <h5 class="modal-title w-100">Instrucciones</h5>
-          </div>
-          <div class="modal-body">
-            Ahora selecciona nuevamente los colores, en orden de atracción.
-          </div>
-          <div class="modal-footer justify-content-center">
+        <!-- Formulario para enviar los datos -->
+        <form
+          id="colorSelectionForm"
+          action="/aspirante/guardar-selecciones-colores"
+          method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+          <!-- Campos para guardar las selecciones -->
+          <div id="seleccionesContainer"></div>
+
+          <div class="btn-container">
             <button
-              type="button"
-              class="btn btn-color--secondary"
-              data-bs-dismiss="modal">
-              Entendido
+              id="terminarBtn"
+              type="submit"
+              class="column is-narrow button is-primary has-text-warning ml-6">
+              Terminar prueba
             </button>
           </div>
+        </form>
+      </div>
+
+      <!-- Modal segunda ronda -->
+      <div
+        class="modal fade"
+        id="segundaRondaModal"
+        tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content text-center">
+            <div class="modal-header">
+              <h5 class="modal-title w-100">Instrucciones</h5>
+            </div>
+            <div class="modal-body">
+              Ahora selecciona nuevamente los colores, en orden de atracción.
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="button"
+                class="btn btn-color--secondary"
+                data-bs-dismiss="modal">
+                Entendido
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
+    </section>
     <!-- (HISTORY.PUSHSTATE, POPSTATE Y BEFOREUNLOAD) -->
     <script>
       // Intentar prevenir la navegacion hacia atras
@@ -121,7 +132,7 @@
         });
     </script>
 
-    <script src="/js/aspirantes/pruebaColores.js"></script>
+    <script src="../js/pruebaColores.js"></script>
     <%- include('includes/_footer.ejs') %>
   </body>
 </html>

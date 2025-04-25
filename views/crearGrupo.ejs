@@ -12,7 +12,8 @@
       action="/psicologa/grupo/confirmarCreacion"
       method="POST"
       enctype="multipart/form-data">
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
       <label class="label">Institución:</label>
       <input
         type="text"

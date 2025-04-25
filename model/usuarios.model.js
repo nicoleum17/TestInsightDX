@@ -56,7 +56,6 @@ module.exports = class Usuario {
   }
 
   static getGrupo(idUsuario) {
-    console.log(idUsuario);
     return db.execute(
       "SELECT idGrupo FROM pertenecegrupo WHERE idUsuario = ?",
       [idUsuario]
