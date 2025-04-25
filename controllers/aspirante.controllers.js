@@ -1,4 +1,5 @@
 const { response, request } = require("express");
+const path = require("path");
 const bcrypt = require("bcryptjs");
 const Prueba = require("../model/prueba.model");
 const formatoEntrevista = require("../model/formatoEntrevista.model");
@@ -14,6 +15,7 @@ const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
 const OTP = require("../model/otp.model");
 const { google } = require("googleapis");
+const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const oauth2Client = new google.auth.OAuth2(
@@ -92,26 +94,44 @@ exports.get_root = (request, response, next) => {
 
 /* Función que sirve como controlador para obtener las notificaciones que tiene el aspirante */
 exports.get_notificacionA = (request, response, next) => {
-  Aspirante.notificacion(request.session.idUsuario).then(([rows])=> {
+  Aspirante.notificacion(request.session.idUsuario).then(([rows]) => {
     response.render("notificacionesAspirante", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       pruebaGrupal: rows[0].pruebaGrupal || null,
-      zoomIndividual: rows[0].zoomIndividual|| null,
+      zoomIndividual: rows[0].zoomIndividual || null,
       limitePrueba: rows[0].limitePrueba || null,
     });
-  })
+  });
 };
 
 /* Función que sirve como controlador para obtener la vista en la que el aspirante carga sus documentos (CV y Kardex) */
 exports.get_documentosA = (request, response, next) => {
-  response.render("documentosAspirante", {
-    isLoggedIn: request.session.isLoggedIn || false,
-    usuario: request.session.usuario || "",
-    csrfToken: request.csrfToken(),
-    privilegios: request.session.privilegios || [],
+  PerteneceGrupo.consultarReporte(request.session.idUsuario).then(
+    ([documentos]) => {
+      response.render("documentosAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        documentos: documentos[0],
+      });
+    }
+  );
+};
+
+exports.getPdfFile = (request, response, next) => {
+  const filename = request.params.filename;
+  const filePath = path.join(__dirname, "../public/uploads", filename);
+  console.log(__dirname, "../public/uploads", filename);
+
+  response.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending file:", err);
+      response.status(err.status).end();
+    }
   });
 };
 

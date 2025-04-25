@@ -169,7 +169,7 @@ router.get(
   psicologaController.get_consultarReporteAspirante
 );
 
-router.get("/pdf/:filename", psicologaController.getPdfFile);
+router.get("/pdf/:filename", isAuth, psicologaController.getPdfFile);
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
 
