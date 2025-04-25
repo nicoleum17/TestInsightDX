@@ -790,3 +790,40 @@ exports.post_registraReporte = (request, response, next) => {
     response.redirect("/psicologa/reporteAspirante/" + idUsuario);
   });
 };
+
+exports.getPreguntaSeguridadAspirante = (request, response, next) => {
+  const idAspirante = request.params.id;
+  response.render("preguntaSeguridadBorradoAspirante.ejs", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    aspirante: idAspirante,
+  });
+}
+
+exports.postPreguntaSeguridadAspirante = (request, response, next) => {
+  console.log(request.body);
+  Usuario.fetchOne(request.body.usuario).then(([rows, fieldData]) => {
+    if (rows.length > 0) {
+      const bcrypt = require("bcryptjs");
+      bcrypt
+        .compare(request.body.contra, rows[0].contraseña)
+        .then((doMatch) => {
+          if (doMatch) {
+            Aspirante.borrarAspirante(request.body.aspirante);
+            request.session.infoBorrado = "Aspirante borrado exitosamente";
+            response.redirect("/psicologa/inicio");
+            console.log("Aspirante borrado");
+          } else {
+            request.session.infoBorrado =
+              "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
+            response.redirect("/psicologa/grupo/elegir");
+            console.log("Grupo no borrado");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  });
+};

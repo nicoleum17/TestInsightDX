@@ -29,11 +29,11 @@ module.exports = class Usuario {
   }
 
   static fetchAll() {
-    return db.execute("SELECT * FROM usuarios");
+    return db.execute("SELECT * FROM usuarios WHERE hidden = 0");
   }
 
   static fetchOne(usuario) {
-    return db.execute("SELECT * FROM usuarios WHERE usuario = ?", [usuario]);
+    return db.execute("SELECT * FROM usuarios WHERE usuario = ? AND hidden = 0", [usuario]);
   }
 
   static fetch(usuario) {
