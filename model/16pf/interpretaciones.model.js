@@ -31,10 +31,6 @@ module.exports = class Interpretaciones16PF {
         return db.execute("SELECT nivel1 as resp FROM interpretaciones16PF WHERE parametro = ?",
             [columna]
         );
-    } else if (nivel == 2){
-        return db.execute("SELECT nivel2 as resp FROM interpretaciones16PF WHERE parametro = ?",
-            [columna]
-        );
     } else if (nivel == 3){
         return db.execute("SELECT nivel3 as resp FROM interpretaciones16PF WHERE parametro = ?",
             [columna]
