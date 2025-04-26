@@ -22,6 +22,7 @@ const evento = require("../model/event.model");
 const eventoGoogle = require("../model/event.model");
 const PreguntaKostick = require("../model/kostick/preguntasKostick.model");
 const OpcionKostick = require("../model/kostick/opcionesKostick.model");
+const InterpretacionKostick = require("../model/kostick/interpretacionKostick.model");
 const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
 const Opcion16PF = require("../model/16pf/opciones16pf.model");
 
@@ -250,16 +251,22 @@ exports.get_respuestasA = (request, response, next) => {
         if (idPrueba == 1) {
           ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
             (resultados) => {
-              response.render("consultaRespuestasAspirante", {
-                isLoggedIn: request.session.isLoggedIn || false,
-                usuario: request.session.usuario || "",
-                csrfToken: request.csrfToken(),
-                privilegios: request.session.privilegios || [],
-                prueba: "El inventario de Percepción Kostick",
-                grupo: grupoRows[0],
-                valores: resultados[0][0],
-                datos: datosAspirante[0],
-              });
+              InterpretacionKostick.fetchAll().then(
+                (interpretacionesKostick) => {
+                  console.log(interpretacionesKostick[0]);
+                  response.render("consultaRespuestasAspirante", {
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    usuario: request.session.usuario || "",
+                    csrfToken: request.csrfToken(),
+                    privilegios: request.session.privilegios || [],
+                    prueba: "El inventario de Percepción Kostick",
+                    grupo: grupoRows[0],
+                    valores: resultados[0][0],
+                    datos: datosAspirante[0],
+                    interpretaciones: interpretacionesKostick[0],
+                  });
+                }
+              );
             }
           );
         } else if (idPrueba == 2) {
