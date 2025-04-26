@@ -158,7 +158,7 @@ function ensenarPregunta(index) {
     pregunta.opciones.forEach((opcion) => {
       optTag += `<div class="option subtitle is-4 mx-5" data-idPregunta="${pregunta.idPreguntaOtis}">
                 <input type="radio" name="pregunta${index}" value="${opcion.idOpcionOtis}">
-                <span>${opcion.opcionOtis}. ${opcion.descripcionOpcion}</span>
+                <span>${opcion.opcionOtis}.- ${opcion.descripcionOpcion}</span>
             </div>`;
     });
   } else {
