@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test de aptitud mental OTIS</title>
+    <style>
+      .fullHeight {
+        min-height: 100vh;
+        margin-top: 20px;
+      }
+      :root {
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+      }
+    </style>
+  </head>
+  <%- include('includes/_navbar.ejs') %>
+
+  <body>
+    <section class="section fullHeight has-background-warning">
+      
+      <div class="container is-max-tablet">
+        <div class="preguntasCaja">
+          <div class="cabeceraTest">
+            <div class="headerOtis">
+              <nav class="level-right mb-1">
+                <div class="level-right">
+                  <article class="message">
+                    <div class="message-body" >          <div class="temporizadorOtis">
+                      <span class="tiempoRestante" id="tiempoRestante">30:00</span>
+                    </div>
+                  </div></div>
+                  </article>
+                </div>
+              </nav>
+              <div class="progresoOtis">
+                <progress
+                  class="progress is-link"
+                  max="75"
+                  value="<%= preguntas.num %>"
+                  id="progressBar">
+                  <%= preguntas.num %>
+                </progress>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="columns">
+            <div class="column has-text-centered">
+              <div class="areaTexto"></div>
+            </div>
+          </div>
+
+          <!-- Preguntas de la prueba OTIS -->
+          <div class="pregtext subtitle is-3 mt-3"></div>
+          <div class="optionList"></div>
+
+          <footer>
+            <div class="columns">
+              <div class="column has-text-centered">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                
+                <button
+                  class="sigbtn is-narrow button mt-6 is-primary has-text-warning">
+                  Siguiente
+                </button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+                <button
+                  class="is-narrow button mt-6 is-primary has-text-warning "
+                  id="enviarRespuestas">
+                  Finalizar
+                </button>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </section>
+    <!-- JS -->
+
+    <script>
+      // Bloquear boton de regresar
+      window.addEventListener("load", function () {
+        history.pushState(null, "", location.href);
+        window.addEventListener("popstate", function () {
+          history.pushState(null, "", location.href);
+          alert("No puedes regresar durante la prueba.");
+        });
+      });
+    </script>
+    <script>
+      const preguntasCj = document.querySelector(".preguntasCaja");
+const contadorTiempo = preguntasCj.querySelector(
+  ".temporizadorOtis .tiempoRestante"
+);
+const respEnviadas = document.querySelector(".enviadasCaja");
+const enviarRespuestas = document.querySelector("#enviarRespuestas");
+
+let pregAcum = 0;
+let pregNum = 1;
+let contTiempo;
+let valorTemporizador = 1800; //Segundos de 30 min
+let tiempoInicioPregunta = null;
+
+// Llamar a la funciónes
+cargarPreguntas();
+cronometro(valorTemporizador);
+// Ocultar el botón de enviar respuestas inicialmente
+enviarRespuestas.classList.add("is-hidden");
+
+// Función del temporizador
+function cronometro(tiempo) {
+  contTiempo = setInterval(timer, 1000);
+  function timer() {
+    let minutos = Math.floor(tiempo / 60);
+    let segundos = tiempo % 60;
+
+    minutos = minutos < 10 ? "0" + minutos : minutos;
+    segundos = segundos < 10 ? "0" + segundos : segundos;
+
+    contadorTiempo.textContent = `${minutos}:${segundos}`;
+
+    tiempo--;
+
+    if (tiempo < 0) {
+      clearInterval(contTiempo);
+      contadorTiempo.textContent = "00:00";
+    }
+  }
+  if (tiempo < 0) {
+    clearInterval(contTiempo);
+    contadorTiempo.textContent = "00:00";
+
+    // Enviar las respuestas automáticamente
+    sendRespuestas().then(() => {
+      // Redirigir después de enviar
+      window.location.href = "/prueba-completada";
+    });
+  }
+}
+
+// Tener un tope para no llegar a preguntas de más
+document.body.addEventListener("click", (event) => {
+  if (event.target.classList.contains("sigbtn")) {
+    const opciones = document.querySelectorAll(".option input:checked");
+    const inputSeleccionado = opciones[0];
+    const idPregunta = document
+      .querySelector(".option")
+      .getAttribute("data-idPregunta");
+
+    const tiempoActual = Date.now();
+    const tiempoRespuesta = Math.floor(
+      (tiempoActual - tiempoInicioPregunta) / 1000
+    ); // segundos
+
+    let respuesta = respuestasSeleccionadas.find(
+      (r) => r.idPreguntaOtis === idPregunta
+    );
+
+    if (respuesta) {
+      respuesta.idOpcion = inputSeleccionado ? inputSeleccionado.value : null;
+      respuesta.tiempoRespuesta = tiempoRespuesta;
+    } else {
+      respuestasSeleccionadas.push({
+        idPreguntaOtis: idPregunta,
+        idOpcion: inputSeleccionado ? inputSeleccionado.value : null,
+        tiempoRespuesta: tiempoRespuesta,
+      });
+    }
+
+    const botonSig = document.querySelector(".sigbtn");
+
+    if (pregAcum < preguntas.length - 1) {
+      pregAcum++;
+      pregNum++;
+      ensenarPregunta(pregAcum);
+      verificarMostrarBoton();
+
+    }
+
+  }
+});
+
+// Función para verificar si mostrar el botón de enviar respuestas
+function verificarMostrarBoton() {
+  console.log(pregNum)
+  if (pregNum === 75) { // Check if the current question number is 75
+    enviarRespuestas.classList.remove("is-hidden"); // Show the "Finalizar" button
+  } else {
+    enviarRespuestas.classList.add("is-hidden"); // Hide the "Finalizar" button
+  }
+}
+
+let preguntas = []; // Arreglo para poder tener las preguntas
+
+// Función para cargar las preguntas desde la base de datos
+async function cargarPreguntas() {
+  try {
+    const response = await fetch("/aspirante/prueba-otis", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+      },
+    });
+    const data = await response.json();
+    preguntas = data.preguntas;
+    if (preguntas.length > 0) {
+      ensenarPregunta(0);
+    } else {
+      console.log("No se encontraron preguntas.");
+    }
+  } catch (error) {
+    console.error("Error al cargar las preguntas:", error);
+  }
+}
+
+// Función para enseñar cada pregunta junto con su número
+function ensenarPregunta(index) {
+  const progresoOtis = document.querySelector(".progresoOtis");
+  const areaTexto = document.querySelector(".areaTexto");
+  const pregTexto = document.querySelector(".pregtext");
+  const optLista = document.querySelector(".optionList");
+  const progressBar = document.getElementById("progressBar"); // Get the progress bar element
+
+  const pregunta = preguntas[index];
+
+  tiempoInicioPregunta = Date.now();
+
+  // Mostrar la pregunta
+  let pregTag = `<span>${pregunta.num}. ${pregunta.pregunta}</span>`;
+  pregTexto.innerHTML = pregTag;
+
+  // Mostrar las opciones
+  let optTag = "";
+  if (pregunta.opciones && pregunta.opciones.length > 0) {
+    pregunta.opciones.forEach((opcion) => {
+      optTag += `<div class="option subtitle is-4 mx-5" data-idPregunta="${pregunta.idPreguntaOtis}">
+        <label class="radio">
+                <input type="radio" name="pregunta${index}" value="${opcion.idOpcionOtis}">
+                ${opcion.opcionOtis}.- ${opcion.descripcionOpcion}</label>
+            </div>`;
+    });
+  } else {
+    console.log("No se encontraron opciones para esta pregunta.");
+  }
+  optLista.innerHTML = optTag;
+
+  // Update the progress bar value
+  progressBar.value = index ; // Update the progress bar value (index + 1 because index is 0-based)
+
+  // Ocultar el botón de siguiente si es la última pregunta
+  const botonSiguiente = document.querySelector(".sigbtn");
+  if (index === preguntas.length - 1) {
+    botonSiguiente.classList.add("is-hidden");
+  } else {
+    botonSiguiente.classList.remove("is-hidden");
+  }
+}
+
+
+let respuestasSeleccionadas = [];
+
+const idUsuario = sessionStorage.getItem("idUsuario");
+const idGrupo = sessionStorage.getItem("idGrupo");
+
+function guardarUltimaRespuesta() {
+  const contenedorPregunta = document
+    .querySelector(".option input")
+    ?.closest(".option");
+  if (!contenedorPregunta) return;
+
+  const idPregunta = contenedorPregunta.getAttribute("data-idPregunta");
+  const inputSeleccionado = document.querySelector(".option input:checked");
+  const idOpcion = inputSeleccionado ? inputSeleccionado.value : null;
+
+  const tiempoActual = Date.now();
+  const tiempoRespuesta = Math.floor(
+    (tiempoActual - tiempoInicioPregunta) / 1000
+  );
+
+  let respuesta = respuestasSeleccionadas.find(
+    (r) => r.idPreguntaOtis === idPregunta
+  );
+  if (respuesta) {
+    respuesta.idOpcion = idOpcion;
+    respuesta.tiempoRespuesta = tiempoRespuesta;
+  } else {
+    respuestasSeleccionadas.push({
+      idPreguntaOtis: idPregunta,
+      idOpcion: idOpcion,
+      tiempoRespuesta: tiempoRespuesta,
+    });
+  }
+}
+
+// Función para enviar las respuestas seleccionadas
+async function sendRespuestas() {
+  if (respuestasSeleccionadas.length === 0) {
+    console.log("No se seleccionaron respuestas.");
+    return;
+  }
+
+  const datosRespuestas = respuestasSeleccionadas.map((respuesta) => ({
+    idUsuario: idUsuario,
+    idGrupo: idGrupo,
+    idPrueba: 5,
+    idPreguntaOtis: respuesta.idPreguntaOtis,
+    idOpcionOtis: respuesta.idOpcion,
+    tiempoRespuesta: respuesta.tiempoRespuesta,
+  }));
+
+  // Enviar las respuestas a la base de datos
+  fetch("/aspirante/guardar-selecciones-otis", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+    },
+    body: JSON.stringify(datosRespuestas),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success && data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+      } else {
+        alert("Hubo un problema al enviar las respuestas.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al enviar las respuestas:", error);
+      alert("Error al enviar las respuestas.");
+    });
+}
+
+enviarRespuestas.addEventListener("click", function () {
+  const confirmarEnvio = confirm(
+    "¿Estás seguro de que deseas enviar tus respuestas? Una vez enviadas, no podrás cambiarlas."
+  );
+
+  if (confirmarEnvio) {
+    guardarUltimaRespuesta();
+    sendRespuestas();
+  }
+});
+
+    </script>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>

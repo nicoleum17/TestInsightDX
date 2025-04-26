@@ -63,8 +63,6 @@ router.get(
   aspiranteController.get_datosA
 );
 
-router.post("/datosAspirante/2", isAuth, aspiranteController.post_registraSexo);
-
 router.get(
   "/instruccionesPrueba/:idPrueba",
   isAuth,
@@ -312,5 +310,31 @@ router.get(
   isAuth,
   aspiranteController.get_formato_activo
 );
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+router.get("/prueba-otis", isAuth, aspiranteController.getPruebaOtis);
+router.post("/prueba-otis", isAuth, aspiranteController.obtenerPreguntas);
+router.post("/prueba-otis", isAuth, aspiranteController.postPruebaOtis);
+router.post(
+  "/guardar-selecciones-otis",
+  aspiranteController.postGuardarRespuestas
+);
+router.get(
+  "/prueba-completada",
+  isAuth,
+  aspiranteController.getPruebaCompletada
+);
+
+router.get("/prueba-colores", isAuth, aspiranteController.getPruebaColores);
+router.post("/prueba-colores", isAuth, aspiranteController.postPruebaColores);
+router.post(
+  "/guardar-selecciones-colores",
+  isAuth,
+  aspiranteController.postGuardarSeleccionesColores
+);
+router.get("/prueba-completada", aspiranteController.getPruebaCompletada);
+
+router.get("/respuestas-enviadas", aspiranteController.getRespuestasEnviadas);
 
 module.exports = router;

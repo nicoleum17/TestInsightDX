@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba De Colores</title>
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/css/aspirantes/instruccionesColores.css" />
+  </head>
+  <%- include('includes/_navbar.ejs') %>
+
+  <body class="bg-light">
+    <div class="container py-5">
+      <h1 class="text-center mb-4">Prueba mental de COLORES</h1>
+
+      <h4 class="fw-bold mb-3">INSTRUCCIONES</h4>
+      <p class="mb-3">
+        Esta es una prueba para conocer tus preferencias emocionales y
+        reacciones instintivas frente a los colores. La prueba consta de
+        <strong>dos rondas</strong> en las que deberás elegir los colores según
+        tu nivel de atracción hacia ellos.
+      </p>
+
+      <h5 class="fw-semibold mt-4">Primera Fase:</h5>
+      <ol class="mb-3">
+        <li>Se te mostrarán <strong>8 colores</strong> en pantalla.</li>
+        <li>Observa los colores durante unos segundos.</li>
+        <li>
+          Selecciona el color que <strong>más te atrae</strong> en este momento.
+        </li>
+        <li>
+          Entre los restantes, vuelve a elegir el siguiente que más te llame la
+          atención.
+        </li>
+        <li>
+          Repite el proceso hasta que hayas seleccionado los 8 colores
+          <strong>en orden de preferencia</strong>, del más al menos atractivo.
+        </li>
+      </ol>
+
+      <h5 class="fw-semibold mt-4">Segunda Fase:</h5>
+      <ol class="mb-3">
+        <li>
+          Los mismos <strong>8 colores</strong> aparecerán nuevamente, en
+          diferente orden.
+        </li>
+        <li>
+          No pienses en la ronda anterior;
+          <strong>elige según lo que ahora te atrae más</strong>.
+        </li>
+        <li>Selecciona nuevamente los 8 colores en orden de preferencia.</li>
+      </ol>
+
+      <p class="mb-4">
+        <strong>No hay respuestas correctas o incorrectas.</strong> Confía en tu
+        primera impresión y elige lo que sientes en el momento.
+      </p>
+
+      <div class="d-flex justify-content-between mt-5">
+        <a href="/aspirante/mis-pruebas" class="btn btn-secondary">Regresar</a>
+
+        <form action="/aspirante/instrucciones-colores" method="POST">
+          <button type="submit" class="btn btn-color--secondary">
+            Iniciar Prueba
+          </button>
+        </form>
+      </div>
+    </div>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>

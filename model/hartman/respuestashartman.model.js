@@ -38,16 +38,16 @@ class Hartman {
       });
   }
 
-  static async getRespuestasUsuario(idAspirante, idGrupo) {
+  static async getRespuestasUsuario(idUsuario, idGrupo) {
     try {
       const query = `
             SELECT idPreguntaHartman, respuestaAbierta, tiempoRespuesta
             FROM respuestashartman
-            WHERE idAspirante = ? AND idGrupo = ?
+            WHERE idUsuario = ? AND idGrupo = ?
             GROUP BY idPreguntaHartman
             ORDER BY idPreguntaHartman ASC
           `;
-      const [rows] = await db.execute(query, [idAspirante, idGrupo]);
+      const [rows] = await db.execute(query, [idUsuario, idGrupo]);
       return rows;
     } catch (error) {
       console.error("Error al obtener respuestas del usuario:", error);

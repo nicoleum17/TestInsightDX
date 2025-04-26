@@ -1,113 +1,32 @@
 <section class="section">
-    <div class="container mt-4">
-      <h1 class="title is-3 has-text-weight-semibold">
-        Familia <%= tipoFamiliar %>
-      </h1>
-      <div class="interviewFormat columns is-vcentered ml-5"></div>
-      <form action="<%= rutaPost %>" method="POST">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-        <input type="hidden" name="idFormato" value="<%= formato %>" />
-        <input type="hidden" name="familia" value="<%= familia %>" />
-        <div class="box" id="contenedorFamiliares">
-          <div class="column">
-            <div class="is-flex is-align-items-center mb-3">
-              <label class="label" for="button-agregar-familiar"
-                >Agregar Familiar</label
-              >
-              <button
-                onclick="agregarFamiliar()"
-                id="button-agregar-familiar"
-                type="button">
-                <img
-                  src="https://img.icons8.com/m_rounded/512/plus.png"
-                  width="40"
-                  height="40" />
-              </button>
-            </div>
-          </div>
-          <div class="box">
-            <div class="columns is-vcentered ml-5">
-                            <div class="column">
-                                <label for="nombre" class="label">Nombre:</label>
-                                <input
-                                class="input"
-                                type="text"
-                                placeholder="Jose "
-                                id="nombreFamiliar"
-                                name="nombreFamiliar"
-                                required />
-                            </div>
-                        </div>
-                        <div class="columns is-vcentered ml-5">
-                            <div class="column">
-                                <label for="edad" class="label">Edad:</label>
-                                <input
-                                class="input"
-                                type="number"
-                                placeholder="35"
-                                id="edad"
-                                name="edad"
-                                required />
-                            </div>
-                            <div class="column">
-                                <label for="genero" class="label">Género:</label>
-                                <input
-                                class="input"
-                                type="text"
-                                placeholder="Hombre"
-                                id="genero"
-                                name="genero"
-                                required />
-                            </div>
-                        </div>
-                        <div class="columns is-vcentered ml-5">
-                            <div class="column">
-                                <label for="estadoCivil" class="label">Estado Civil:</label>
-                                <div class="select is-danger">
-                                <select name="estadoCivil" id="estadoCivil" required>
-                                    <option value="" disabled hidden selected>Seleccione una opción</option>
-                                    <option value="soltero">Soltero/a</option>
-                                    <option value="casado">Casado/a</option>
-                                    <option value="divorciado">Divorciado/a</option>
-                                    <option value="separado">Separado/a</option>
-                                    <option value="viudo">Viudo/a</option>
-                                    <option value="unionLibre">Unión libre</option>
-                                </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        </div>
-        <div class="columns has-text-centered">
-          <div class="column">
-          </div>
-          <div class="column">
+  <div class="container mt-4">
+    <h1 class="title is-3 has-text-weight-semibold">
+      Familia <%= tipoFamiliar %>
+    </h1>
+    <div class="interviewFormat columns is-vcentered ml-5"></div>
+    <form action="<%= rutaPost %>" method="POST">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input type="hidden" name="idFormato" value="<%= formato %>" />
+      <input type="hidden" name="familia" value="<%= familia %>" />
+      <div class="box" id="contenedorFamiliares">
+        <div class="column">
+          <div class="is-flex is-align-items-center mb-3">
+            <label class="label" for="button-agregar-familiar"
+              >Agregar Familiar</label
+            >
             <button
-              class="button has-background-primary has-text-warning ml-6"
-              type="submit">
-              Continuar
+              onclick="agregarFamiliar()"
+              class="ml-6"
+              id="button-agregar-familiar"
+              type="button">
+              <img
+                src="https://img.icons8.com/m_rounded/512/plus.png"
+                width="30px"
+                height="30px" />
             </button>
           </div>
         </div>
-      </form>
-    </div>
-  </section>
-  
-  <script>
-    let contadorFamiliares = 0;
-    const MaxFamiliares = 15;
-    function agregarFamiliar() {
-      if (contadorFamiliares >= MaxFamiliares) {
-        alert("Has alcanzado el número máximo de familiares permitidos (" + MAX_FAMILIARES + ").");
-        return;
-      }
-      contadorFamiliares += 1;
-      console.log("Nuevo Familiar!");
-      const cont = document.getElementById("contenedorFamiliares");
-      const nuevoFamiliar = document.createElement("div");
-      nuevoFamiliar.classList.add("tarjeta", "mt-3");
-      nuevoFamiliar.innerHTML = `
-          <div class="box">
+        <div class="box">
           <div class="columns is-vcentered ml-5">
                           <div class="column">
                               <label for="nombre" class="label">Nombre:</label>
@@ -133,19 +52,21 @@
                           </div>
                           <div class="column">
                               <label for="genero" class="label">Género:</label>
-                              <input
-                              class="input"
-                              type="text"
-                              placeholder="Hombre"
-                              id="genero"
-                              name="genero"
-                              required />
+                              <div class="select is-primary">
+                                <select name="genero" id="genero" required>
+                                  <option value="" disabled hidden selected>
+                                              Seleccione una opción
+                                  </option>
+                                  <option value="Hombre">Hombre</option>
+                                  <option value="Mujer">Mujer</option>
+                                  <option value="Otro">Otro</option>
+                                </select>
                           </div>
                       </div>
                       <div class="columns is-vcentered ml-5">
                           <div class="column">
                               <label for="estadoCivil" class="label">Estado Civil:</label>
-                              <div class="select is-danger">
+                              <div class="select is-link">
                               <select name="estadoCivil" id="estadoCivil" required>
                                   <option value="" disabled hidden selected>Seleccione una opción</option>
                                   <option value="soltero">Soltero/a</option>
@@ -157,19 +78,107 @@
                               </select>
                               </div>
                           </div>
-                          <div class="has-text-right">
-                              <button class="button" onclick="eliminarFamiliar(this)">
-                                  <img src="https://static.thenounproject.com/png/2456540-200.png" width="30" height="30" />
-                              </button>
-                          </div>
-                      </div>
-                      </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns has-text-centered">
+        <div class="column"></div>
+        <div class="column">
+          <button
+            class="button has-background-primary has-text-warning ml-6"
+            type="submit">
+            Continuar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  let contadorFamiliares = 0;
+  const MaxFamiliares = 15;
+  function agregarFamiliar() {
+    if (contadorFamiliares >= MaxFamiliares) {
+      alert(
+        "Has alcanzado el número máximo de familiares permitidos (" +
+          MAX_FAMILIARES +
+          ")."
+      );
+      return;
+    }
+    contadorFamiliares += 1;
+    console.log("Nuevo Familiar!");
+    const cont = document.getElementById("contenedorFamiliares");
+    const nuevoFamiliar = document.createElement("div");
+    nuevoFamiliar.classList.add("tarjeta", "mt-3");
+    nuevoFamiliar.innerHTML = `
+          <div class="box">
+        <div class="columns is-vcentered ml-5">
+                        <div class="column">
+                            <label for="nombre" class="label">Nombre:</label>
+                            <input
+                            class="input"
+                            type="text"
+                            placeholder="Jose "
+                            id="nombreFamiliar"
+                            name="nombreFamiliar"
+                            required />
+                        </div>
+                    </div>
+                    <div class="columns is-vcentered ml-5">
+                        <div class="column">
+                            <label for="edad" class="label">Edad:</label>
+                            <input
+                            class="input"
+                            type="number"
+                            placeholder="35"
+                            id="edad"
+                            name="edad"
+                            required />
+                        </div>
+                        <div class="column">
+                            <label for="genero" class="label">Género:</label>
+                            <div class="select is-primary">
+                              <select name="genero" id="genero" required>
+                                <option value="" disabled hidden selected>
+                                            Seleccione una opción
+                                </option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                                <option value="Otro">Otro</option>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="columns is-vcentered ml-5">
+                        <div class="column">
+                            <label for="estadoCivil" class="label">Estado Civil:</label>
+                            <div class="select is-link">
+                            <select name="estadoCivil" id="estadoCivil" required>
+                                <option value="" disabled hidden selected>Seleccione una opción</option>
+                                <option value="soltero">Soltero/a</option>
+                                <option value="casado">Casado/a</option>
+                                <option value="divorciado">Divorciado/a</option>
+                                <option value="separado">Separado/a</option>
+                                <option value="viudo">Viudo/a</option>
+                                <option value="unionLibre">Unión libre</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="has-text-right">
+                          <br>
+                          <br>                    
+                            <button class="button mr-3" onclick="eliminarFamiliar(this)">
+                                <img src="https://static.thenounproject.com/png/2456540-200.png" width="25px" height="25px" />
+                            </button>
+                        </div>
+                    </div>
+                    </div>
           `;
-      cont.appendChild(nuevoFamiliar);
-    }
-  
-    function eliminarFamiliar(boton) {
-      boton.closest(".tarjeta").remove();
-    }
-  </script>
-  
+    cont.appendChild(nuevoFamiliar);
+  }
+
+  function eliminarFamiliar(boton) {
+    boton.closest(".tarjeta").remove();
+  }
+</script>

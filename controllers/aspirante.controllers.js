@@ -14,10 +14,14 @@ const Aspirante = require("../model/aspirante.model");
 const PruebaAspirante = require("../model/pruebasAspirante.model");
 const Grupo = require("../model/grupo.model");
 const OTP = require("../model/otp.model");
+const PruebaColores = require("../model/vaultTech/prueba.model");
+const PruebaOtis = require("../model/vaultTech/prueba.model");
+const OpcionOtis = require("../model/vaultTech/opcionOtis.model.js");
 const { google } = require("googleapis");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const TienePruebas = require("../model/tienePruebas.model");
+const Usuario = require("../model/usuarios.model");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.SECRET,
@@ -65,13 +69,12 @@ exports.post_verificarOtp = (request, response, next) => {
  Necesita la información de aspirante, qué pruebas tiene asignadas, y el status de dichas pruebas */
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-    console.log("Aspirante", aspirante[0]);
-    console.log("idUsuario", request.session.idUsuario);
     Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
       PruebaAspirante.fetchOne(request.session.idUsuario).then(
         ([pruebasAspirante]) => {
           TienePruebas.getFechaLimite(request.session.idUsuario).then(
             ([fechaLimite]) => {
+              console.log(request.session.idUsuario);
               response.render("inicioAspirante", {
                 pruebas: rows,
                 isLoggedIn: request.session.isLoggedIn || false,
@@ -426,8 +429,6 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = async (request, response, next) => {
-  console.log("Sesion: ", request.session);
-
   if (request.session.idPrueba === 1) {
     const letras = [
       "G",
@@ -632,11 +633,10 @@ exports.get_pruebaCompletada = async (request, response, next) => {
 
 exports.formato_entrevista = (request, response, next) => {
   formatoEntrevista
-  .formato_activo(request.session.idUsuario)
-  .then(([row, fieldData]) => {
-    console.log(row[0]);
-      formatoEntrevista.fetch(row[0].idFormato)
-      .then((info) => {
+    .formato_activo(request.session.idUsuario)
+    .then(([row, fieldData]) => {
+      console.log(row[0]);
+      formatoEntrevista.fetch(row[0].idFormato).then((info) => {
         console.log(row[0].estatus);
         response.render("formatoEntrevista", {
           isLoggedIn: request.session.isLoggedIn || false,
@@ -645,14 +645,13 @@ exports.formato_entrevista = (request, response, next) => {
           privilegios: request.session.privilegios || [],
           idUsuario: request.session.idUsuario,
           formato: info[0][0] || "",
-          estatusFormato: row[0].estatus
+          estatusFormato: row[0].estatus,
         });
-      })
- });
+      });
+    });
 };
 
 exports.post_formato_entrevista = (request, response, next) => {
-  
   formatoEntrevista
     .getID(request.body.idUsuario)
     .then(([row, fieldData]) => {
@@ -675,7 +674,7 @@ exports.post_formato_entrevista = (request, response, next) => {
       newFormato
         .save()
         .then((uuid) => {
-          console.log(request.body.estatus)
+          console.log(request.body.estatus);
           request.session.estatus = request.body.estatus;
           request.session.idFormato = uuid;
           response.redirect("formatoEntrevistaPreguntasP");
@@ -690,23 +689,23 @@ exports.post_formato_entrevista = (request, response, next) => {
 };
 
 exports.formato_entrevista_preguntasP = async (request, response, next) => {
-      const promesas = [];
-      for (let i = 1; i<7; i++){
-        promesas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
-      }
-      try{
-        const respuestas = await Promise.all(promesas);
-        console.log(respuestas)
-        response.render("formatoEntrevistaPreguntasP", {
-          isLoggedIn: request.session.isLoggedIn || false,
-          usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
-          respuesta: respuestas,
-          formato: request.session.idFormato
-        });
-      } catch(error){
-        console.error("Error al guardar preguntas:", error);
-      }
+  const promesas = [];
+  for (let i = 1; i < 7; i++) {
+    promesas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
+  }
+  try {
+    const respuestas = await Promise.all(promesas);
+    console.log(respuestas);
+    response.render("formatoEntrevistaPreguntasP", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      respuesta: respuestas,
+      formato: request.session.idFormato,
+    });
+  } catch (error) {
+    console.error("Error al guardar preguntas:", error);
+  }
 };
 
 exports.post_formato_entrevista_preguntasP = async (
@@ -750,18 +749,16 @@ exports.get_logout = (request, response, next) => {
 };
 
 exports.formato_entrevista_DA = (request, response, next) => {
-  formatoEntrevista.fetchDA(request.session.idFormato)
-  .then((info)=>{
-    console.log(info)
+  formatoEntrevista.fetchDA(request.session.idFormato).then((info) => {
+    console.log(info);
     response.render("formatoEntrevistaDA", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       formato: request.session.idFormato,
-      respuesta: info[0][0] || null
+      respuesta: info[0][0] || null,
     });
-  })
-
+  });
 };
 
 exports.post_formato_entrevista_DA = (request, response, next) => {
@@ -791,22 +788,22 @@ exports.post_formato_entrevista_DA = (request, response, next) => {
 
 exports.formato_entrevista_preguntasDA = async (request, response, next) => {
   const promesas = [];
-      for (let i = 7; i<14; i++){
-        promesas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
-      }
-      try{
-        const respuestas = await Promise.all(promesas);
-        console.log(respuestas)
-        response.render("formatoEntrevistaPreguntasDA", {
-          isLoggedIn: request.session.isLoggedIn || false,
-          usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
-          respuesta: respuestas || null,
-          formato: request.session.idFormato
-        });
-      } catch(error){
-        console.error("Error al guardar preguntas:", error);
-      }
+  for (let i = 7; i < 14; i++) {
+    promesas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
+  }
+  try {
+    const respuestas = await Promise.all(promesas);
+    console.log(respuestas);
+    response.render("formatoEntrevistaPreguntasDA", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      respuesta: respuestas || null,
+      formato: request.session.idFormato,
+    });
+  } catch (error) {
+    console.error("Error al guardar preguntas:", error);
+  }
 };
 
 exports.post_formato_entrevista_preguntasDA = async (
@@ -841,18 +838,16 @@ exports.post_formato_entrevista_preguntasDA = async (
 };
 
 exports.formato_entrevista_DL = (request, response, next) => {
-  formatoEntrevista.fetchDL(request.session.idFormato)
-  .then((info)=>{
-    console.log(info)
+  formatoEntrevista.fetchDL(request.session.idFormato).then((info) => {
+    console.log(info);
     response.render("formatoEntrevistaDL", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       formato: request.session.idFormato,
-      respuesta: info[0][0] || null
+      respuesta: info[0][0] || null,
     });
-  })
-
+  });
 };
 exports.post_formato_entrevista_DL = (request, response, next) => {
   formatoEntrevista
@@ -876,23 +871,22 @@ exports.post_formato_entrevista_DL = (request, response, next) => {
     });
 };
 
-exports.formato_entrevista_preguntasDL = async(request, response, next) => {
-
+exports.formato_entrevista_preguntasDL = async (request, response, next) => {
   const promesas = [];
-  for (let i = 14; i<20; i++){
+  for (let i = 14; i < 20; i++) {
     promesas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
   }
-  try{
+  try {
     const respuestas = await Promise.all(promesas);
-    console.log(respuestas)
+    console.log(respuestas);
     response.render("formatoEntrevistaPreguntasDL", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       respuesta: respuestas || null,
-      formato: request.session.idFormato
+      formato: request.session.idFormato,
     });
-  } catch(error){
+  } catch (error) {
     console.error("Error al guardar preguntas:", error);
   }
 };
@@ -929,45 +923,39 @@ exports.post_formato_entrevista_preguntasDL = async (
 };
 
 exports.formato_entrevista_familia = (request, response, next) => {
-  console.log("Este es el id del Formato",request.session.idFormato)
-  familia.fetchFamilia(request.session.idFormato)
-  .then(resultados => {
-    const fila = resultados[0]?.[0]
-    if (fila){
-      const {idFamilia} = fila
-      console.log("Este es el id", idFamilia)
-        response.render("formatoEntrevistaFamilia", {
-          isLoggedIn: request.session.isLoggedIn || false,
-          usuario: request.session.usuario || "",
-          csrfToken: request.csrfToken(),
-          formato: request.session.idFormato,
-          familia: idFamilia
-        });
-    }
- 
-    else{
+  console.log("Este es el id del Formato", request.session.idFormato);
+  familia.fetchFamilia(request.session.idFormato).then((resultados) => {
+    const fila = resultados[0]?.[0];
+    if (fila) {
+      const { idFamilia } = fila;
+      console.log("Este es el id", idFamilia);
       response.render("formatoEntrevistaFamilia", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
         csrfToken: request.csrfToken(),
         formato: request.session.idFormato,
-        familia: ""
+        familia: idFamilia,
+      });
+    } else {
+      response.render("formatoEntrevistaFamilia", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        formato: request.session.idFormato,
+        familia: "",
       });
     }
-
-  })
-
+  });
 };
 
 exports.post_formato_entrevista_familia = (request, response, next) => {
   console.log(request.body);
-  if (request.body.idFamilia){
-    console.log("YA HAY FAMILIA")
+  if (request.body.idFamilia) {
+    console.log("YA HAY FAMILIA");
     request.session.idFamilia = request.body.idFamilia;
     request.session.idFormato = request.body.idFormato;
     response.redirect("formatoEntrevista/Familiar/AbueloM");
-  }
-  else{
+  } else {
     const newFamilia = new familia(request.body.idFormato);
     newFamilia
       .save()
@@ -980,7 +968,6 @@ exports.post_formato_entrevista_familia = (request, response, next) => {
         console.log(error);
       });
   }
-
 };
 
 exports.formato_entrevista_familiar_abueloM = (request, response, next) => {
@@ -1476,7 +1463,367 @@ exports.getEventoCalendario = (request, response, next) => {
   );
 };
 
-exports.post_registraSexo = (request, response, next) => {
-  sexo = request.body.sexo;
-  Aspirante.saveSexo(sexo);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.get_respuestas_enviadas = (request, response, next) => {
+  response.send("Respuestas enviadas");
+};
+
+//Obtener las areas, preguntas y opciones
+exports.obtenerPreguntas = async (req, res, next) => {
+  try {
+    const [areasDB] = await PruebaOtis.getAreaOtis();
+    const [preguntasDB] = await PruebaOtis.getPreguntasOtis();
+    const [opcionesDB] = await OpcionOtis.fetchAll();
+    const preguntas = preguntasDB.map((pregunta) => {
+      const opciones = opcionesDB
+        .filter((opcion) => opcion.idPreguntaOtis === pregunta.idPreguntaOtis)
+        .map((opcion) => ({
+          idOpcionOtis: opcion.idOpcionOtis,
+          opcionOtis: opcion.opcionOtis,
+          descripcionOpcion: opcion.descripcionOpcion,
+          esCorrecta: opcion.esCorrecta,
+        }));
+
+      const respuestaCorrecta = opcionesDB.find(
+        (opcion) =>
+          opcion.idPreguntaOtis === pregunta.idPreguntaOtis &&
+          opcion.esCorrecta === 1
+      )?.descripcionOpcion;
+
+      // Buscar el nombre del área por idAreaOtis
+      const area = areasDB.find((a) => a.idAreaOtis === pregunta.idAreaOtis);
+      return {
+        num: pregunta.numeroPregunta,
+        idPreguntaOtis: pregunta.idPreguntaOtis,
+        pregunta: pregunta.preguntaOtis,
+        respuesta: respuestaCorrecta,
+        nombreAreaOtis: area ? area.nombreAreaOtis : "Sin área",
+        opciones: opciones,
+      };
+    });
+
+    return res.json({ preguntas });
+  } catch (error) {
+    console.error("Error obteniendo preguntas:", error);
+  }
+};
+
+// Obtener toda la prueba
+exports.getPruebaOtis = (request, response, next) => {
+  const idPrueba = 5;
+  // Obtener el idGrupo y idPrueba por la sesión
+
+  Usuario.getGrupo(request.session.idUsuario)
+    .then(([grupo]) => {
+      if (grupo.length > 0) {
+        request.session.idGrupo = grupo[0];
+        request.session.idPrueba = idPrueba;
+      } else {
+        console.log("No se encontró grupo para este aspirante y prueba");
+      }
+
+      // Función para obtener las preguntas del model
+      return PruebaOtis.getPreguntasOtis();
+    })
+    .then(([grupo, fieldData]) => {
+      const preguntas = grupo;
+      response.render("pruebaOtis", {
+        preguntas: preguntas || [],
+        csrfToken: request.csrfToken(),
+        grupo: request.session.grupo,
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
+        error: null,
+      });
+    })
+    .catch((error) => {
+      console.error("Error al cargar la prueba OTIS:", error);
+      response.render("pruebaOtis", {
+        preguntas: [],
+        csrfToken: request.csrfToken(),
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
+        error: "Error al cargar la prueba OTIS",
+      });
+    });
+};
+
+exports.postPruebaOtis = (request, response, next) => {
+  response.redirect("finPrueba");
+};
+
+const db = require("../util/database");
+const { v4: uuidv4 } = require("uuid");
+
+exports.postGuardarRespuestas = async (request, response) => {
+  const idUsuario = request.session.idUsuario;
+  const idGrupo = request.session.grupo;
+  const idPrueba = request.session.idPrueba;
+  console.log("GRUPO", request.session.grupo);
+
+  // Si no se encuentra el idUsuario
+  if (!request.session.idUsuario) {
+    return response.redirect("/aspirante/datos-personales-otis");
+  }
+
+  const respuestas = request.body;
+
+  try {
+    // Armar el array de valores para insertar
+    const values = respuestas.map((r) => [
+      uuidv4(), // para generar el idRespuestaOtis
+      idUsuario,
+      idGrupo,
+      r.idPreguntaOtis,
+      r.idOpcionOtis,
+      idPrueba,
+      r.tiempoRespuesta,
+    ]);
+
+    // Insertar valores en la tabla respuestaOtisAspirante
+    await db.query(
+      `INSERT INTO respuestaotisaspirante
+          (idRespuestaOtis, idUsuario, idGrupo, idPreguntaOtis, idOpcionOtis, idPrueba, tiempoRespuesta)
+          VALUES ?`,
+      [values]
+    );
+
+    // Obtener datos personales desde sesión
+    const datosPersonales = request.session.datosPersonalesOtis || {
+      nombre: "Usuario",
+      apellidoPaterno: "",
+      apellidoMaterno: "",
+      puestoSolicitado: "No especificado",
+      fecha: new Date(),
+    };
+
+    // Verificar si ya existe el registro en aspirantesGruposPruebas
+    const [rows] = await PruebaOtis.verificarExistencia(
+      idUsuario,
+      idGrupo,
+      idPrueba
+    );
+
+    console.log("Registro encontrado, actualizando estado...");
+    const newPruebaAspirante = new PruebaAspirante(
+      idUsuario,
+      idGrupo,
+      idPrueba
+    );
+
+    newPruebaAspirante.terminarPrueba().then((uuid) => {
+      request.session.idGrupo = uuid;
+      request.session.idUsuario = uuid;
+    });
+  } catch (error) {
+    console.error("Error al guardar respuestas:", error);
+  }
+  return response.json({
+    success: true,
+    redirectUrl: "/aspirante/prueba-completada",
+  });
+};
+
+exports.getPruebaColores = (request, response, next) => {
+  const idPrueba = 6;
+
+  // Obtener el idGrupo aspirante y prueba
+  Usuario.getGrupo(request.session.idUsuario)
+    .then(([grupo]) => {
+      if (grupo.length > 0) {
+        request.session.idGrupo = grupo[0];
+        request.session.idPrueba = idPrueba;
+      } else {
+        console.log("No se encontró grupo para este aspirante y prueba");
+      }
+
+      // Continuar con colores
+      return PruebaColores.fetchColores();
+    })
+    .then(([grupo, fieldData]) => {
+      const colores = grupo;
+      response.render("pruebaColores", {
+        colores: colores || [],
+        fase: 1,
+        error: null,
+        csrfToken: request.csrfToken(),
+        usuario: request.session.usuario || "",
+        isLoggedIn: request.session.isLoggedIn || false,
+        grupo: request.session.grupo,
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      response.render("pruebaColores", {
+        colores: [],
+        fase: 1,
+        error: "Error al cargar los colores",
+        csrfToken: request.csrfToken(),
+        grupo: request.session.grupo,
+        usuario: request.session.usuario || "",
+        isLoggedIn: request.session.isLoggedIn || false,
+        privilegios: request.session.privilegios || [],
+        idUsuario: request.session.idUsuario || "",
+      });
+    });
+};
+
+exports.postPruebaColores = (request, response, next) => {
+  response.redirect("/aspirante/prueba-completada");
+};
+
+exports.postGuardarSeleccionesColores = (request, response) => {
+  console.log("1. Iniciando controlador postGuardarSeleccionesColores");
+
+  if (!request.session.idUsuario) {
+    console.log("2. Error: No se encontró idUsuario en la sesión");
+    return response.redirect("/aspirante/datos-personales-colores");
+  }
+
+  console.log("Datos recibidos:", request.body);
+
+  // Recolectar las selecciones de colores desde los campos del formulario
+  const selecciones = [];
+  const regex = /selecciones\[(\d+)\]\[(\w+)\]/;
+
+  const datos = {};
+  for (const key in request.body) {
+    if (key.startsWith("selecciones")) {
+      const matches = key.match(regex);
+      if (matches) {
+        const index = matches[1];
+        const prop = matches[2];
+        const value = request.body[key];
+
+        if (!datos[index]) {
+          datos[index] = {};
+        }
+        datos[index][prop] = value;
+      }
+    }
+  }
+
+  // Convertir el objeto en un array
+  for (const index in datos) {
+    selecciones.push({
+      idColor: parseInt(datos[index].idColor),
+      fase: parseInt(datos[index].fase),
+      posicion: parseInt(datos[index].posicion),
+    });
+  }
+
+  console.log("3. Selecciones procesadas:", selecciones);
+
+  if (selecciones.length === 0) {
+    console.log("4. Error: No hay selecciones para procesar");
+    return response.redirect("/aspirante/prueba-colores");
+  }
+
+  const idPrueba = 6;
+
+  Usuario.getGrupo(request.session.idUsuario)
+    .then(([grupo]) => {
+      if (grupo.length > 0) {
+        request.session.idGrupo = grupo[0].idGrupo; // Assuming you want to set the idGrupo from the grupo object
+      } else {
+        throw new Error("No se encontró grupo para este aspirante y prueba");
+      }
+
+      const idGrupo = request.session.idGrupo;
+      console.log("5. ID de Grupo obtenido:", idGrupo);
+
+      // Separar las selecciones de fase 1 y 2
+      const seleccionesFase1 = selecciones.filter((s) => s.fase === 1);
+      const seleccionesFase2 = selecciones.filter((s) => s.fase === 2);
+
+      console.log("6. Selecciones fase 1:", seleccionesFase1.length);
+      console.log("7. Selecciones fase 2:", seleccionesFase2.length);
+
+      return Aspirante.fetchOne(request.session.idUsuario)
+        .then(() => {
+          console.log("8. Datos personales guardados correctamente");
+          // const pruebaColores1 = new PruebaColores(seleccionesFase1);
+          return PruebaColores.saveSeleccion(
+            request.session.idUsuario,
+            idGrupo,
+            idPrueba,
+            1,
+            seleccionesFase1
+          );
+        })
+        .then(() => {
+          console.log("9. Primera selección guardada");
+          return PruebaColores.saveSeleccion(
+            request.session.idUsuario,
+            idGrupo,
+            idPrueba,
+            2,
+            seleccionesFase2
+          );
+        })
+        .then(() => {
+          console.log("10. Segunda selección guardada");
+          return PruebaColores.verificarExistencia(
+            request.session.idUsuario,
+            idGrupo,
+            idPrueba
+          );
+        })
+        .then(([rows]) => {
+          if (rows.length === 0) {
+            console.log("11. No existe registro, insertando...");
+            return db.execute(
+              `INSERT INTO pruebasaspirante (idUsuario, idGrupo, idPrueba, idEstatus)
+                  VALUES (?, ?, ?, 'En proceso')`,
+              [request.session.idAspirante, idGrupo, idPrueba]
+            );
+          } else {
+            console.log("12. Registro encontrado, actualizando estado...");
+            const newPruebaAspirante = new PruebaAspirante(
+              request.session.idUsuario,
+              idGrupo,
+              idPrueba
+            );
+            return newPruebaAspirante.terminarPrueba().then((uuid) => {
+              request.session.idGrupo = uuid;
+            });
+          }
+        });
+    })
+    .then(() => {
+      console.log("13. Proceso completado con éxito");
+      delete request.session.datosPersonalesColores;
+      delete request.session.primeraSeleccion;
+      response.redirect("/aspirante/pruebaCompletada");
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+      console.log(error);
+      return response.send(`
+              <h3>Error al procesar la prueba</h3>
+              <p>${error.message}</p>
+              <a href="/aspirante/prueba-colores" class="btn btn-primary">Volver a intentar</a>
+          `);
+    });
+};
+
+exports.getPruebaCompletada = (request, response, next) => {
+  response.render("finPrueba", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    privilegios: request.session.privilegios || [],
+    idUsuario: request.session.idUsuario,
+  });
+};
+
+exports.getRespuestasEnviadas = (request, response, next) => {
+  response.render("Aspirantes/respuestasEnviadas");
 };

@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const {google} = require('googleapis');
+const { google } = require("googleapis");
 
 const app = express();
 

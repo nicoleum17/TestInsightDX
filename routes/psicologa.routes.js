@@ -232,3 +232,31 @@ router.post(
 router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);
 
 module.exports = router;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Cuadernillo de respuestas de la prueba OTIS por aspirante
+router.get(
+  "/cuadernillo-otis/:idGrupo/:idUsuario/:idInstitucion",
+  isAuth,
+  psicologaController.getCuadernilloOtis
+);
+
+// Vista con el análisis de la prueba otis del aspirante
+router.get(
+  "/analisis-otis/:idGrupo/:idUsuario/:idInstitucion",
+  isAuth,
+  psicologaController.getAnalisisOtis
+);
+
+// Vista con el análisis de la prueba Colores del aspirante
+router.get(
+  "/analisis-colores/:idGrupo/:idUsuario/:idInstitucion",
+  isAuth,
+  psicologaController.getAnalisisColores
+);
+// CUADERNILLO COLORES
+router.get(
+  "/cuadernillo-colores/:idGrupo/:idUsuario/:idInstitucion",
+  isAuth,
+  psicologaController.getCuadernilloColores
+);

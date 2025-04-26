@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuadernillo de respuesas OTIS</title>
+
+    <!-- Link css -->
+    <link rel="stylesheet" href="/css/psicologos/cuadernilloRespuestasOtis.css">
+
+</head>
+<body>
+
+    <div class="main">
+
+        <!-- Navside -->
+        <%- include('includes/_navbarP.ejs') %>
+
+        <div class="container">
+
+            <!-- Boton de cerrar sesión -->
+            <%- include('../includes/_buttonCerrarSesion.ejs') %>
+
+            <h1 class="text-center"> Test OTIS </h1>
+
+            <h5 class="titulo-seccion">Datos Personales</h5>
+            <hr>
+
+            <% for(dato of datosPersonales) { %>
+                <div class="datos-personales">
+                    <div class="aspirante-nombre">
+                        <h5 class="dato-titulo">Nombre</h5>
+                        <p class="dato"><%= dato.nombre %></p>       
+                    </div>
+                    <div class="aspirante-apellidoP">
+                        <h5 class="dato-titulo">Apellido Paterno</h5>
+                        <p class="dato"><%= dato.apellidoPaterno %></p>
+                    </div>
+                    <div class="aspirante-apellidoM">
+                        <h5 class="dato-titulo">Apellido Materno</h5>
+                        <p class="dato"><%= dato.apellidoMaterno %></p>
+                    </div>
+                </div>
+                <div class="datos-secundarios">
+                    <div class="aspirante-puestoS">
+                        <h5 class="dato-titulo">Puesto solicitado</h5>
+                        <p class="dato"><%= dato.puestoSolicitado %></p>
+                    </div>
+                    <div class="aspirante-fecha">
+                        <h5 class="dato-titulo">Fecha</h5>
+                        <% 
+                        const fecha = new Date(dato.fecha);
+                        const fechaFormato = `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`;
+                        %>
+                        <p class="dato"><%= fechaFormato %></p>
+                    </div>
+                </div>
+            <% } %>
+            
+            <br><br>
+            <h4 class="titulo-seccion">Resultados</h4>
+            <hr>
+
+            <div class="d-flex">
+                <h5 class="resultado-titulo">Puntaje bruto:</h5>
+                <p class="resultado"><%= respuestasCorrectas %></p>
+            </div>
+
+            <div class="d-flex">
+                <% 
+                const tiempoMin = Math.trunc(tiempoTotal/60)
+                const tiempoSeg = (tiempoTotal%60).toFixed(0)
+                %>
+                <h5 class="resultado-titulo">Tiempo total en que se realizo la prueba:</h5>
+                <p class="resultado">
+                    <%= tiempoMin %> min
+                    <%= tiempoSeg %> seg
+                </p>
+            </div>
+
+            <br>
+            <h4 class="titulo-seccion">Respuestas del aspirante</h4>
+            <hr><br>
+            <div class="mb-3">
+
+            <% for(respuesta of respuestasAspitanteOtis) { %>
+                <div class="pregunta">
+                    
+                    <div class="respuesta-titulo">
+                        <div class="respuesta-decs 
+                        <% if (respuesta.esCorrecta === true) { %>
+                            correcta
+                        <% } else { %>
+                            incorrecta
+                        <% } %> ">
+                            <h5><%= respuesta.numeroPregunta %> .- 
+                                <%= respuesta. preguntaOtis %> - 
+                                <% if (respuesta.esCorrecta === null) { %>
+                                    NO CONTESTADA
+                                <% } else if (respuesta.esCorrecta) { %>
+                                    CORRECTA
+                                <% } else { %>
+                                    INCORRECTA
+                                <% } %> 
+                            </h5>
+                        </div>
+
+                        <div class="respuesta-tiempo">
+                            <%  
+                            const min = Math.trunc(respuesta.tiempoRespuesta/60)
+                            const seg = (respuesta.tiempoRespuesta%60).toFixed(0)
+                            %>
+                            <p>Tiempo en responder:  
+                                <%= min %> min
+                                <%= seg %> seg
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <% for(opcion of respuesta.opciones) { %>
+                    <div class="opcion">
+                        <p><%= opcion.opcionOtis %>)</p>
+                        <div class="opcion-check" >
+                            <% if(opcion.seleccionada) { %>
+                                <img class="correcta" src="/images/check.svg" alt="respuesta correcta">
+                            <% } else { %>
+                                <img class="incorrecta" src="/images/uncheck.svg" alt="respuesta incorrecta">
+                            <% } %>
+                        </div>
+                        <p><%= opcion.descripcionOpcion %></p>
+                    </div>
+                <% } %>
+            <% } %><br><br><br>
+
+            <div class="fixed-bottom-buttons">
+                <div class="container">
+                    <div class="row gx-3 mt-4 mb-3">
+                        <div class="col-md-6">
+                            <a href="/psicologo/aspirantes/<%= aspirante %>/<%= grupo %>/<%= idInstitucion %>" 
+                            class="btn btn-color--third">Regresar</a>
+                        </div>
+    
+                        <div class="col-md-6 text-end">
+                            <a href="/psicologo/analisis-otis/<%= grupo %>/<%= aspirante %>/<%= idInstitucion %>" 
+                            class="btn btn-color--secondary">Ver Análisis</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <%- include('includes/_navbarP.ejs') %>
+
+</body>
+</html>

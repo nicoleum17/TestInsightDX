@@ -1,0 +1,168 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+:root {
+  --secondary: #294969;
+  --third: #c1c1c1;
+  --font-primary: #000;
+  --font-secondary: #fff;
+  --secondary-hover: #193858;
+  --third-hover: #b1b1b1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Lato", sans-serif;
+  box-sizing: border-box;
+}
+
+.main {
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.35s ease-in-out;
+  display: flex;
+  flex-direction: row;
+}
+
+.text-center {
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.nombre-aspirante {
+  font-size: 20px !important;
+}
+
+.card-title {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.card-header {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none;
+  padding: 0;
+}
+
+.card-estatus {
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  border-radius: 10px;
+  padding: 5px 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-text {
+  margin: 16px 0;
+}
+
+.card-estatus {
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  border-radius: 10px;
+  padding: 4px 28px;
+}
+
+.btn {
+  padding: 0;
+}
+
+.btn-color--secondary {
+  padding: 4px 28px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  background: var(--secondary);
+  color: var(--font-secondary);
+}
+
+.btn-color--third {
+  padding: 4px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  background: var(--third);
+  color: var(--font-primary);
+}
+
+.btn-color--third:hover {
+  background: var(--third-hover);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary:hover {
+  background: var(--secondary-hover);
+  color: var(--font-secondary);
+}
+
+.row.align-items-start .card {
+  height: auto;
+  min-height: 150px;
+}
+
+.table {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+.table-sm {
+  font-size: 0.9rem;
+}
+
+#graficaAreas {
+  width: 50px !important;
+  max-width: 800px;
+  height: 300px !important;
+  display: block;
+  margin: auto;
+}
+
+h1,
+h4 {
+  margin-bottom: 15px;
+}
+
+.card {
+  padding: 15px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  text-align: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+}
+
+.col-md-4 {
+  flex: 1;
+  max-width: 30%;
+  min-width: 250px;
+}

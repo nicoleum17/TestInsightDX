@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuadernillo de respuestas Colores de Lüscher</title>
+
+    <!-- Link css -->
+    <link rel="stylesheet" href="/css/psicologos/cuadernilloColores.css" />
+  </head>
+  <body>
+    <div class="main">
+      <!-- Navside -->
+      <%- include('includes/_navbarP.ejs') %>
+
+      <div class="container">
+        <!-- Boton de cerrar sesión -->
+        <%- include('../includes/_buttonCerrarSesion.ejs') %>
+
+        <h1 class="text-center mb-4">Prueba De Colores De Lüscher</h1>
+
+        <h5 class="titulo-seccion">Datos Personales</h5>
+        <hr />
+
+        <% if(datosPersonales && datosPersonales.length > 0) { %> <% for(dato of
+        datosPersonales) { %>
+        <div class="datos-personales">
+          <div class="aspirante-nombre">
+            <h5 class="dato-titulo">Nombre</h5>
+            <p class="dato"><%= dato.nombre %></p>
+          </div>
+          <div class="aspirante-apellidoP">
+            <h5 class="dato-titulo">Apellido Paterno</h5>
+            <p class="dato"><%= dato.apellidoPaterno %></p>
+          </div>
+          <div class="aspirante-apellidoM">
+            <h5 class="dato-titulo">Apellido Materno</h5>
+            <p class="dato"><%= dato.apellidoMaterno %></p>
+          </div>
+        </div>
+        <div class="datos-secundarios">
+          <div class="aspirante-puestoS">
+            <h5 class="dato-titulo">Puesto solicitado</h5>
+            <p class="dato"><%= dato.puestoSolicitado %></p>
+          </div>
+          <div class="aspirante-fecha">
+            <h5 class="dato-titulo">Fecha</h5>
+            <% const fecha = new Date(dato.fecha); const fechaFormato =
+            `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`;
+            %>
+            <p class="dato"><%= fechaFormato %></p>
+          </div>
+        </div>
+        <% } %> <% } else { %>
+        <p class="alert alert-warning">
+          No se encontraron datos personales del aspirante
+        </p>
+        <% } %>
+
+        <div class="prueba-colores-container">
+          <h5 class="titulo-seccion">Selecciones Aspirante</h5>
+          <hr />
+
+          <h2 class="fase-titulo">Fase 1</h2>
+          <div class="colores-row">
+            <% for(let i = 0; i < 8; i++) { %>
+            <div class="color-item-container">
+              <% const colorEnPosicion = seleccionesFase1.find(s => s.posicion
+              === i); %>
+              <div
+                class="color-box"
+                data-color="<%= colorEnPosicion ? colorEnPosicion.hexColor : '#f8f9fa' %>"></div>
+              <div class="color-number">
+                <%= colorEnPosicion ? colorEnPosicion.numeroColor : '-' %>
+              </div>
+            </div>
+            <% } %>
+          </div>
+
+          <h2 class="fase-titulo">Fase 2</h2>
+          <div class="colores-row">
+            <% for(let i = 0; i < 8; i++) { %>
+            <div class="color-item-container">
+              <% const colorEnPosicion = seleccionesFase2.find(s => s.posicion
+              === i); %>
+              <div
+                class="color-box"
+                data-color="<%= colorEnPosicion ? colorEnPosicion.hexColor : '#f8f9fa' %>"></div>
+              <div class="color-number">
+                <%= colorEnPosicion ? colorEnPosicion.numeroColor : '-' %>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Botones finales -->
+        <div class="d-flex justify-content-between mt-5">
+          <a
+            href="/psicologo/aspirantes/<%= aspirante %>/<%= grupo %>/<%= idInstitucion %>"
+            class="btn btn-regresar"
+            >Regresar</a
+          >
+
+          <a
+            href="/psicologo/analisis-colores/<%= grupo %>/<%= aspirante %>/<%= idInstitucion %>"
+            class="btn btn-ver-analisis"
+            >Ver Análisis</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Script para poner colores desde data-color -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Elegir todos los cuadros de color que tienen data-color
+        const colorBoxes = document.querySelectorAll(".color-box[data-color]");
+
+        // Pone el color de fondo
+        colorBoxes.forEach((box) => {
+          box.style.backgroundColor = box.getAttribute("data-color");
+        });
+      });
+    </script>
+    <%- include('includes/_footer.ejs') %>
+  </body>
+</html>

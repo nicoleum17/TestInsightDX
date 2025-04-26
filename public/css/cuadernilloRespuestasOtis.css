@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+:root {
+  --secondary: #294969;
+  --third: #c1c1c1;
+  --font-primary: #000;
+  --font-secondary: #fff;
+  --secondary-hover: #193858;
+  --third-hover: #b1b1b1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Lato", sans-serif;
+  box-sizing: border-box;
+}
+
+.main {
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.35s ease-in-out;
+  display: flex;
+  flex-direction: row;
+}
+
+.text-center {
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.titulo-seccion {
+  color: var(--secondary);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.datos-personales {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dato-titulo {
+  color: var(--secondary);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.dato {
+  color: #000;
+  font-size: 20px;
+}
+
+.datos-secundarios {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.resultado-titulo {
+  font-size: 24px;
+  font-weight: 500;
+  margin-right: 14px;
+}
+
+.resultado {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.correcta {
+  color: #000;
+}
+
+.incorrecta {
+  color: #c30101;
+}
+
+.no-contestada {
+  color: #000;
+}
+
+.respuesta-titulo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.respuesta-decs {
+  font-size: 20px;
+  font-weight: 400;
+  max-width: 70%;
+}
+
+.respuesta-tiempo {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.opcion {
+  display: flex;
+  gap: 20px;
+}
+
+.opcion p {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.fixed-bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.btn-color--secondary {
+  background: var(--secondary);
+  color: var(--font-secondary);
+}
+.btn-color--third {
+  background: var(--third);
+  color: var(--font-primary);
+}
+
+.btn-color--third:hover {
+  background: var(--third-hover);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary:hover {
+  background: var(--secondary-hover);
+  color: var(--font-secondary);
+}

@@ -11,7 +11,7 @@
         <p class="title is-2 has-text-weight-semibold">Datos personales</p>
       </div>
     </div>
-    <% if (aspirante) {%> <% if (prueba) { %>
+    <% if (aspirante) {%>
     <div class="columns">
       <div class="column">
         <p>
@@ -20,11 +20,95 @@
         </p>
       </div>
     </div>
-    <div class="test1 columns is-centered ml-5" style="max-width: 700px">
+    <%}%> <% if (prueba.idPrueba === 1 || prueba.idPrueba === 2) {%>
       <form
-        action="/aspirante/preguntasPrueba/<%= prueba.idPrueba%>"
+         action="/aspirante/preguntasPrueba/<%= prueba.idPrueba%>"
+         id="personalInformation"
+         method="POST">
+         <div class="column">
+           <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+           <input
+             class="input"
+             type="text"
+             value="<%=aspirante.apellidoPaterno%>"
+             disabled />
+         </div>
+         <div class="column">
+           <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+           <input
+             class="input"
+             type="text"
+             value="<%=aspirante.apellidoMaterno%>"
+             disabled />
+         </div>
+ 
+         <div class="column">
+           <label for="name" class="label">Nombre(s)</label>
+           <input
+             class="input"
+             type="text"
+             value="<%=aspirante.nombres%>"
+             disabled />
+           <br />
+         </div>
+ 
+         
+           <div class="column">
+             <label for="puestoSolicitado" class="label"
+               >Posgrado solicitado:</label
+             >
+             <input
+               class="input"
+               type="text"
+               id="puestoSolicitado"
+               name="puestoSolicitado"
+               value="<%= grupoCompleto.posgrado%>"
+               disabled />
+           </div>
+         </div>
+         <div class="columns mt-5 is-centered">
+           <nav class="level-left">
+             <div class="level-left">
+               <article class="message">
+                 <div class="message-header has-background-info">
+                   <p class="has-text-link">¡Importante!</p>
+                 </div>
+                 <div class="message-body">
+                   Una vez que des click en <strong>Comenzar</strong>, comenzará
+                   a correr tu tiempo.
+                 </div>
+               </article>
+             </div>
+           </nav>
+         </div>
+
+         <div class="columns is-centered  mt-6">
+           <br /><br />
+ 
+           <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+           <input
+             type="hidden"
+             id="idUsuario"
+             name="idUsuario"
+             value="<%= idUsuario%>" />
+           <input
+             type="hidden"
+             id="idPrueba"
+             name="idPrueba"
+             value="<%= prueba.idPrueba%>" />
+           <button
+             class="button is-primary has-text-warning"
+             style="height: 40px"
+             type="submit">
+             Comenzar
+           </button>
+         </div>
+       </form>
+       <%} else if (prueba.idPrueba === 3) {%>
+        <form
+        action=""
         id="personalInformation"
-        method="POST">
+        method="GET">
         <div class="column">
           <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
           <input
@@ -52,7 +136,7 @@
           <br />
         </div>
 
-        <div class="edad columns is-vcentered">
+        
           <div class="column">
             <label for="puestoSolicitado" class="label"
               >Posgrado solicitado:</label
@@ -82,8 +166,8 @@
             </div>
           </nav>
         </div>
-        <%}%>
-        <div class="columns is-centered ml-5 mt-6">
+
+        <div class="columns is-centered  mt-6">
           <br /><br />
 
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
@@ -98,14 +182,267 @@
             name="idPrueba"
             value="<%= prueba.idPrueba%>" />
           <button
-            class="button is-primary has-text-warning ml-6"
+            class="button is-primary has-text-warning"
             style="height: 40px"
             type="submit">
             Comenzar
           </button>
         </div>
-        <%}%>
       </form>
+      <%} else if (prueba.idPrueba === 4) {%>
+        <form
+        action=""
+        id="personalInformation"
+        method="GET">
+        <div class="column">
+          <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.apellidoPaterno%>"
+            disabled />
+        </div>
+        <div class="column">
+          <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.apellidoMaterno%>"
+            disabled />
+        </div>
+
+        <div class="column">
+          <label for="name" class="label">Nombre(s)</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.nombres%>"
+            disabled />
+          <br />
+        </div>
+
+        
+          <div class="column">
+            <label for="puestoSolicitado" class="label"
+              >Posgrado solicitado:</label
+            >
+            <input
+              class="input"
+              type="text"
+              id="puestoSolicitado"
+              name="puestoSolicitado"
+              value="<%= grupoCompleto.posgrado%>"
+              disabled />
+          </div>
+        </div>
+        <div class="columns mt-5 is-centered">
+          <nav class="level-left">
+            <div class="level-left">
+              <article class="message">
+                <div class="message-header has-background-info">
+                  <p class="has-text-link">¡Importante!</p>
+                </div>
+                <div class="message-body">
+                  Una vez que des click en <strong>Comenzar</strong>, comenzará
+                  a correr tu tiempo.
+                </div>
+              </article>
+            </div>
+          </nav>
+        </div>
+
+        <div class="columns is-centered  mt-6">
+          <br /><br />
+
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input
+            type="hidden"
+            id="idUsuario"
+            name="idUsuario"
+            value="<%= idUsuario%>" />
+          <input
+            type="hidden"
+            id="idPrueba"
+            name="idPrueba"
+            value="<%= prueba.idPrueba%>" />
+          <button
+            class="button is-primary has-text-warning"
+            style="height: 40px"
+            type="submit">
+            Comenzar
+          </button>
+        </div>
+      </form>
+      <%} else if (prueba.idPrueba === 5) {%>
+        <form
+        action="/aspirante/prueba-otis"
+        id="personalInformation"
+        method="GET">
+        <div class="column">
+          <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.apellidoPaterno%>"
+            disabled />
+        </div>
+        <div class="column">
+          <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.apellidoMaterno%>"
+            disabled />
+        </div>
+
+        <div class="column">
+          <label for="name" class="label">Nombre(s)</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.nombres%>"
+            disabled />
+          <br />
+        </div>
+
+        
+          <div class="column">
+            <label for="puestoSolicitado" class="label"
+              >Posgrado solicitado:</label
+            >
+            <input
+              class="input"
+              type="text"
+              id="puestoSolicitado"
+              name="puestoSolicitado"
+              value="<%= grupoCompleto.posgrado%>"
+              disabled />
+          </div>
+        </div>
+        <div class="columns mt-5 is-centered">
+          <nav class="level-left">
+            <div class="level-left">
+              <article class="message">
+                <div class="message-header has-background-info">
+                  <p class="has-text-link">¡Importante!</p>
+                </div>
+                <div class="message-body">
+                  Una vez que des click en <strong>Comenzar</strong>, comenzará
+                  a correr tu tiempo.
+                </div>
+              </article>
+            </div>
+          </nav>
+        </div>
+
+        <div class="columns is-centered  mt-6">
+          <br /><br />
+
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input
+            type="hidden"
+            id="idUsuario"
+            name="idUsuario"
+            value="<%= idUsuario%>" />
+          <input
+            type="hidden"
+            id="idPrueba"
+            name="idPrueba"
+            value="<%= prueba.idPrueba%>" />
+          <button
+            class="button is-primary has-text-warning"
+            style="height: 40px"
+            type="submit">
+            Comenzar
+          </button>
+        </div>
+      </form>
+      <%} else if (prueba.idPrueba === 6) {%>
+        <form
+        action="/aspirante/prueba-colores"
+        id="personalInformation"
+        method="GET">
+        <div class="column">
+          <label for="apellidoPaterno" class="label">Apellido Paterno:</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.apellidoPaterno%>"
+            disabled />
+        </div>
+        <div class="column">
+          <label for="apellidoMaterno" class="label">Apellido Materno:</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.apellidoMaterno%>"
+            disabled />
+        </div>
+
+        <div class="column">
+          <label for="name" class="label">Nombre(s)</label>
+          <input
+            class="input"
+            type="text"
+            value="<%=aspirante.nombres%>"
+            disabled />
+          <br />
+        </div>
+
+        
+          <div class="column">
+            <label for="puestoSolicitado" class="label"
+              >Posgrado solicitado:</label
+            >
+            <input
+              class="input"
+              type="text"
+              id="puestoSolicitado"
+              name="puestoSolicitado"
+              value="<%= grupoCompleto.posgrado%>"
+              disabled />
+          </div>
+        </div>
+        <div class="columns mt-5 is-centered">
+          <nav class="level-left">
+            <div class="level-left">
+              <article class="message">
+                <div class="message-header has-background-info">
+                  <p class="has-text-link">¡Importante!</p>
+                </div>
+                <div class="message-body">
+                  Una vez que des click en <strong>Comenzar</strong>, comenzará
+                  a correr tu tiempo.
+                </div>
+              </article>
+            </div>
+          </nav>
+        </div>
+
+        <div class="columns is-centered  mt-6">
+          <br /><br />
+
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input
+            type="hidden"
+            id="idUsuario"
+            name="idUsuario"
+            value="<%= idUsuario%>" />
+          <input
+            type="hidden"
+            id="idPrueba"
+            name="idPrueba"
+            value="<%= prueba.idPrueba%>" />
+          <button
+            class="button is-primary has-text-warning"
+            style="height: 40px"
+            type="submit">
+            Comenzar
+          </button>
+        </div>
+      </form>
+          <% }%>
+      </div>
     </div>
   </div>
 

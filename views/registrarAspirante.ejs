@@ -10,75 +10,136 @@
     <div class="container is-max-desktop mt-5">
       <div class="title is-2 has-text-weight-semibold">Registra Aspirante</div>
 
-      <form 
-      action="registrarAspirante" 
-      method="POST"
-      enctype="multipart/form-data">
-        <input type="hidden" name="_csrf" value=<%= csrfToken%> />
+      <form
+        action="registrarAspirante"
+        method="POST"
+        enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <div class="subtitle">Grupo:</div>
         <div class="select is-fullwidth">
-            <select name="grupo" required>
-                <option value="" selected disabled>Selecciona un grupo</option>
-                <% grupos.forEach(grupo => {%>
-                <option value="<%= grupo.idGrupo %>">
-                  <%= grupo.posgrado%> - <%= grupo.generacion%>
-                </option>
-                <%})%>
-            </select>
+          <select name="grupo" required>
+            <option value="" selected disabled>Selecciona un grupo</option>
+            <% grupos.forEach(grupo => {%>
+            <option value="<%= grupo.idGrupo %>">
+              <%= grupo.posgrado%> - <%= grupo.generacion%>
+            </option>
+            <%})%>
+          </select>
         </div>
-        <br>
-        <br>
+        <br />
+        <br />
         <div class="box has-background-info has-text-white">
-            <label class="label">Nombre(s):</label>
-            <input type="text" class="input" name="nombre" placeholder="ingresa los nombres" required>
-            <br><br>
-            <label class="label">Apellido Paterno:</label>
-            <input type="text" class="input" name="apellidoP" placeholder="ingresa el apellido paterno" required>
-            <br><br>
-            <label class="label">Apellido Materno:</label>
-            <input type="text" class="input" name="apellidoM" placeholder="ingresa el apellido materno" required>
-            <br><br>
-            <label class="label">Código de Identidad:</label>
-            <input type="text" class="input" name="codigoI" placeholder="ingresa el codigo de Identidad" required>
-            <br><br>
-            <label class="label">Correo Electrónico:</label>
-            <input type="text" class="input" name="correo" placeholder="ingresa el correo electrónico" required>
-            <br><br>
-            <label class="label">Número de Teléfono:</label>
-            <input type="text" class="input" name="numeroTel" placeholder="ingresa el número telefónico" required>
-            <br><br>
-            <div class="columns">
-              <div class="column">
-                <label class="label">País:</label>
-                <input type="text" class="input" name="pais" placeholder="ingresa el país de origen" required>
-              </div>
-              <div class="column">
-                <label class="label">Estado:</label>
-                <input type="text" class="input" name="estado" placeholder="ingresa el estado de origen" required>
-              </div>
+          <label class="label">Nombre(s):</label>
+          <input
+            type="text"
+            class="input"
+            name="nombre"
+            placeholder="ingresa los nombres"
+            required />
+          <br /><br />
+          <label class="label">Apellido Paterno:</label>
+          <input
+            type="text"
+            class="input"
+            name="apellidoP"
+            placeholder="ingresa el apellido paterno"
+            required />
+          <br /><br />
+          <label class="label">Apellido Materno:</label>
+          <input
+            type="text"
+            class="input"
+            name="apellidoM"
+            placeholder="ingresa el apellido materno"
+            required />
+          <br /><br />
+          <label class="label">Código de Identidad:</label>
+          <input
+            type="text"
+            class="input"
+            name="codigoI"
+            placeholder="ingresa el codigo de Identidad"
+            required />
+          <br /><br />
+          <label class="label">Correo Electrónico:</label>
+          <input
+            type="text"
+            class="input"
+            name="correo"
+            placeholder="ingresa el correo electrónico"
+            required />
+          <br /><br />
+          <label class="label">Número de Teléfono:</label>
+          <input
+            type="text"
+            class="input"
+            name="numeroTel"
+            placeholder="ingresa el número telefónico"
+            required />
+          <br /><br />
+          <div class="columns">
+            <div class="column">
+              <label class="label">País:</label>
+              <input
+                type="text"
+                class="input"
+                name="pais"
+                placeholder="ingresa el país de origen"
+                required />
             </div>
-            <label class="label">Universidad de Procedencia:</label>
-            <input type="text" class="input" name="universidad" placeholder="ingresa la universidad de procedencia" required>
-            <br><br>
+            <div class="column">
+              <label class="label">Estado:</label>
+              <input
+                type="text"
+                class="input"
+                name="estado"
+                placeholder="ingresa el estado de origen"
+                required />
+            </div>
+          </div>
+          <label class="label">Universidad de Procedencia:</label>
+          <input
+            type="text"
+            class="input"
+            name="universidad"
+            placeholder="ingresa la universidad de procedencia"
+            required />
+          <br /><br />
         </div>
-        <br><br>
+        <br /><br />
         <section id="SesionIndividual">
-            <div class="title">Sesión Individual</div>
-            <div class="box has-background-info" >
-                <label class="label">Fecha</label>
-                <input class="input" type="date" name="fechaSesionIndividual" required/>
-                <br><br>
-                <label class="label">Hora</label>
-                <input class="input" type="time" name="horaSesionIndividual" required/>
-                <br><br>
-                <label class="label">Link</label>
-                <input class="input" type="text" name="enlaceZoom" placeholder="Ingresa un link" required/>
-            </div>
-        </section> 
+          <div class="title has-text-weight-semibold">Sesión Individual</div>
+          <div class="box has-background-info">
+            <label class="label">Fecha</label>
+            <input
+              class="input"
+              type="date"
+              name="fechaSesionIndividual"
+              required />
+            <br /><br />
+            <label class="label">Hora</label>
+            <input
+              class="input"
+              type="time"
+              name="horaSesionIndividual"
+              required />
+            <br /><br />
+            <label class="label">Link</label>
+            <input
+              class="input"
+              type="text"
+              name="enlaceZoom"
+              placeholder="Ingresa un link"
+              required />
+          </div>
+        </section>
         <div class="columns">
-            <div class="column has-text-centered">
-                <input class="button m-5 is-primary has-text-white" type="submit" value="Confirmar">
-            </div>
+          <div class="column has-text-centered">
+            <input
+              class="button m-5 is-primary has-text-white"
+              type="submit"
+              value="Confirmar" />
+          </div>
         </div>
       </form>
     </div>
@@ -86,16 +147,20 @@
 </section>
 
 <script>
-  document.querySelector('form').addEventListener('submit', function (e) {
-    const hoy = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+  document.querySelector("form").addEventListener("submit", function (e) {
+    const hoy = new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
 
-    const fecha = document.querySelector('input[name="fechaSesionIndividual"]').value;
+    const fecha = document.querySelector(
+      'input[name="fechaSesionIndividual"]'
+    ).value;
 
     if (fecha < hoy) {
-      e.preventDefault(); 
-      alert("Las fechas de la sesión individual NO pueden ser anterior al día actual.");
+      e.preventDefault();
+      alert(
+        "Las fechas de la sesión individual NO pueden ser anterior al día actual."
+      );
     }
-});
+  });
 </script>
 
 <%- include('includes/_footer') %>

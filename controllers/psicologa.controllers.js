@@ -11,6 +11,9 @@ const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
+const PruebaV = require("../model/vaultTech/prueba.model");
+const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
+const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
@@ -22,6 +25,7 @@ const evento = require("../model/event.model");
 const eventoGoogle = require("../model/event.model");
 const PreguntaKostick = require("../model/kostick/preguntasKostick.model");
 const OpcionKostick = require("../model/kostick/opcionesKostick.model");
+const InterpretacionKostick = require("../model/kostick/interpretacionKostick.model");
 const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
 const Opcion16PF = require("../model/16pf/opciones16pf.model");
 
@@ -250,16 +254,22 @@ exports.get_respuestasA = (request, response, next) => {
         if (idPrueba == 1) {
           ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
             (resultados) => {
-              response.render("consultaRespuestasAspirante", {
-                isLoggedIn: request.session.isLoggedIn || false,
-                usuario: request.session.usuario || "",
-                csrfToken: request.csrfToken(),
-                privilegios: request.session.privilegios || [],
-                prueba: "El inventario de Percepción Kostick",
-                grupo: grupoRows[0],
-                valores: resultados[0][0],
-                datos: datosAspirante[0],
-              });
+              InterpretacionKostick.fetchAll().then(
+                (interpretacionesKostick) => {
+                  console.log(interpretacionesKostick[0]);
+                  response.render("consultaRespuestasAspirante", {
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    usuario: request.session.usuario || "",
+                    csrfToken: request.csrfToken(),
+                    privilegios: request.session.privilegios || [],
+                    prueba: "El inventario de Percepción Kostick",
+                    grupo: grupoRows[0],
+                    valores: resultados[0][0],
+                    datos: datosAspirante[0],
+                    interpretaciones: interpretacionesKostick[0],
+                  });
+                }
+              );
             }
           );
         } else if (idPrueba == 2) {
@@ -792,6 +802,648 @@ exports.post_registraReporte = (request, response, next) => {
   });
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.getAnalisisOtis = (request, response, next) => {
+  Prueba.getRespuestasOtis(request.params.idUsuario, request.params.idGrupo)
+    .then(([rows, fieldData]) => {
+      const informacionAnalisis = rows;
+      PruebaV.getPuntajeBrutoOtis(
+        request.params.idUsuario,
+        request.params.idGrupo
+      )
+        .then(([rows, fieldData]) => {
+          const puntajeBruto = rows[0].puntajeBruto;
+          console.log("Informacion Analisis: ", informacionAnalisis);
+          console.log("Puntaje Bruto: ", puntajeBruto);
+          response.render("Psicologos/analisisOtis.ejs", {
+            informacionAnalisis: informacionAnalisis || [],
+            puntajeBruto: puntajeBruto || 0,
+            idUsuario: request.params.idUsuario || null,
+            idGrupo: request.params.idGrupo || null,
+            idInstitucion: request.params.idInstitucion || null,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+/*
+ * CUADERNILLO OTIS
+ */
+// Controlador para manejar la obtención del cuadernillo de respuestas OTIS.
+exports.getCuadernilloOtis = (request, response, next) => {
+  // Obtiene los datos personales del aspirante
+  PruebaV.getDatosPersonalesAspiranteOtis(
+    request.params.idGrupo,
+    request.params.idUsuario
+  )
+    .then(([rows, fieldData]) => {
+      const datosPersonales = rows;
+      // Obtiene las respuestas correctas del aspirante
+      Cuadernillo.getRespuestasCorrectas(
+        request.params.idGrupo,
+        request.params.idUsuario
+      )
+        .then(([rows, fieldData]) => {
+          const respuestasCorrectas = rows[0].RespuestasCorrectas;
+          // Obtiene el tiempo total que tomo el aspirante para completar la prueba
+          Cuadernillo.getTiempoTotal(
+            request.params.idGrupo,
+            request.params.idUsuario
+          )
+            .then(([rows, fieldData]) => {
+              const tiempoTotal = rows[0].Tiempo;
+              // Obtiene las preguntas, opciones y la respuesta del aspirante
+              Cuadernillo.getRespuestasOtisAspirante(
+                request.params.idGrupo,
+                request.params.idUsuario
+              )
+                .then(([rows, fieldData]) => {
+                  const preguntasAgrupadas = {};
+
+                  rows.forEach((row) => {
+                    // Creamos el objeto de pregunta si este no existe
+                    if (!preguntasAgrupadas[row.idPreguntaOtis]) {
+                      preguntasAgrupadas[row.idPreguntaOtis] = {
+                        idPreguntaOtis: row.idPreguntaOtis,
+                        numeroPregunta: row.numeroPregunta,
+                        preguntaOtis: row.preguntaOtis,
+                        opciones: [],
+                        esCorrecta: false,
+                        tiempoRespuesta: 0,
+                        contestada: null,
+                      };
+                    }
+                    // Vamos añadiendo las opciones de la pregunta correspondiente
+                    preguntasAgrupadas[row.idPreguntaOtis].opciones.push({
+                      idOpcionOtis: row.idOpcionOtis,
+                      opcionOtis: row.opcionOtis,
+                      descripcionOpcion: row.descripcionOpcion,
+                      esCorrecta: row.esCorrecta === 1,
+                      seleccionada: row.opcionSeleccionada === 1,
+                    });
+
+                    if (row.opcionSeleccionada === 1) {
+                      preguntasAgrupadas[row.idPreguntaOtis].tiempoRespuesta =
+                        row.tiempoRespuesta;
+                      preguntasAgrupadas[row.idPreguntaOtis].contestada = true;
+                      preguntasAgrupadas[row.idPreguntaOtis].esCorrecta =
+                        row.esCorrecta === 1;
+                    }
+
+                    if (!preguntasAgrupadas[row.idPreguntaOtis].contestada) {
+                      preguntasAgrupadas[row.idPreguntaOtis].esCorrecta = null;
+                    }
+                  });
+
+                  const respuestasAspitanteOtis =
+                    Object.values(preguntasAgrupadas);
+
+                  response.render("Psicologos/cuadernilloRespuestasOtis.ejs", {
+                    datosPersonales: datosPersonales || [],
+                    respuestasCorrectas: respuestasCorrectas || 0,
+                    tiempoTotal: tiempoTotal || 0,
+                    respuestasAspitanteOtis: respuestasAspitanteOtis || [],
+                    aspirante: request.params.idUsuario || null,
+                    grupo: request.params.idGrupo || null,
+                    idInstitucion: request.params.idInstitucion || null,
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+exports.getPruebaOtis = (request, response, next) => {
+  console.log("Prueba OTIS");
+  response.render("Psicologos/infoPruebaOtis");
+};
+
+exports.getPruebaColores = (request, response, next) => {
+  response.send("Prueba Colores");
+};
+
+/*
+ * CUADERNILLO COLORES
+ */
+exports.getCuadernilloColores = (request, response, next) => {
+  // Obtener los datos personales del aspirante
+  PruebaV.getDatosPersonalesAspiranteColores(
+    request.params.idGrupo,
+    request.params.idUsuario
+  )
+    .then(([rows, fieldData]) => {
+      const datosPersonales = rows;
+
+      // Obtener todas las selecciones de colores
+      CuadernilloColores.getSeleccionesColores(
+        request.params.idGrupo,
+        request.params.idUsuario
+      )
+        .then(([rows, fieldData]) => {
+          // Separar las selecciones por fase
+          const seleccionesFase1 = rows
+            .filter((row) => row.fase === 1)
+            .sort((a, b) => a.posicion - b.posicion);
+          const seleccionesFase2 = rows
+            .filter((row) => row.fase === 2)
+            .sort((a, b) => a.posicion - b.posicion);
+
+          response.render("Psicologos/cuadernilloColores.ejs", {
+            datosPersonales: datosPersonales || [],
+            seleccionesFase1: seleccionesFase1 || [],
+            seleccionesFase2: seleccionesFase2 || [],
+            aspirante: request.params.idUsuario || null,
+            grupo: request.params.idGrupo || null,
+            idInstitucion: request.params.idInstitucion || null,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+/*
+ * ANÁLISIS COLORES
+ */
+/*
+ANALISIS COLORES
+*/
+
+function obtenerZona(posicion) {
+  if (posicion <= 1) return "+";
+  if (posicion <= 3) return "X";
+  if (posicion <= 5) return "=";
+  return "-";
+}
+
+function mapearZona(zonaCruda) {
+  if (
+    zonaCruda === "+-" ||
+    zonaCruda === "X-" ||
+    zonaCruda === "-+" ||
+    zonaCruda === "X=" ||
+    zonaCruda === "=X" ||
+    zonaCruda === "=-" ||
+    zonaCruda === "-="
+  ) {
+    return zonaCruda;
+  }
+
+  switch (zonaCruda) {
+    case "+-X":
+    case "X-+":
+    case "+-+":
+      return "++";
+    case "--=":
+    case "=--":
+    case "---":
+      return "--";
+    case "==-":
+    case "=-=":
+      return "==";
+    case "X-=":
+    case "=-X":
+      return "+-";
+    case "X-X":
+      return "XX";
+    default:
+      return zonaCruda.split("-").sort().join("");
+  }
+}
+
+function obtenerParejasConZona(selecciones) {
+  const pares = new Map();
+  for (let i = 0; i < selecciones.length - 1; i++) {
+    const a = selecciones[i];
+    const b = selecciones[i + 1];
+    const clave = `${a.numeroColor}-${b.numeroColor}`;
+
+    const zonaCruda = `${obtenerZona(a.posicion)}-${obtenerZona(b.posicion)}`;
+    const zona = mapearZona(zonaCruda);
+
+    if (!pares.has(clave)) {
+      pares.set(clave, []);
+    }
+    pares.get(clave).push(zona);
+  }
+  return pares;
+}
+
+function filtrarParejasNaturalesYDisociadas(paresF1, paresF2) {
+  const todasClaves = new Set([...paresF1.keys(), ...paresF2.keys()]);
+  const zonasClave = new Set(["++", "--", "==", "XX"]);
+  const resultado = [];
+
+  for (let clave of todasClaves) {
+    const [c1, c2] = clave.split("-").map(Number);
+    const claveNorm = c1 < c2 ? `${c1}-${c2}` : `${c2}-${c1}`;
+
+    const zonasF1 = paresF1.get(claveNorm) || [];
+    const zonasF2 = paresF2.get(claveNorm) || [];
+
+    const zonaF1 = zonasF1[0] || null;
+    const zonaF2 = zonasF2[0] || null;
+
+    const enF1 = zonasF1.length > 0;
+    const enF2 = zonasF2.length > 0;
+
+    const esZonaValida = (zona) => zonasClave.has(zona);
+
+    const esNatural = enF1 && enF2 && zonaF1 === zonaF2 && esZonaValida(zonaF1);
+    const esDisociada =
+      enF1 &&
+      enF2 &&
+      zonaF1 !== zonaF2 &&
+      esZonaValida(zonaF1) &&
+      esZonaValida(zonaF2);
+
+    if (esNatural || esDisociada) {
+      resultado.push({
+        pareja: claveNorm,
+        tipo: esNatural ? "natural" : "disociada",
+        zonas: { fase1: zonaF1 || "N/A", fase2: zonaF2 || "N/A" },
+      });
+    }
+  }
+
+  return resultado.filter(
+    (par) =>
+      (par.zonas.fase1 && zonasClave.has(par.zonas.fase1)) ||
+      (par.zonas.fase2 && zonasClave.has(par.zonas.fase2))
+  );
+}
+
+function filtrarParejasArtificiales(
+  paresF1,
+  paresF2,
+  parejasNaturalesYDisociadas = [],
+  seleccionesF1 = [],
+  seleccionesF2 = []
+) {
+  const todasClaves = new Set([...paresF1.keys(), ...paresF2.keys()]);
+  const resultado = [];
+
+  const esParejaClasificada = (clave) => {
+    const claveInversa = clave.split("-").reverse().join("-");
+    return parejasNaturalesYDisociadas.some(
+      (p) => p.pareja === clave || p.pareja === claveInversa
+    );
+  };
+
+  const esPosicionValida = (a, b) => {
+    const posicionesValidas = [
+      [0, 1],
+      [2, 3],
+      [4, 5],
+      [6, 7],
+    ];
+    return posicionesValidas.some(
+      (pair) =>
+        (pair[0] === a && pair[1] === b) || (pair[0] === b && pair[1] === a)
+    );
+  };
+
+  const obtenerPosicionDeColor = (selecciones, numeroColor) => {
+    for (let i = 0; i < selecciones.length; i++) {
+      if (selecciones[i].numeroColor === numeroColor) {
+        return selecciones[i].posicion;
+      }
+    }
+    return null;
+  };
+
+  for (let clave of todasClaves) {
+    const zonasF1 = paresF1.get(clave) || [];
+    const zonasF2 = paresF2.get(clave) || [];
+
+    const zonaF1 = zonasF1[0] || null;
+    const zonaF2 = zonasF2[0] || null;
+
+    const enF1 = zonasF1.length > 0;
+    const enF2 = zonasF2.length > 0;
+
+    if (esParejaClasificada(clave)) continue;
+
+    const [colorA, colorB] = clave.split("-").map(Number);
+
+    const posA_f1 = obtenerPosicionDeColor(seleccionesF1, colorA);
+    const posB_f1 = obtenerPosicionDeColor(seleccionesF1, colorB);
+    const posA_f2 = obtenerPosicionDeColor(seleccionesF2, colorA);
+    const posB_f2 = obtenerPosicionDeColor(seleccionesF2, colorB);
+
+    const parejaEsValida =
+      esPosicionValida(posA_f1, posB_f1) || esPosicionValida(posA_f2, posB_f2);
+
+    if (parejaEsValida) {
+      if (enF1 && !enF2 && zonaF1 !== "+-" && zonaF1 !== undefined) {
+        resultado.push({
+          pareja: clave,
+          tipo: "artificial",
+          zonas: { fase1: zonaF1 || "N/A" },
+        });
+      } else if (enF2 && !enF1 && zonaF2 !== "+-" && zonaF2 !== undefined) {
+        resultado.push({
+          pareja: clave,
+          tipo: "artificial",
+          zonas: { fase2: zonaF2 || "N/A" },
+        });
+      }
+    }
+  }
+
+  return resultado;
+}
+
+function obtenerInterpretacion(zona1, zona2, pareja) {
+  if (zona1 === "N/A" || zona2 === "N/A") {
+    return "Interpretación no disponible para esta combinación.";
+  }
+
+  const numeros = pareja.match(/\d+/g);
+  if (!numeros || numeros.length !== 2) {
+    return "Interpretación no disponible para esta combinación.";
+  }
+
+  const parejaNormalizada = `${numeros[0]}-${numeros[1]}`;
+  const claveDirecta = `${zona1}|${parejaNormalizada}`;
+  const claveInvertida = `${zona2}|${numeros[1]}-${numeros[0]}`;
+
+  if (interpretaciones[claveDirecta]) {
+    return interpretaciones[claveDirecta];
+  } else if (interpretaciones[claveInvertida]) {
+    return interpretaciones[claveInvertida];
+  } else {
+    return "Interpretación no disponible para esta combinación.";
+  }
+}
+
+function obtenerParejasClasificadas(seleccionesFase1, seleccionesFase2) {
+  const paresF1 = obtenerParejasConZona(seleccionesFase1);
+  const paresF2 = obtenerParejasConZona(seleccionesFase2);
+
+  const resultadoNaturalesYDisociadas = filtrarParejasNaturalesYDisociadas(
+    paresF1,
+    paresF2
+  );
+  const resultadoArtificiales = filtrarParejasArtificiales(
+    paresF1,
+    paresF2,
+    resultadoNaturalesYDisociadas,
+    seleccionesFase1,
+    seleccionesFase2
+  );
+
+  // Agregar interpretaciones
+  const agregarInterpretaciones = (parejas) => {
+    return parejas.map((p) => {
+      const textoFase1 = obtenerInterpretacion(
+        p.zonas.fase1,
+        p.zonas.fase2,
+        p.pareja
+      );
+      const textoFase2 = obtenerInterpretacion(
+        p.zonas.fase2,
+        p.zonas.fase1,
+        p.pareja
+      );
+
+      if (!p.zonas.fase1 || !p.zonas.fase2) {
+        return {
+          ...p,
+          texto: {
+            fase1: "Interpretación no disponible para esta combinación.",
+            fase2: "Interpretación no disponible para esta combinación.",
+          },
+        };
+      }
+
+      return { ...p, texto: { fase1: textoFase1, fase2: textoFase2 } };
+    });
+  };
+
+  return [
+    ...agregarInterpretaciones(resultadoNaturalesYDisociadas),
+    ...resultadoArtificiales,
+  ];
+}
+
+exports.getAnalisisColores = async (request, response, next) => {
+  const { idGrupo, idUsuario, idInstitucion } = request.params;
+  try {
+    // Obtener información del aspirante
+    const [informacionAspiranteRows] = await Prueba.getInformacionAspirante(
+      idUsuario
+    );
+
+    // Obtener selecciones de colores completas
+    const [seleccionesColoresRows] =
+      await CuadernilloColores.getSeleccionesColores(idGrupo, idUsuario);
+
+    // Separar selecciones por fase
+    const seleccionesFase1 = seleccionesColoresRows
+      .filter((row) => row.fase === 1)
+      .sort((a, b) => a.posicion - b.posicion);
+    const seleccionesFase2 = seleccionesColoresRows
+      .filter((row) => row.fase === 2)
+      .sort((a, b) => a.posicion - b.posicion);
+
+    // Calcular parejas naturales
+    const parejas = obtenerParejasClasificadas(
+      seleccionesFase1,
+      seleccionesFase2
+    );
+
+    // Obtener resultados de análisis
+    const [rows] = await Prueba.getRespuestasColores(idUsuario, idGrupo);
+
+    // Calcular movilidad
+    const movilidad = calcularMovilidad(seleccionesFase1, seleccionesFase2);
+
+    // Interpretar resultado de movilidad
+    const interpretacionMovilidad = interpretarMovilidad(movilidad);
+
+    // Inicializar arrays para resultadosFase1 y resultadosFase2
+    const resultadosFase1 = [];
+    const resultadosFase2 = [];
+
+    const colores = {
+      0: { nombre: "Gris", significado: "Participación", tipo: "No laboral" },
+      1: { nombre: "Azul", significado: "Paciencia", tipo: "Laboral" },
+      2: { nombre: "Verde", significado: "Productividad", tipo: "Laboral" },
+      3: { nombre: "Rojo", significado: "Empuje/Agresividad", tipo: "Laboral" },
+      4: { nombre: "Amarillo", significado: "Sociabilidad", tipo: "Laboral" },
+      5: { nombre: "Morado", significado: "Creatividad", tipo: "Laboral" },
+      6: { nombre: "Café", significado: "Vigor", tipo: "No laboral" },
+      7: { nombre: "Negro", significado: "Satisfacción", tipo: "No laboral" },
+      8: { nombre: "Gris", significado: "Participación", tipo: "No laboral" },
+    };
+
+    rows.forEach(({ fase, idColor, posicion }) => {
+      const info = colores[idColor] || {
+        nombre: "Desconocido",
+        significado: "",
+        tipo: "Desconocido",
+      };
+
+      let porcentaje;
+
+      if (info.tipo === "No laboral") {
+        porcentaje = 20 + posicion * 10;
+        if (porcentaje <= 50) porcentaje -= 10;
+      } else {
+        porcentaje = 90 - posicion * 10;
+        if (porcentaje <= 50) porcentaje -= 10;
+      }
+
+      const resultado = {
+        color: info.nombre,
+        significado: info.significado,
+        tipo: info.tipo,
+        porcentaje,
+      };
+
+      if (fase === 1) {
+        resultadosFase1.push(resultado);
+      } else if (fase === 2) {
+        resultadosFase2.push(resultado);
+      }
+    });
+
+    function agregarInterpretaciones(parejas) {
+      return parejas.map((p) => {
+        const textoFase1 = obtenerInterpretacion(
+          p.zonas.fase1,
+          p.zonas.fase2,
+          p.pareja
+        );
+        const textoFase2 = obtenerInterpretacion(
+          p.zonas.fase2,
+          p.zonas.fase1,
+          p.pareja
+        );
+
+        if (p.zonas.fase1 === "N/A" || p.zonas.fase2 === "N/A") {
+          return {
+            ...p,
+            texto: {
+              fase1: "Interpretación no disponible para esta combinación.",
+              fase2: "Interpretación no disponible para esta combinación.",
+            },
+          };
+        }
+
+        return { ...p, texto: { fase1: textoFase1, fase2: textoFase2 } };
+      });
+    }
+
+    const parejasNormalizadas = parejas.map((p) => {
+      const numeros = p.pareja.match(/\d+/g);
+      if (!numeros || numeros.length !== 2) {
+        return p;
+      }
+
+      return {
+        ...p,
+        pareja: `${numeros[0]}-${numeros[1]}`,
+      };
+    });
+
+    const parejasConInterpretaciones =
+      agregarInterpretaciones(parejasNormalizadas);
+
+    // Renderizar la vista con todos los datos
+    response.render("Psicologos/analisisColores.ejs", {
+      seleccionesFase1: seleccionesFase1 || [],
+      seleccionesFase2: seleccionesFase2 || [],
+      resultadosFase1,
+      resultadosFase2,
+      movilidad,
+      interpretacionMovilidad,
+      parejas: parejasConInterpretaciones,
+      idGrupo,
+      idUsuario,
+      idInstitucion,
+      // nombre aspirante analisis
+      informacionAspirante: informacionAspiranteRows[0],
+    });
+  } catch (error) {
+    console.error("Error al obtener análisis de colores:", error);
+  }
+};
+
+// Calcular la movilidad
+function calcularMovilidad(seleccionesFase1, seleccionesFase2) {
+  let positivosTotales = 0;
+  let negativosTotales = 0;
+
+  const posicionesFase1 = {};
+  seleccionesFase1.forEach((seleccion) => {
+    posicionesFase1[seleccion.idColor] = seleccion.posicion;
+  });
+
+  // Comparar con las posiciones en la fase 2
+  seleccionesFase2.forEach((seleccion) => {
+    const posicionFase1 = posicionesFase1[seleccion.idColor];
+    const posicionFase2 = seleccion.posicion;
+    const desplazamiento = posicionFase1 - posicionFase2;
+
+    // Positivo = mover a la derecha
+    if (desplazamiento < 0) {
+      positivosTotales += Math.abs(desplazamiento);
+    }
+    // Negativo = mover a la izquierda
+    else if (desplazamiento > 0) {
+      negativosTotales += desplazamiento;
+    }
+  });
+
+  return {
+    positivos: positivosTotales,
+    negativos: negativosTotales,
+  };
+}
+
+// Interpretar el resultado de movilidad
+function interpretarMovilidad(movilidad) {
+  const totalPositivos = movilidad.positivos;
+  const totalNegativos = movilidad.negativos;
+  const valorAbsoluto = Math.max(totalPositivos, totalNegativos);
+
+  if (totalPositivos === 0 && totalNegativos === 0) {
+    return "RIGIDEZ (TERCO)";
+  } else if (valorAbsoluto <= 1) {
+    return "PERSONA DE MENTE ABIERTA Y DISPUESTA AL DIÁLOGO";
+  } else if (valorAbsoluto <= 2) {
+    return "PERSONA DISPUESTA A DIALOGAR (MENOR GRADO)";
+  } else if (valorAbsoluto <= 3) {
+    return "PERSONA DISPUESTA A DIALOGAR (MUCHO MENOR GRADO)";
+  } else {
+    return "PERSONA INESTABLE";
+  }
+}
 exports.get_interpretaciones16PF = (request, response, next) => {
   let columna = request.params.columna;
   let nivel = request.params.nivel;

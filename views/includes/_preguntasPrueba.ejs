@@ -206,7 +206,8 @@
                             `;
             });
           }
-          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          html += `                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
                 <input
         type="hidden"
         id="idUsuario"
@@ -389,7 +390,8 @@
                             `;
             });
           }
-          html += `  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          html += `                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
                 <input
         type="hidden"
         id="idUsuario1"
@@ -501,5 +503,16 @@
             document.getElementById("cronometro").innerHTML = "TIME UP";
         }
     }, 1000);
+  </script>
+
+  <script>
+    // Bloquear boton de regresar
+    window.addEventListener("load", function () {
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+        alert("No puedes regresar durante la prueba.");
+      });
+    });
   </script>
 </body>

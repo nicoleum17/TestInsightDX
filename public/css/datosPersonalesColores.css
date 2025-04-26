@@ -1,0 +1,40 @@
+:root {
+  --primary: #95b6bc;
+  --secondary: #294969;
+  --third: #c1c1c1;
+  --font-primary: #000;
+  --font-secondary: #fff;
+  --primary-hover: #7ba1a8;
+  --secondary-hover: #193858;
+  --third-hover: #b1b1b1;
+}
+
+.btn-color--primary {
+  background: var(--primary);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary {
+  background: var(--secondary);
+  color: var(--font-secondary);
+}
+
+.btn-color--third {
+  background: var(--third);
+  color: var(--font-primary);
+}
+
+.btn-color--third:hover {
+  background: var(--third-hover);
+  color: var(--font-primary);
+}
+
+.btn-color--secondary:hover {
+  background: var(--secondary-hover);
+  color: var(--font-secondary);
+}
+
+.btn-color--primary:hover {
+  background: var(--primary-hover);
+  color: var(--font-primary);
+}
