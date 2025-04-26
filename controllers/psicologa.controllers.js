@@ -135,6 +135,7 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.apellidoP,
     request.body.apellidoM,
     request.body.numeroTel,
+    request.body.genero,
     request.body.estado + ", " + request.body.pais,
     request.body.correo,
     request.body.universidad
@@ -563,6 +564,7 @@ exports.post_modificarAspirante = (request, response, next) => {
   apellidoMaterno = request.body.apellidoMaterno;
   codigoIdentidad = request.body.codigoIdentidad;
   numTelefono = request.body.numTelefono;
+  genero = request.body.genero;
   lugarOrigen = request.body.lugarOrigen;
   correo = request.body.correo;
   universidadOrigen = request.body.universidadOrigen;
@@ -576,6 +578,7 @@ exports.post_modificarAspirante = (request, response, next) => {
     apellidoPaterno,
     apellidoMaterno,
     numTelefono,
+    genero,
     lugarOrigen,
     correo,
     universidadOrigen,
