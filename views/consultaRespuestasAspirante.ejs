@@ -163,13 +163,14 @@
 
 
     // NATURALEZA EMOCIONAL ----------------------------------------------
-
+  if (valores.K >= 70 || valores.K <= 20 || valores.E >= 70 || valores.E <= 20 || valores.Z >= 70 || valores.Z <= 20){
     const ne = document.createElement('div');
     ne.className = 'subtitle';
     ne.textContent = 'Naturaleza Emocional'
     interpretacionDiv.appendChild(ne);
 
     // K
+    
     if (valores.K >= 70) {
       i = 34;
 
@@ -237,15 +238,16 @@
       negativo.textContent = interpretaciones[i].negativo;
       interpretacionDiv.appendChild(negativo);      
     }
-
+  }
     // ADAPTACION AL TRABAJO ----------------------------------------------
-
+    if(valores.C >= 70 || valores.C <= 20 || valores.D >= 70 || valores.D <= 20 || valores.R >= 70 || valores.R <= 20){
     const aat = document.createElement('div');
     aat.className = 'subtitle';
     aat.textContent = 'Adaptación al Trabajo'
     interpretacionDiv.appendChild(aat);
 
     // C
+ 
     if (valores.C >= 70) {
       i = 28;
 
@@ -313,9 +315,9 @@
       negativo.textContent = interpretaciones[i].negativo;
       interpretacionDiv.appendChild(negativo);      
     }
-
+  }
     // NATURALEZA SOCIAL ----------------------------------------------
-
+    if (valores.X >= 70 || valores.X <= 20 || valores.S >= 70 || valores.S <= 20 || valores.B >= 70 || valores.B <= 20 || valores.O >= 70 || valores.O <= 20){
     const ns = document.createElement('div');
     ns.className = 'subtitle';
     ns.textContent = 'Naturaleza Social'
@@ -413,9 +415,10 @@
       negativo.textContent = interpretaciones[i].negativo;
       interpretacionDiv.appendChild(negativo);      
     }
-
+  }
     // MODO DE VIDA ----------------------------------------------
 
+    if(valores.T >= 80 || valores.T <= 10 || valores.V >= 70 || valores.T <= 20 ){
     const mdv = document.createElement('div');
     mdv.className = 'subtitle';
     mdv.textContent = 'Modo de Vida'
@@ -466,9 +469,9 @@
       negativo.textContent = interpretaciones[i].negativo;
       interpretacionDiv.appendChild(negativo);
     }
-
+  }
     // LIDERAZGO ----------------------------------------------
-
+if (valores.L >= 70 || valores.L <= 20 ||valores.P >= 70 || valores.P <= 10 || valores.I >= 70 || valores.L <= 20 ){
     const l = document.createElement('div');
     l.className = 'subtitle';
     l.textContent = 'Liderazgo'
@@ -542,9 +545,9 @@
       negativo.textContent = interpretaciones[i].negativo;
       interpretacionDiv.appendChild(negativo);
     }
-
+  }
     // GRADO DE ENERGIA ----------------------------------------------
-
+if (valores.N >= 70 || valores.N <= 20 || valores.G >= 70 || valores.G <= 20 || valores.A >= 70 || valores.A <= 20){
     const gde = document.createElement('div');
     gde.className = 'subtitle';
     gde.textContent = 'Grado de Energía'
@@ -619,6 +622,7 @@
       interpretacionDiv.appendChild(negativo);
     }
 
+  }
   }
 </script>
   
