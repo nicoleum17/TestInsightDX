@@ -1,26 +1,26 @@
 <%- include('includes/_navbarP')%>
 <style>
   .fullHeight {
-    min-height: 90vh;
-    margin-top: 20px;
+    min-height: 80vh;
+    margin-top: 30px;
   }
 </style>
-<section class="section fullHeight">
-  <div class="container">
-    <div class="title has-text-weight-semibold">Subir Reporte - Grupo</div>
+<section class="section fullHeight has-background-warning">
+  <div class="container is-max-desktop ">  <div class="container">
+    <div class="title has-text-weight-semibold">Subir FODA del Grupo</div>
     <div class="columns is-mobile">
       <div class="column">
-        <div class="has-text-weight-bold">Posgrado: <%= grupo.posgrado %></div>
-        <div class="has-text-weight-bold">
+        <div class="has-text-weight-semibold">Posgrado: <%= grupo.posgrado %></div>
+        <div class="has-text-weight-semibold">
           Generación: <%= grupo.generacion %>
         </div>
       </div>
       <div class="column">
-        <div class="has-text-weight-bold">Subir Archivos</div>
+        <div class="has-text-weight-semibold">Subir Archivos</div>
         <br />
-        <div>FODA</div>
+        <div>PDF</div>
         <% if (grupo) { %>
-        <form
+          <form
           action="/psicologa/grupo/registra_foda/<%= grupo.idGrupo%>"
           method="POST"
           enctype="multipart/form-data"></form>
@@ -52,7 +52,7 @@
     <div class="columns">
       <div class="column has-text-centered">
         <% if (grupo.archivoFoda === null) { %>
-        <p>Aún no hay un reporte registrado para este grupo</p>
+        <p>Aún no hay un reporte foda registrado para este grupo</p>
         <%} else {%>
         <a href="/psicologa/pdf/<%= grupo.archivoFoda%>">
           <button class="button is-primary has-text-warning mt-6">

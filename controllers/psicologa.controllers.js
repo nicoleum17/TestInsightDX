@@ -134,7 +134,7 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.apellidoP,
     request.body.apellidoM,
     request.body.numeroTel,
-    request.body.lugarO,
+    request.body.estado + ", " + request.body.pais,
     request.body.correo,
     request.body.universidad
   );
