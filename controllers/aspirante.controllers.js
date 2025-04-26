@@ -69,13 +69,12 @@ exports.post_verificarOtp = (request, response, next) => {
  Necesita la información de aspirante, qué pruebas tiene asignadas, y el status de dichas pruebas */
 exports.get_root = (request, response, next) => {
   Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-    console.log("Aspirante", aspirante[0]);
-    console.log("idUsuario", request.session.idUsuario);
     Prueba.pruebasPorAspirante(request.session.idUsuario).then(([rows]) => {
       PruebaAspirante.fetchOne(request.session.idUsuario).then(
         ([pruebasAspirante]) => {
           TienePruebas.getFechaLimite(request.session.idUsuario).then(
             ([fechaLimite]) => {
+              console.log(request.session.idUsuario);
               response.render("inicioAspirante", {
                 pruebas: rows,
                 isLoggedIn: request.session.isLoggedIn || false,
@@ -430,8 +429,6 @@ exports.pruebaCompletada1 = (request, response, next) => {
 };
 
 exports.get_pruebaCompletada = async (request, response, next) => {
-  console.log("Sesion: ", request.session);
-
   if (request.session.idPrueba === 1) {
     const letras = [
       "G",
@@ -1794,10 +1791,8 @@ exports.postGuardarSeleccionesColores = (request, response) => {
               idGrupo,
               idPrueba
             );
-
             return newPruebaAspirante.terminarPrueba().then((uuid) => {
               request.session.idGrupo = uuid;
-              request.session.idUsuario = uuid;
             });
           }
         });
@@ -1806,7 +1801,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
       console.log("13. Proceso completado con éxito");
       delete request.session.datosPersonalesColores;
       delete request.session.primeraSeleccion;
-      response.redirect("/aspirante/prueba-completada");
+      response.redirect("/aspirante/pruebaCompletada");
     })
     .catch((error) => {
       console.error("Error:", error.message);
