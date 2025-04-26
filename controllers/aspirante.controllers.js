@@ -1483,6 +1483,7 @@ exports.obtenerPreguntas = async (req, res, next) => {
         .filter((opcion) => opcion.idPreguntaOtis === pregunta.idPreguntaOtis)
         .map((opcion) => ({
           idOpcionOtis: opcion.idOpcionOtis,
+          opcionOtis: opcion.opcionOtis,
           descripcionOpcion: opcion.descripcionOpcion,
           esCorrecta: opcion.esCorrecta,
         }));
@@ -1495,7 +1496,6 @@ exports.obtenerPreguntas = async (req, res, next) => {
 
       // Buscar el nombre del área por idAreaOtis
       const area = areasDB.find((a) => a.idAreaOtis === pregunta.idAreaOtis);
-
       return {
         num: pregunta.numeroPregunta,
         idPreguntaOtis: pregunta.idPreguntaOtis,
@@ -1531,7 +1531,6 @@ exports.getPruebaOtis = (request, response, next) => {
     })
     .then(([grupo, fieldData]) => {
       const preguntas = grupo;
-      console.log(request.session.grupo);
       response.render("pruebaOtis", {
         preguntas: preguntas || [],
         csrfToken: request.csrfToken(),
@@ -1755,7 +1754,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
           console.log("8. Datos personales guardados correctamente");
           // const pruebaColores1 = new PruebaColores(seleccionesFase1);
           return PruebaColores.saveSeleccion(
-            request.session.idAspirante,
+            request.session.idUsuario,
             idGrupo,
             idPrueba,
             1,

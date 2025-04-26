@@ -4,51 +4,89 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test de aptitud mental OTIS</title>
+    <style>
+      .fullHeight {
+        min-height: 100vh;
+        margin-top: 20px;
+      }
+      :root {
+        --bulma-primary-h: 227deg;
+        --bulma-primary-s: 54%;
+        --bulma-primary-l: 44%;
+        --bulma-link-h: 224deg;
+        --bulma-link-s: 84%;
+        --bulma-link-l: 20%;
+        --bulma-info-h: 216deg;
+        --bulma-info-l: 91%;
+        --bulma-success-h: 175deg;
+      }
+    </style>
   </head>
   <%- include('includes/_navbar.ejs') %>
 
   <body>
-    <div class="container mt-4">
-      <div class="preguntasCaja">
-        <div class="cabeceraTest">
-          <h2 class="tituloTest text-center">Test de aptitud mental OTIS</h2>
-          <div class="headerOtis">
-            <div class="progresoOtis">
-              <label class="tituloProgreso">Progreso</label>
-              <span id="textoProgreso">0%</span>
-              <div class="barraExterna">
-                <div class="barraInterna" id="barraProgreso"></div>
+    <section class="section fullHeight has-background-warning">
+      
+      <div class="container is-max-tablet">
+        <div class="preguntasCaja">
+          <div class="cabeceraTest">
+            <div class="headerOtis">
+              <nav class="level-right mb-1">
+                <div class="level-right">
+                  <article class="message">
+                    <div class="message-body" >          <div class="temporizadorOtis">
+                      <span class="tiempoRestante" id="tiempoRestante">30:00</span>
+                    </div>
+                  </div></div>
+                  </article>
+                </div>
+              </nav>
+              <div class="progresoOtis">
+                <progress
+                  class="progress is-link"
+                  max="75"
+                  value="<%= preguntas.numeroPregunta %>"
+                  id="progressBar">
+                  <%= preguntas.numeroPregunta %>
+                </progress>
               </div>
             </div>
+          </div>
 
-            <div class="temporizadorOtis">
-              <span class="iconoReloj">⏱</span>
-              <span class="tiempoRestante" id="tiempoRestante">30:00</span>
+
+
+          <div class="columns">
+            <div class="column has-text-centered">
+              <div class="areaTexto"></div>
             </div>
           </div>
+
+          <!-- Preguntas de la prueba OTIS -->
+          <div class="pregtext subtitle is-3 mt-3"></div>
+          <div class="optionList"></div>
+
+          <footer>
+            <div class="columns">
+              <div class="column has-text-centered">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+                <button
+                  class="sigbtn is-narrow button mt-3 is-primary has-text-warning">
+                  Siguiente
+                </button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+                <button
+                  class="d-none is-narrow button mt-3 is-primary has-text-warning "
+                  id="enviarRespuestas">
+                  Finalizar
+                </button>
+              </div>
+            </div>
+          </footer>
         </div>
-
-        <!-- Área de la pregunta -->
-        <div class="areaTexto"></div>
-
-        <!-- Preguntas de la prueba OTIS -->
-        <div class="pregtext"></div>
-        <div class="optionList"></div>
-        <hr />
-        <footer>
-          <div class="text-end mt-4">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-
-            <button class="sigbtn btn btn-color--secondary">Siguiente</button>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-
-            <button class="btn btn-color--secondary" id="enviarRespuestas">
-              Enviar respuestas
-            </button>
-          </div>
-        </footer>
       </div>
-    </div>
+    </section>
     <!-- JS -->
     <script src="../js/pruebaOtis.js"></script>
 

@@ -504,4 +504,15 @@
         }
     }, 1000);
   </script>
+
+  <script>
+    // Bloquear boton de regresar
+    window.addEventListener("load", function () {
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+        alert("No puedes regresar durante la prueba.");
+      });
+    });
+  </script>
 </body>

@@ -14,11 +14,13 @@ let seleccionados = [];
 
 const container = document.getElementById("colorContainer");
 const terminarBtn = document.getElementById("terminarBtn");
-const modalElement = document.getElementById("segundaRondaModal");
+const notificationElement = document.getElementById("segundaRondaNotification");
+const entendidoBtn = document.getElementById("entendidoBtn");
 const seleccionesContainer = document.getElementById("seleccionesContainer");
 const colorSelectionForm = document.getElementById("colorSelectionForm");
 
 terminarBtn.classList.add("d-none");
+notificationElement.classList.add("is-hidden");
 
 function mostrarColores() {
   container.innerHTML = "";
@@ -67,8 +69,7 @@ function seleccionarColor(idColor, wrapperElement) {
 
   if (ronda === 1 && seleccionados.length === 8) {
     ronda = 2;
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    notificationElement.classList.remove("is-hidden");
   }
 
   if (ronda === 2 && seleccionados.length === 16) {
@@ -113,10 +114,9 @@ function verificarFinalizar() {
   terminarBtn.classList.remove("d-none");
 }
 
-modalElement.addEventListener("hidden.bs.modal", () => {
-  if (ronda === 2) {
-    mostrarColores();
-  }
+entendidoBtn.addEventListener("click", () => {
+  notificationElement.classList.add("is-hidden");
+  mostrarColores();
 });
 
 // Iniciar prueba
