@@ -23,7 +23,6 @@ const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const Hartman = require("../model/hartman/hartman.model");
-const SesionesPruebas = require("../model/hartman/sesionesPruebas.model");
 const HartmanAnalysisModel = require("../model/hartman/hartmanAnalysis.model");
 const { calcularResultados } = require("../public/js/valorHartman.js");
 const RespuestasPrueba = require("../model/hartman/respuestasPruebasX.model");
