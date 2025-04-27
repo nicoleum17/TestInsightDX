@@ -1,5 +1,5 @@
 // src/models/pruebas/hartman/hartmanAnalysis.model.js
-const db = require("../../util/database.js");
+const db = require("../../util/database");
 
 class hartmanAnalysisModel {
   constructor(idUsuario, idGrupo, resultadosAnalisis) {
@@ -16,15 +16,15 @@ class hartmanAnalysisModel {
   async save() {
     try {
       const query = `
-        INSERT INTO resultadoshartman (
-        idUsuario, idGrupo, fraseDimI, fraseDimE, fraseDimS, fraseDif, fraseDimGeneral,
-        fraseDimPorcentaje, fraseIntI, fraseIntE, fraseIntS, fraseIntGeneral, fraseIntPorcentaje,
-        \`fraseDi\`, fraseDIS, fraseAiPorcentaje ,fraseVQ1, fraseVQ2, citaDimI, citaDimE, citaDimS, citaDif,
-        citaDimGeneral, citaDimPorcentaje, citaIntI, citaIntE, citaIntS, citaIntGeneral,
-        citaIntPorcentaje, \`citaDi\`, citaDIS, citaAiPorcentaje,citaSQ1, citaSQ2, BQr1, BQa1, BQr2, BQa2,
-        CQ1, CQ2
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
-        `;
+ INSERT INTO resultadoshartman (
+ idUsuario, idGrupo, fraseDimI, fraseDimE, fraseDimS, fraseDif, fraseDimGeneral,
+ fraseDimPorcentaje, fraseIntI, fraseIntE, fraseIntS, fraseIntGeneral, fraseIntPorcentaje,
+ \`fraseDi\`, fraseDIS, fraseAiPorcentaje ,fraseVQ1, fraseVQ2, citaDimI, citaDimE, citaDimS, citaDif,
+ citaDimGeneral, citaDimPorcentaje, citaIntI, citaIntE, citaIntS, citaIntGeneral,
+ citaIntPorcentaje, \`citaDi\`, citaDIS, citaAiPorcentaje,citaSQ1, citaSQ2, BQr1, BQa1, BQr2, BQa2,
+ CQ1, CQ2
+ ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
+ `;
 
       const values = [
         this.idUsuario,

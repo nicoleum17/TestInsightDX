@@ -337,4 +337,16 @@ router.get("/prueba-completada", aspiranteController.getPruebaCompletada);
 
 router.get("/respuestas-enviadas", aspiranteController.getRespuestasEnviadas);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+router.get("/hartman/fase1", isAuth, aspiranteController.get_HartmanFase1);
+
+router.post("/hartman/fase1", isAuth, aspiranteController.post_HartmanFase1);
+
+// Ruta GET para mostrar la segunda fase de la prueba de Hartman
+router.get("/hartman/fase2", isAuth, aspiranteController.get_HartmanFase2);
+
+// Ruta POST para enviar las respuestas de la segunda fase de la prueba de Hartman
+router.post("/hartman/fase2", isAuth, aspiranteController.post_HartmanFase2);
+
 module.exports = router;

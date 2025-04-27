@@ -1,0 +1,212 @@
+<style>
+  .fullHeight {
+    min-height: 110vh;
+    margin-top: 30px;
+  }
+  </style>
+<%- include('includes/_navbar') %>
+  <body class="mt-6">
+    <section class="section has-background-warning fullHeight">
+      <nav class="level-right">
+        <div class="level-right">
+          <article class="message">
+            <div class="message-body" id="cronometro"></div>
+          </article>
+        </div>
+      </nav>
+      <div class="container is-max-desktop">
+        <!-- Progress bar -->
+        <div class="progress-container">
+          <progress
+            class="progress is-link"
+            value="<%= fase1 ? 50 : 100 %>"
+            max="100"></progress>
+          <p class="progress-text subtitle is-5">Fase <%= fase1 ? 1 : 2 %> de 2</p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+          <h2 class="title is-4 has-text-weight-semibold mt-5">Instrucciones:</h2>
+          <p class="subtitle is-5 mt-5">
+            Ordene las siguientes frases según su preferencia. Asigne el número
+            1 a la frase que más le agrade o identifique, y continúe en orden
+            ascendente hasta el 18 para la que menos le agrade.
+          </p>
+          <p class="mb-5">
+            <strong>Nota importante:</strong>
+            Cada número solo puede ser usado una vez. Una vez seleccionado, ese
+            número no estará disponible para otras frases.
+          </p>
+        </div>
+
+        <!-- Error message for duplicates -->
+        <div id="error-message" class="message is-danger is-hidden">
+          <div class="message-body">
+            <p class="has-text-weight-bold">
+              No puede continuar con respuestas duplicadas.
+            </p>
+            <p>
+              Por favor, revise las opciones marcadas en rojo y asigne un número
+              único a cada pregunta.
+            </p>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form
+          action="/aspirante/hartman/fase<%= fase1 ? 1 : 2 %>"
+          method="POST"
+          id="hartman-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+          <!-- Questions split into two columns -->
+          <div class="columns question-container">
+            <!-- First column - Questions 1-9 -->
+            <div class="column is-half">
+              <% preguntasHartman.slice(0, 9).forEach((pregunta, index) => { %>
+              <div class="question-box">
+                <div class="columns is-vcentered">
+                  <div class="column is-8">
+                    <span class="question-number subtitle is-5 is-italic"
+                      >Número <%= numerosPreguntas[index] %>:</span
+                    >
+                    <span class="question-text subtitle is-5 has-text-weight-light"><%= pregunta %></span>
+                  </div>
+                  <div class="column is-4">
+                    <div class="field">
+                      <div class="control">
+                        <div class="select is-fullwidth ranking-select">
+                          <select
+                            name="respuesta_<%= numerosPreguntas[index] %>"
+                            id="select_<%= numerosPreguntas[index] %>"
+                            class="dynamic-select is-link"
+                            required>
+                            <option value="">Ranking</option>
+                            <% for (let opcion = 1; opcion <= 18; opcion++) { %>
+                            <option value="<%= opcion %>"><%= opcion %></option>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+
+            <!-- Second column - Questions 10-18 -->
+            <div class="column is-half">
+              <% preguntasHartman.slice(9, 18).forEach((pregunta, index) => { %>
+              <div class="question-box">
+                <div class="columns is-vcentered">
+                  <div class="column is-8">
+                    <span class="question-number subtitle is-5 is-italic"
+                      >Número <%= numerosPreguntas[index + 9] %>:</span
+                    >
+                    <span class="question-text subtitle is-5 has-text-weight-light"><%= pregunta %></span>
+                  </div>
+                  <div class="column is-4">
+                    <div class="field">
+                      <div class="control">
+                        <div class="select is-fullwidth ranking-select">
+                          <select
+                            name="respuesta_<%= numerosPreguntas[index + 9] %>"
+                            id="select_<%= numerosPreguntas[index + 9] %>"
+                            class="dynamic-select is-link"
+                            required>
+                            <option value="">Ranking</option>
+                            <% for (let opcion = 1; opcion <= 18; opcion++) { %>
+                            <option value="<%= opcion %>"><%= opcion %></option>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+          <div class="columns">
+            <div class="column has-text-centered">
+            <button
+              class="button is-narrow button mt-3 is-primary has-text-warning"
+              type="submit"
+              id="submit-button">
+              Siguiente
+            </button>
+          </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <%- include('includes/_footer')%>
+    <script src="../js/respondeHartman.js"></script>
+    <script>
+
+      let totalSegundos =  7200;
+      let cuentaRegresiva = setInterval(function() {
+          let horas = Math.floor(totalSegundos / 3600);
+          let minutos = Math.floor((totalSegundos % 3600) / 60);
+          let segundos = totalSegundos % 60;
+          let formatoTiempo = `${horas}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+          document.getElementById("cronometro").innerHTML = formatoTiempo;
+          totalSegundos--;
+          if (totalSegundos < 0) {
+              clearInterval(cuentaRegresiva);
+              document.getElementById("cronometro").innerHTML = "TIME UP";
+          }
+      }, 1000);
+    </script>
+  
+    <script>
+      // Bloquear boton de regresar
+      window.addEventListener("load", function () {
+        history.pushState(null, "", location.href);
+        window.addEventListener("popstate", function () {
+          history.pushState(null, "", location.href);
+          alert("No puedes regresar durante la prueba.");
+        });
+      });
+    </script>
+<script>
+  function actualizarSelects() {
+    const selects = Array.from(document.querySelectorAll(".dynamic-select"));
+
+    function getSelectedValues() {
+      return selects
+        .map((select) => select.value)
+        .filter((value) => value !== "");
+    }
+
+    const selectedValues = getSelectedValues();
+
+    selects.forEach((select) => {
+      const currentValue = select.value;
+      const allOptions = Array.from(select.options);
+
+      allOptions.forEach((opt) => {
+        if (opt.value === "") return; // No tocar la opción vacía
+        opt.disabled =
+          selectedValues.includes(opt.value) && opt.value !== currentValue;
+      });
+    });
+  }
+
+  // Initialize the function when the page loads
+  document.addEventListener("DOMContentLoaded", () => {
+    actualizarSelects(); // Initial call to set up the selects
+
+    // Add event listeners to each select element
+    const selects = document.querySelectorAll(".dynamic-select");
+    selects.forEach((select) => {
+      select.addEventListener("change", actualizarSelects);
+    });
+  });
+</script>
+  </body>
+</html>
