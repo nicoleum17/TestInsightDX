@@ -6,6 +6,7 @@ const path = require("path");
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
+const FormatoEntrevista = require("../model/formatoEntrevista.model");
 const ConsultaResultados = require("../model/hartman/consultaResultados.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
@@ -16,6 +17,7 @@ const PruebaV = require("../model/vaultTech/prueba.model");
 const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
+const RespuestasPreguntasFormato = require("../model/respuestasPreguntasFormato.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -817,6 +819,30 @@ exports.post_registraReporte = (request, response, next) => {
   Aspirante.update_subirReporte(idUsuario, reporte).then(() => {
     response.redirect("/psicologa/reporteAspirante/" + idUsuario);
   });
+};
+
+exports.get_formatoEntrevista = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    FormatoEntrevista.fetchOne(idUsuario).then(([formatoEntrevista]) => {
+      /*RespuestasPreguntasFormato.fetchOne(idUsuario).then(
+        ([respuestasPreguntas]) => {
+          RespuestasPreguntasFormato.getPreguntas().then(([preguntas]) => {*/
+      response.render("consultarFormatoEntrevista", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        idUsuario: request.session.idUsuario || "",
+        formatoEntrevista: formatoEntrevista[0],
+        //respuestasPreguntas: respuestasPreguntas[0],
+        //preguntas: preguntas,
+      });
+    });
+  });
+  //});
+  // });
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

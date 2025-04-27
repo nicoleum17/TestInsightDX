@@ -195,10 +195,11 @@ router.post(
   psicologaController.postPreguntaSeguridad
 );
 
-router.get("/aspirante/confirmacion/:id",
+router.get(
+  "/aspirante/confirmacion/:id",
   isAuth,
   psicologaController.getPreguntaSeguridadAspirante
-)
+);
 
 router.post(
   "/aspirante/confirmacion/:id",
@@ -227,6 +228,12 @@ router.post(
   "/registraReporte/:idUsuario",
   isAuth,
   psicologaController.post_registraReporte
+);
+
+router.get(
+  "/formatoEntrevista/:idUsuario",
+  isAuth,
+  psicologaController.get_formatoEntrevista
 );
 
 router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);

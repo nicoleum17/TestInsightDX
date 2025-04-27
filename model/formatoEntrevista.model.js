@@ -69,13 +69,12 @@ module.exports = class formatoEntrevista {
         return this.idFormato;
       });
   }
-  static fetch(idFormato){
-    return db
-      .execute(
-        "SELECT nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, " +
+  static fetch(idFormato) {
+    return db.execute(
+      "SELECT nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, " +
         "estadoCivil, origen, telefono, celular, correo, direccionA FROM formatoentrevista WHERE idFormato = ?",
-        [idFormato]
-      );
+      [idFormato]
+    );
   }
   static saveDA(
     mi_nombreLicenciatura,
@@ -112,13 +111,12 @@ module.exports = class formatoEntrevista {
       });
   }
 
-  static fetchDA(idFormato){
-    return db
-      .execute(
-        "SELECT nombreLicenciatura, institucion, promedio, generacion, gradoMax, maestria, institucionMaestria,"+ 
+  static fetchDA(idFormato) {
+    return db.execute(
+      "SELECT nombreLicenciatura, institucion, promedio, generacion, gradoMax, maestria, institucionMaestria," +
         " promedioMaestria, cursos, idiomas FROM formatoentrevista WHERE idFormato=?",
-        [idFormato]
-      );
+      [idFormato]
+    );
   }
 
   static saveDL(
@@ -150,12 +148,11 @@ module.exports = class formatoEntrevista {
       });
   }
 
-  static fetchDL(idFormato){
-    return db
-      .execute(
-        "SELECT lugarTrabajo, empresa, puesto, años, actividades, sueldo, personal FROM formatoentrevista WHERE idFormato=?",
-        [idFormato]
-      );
+  static fetchDL(idFormato) {
+    return db.execute(
+      "SELECT lugarTrabajo, empresa, puesto, años, actividades, sueldo, personal FROM formatoentrevista WHERE idFormato=?",
+      [idFormato]
+    );
   }
   static finish(mi_idFormato) {
     return db
@@ -175,5 +172,11 @@ module.exports = class formatoEntrevista {
       WHERE idUsuario = ?`,
       [idUsuario]
     );
+  }
+
+  static fetchOne(idUsuario) {
+    return db.execute(`SELECT * FROM formatoentrevista WHERE idUsuario = ? `, [
+      idUsuario,
+    ]);
   }
 };

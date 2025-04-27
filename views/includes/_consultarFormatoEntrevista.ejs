@@ -1,0 +1,331 @@
+<style>
+  .fullHeight {
+    min-height: auto;
+    margin-top: 20px;
+  }
+
+  .card-option {
+    width: 220px;
+    border-radius: 16px;
+    transition: all 0.3s ease-in-out;
+    background-color: white;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(38, 88, 206, 0.1);
+    background-color: #fdfdfd;
+  }
+</style>
+<section class="section has-background-warning fullHeight">
+  <div class="container" style="width: 60%">
+    <div class="columns">
+      <div class="column">
+        <h1 class="title has-text-weight-semibold">
+          Formato de entrevista - <%= aspirante.nombres%> <%=
+          aspirante.apellidoPaterno%> <%= aspirante.apellidoMaterno%>
+        </h1>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <h1 class="title is-4 has-text-weight-semibold">Datos personales</h1>
+      </div>
+    </div>
+
+    <div class="box has-background-info has-text-white">
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Contestado el:</label>
+          <span type="text" class="input" name="fechaActual">
+            <%= formatoEntrevista.fechaActual.toISOString().split('T')[0] %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Nombre(s):</label>
+          <span type="text" class="input" name="nombre">
+            <%= formatoEntrevista.nombre %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Apellido Paterno:</label>
+          <span type="text" class="input" name="apellidoP">
+            <%= formatoEntrevista.apellidoP %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Apellido Materno:</label>
+          <span type="text" class="input" name="apellidoM">
+            <%= formatoEntrevista.apellidoM%>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Fecha de nacimiento:</label>
+          <span type="text" class="input" name="fechaNacimiento">
+            <%= formatoEntrevista.fechaNacimiento.toISOString().split('T')[0] %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Género:</label>
+          <span type="text" class="input" name="genero">
+            <%= formatoEntrevista.genero %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Nacionalidad:</label>
+          <span type="text" class="input" name="nacionalidad">
+            <%= formatoEntrevista.nacionalidad %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Edad:</label>
+          <span type="text" class="input" name="edad">
+            <%= formatoEntrevista.edad %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Estado civil:</label>
+          <span type="text" class="input" name="estadoCivil">
+            <%= formatoEntrevista.estadoCivil %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Origen:</label>
+          <span type="text" class="input" name="origen">
+            <%= formatoEntrevista.origen %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Teléfono:</label>
+          <span type="text" class="input" name="telefono">
+            <%= formatoEntrevista.telefono %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Celular:</label>
+          <span type="text" class="input" name="ceular">
+            <%= formatoEntrevista.celular %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Correo:</label>
+          <span type="text" class="input" name="correo">
+            <%= formatoEntrevista.correo %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <label class="label">Dirección:</label>
+          <span type="text" class="input" name="direccion">
+            <%= formatoEntrevista.direccionA %>
+          </span>
+        </div>
+      </div>
+    </div>
+    <br />
+
+    <div class="columns">
+        <div class="column">
+          <h1 class="title is-4 has-text-weight-semibold">Preguntas personales</h1>
+        </div>
+      </div>
+  
+      <div class="box has-background-info has-text-white">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label"> :</label>
+            <span type="text" class="input" name="fechaActual">
+             
+            </span>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">Nombre(s):</label>
+            <span type="text" class="input" name="nombre">
+              <%= formatoEntrevista.nombre %>
+            </span>
+          </div>
+          <div class="column is-half">
+            <label class="label">Apellido Paterno:</label>
+            <span type="text" class="input" name="apellidoP">
+              <%= formatoEntrevista.apellidoP %>
+            </span>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">Apellido Materno:</label>
+            <span type="text" class="input" name="apellidoM">
+              <%= formatoEntrevista.apellidoM%>
+            </span>
+          </div>
+          <div class="column is-half">
+            <label class="label">Fecha de nacimiento:</label>
+            <span type="text" class="input" name="fechaNacimiento">
+              <%= formatoEntrevista.fechaNacimiento.toISOString().split('T')[0] %>
+            </span>
+          </div>
+        </div>
+        </div>
+
+    <div class="columns">
+      <div class="column">
+        <h1 class="title is-4 has-text-weight-semibold">Datos académicos</h1>
+      </div>
+    </div>
+
+    <div class="box has-background-info has-text-white">
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Licenciatura:</label>
+          <span type="text" class="input" name="licenciatura">
+            <%= formatoEntrevista.nombreLicenciatura %>
+          </span>
+        </div>
+
+        <div class="column is-half">
+          <label class="label">Institución:</label>
+          <span type="text" class="input" name="institucion">
+            <%= formatoEntrevista.institucion %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Promedio:</label>
+          <span type="text" class="input" name="promedio">
+            <%= formatoEntrevista.promedio %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Generación:</label>
+          <span type="text" class="input" name="generacion">
+            <%= formatoEntrevista.generacion %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Grado máximo de estudios:</label>
+          <span type="text" class="input" name="gradoMax">
+            <%= formatoEntrevista.gradoMax %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Maestría:</label>
+          <span type="text" class="input" name="maestria">
+            <%= formatoEntrevista.maestria %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Institución donde cursó la maestría:</label>
+          <span type="text" class="input" name="institucionMaestria">
+            <%= formatoEntrevista.institucionMaestria %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Promedio en la Maestría:</label>
+          <span type="text" class="input" name="promedioMaestria">
+            <%= formatoEntrevista.promedioMaestria %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Cursos que ha tomado:</label>
+          <span type="text" class="input" name="cursos">
+            <%= formatoEntrevista.cursos %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Idiomas:</label>
+          <span type="text" class="input" name="idiomas">
+            <%= formatoEntrevista.idiomas %>
+          </span>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="columns">
+      <div class="column">
+        <h1 class="title is-4 has-text-weight-semibold">Datos laborales</h1>
+      </div>
+    </div>
+
+    <div class="box has-background-info has-text-white">
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Lugar de trabajo:</label>
+          <span type="text" class="input" name="lugarTrabajo">
+            <%= formatoEntrevista.lugarTrabajo %>
+          </span>
+        </div>
+
+        <div class="column is-half">
+          <label class="label">Empresa en la que trabaja:</label>
+          <span type="text" class="input" name="empresa">
+            <%= formatoEntrevista.empresa %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Puesto:</label>
+          <span type="text" class="input" name="puesto">
+            <%= formatoEntrevista.puesto %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Años en la empresa:</label>
+          <span type="text" class="input" name="años">
+            <%= formatoEntrevista.años %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Actividades:</label>
+          <span type="text" class="input" name="actividades">
+            <%= formatoEntrevista.actividades %>
+          </span>
+        </div>
+        <div class="column is-half">
+          <label class="label">Sueldo:</label>
+          <span type="text" class="input" name="sueldo">
+            <%= formatoEntrevista.sueldo %>
+          </span>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-half">
+          <label class="label">Personal a su cargo:</label>
+          <span type="text" class="input" name="personal">
+            <%= formatoEntrevista.personal %>
+          </span>
+        </div>
+      </div>
+      
+  </div>
+  <br>
+</section>
