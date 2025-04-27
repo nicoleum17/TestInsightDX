@@ -349,4 +349,22 @@ router.get("/hartman/fase2", isAuth, aspiranteController.get_HartmanFase2);
 // Ruta POST para enviar las respuestas de la segunda fase de la prueba de Hartman
 router.post("/hartman/fase2", isAuth, aspiranteController.post_HartmanFase2);
 
+router.get(
+  "/responder/terman",
+  isAuth,
+  aspiranteController.get_responderTerman
+);
+
+router.get(
+  "/responder/terman/serie/:idSerie",
+  isAuth,
+  aspiranteController.get_infoSerie
+);
+
+router.post(
+  "/responder/terman/serie/:idSerie",
+  isAuth,
+  aspiranteController.post_respuestasSerie
+);
+
 module.exports = router;

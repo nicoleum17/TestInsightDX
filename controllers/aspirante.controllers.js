@@ -26,6 +26,10 @@ const Hartman = require("../model/hartman/hartman.model");
 const HartmanAnalysisModel = require("../model/hartman/hartmanAnalysis.model");
 const { calcularResultados } = require("../public/js/valorHartman.js");
 const RespuestasPrueba = require("../model/hartman/respuestasPruebasX.model");
+const Terman = require("../model/terman/terman.model.js");
+const ModeloTerman = new Terman();
+const RespuestasTerman = require("../model/terman/respuestasTerman.model.js");
+const CalificarSerieTerman = require("../public/js/calificarTerman.js");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.SECRET,
@@ -2037,5 +2041,126 @@ exports.post_HartmanFase2 = async (request, response, next) => {
   } catch (err) {
     console.error("Error en post_HartmanFase2:", err);
     response.status(500).send("Error interno del servidor.");
+  }
+};
+
+exports.get_responderTerman = (request, response, next) => {
+  Usuario.getGrupo(request.session.idUsuario).then(([grupo]) => {
+    request.session.idGrupo = grupo[0].idGrupo;
+    response.render("responderTerman", {
+      csrfToken: request.csrfToken(),
+      title: "Responder Terman",
+      csrfToken: request.csrfToken(),
+      grupo: request.session.grupo,
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      privilegios: request.session.privilegios || [],
+      idUsuario: request.session.idUsuario || "",
+    });
+  });
+};
+
+exports.get_infoSerie = (request, response, next) => {
+  const idSerie = parseInt(request.params.idSerie);
+  console.log("Valor recibido en req.params.idSerie:", idSerie);
+
+  if (!idSerie || isNaN(idSerie)) {
+    return response
+      .status(400)
+      .json({ error: "ID de serie inválido o no proporcionado." });
+  }
+
+  let nombreSeccion, instruccion, preguntas, opciones;
+
+  return ModeloTerman.fetchSerieInfoById(idSerie)
+    .then((info) => {
+      //console.log("info:", info);
+      id = info[0].idSerieTerman;
+      nombreSeccion = info[0].nombreSeccion;
+      instruccion = info[0].instruccion;
+      duracion = info[0].duracion;
+
+      return ModeloTerman.fetchPreguntaSerieById(idSerie);
+    })
+    .then((preguntasRows) => {
+      preguntas = preguntasRows;
+      return ModeloTerman.fetchOpcionesSerieById(idSerie);
+    })
+    .then((opcionesRows) => {
+      opciones = opcionesRows;
+
+      // Adjunta las opciones a cada pregunta
+      const preguntasConOpciones = preguntas.map((p) => {
+        p.opciones = opciones.filter(
+          (o) => o.idPreguntaTerman === p.idPreguntaTerman
+        );
+        return p;
+      });
+
+      response.json({
+        id,
+        nombreSeccion,
+        instruccion,
+        duracion,
+        preguntas: preguntasConOpciones,
+      });
+      console.log(response.json);
+    })
+    .catch((error) => {
+      console.error("Error al cargar serie:", error);
+      response.status(500).json({ error: "Error al cargar la serie." });
+    });
+};
+
+exports.post_respuestasSerie = async (request, response, next) => {
+  try {
+    // Constantes de construcción
+    const idSerie = parseInt(request.params.idSerie);
+
+    const { respuestas } = request.body;
+    // console.log("Recibimos respuestas en el backend:", respuestas);
+    const idUsuario = request.session.idUsuario;
+    const idGrupo = request.session.idGrupo;
+    const idPrueba = 4;
+    const totalPartes = 10;
+
+    // PASO 49 DE DIAGRAMA: Calificamos la serie
+    await CalificarSerieTerman(idSerie, idUsuario, idGrupo, respuestas);
+
+    // PASO 69 DE DIAGRAMA: Creamos el modelo con esos datos
+    const respuestasModel = new RespuestasTerman(
+      idUsuario,
+      idGrupo,
+      idPrueba,
+      respuestas
+    );
+
+    // Guardamos las respuestas
+    await respuestasModel.save();
+    // Increment the part completion count in the session
+    if (!request.session.completedParts) {
+      request.session.completedParts = 0;
+    }
+    request.session.completedParts += 1;
+
+    // Check if all parts are completed
+    if (request.session.completedParts >= totalPartes) {
+      const idPrueba = 4;
+      const newPruebaAspirante = new PruebaAspirante(
+        request.session.idUsuario,
+        request.session.idGrupo,
+        idPrueba
+      );
+
+      await newPruebaAspirante.terminarPrueba().then((uuid) => {
+        request.session.idGrupo = uuid;
+        response.redirect("/aspirante/pruebaCompletada");
+      });
+    } else {
+      response.status(200).json({ ok: true, message: "Respuestas guardadas" });
+    }
+  } catch (error) {
+    console.log("Algo salió mal en post_respuestasSerie:", error);
+    response.status(500).json({ error: "Error al guardar respuestas" });
   }
 };

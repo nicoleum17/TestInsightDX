@@ -191,7 +191,7 @@
       </form>
       <%} else if (prueba.idPrueba === 4) {%>
         <form
-        action=""
+        action="/aspirante/responder/terman"
         id="personalInformation"
         method="GET">
         <div class="column">
@@ -254,17 +254,7 @@
         <div class="columns is-centered  mt-6">
           <br /><br />
 
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <input
-            type="hidden"
-            id="idUsuario"
-            name="idUsuario"
-            value="<%= idUsuario%>" />
-          <input
-            type="hidden"
-            id="idPrueba"
-            name="idPrueba"
-            value="<%= prueba.idPrueba%>" />
+
           <button
             class="button is-primary has-text-warning"
             style="height: 40px"

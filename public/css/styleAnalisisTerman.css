@@ -1,0 +1,30 @@
+.site {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* -- Contenido en main --  */
+
+.site main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrado vertical */
+  align-items: center; /* Centrado horizontal */
+}
+
+.contenedor-principal > table.table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedor-principal .table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

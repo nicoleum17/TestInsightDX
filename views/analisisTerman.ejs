@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="esp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consulta Aspirantes</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="/css/stylesLayout.css" />
+    <link rel="stylesheet" href="/css/stylesAnalisisTerman.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/html2pdf.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="site">
+      <header><%- include('../../includes/navbar') %></header>
+
+      <main>
+        <div class="maestro"></div>
+        <div class="container" id="loggin">
+          <h2 class="title has-text-centered">Análisis Terman</h2>
+
+          <% if (datos) { %>
+          <h3 class="subtitle has-text-centered">
+            <%= datos.nombreAspirante %> <%= datos.apellidoPaternoAspirante %>
+            <%= datos.apellidoMaternoAspirante %>
+          </h3>
+          <% } else { %>
+          <h3 class="subtitle has-text-centered">
+            Información del aspirante no disponible
+          </h3>
+          <% } %>
+
+          <div class="contenedor-principal">
+            <div class="grafica-container">
+              <canvas id="chart"></canvas>
+
+              <table class="table is-bordered">
+                <tbody>
+                  <tr>
+                    <th>Puntos Totales</th>
+                    <td><%= datos.puntosTotales %></td>
+                  </tr>
+                  <tr>
+                    <th>Rango</th>
+                    <td><%= datos.rango %></td>
+                  </tr>
+                  <tr>
+                    <th>C.I.</th>
+                    <td><%= datos.coeficienteIntelectual %></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>Serie</th>
+                    <th>Categoría</th>
+                    <th>Puntuación</th>
+                    <th>Rango</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>I</td>
+                    <td>Información</td>
+                    <td><%= analisisTerman.serie1.puntuacion %></td>
+                    <td><%= analisisTerman.serie1.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>II</td>
+                    <td>Juicio</td>
+                    <td><%= analisisTerman.serie2.puntuacion %></td>
+                    <td><%= analisisTerman.serie2.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>III</td>
+                    <td>Vocabulario</td>
+                    <td><%= analisisTerman.serie3.puntuacion %></td>
+                    <td><%= analisisTerman.serie3.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>IV</td>
+                    <td>Síntesis</td>
+                    <td><%= analisisTerman.serie4.puntuacion %></td>
+                    <td><%= analisisTerman.serie4.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>V</td>
+                    <td>Concentración</td>
+                    <td><%= analisisTerman.serie5.puntuacion %></td>
+                    <td><%= analisisTerman.serie5.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>VI</td>
+                    <td>Análisis</td>
+                    <td><%= analisisTerman.serie6.puntuacion %></td>
+                    <td><%= analisisTerman.serie6.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>VII</td>
+                    <td>Abstracción</td>
+                    <td><%= analisisTerman.serie7.puntuacion %></td>
+                    <td><%= analisisTerman.serie7.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>VIII</td>
+                    <td>Planeación</td>
+                    <td><%= analisisTerman.serie8.puntuacion %></td>
+                    <td><%= analisisTerman.serie8.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>IX</td>
+                    <td>Organización</td>
+                    <td><%= analisisTerman.serie9.puntuacion %></td>
+                    <td><%= analisisTerman.serie9.rango %></td>
+                  </tr>
+                  <tr>
+                    <td>X</td>
+                    <td>Atención</td>
+                    <td><%= analisisTerman.serie10.puntuacion %></td>
+                    <td><%= analisisTerman.serie10.rango %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer></footer>
+    </div>
+
+    <script>
+      const termanChartData = {
+        labels: ['Información', 'Juicio', 'Vocabulario', 'Síntesis', 'Concentración', 'Análisis', 'Abstracción', 'Planeación', 'Organización', 'Atención'],
+        data: <%- JSON.stringify([
+          res?.serie1 || 0,
+          res?.serie2 || 0,
+          res?.serie3 || 0,
+          res?.serie4 || 0,
+          res?.serie5 || 0,
+          res?.serie6 || 0,
+          res?.serie7 || 0,
+          res?.serie8 || 0,
+          res?.serie9 || 0,
+          res?.serie10 || 0
+        ]) %>
+      };
+    </script>
+  </body>
+</html>
