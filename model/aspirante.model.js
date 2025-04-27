@@ -73,15 +73,15 @@ module.exports = class Aspirante {
   }
 
   static saveSexo(idUsuario, sexo) {
-      return db
-        .execute(
-          "UPDATE aspirantes SET sexo = ? WHERE idUsuario = ?",
-          [sexo, idUsuario]
-        )
-        .then(([result]) => {
-          return idUsuario;
-        });
-    }
+    return db
+      .execute("UPDATE aspirantes SET sexo = ? WHERE idUsuario = ?", [
+        sexo,
+        idUsuario,
+      ])
+      .then(([result]) => {
+        return idUsuario;
+      });
+  }
 
   static fetchAll() {
     return db.execute("SELECT * FROM aspirantes WHERE hidden = 0");
@@ -91,6 +91,13 @@ module.exports = class Aspirante {
     return db.execute("SELECT * FROM aspirantes WHERE idUsuario = ?", [
       idUsuario,
     ]);
+  }
+
+  static fetchByCI(codigoIdentidad) {
+    return db.execute(
+      "SELECT idUsuario FROM aspirantes WHERE codigoIdentidad = ?",
+      [codigoIdentidad]
+    );
   }
 
   static find(valor) {
@@ -130,22 +137,25 @@ module.exports = class Aspirante {
     );
   }
 
-  static notificacion(idUsuario){
+  static notificacion(idUsuario) {
     return db.execute(
-    `SELECT g.fechaPruebaGrupal as pruebaGrupal, pg.fechaZoomIndividual as zoomIndividual, tp.fechaLimitePrueba as limitePrueba
+      `SELECT g.fechaPruebaGrupal as pruebaGrupal, pg.fechaZoomIndividual as zoomIndividual, tp.fechaLimitePrueba as limitePrueba
     FROM perteneceGrupo pg
     JOIN grupos g ON g.idGrupo = pg.idGrupo
     JOIN tienePruebas tp ON g.idGrupo = tp.idGrupo
     WHERE pg.idUsuario = ?`,
-    [idUsuario]
+      [idUsuario]
     );
   }
 
-  static async borrarAspirante(idAspirante){
-        await db.execute("UPDATE `aspirantes` SET `hidden` = ? WHERE `idUsuario` = ?;", [
-          1,
-          idAspirante,
-        ]);
-        return db.execute("UPDATE `usuarios` SET `hidden` = ? WHERE `idUsuario` = ?", [1, idAspirante]);
+  static async borrarAspirante(idAspirante) {
+    await db.execute(
+      "UPDATE `aspirantes` SET `hidden` = ? WHERE `idUsuario` = ?;",
+      [1, idAspirante]
+    );
+    return db.execute(
+      "UPDATE `usuarios` SET `hidden` = ? WHERE `idUsuario` = ?",
+      [1, idAspirante]
+    );
   }
 };
