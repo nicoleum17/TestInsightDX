@@ -889,7 +889,7 @@ if (valores.N >= 70 || valores.N <= 20 || valores.G >= 70 || valores.G <= 20 || 
                  new Chart(ctx, config);
                  insertarInterpretacionKostick(valores, interpretaciones);
 } else if (prueba === "Personalidad 16 Factores (16 PF)") {
-  const sexo = 'F';
+  const genero = <%- JSON.stringify(datos.genero) %>;
 
 document.getElementById("Interpretacion").innerHTML += `<div id="primarias"><strong>ESCALAS PRIMARIAS<br></strong></div>
 <div id="globales"><strong><br>FACTORES GLOBALES</strong><br></div>`;
@@ -901,7 +901,7 @@ const adj2 = ["SOCIABLE", "RÁPIDO", "MADURO", "DOMINANTE", "ENTUSIASTA", "CONST
 let adj = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 const letras = ['A', 'B', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'Q1', 'Q2', 'Q3', 'Q4', 'EX', 'AX', 'TM', 'IN', 'SC'];
 
-if (sexo == 'F'){
+if (genero == 'Mujer'){
   switch (true) {
     case valores.A < 7:
     DES[0] = 1;
@@ -1155,7 +1155,7 @@ if (sexo == 'F'){
     DES[15] = 10;
     break;
   }
-} else if (sexo == 'H'){
+} else if (genero == 'Hombre'){
   switch (true) {
     case valores.A < 5:
     DES[0] = 1;
@@ -1758,11 +1758,11 @@ percentil = 99;
 break;
 }
 
-DES[16] = 4 + (DES[0] * 0.3) + (DES[4] * 0.3) + (DES[6] * 0.2) - (DES[10] * 0.3) - (DES[13] * 0.3);
-DES[17] = 1.6 + (DES[8] * 0.3) + (DES[11] * 0.4) + (DES[15] * 0.4) - (DES[2] * 0.4);
-DES[18] = 13.8 - (DES[0] * 0.2) - (DES[7] * 0.5) - (DES[9] * 0.3) - (DES[12] * 0.5);
-DES[19] = (DES[3] * 0.6) + (DES[6] * 0.3) + (DES[8] * 0.2) + (DES[12] * 0.3) - 2.2;
-DES[20] = 3.8 + (DES[5] * 0.4) + (DES[14] * 0.4) - (DES[4] * 0.2) - (DES[9] * 0.3);
+DES[16] = Math.floor(4 + (DES[0] * 0.3) + (DES[4] * 0.3) + (DES[6] * 0.2) - (DES[10] * 0.3) - (DES[13] * 0.3));
+DES[17] = Math.floor(1.6 + (DES[8] * 0.3) + (DES[11] * 0.4) + (DES[15] * 0.4) - (DES[2] * 0.4));
+DES[18] = Math.floor(13.8 - (DES[0] * 0.2) - (DES[7] * 0.5) - (DES[9] * 0.3) - (DES[12] * 0.5));
+DES[19] = Math.floor((DES[3] * 0.6) + (DES[6] * 0.3) + (DES[8] * 0.2) + (DES[12] * 0.3) - 2.2);
+DES[20] = Math.floor(3.8 + (DES[5] * 0.4) + (DES[14] * 0.4) - (DES[4] * 0.2) - (DES[9] * 0.3));
 
 switch (true){
   case DES[0] < 4:
@@ -1770,7 +1770,7 @@ switch (true){
     adj[0] = adj1[0]
     break;
   case DES[0] < 6:
-    Anivel = 2;
+    niveles[0] = 2;
     break;
   default:
     niveles[0] = 3;
@@ -1836,15 +1836,27 @@ for (let i = 0; i < 21; i++){
     {
       label: "Personalidad 16 Factores",
       data: DES.map(value => value * 10),
-      backgroundColor: DES.map(value => {
-        return (value >= 4 && value <= 7) 
-          ? "rgba(30, 144, 255, 0.7)"
-          : "rgba(173, 216, 230, 0.7)";
+      backgroundColor: DES.map((value, index) => {
+        if (index > 0) {
+          return (value >= 4 && value < 7) 
+            ? "rgba(30, 144, 255, 0.7)"
+            : "rgba(173, 216, 230, 0.7)";
+        } else {
+          return (value >= 4 && value < 6) 
+            ? "rgba(30, 144, 255, 0.7)"
+            : "rgba(173, 216, 230, 0.7)";
+        }
       }),
-      borderColor: DES.map(value => {
-        return (value >= 4 && value <= 7) 
-          ? "rgba(30, 144, 255, 0.7)"
-          : "rgba(173, 216, 230, 0.7)";
+      borderColor: DES.map((value, index) => {
+        if (index > 0) {
+          return (value >= 4 && value < 7) 
+            ? "rgba(30, 144, 255, 0.7)"
+            : "rgba(173, 216, 230, 0.7)";
+        } else {
+          return (value >= 4 && value < 6) 
+            ? "rgba(30, 144, 255, 0.7)"
+            : "rgba(173, 216, 230, 0.7)";
+        }
       }),
       borderWidth: 1,
     },
