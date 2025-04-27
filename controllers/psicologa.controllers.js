@@ -2,6 +2,7 @@ const { response, request } = require("express");
 const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+const readXlsxFile = require("read-excel-file/node");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
@@ -331,13 +332,14 @@ exports.crear_grupo = (request, response, next) => {
   });
 };
 
-exports.post_grupo = (request, response, next) => {
+exports.post_grupo = async (request, response, next) => {
+  console.log(request.files);
   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
   const fechaGrupoInicioIOS = `${request.body.fechaPruebaGrupal}T${request.body.horaPruebaGrupal}:00`;
   const inicioDateGrupo = new Date(fechaGrupoInicioIOS);
   const finalDateGrupo = new Date(inicioDateGrupo.getTime() + 90 * 60000);
   const fechaGrupoFinalIOS = finalDateGrupo.toISOString();
-  //TRABAJO AQUI
+
   const mi_grupo = new Grupo(
     request.body.institucion,
     request.body.posgrado,
@@ -345,76 +347,146 @@ exports.post_grupo = (request, response, next) => {
     request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal,
     request.body.enlaceZoom
   );
-  const eventoNuevo = new eventoGoogle(
-    `Sesion Grupal de: ${request.body.institucion} para el posgrado ${request.body.posgrado}`,
-    "Zoom",
-    `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
-    fechaGrupoInicioIOS,
-    fechaGrupoFinalIOS
-  );
-  const eventoCreado = {
-    summary: eventoNuevo.nombre,
-    location: eventoNuevo.lugar,
-    description: eventoNuevo.descripcion,
-    start: {
-      dateTime: eventoNuevo.inicio,
-      timeZone: "America/Mexico_City",
-    },
-    end: {
-      dateTime: eventoNuevo.final,
-      timeZone: "America/Mexico_City",
-    },
-  };
-  calendar.events.insert(
-    {
-      calendarId: "primary",
-      resource: eventoCreado,
-    },
-    (err, ev) => {
-      if (err) {
-        console.error("Error creando evento: " + err);
-      } else {
-        console.log("EXITO AL CREAR EVENTO");
+
+  try {
+    await mi_grupo.save();
+
+    const excelFile = request.files.find(
+      (file) => file.fieldname === "archivoExcel"
+    );
+
+    if (excelFile) {
+      const path = excelFile.path;
+      const rows = await readXlsxFile(path);
+      console.log("Rows: ", rows);
+      console.log("Aspirante: ", rows[1]);
+
+      for (let i = 1; i < rows.length; i++) {
+        const [
+          nombres,
+          apellidoPaterno,
+          apellidoMaterno,
+          codigoIdentidad,
+          correo,
+          telefono,
+          pais,
+          estado,
+          universidadProcedencia,
+        ] = rows[i];
+
+        const nuevoAspirante = new Aspirante(
+          codigoIdentidad,
+          nombres,
+          apellidoPaterno,
+          apellidoMaterno,
+          telefono,
+          estado + " " + pais,
+          correo,
+          universidadProcedencia
+        );
+        await nuevoAspirante.save();
+
+        const user = await Aspirante.fetchByCI(codigoIdentidad);
+        const idUsuario = user[0];
+        console.log(idUsuario);
+
+        // const mi_perteneceGrupo = new PerteneceGrupo(
+        //   mi_grupo.idGrupo,
+        //   idUsuario,
+        //   "Por definir",
+        //   "Por definir"
+        // );
+
+        // await mi_perteneceGrupo.save();
+
+        // const nombreUsuario =
+        //   mi_aspirante.codigoIdentidad + new Date().getFullYear();
+        // const contraseñaBase = uuidv4();
+
+        // console.log("Usuario", nombreUsuario);
+        // console.log("Contraseña Base: " + contraseñaBase);
+
+        // const mi_usuario = new Usuario(
+        //   mi_aspirante.idUsuario,
+        //   nombreUsuario,
+        //   contraseñaBase,
+        //   "2"
+        // );
+
+        // await mi_usuario.save();
       }
+    } else {
+      console.error("No se encontró el archivo de Excel.");
     }
-  );
-  mi_grupo
-    .save()
-    .then(() => {
-      const pruebas = Array.isArray(request.body.pruebasOpcion)
-        ? request.body.pruebasOpcion
-        : [request.body.pruebasOpcion];
 
-      const promesas = pruebas.map((prueba) => {
-        return Prueba.fetchOneNombre(prueba).then(([rows]) => {
-          const idPrueba = rows[0]?.idPrueba;
+    const eventoNuevo = new eventoGoogle(
+      `Sesion Grupal de: ${request.body.institucion} para el posgrado ${request.body.posgrado}`,
+      "Zoom",
+      `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
+      fechaGrupoInicioIOS,
+      fechaGrupoFinalIOS
+    );
 
-          const mi_tienePruebas = new TienePruebas(
-            mi_grupo.idGrupo,
-            idPrueba,
-            request.body.fechaLimite
-          );
+    const eventoCreado = {
+      summary: eventoNuevo.nombre,
+      location: eventoNuevo.lugar,
+      description: eventoNuevo.descripcion,
+      start: {
+        dateTime: eventoNuevo.inicio,
+        timeZone: "America/Mexico_City",
+      },
+      end: {
+        dateTime: eventoNuevo.final,
+        timeZone: "America/Mexico_City",
+      },
+    };
 
-          return mi_tienePruebas.save();
-        });
+    calendar.events.insert(
+      {
+        calendarId: "primary",
+        resource: eventoCreado,
+      },
+      (err, ev) => {
+        if (err) {
+          console.error("Error creando evento: " + err);
+        } else {
+          console.log("EXITO AL CREAR EVENTO");
+        }
+      }
+    );
+
+    const pruebas = Array.isArray(request.body.pruebasOpcion)
+      ? request.body.pruebasOpcion
+      : [request.body.pruebasOpcion];
+
+    const promesas = pruebas.map((prueba) => {
+      return Prueba.fetchOneNombre(prueba).then(([rows]) => {
+        const idPrueba = rows[0]?.idPrueba;
+
+        const mi_tienePruebas = new TienePruebas(
+          mi_grupo.idGrupo,
+          idPrueba,
+          request.body.fechaLimite
+        );
+
+        return mi_tienePruebas.save();
       });
-
-      return Promise.all(promesas);
-    })
-    .then(() => {
-      request.session.info = "Grupo creado exitosamente";
-      request.session.grupoCreado = {
-        id: mi_grupo.idGrupo,
-        posgrado: mi_grupo.posgrado,
-        generacion: mi_grupo.generacion,
-        institucion: mi_grupo.institucion,
-      };
-      response.redirect("/psicologa/grupo/confirmarCreacion");
-    })
-    .catch((error) => {
-      console.log("Error al crear grupo o asignar pruebas:", error);
-      response.status(500).send("Error al procesar la creación del grupo.");
     });
+
+    await Promise.all(promesas);
+
+    request.session.info = "Grupo creado exitosamente";
+    request.session.grupoCreado = {
+      id: mi_grupo.idGrupo,
+      posgrado: mi_grupo.posgrado,
+      generacion: mi_grupo.generacion,
+      institucion: mi_grupo.institucion,
+    };
+    response.redirect("/psicologa/grupo/confirmarCreacion");
+  } catch (error) {
+    console.log("Error al crear grupo o asignar pruebas:", error);
+    response.status(500).send("Error al procesar la creación del grupo.");
+  }
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {
@@ -1297,9 +1369,8 @@ exports.getAnalisisColores = async (request, response, next) => {
   const { idGrupo, idUsuario, idInstitucion } = request.params;
   try {
     // Obtener información del aspirante
-    const [informacionAspiranteRows] = await Prueba.getInformacionAspirante(
-      idUsuario
-    );
+    const [informacionAspiranteRows] =
+      await Prueba.getInformacionAspirante(idUsuario);
 
     // Obtener selecciones de colores completas
     const [seleccionesColoresRows] =

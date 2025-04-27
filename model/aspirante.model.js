@@ -77,6 +77,17 @@ module.exports = class Aspirante {
       });
   }
 
+  static saveSexo(idUsuario, sexo) {
+    return db
+      .execute("UPDATE aspirantes SET sexo = ? WHERE idUsuario = ?", [
+        sexo,
+        idUsuario,
+      ])
+      .then(([result]) => {
+        return idUsuario;
+      });
+  }
+
   static fetchAll() {
     return db.execute("SELECT * FROM aspirantes WHERE hidden = 0");
   }
@@ -85,6 +96,13 @@ module.exports = class Aspirante {
     return db.execute("SELECT * FROM aspirantes WHERE idUsuario = ?", [
       idUsuario,
     ]);
+  }
+
+  static fetchByCI(codigoIdentidad) {
+    return db.execute(
+      "SELECT idUsuario FROM aspirantes WHERE codigoIdentidad = ?",
+      [codigoIdentidad]
+    );
   }
 
   static find(valor) {
