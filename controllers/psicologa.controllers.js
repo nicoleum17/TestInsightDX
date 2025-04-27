@@ -285,9 +285,22 @@ exports.get_respuestasA = (request, response, next) => {
                 grupo: grupoRows[0],
                 valores: resultados[0][0],
                 datos: datosAspirante[0],
+                interpretaciones: null,
               });
             }
           );
+        } else {
+          response.render("consultaRespuestasAspirante", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: "",
+            grupo: grupoRows[0],
+            valores: null,
+            datos: datosAspirante[0],
+            interpretaciones: null,
+          });
         }
       });
     });
