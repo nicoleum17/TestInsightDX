@@ -3,7 +3,6 @@
 node userPC <<device>>{
     node sistemaOperativo <<execution enviroment>>{
         node navegador <<execution enviroment>>{
-            
         }
     }
 }
@@ -23,5 +22,26 @@ node servidor <<device>>{
 }
 
 navegador -- CADDY : https
+
+node googleServicePC <<device>>{
+    node sistemaOperativoGoogleService <<execution enviroment>>{
+        node googleapis <<execution enviroment>>{
+
+        }
+    }
+}
+
+googleapis -- nodeJS
+
+
+node emailServicePC <<device>>{
+    node sistemaOperativoEmailService <<execution enviroment>>{
+        node mailersend <<execution enviroment>>{
+
+        }
+    }
+}
+
+mailersend -- nodeJS
 
 @enduml
