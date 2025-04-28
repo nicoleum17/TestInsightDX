@@ -15,7 +15,9 @@ node servidor <<device>>{
         node nodeJS <<execution enviroment>>{
             artifact app.js <<artefact>>
         }
-        node CADDY <<execution enviroment>>
+        node CADDY <<execution enviroment>>{
+            artifact CADDYFILE <<artefact>>
+        }
         mysql -- nodeJS: tcp/ip
         nodeJS -- CADDY: https
     }
@@ -31,7 +33,7 @@ node googleServicePC <<device>>{
     }
 }
 
-googleapis -- nodeJS
+googleapis -- nodeJS : https
 
 
 node emailServicePC <<device>>{
@@ -42,6 +44,6 @@ node emailServicePC <<device>>{
     }
 }
 
-mailersend -- nodeJS
+mailersend -- nodeJS : https
 
 @enduml
