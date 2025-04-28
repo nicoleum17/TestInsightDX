@@ -12,6 +12,7 @@ const ConsultaResultados = require("../model/hartman/consultaResultados.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
+const PerteneceGrupoParcial = require("../model/perteneceGrupoParcial.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
 const PruebaV = require("../model/vaultTech/prueba.model");
@@ -333,7 +334,6 @@ exports.crear_grupo = (request, response, next) => {
 };
 
 exports.post_grupo = async (request, response, next) => {
-  console.log(request.files);
   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
   const fechaGrupoInicioIOS = `${request.body.fechaPruebaGrupal}T${request.body.horaPruebaGrupal}:00`;
   const inicioDateGrupo = new Date(fechaGrupoInicioIOS);
@@ -358,8 +358,6 @@ exports.post_grupo = async (request, response, next) => {
     if (excelFile) {
       const path = excelFile.path;
       const rows = await readXlsxFile(path);
-      console.log("Rows: ", rows);
-      console.log("Aspirante: ", rows[1]);
 
       for (let i = 1; i < rows.length; i++) {
         const [
@@ -369,51 +367,48 @@ exports.post_grupo = async (request, response, next) => {
           codigoIdentidad,
           correo,
           telefono,
+          genero,
           pais,
           estado,
           universidadProcedencia,
         ] = rows[i];
 
-        const nuevoAspirante = new Aspirante(
+        const mi_aspirante = new Aspirante(
           codigoIdentidad,
           nombres,
           apellidoPaterno,
           apellidoMaterno,
           telefono,
+          genero,
           estado + " " + pais,
           correo,
           universidadProcedencia
         );
-        await nuevoAspirante.save();
 
-        const user = await Aspirante.fetchByCI(codigoIdentidad);
-        const idUsuario = user[0];
-        console.log(idUsuario);
+        await mi_aspirante.save();
 
-        // const mi_perteneceGrupo = new PerteneceGrupo(
-        //   mi_grupo.idGrupo,
-        //   idUsuario,
-        //   "Por definir",
-        //   "Por definir"
-        // );
+        const mi_perteneceGrupoParcial = new PerteneceGrupoParcial(
+          mi_grupo.idGrupo,
+          mi_aspirante.idUsuario
+        );
 
-        // await mi_perteneceGrupo.save();
+        await mi_perteneceGrupoParcial.saveParcial();
 
-        // const nombreUsuario =
-        //   mi_aspirante.codigoIdentidad + new Date().getFullYear();
-        // const contraseñaBase = uuidv4();
+        const nombreUsuario =
+          mi_aspirante.codigoIdentidad + new Date().getFullYear();
+        const contraseñaBase = uuidv4();
 
-        // console.log("Usuario", nombreUsuario);
-        // console.log("Contraseña Base: " + contraseñaBase);
+        console.log("Usuario", nombreUsuario);
+        console.log("Contraseña Base: " + contraseñaBase);
 
-        // const mi_usuario = new Usuario(
-        //   mi_aspirante.idUsuario,
-        //   nombreUsuario,
-        //   contraseñaBase,
-        //   "2"
-        // );
+        const mi_usuario = new Usuario(
+          mi_aspirante.idUsuario,
+          nombreUsuario,
+          contraseñaBase,
+          "2"
+        );
 
-        // await mi_usuario.save();
+        await mi_usuario.save();
       }
     } else {
       console.error("No se encontró el archivo de Excel.");

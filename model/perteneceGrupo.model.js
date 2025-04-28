@@ -1,7 +1,6 @@
 const db = require("../util/database");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
-
 module.exports = class PerteneceGrupo {
   constructor(mi_idGrupo, mi_idUsuario, mi_fechaZoomIndividual, mi_enlaceZoom) {
     this.idGrupo = mi_idGrupo;
