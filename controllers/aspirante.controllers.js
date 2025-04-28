@@ -1788,7 +1788,7 @@ exports.postGuardarSeleccionesColores = (request, response) => {
           if (rows.length === 0) {
             console.log("11. No existe registro, insertando...");
             return db.execute(
-              `INSERT INTO pruebasaspirante (idUsuario, idGrupo, idPrueba, idEstatus)
+              `INSERT INTO pruebasaspirante (idUsuario, idGrupo, idPrueba, estatus)
                   VALUES (?, ?, ?, 'En proceso')`,
               [request.session.idUsuario, idGrupo, idPrueba]
             );
