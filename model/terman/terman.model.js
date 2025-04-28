@@ -19,7 +19,7 @@ class terman {
 
   async fetchOpcionesSerieById(idSerie) {
     const [opciones] = await db.execute(
-      "SELECT idPreguntaTerman, opcionTerman, descripcionTerman FROM opcionesterman WHERE idPreguntaTerman IN (SELECT idPreguntaTerman FROM preguntasTerman WHERE idSerieTerman = ?)",
+      "SELECT idPreguntaTerman, opcionTerman, descripcionTerman FROM opcionesterman WHERE idPreguntaTerman IN (SELECT idPreguntaTerman FROM preguntasterman WHERE idSerieTerman = ?)",
       [idSerie]
     );
     return opciones;
