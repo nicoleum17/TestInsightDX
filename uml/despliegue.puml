@@ -23,13 +23,13 @@ node servidor <<device>>{
 }
 
 artifact testInsight <<artefact>>
-mysql -[dashed]-> testInsight : [dashed]
+mysql -[dashed]-> testInsight : <<deploy>>
 
 artifact app.js <<artefact>>
-nodeJS -[dashed]-> app.js : [dashed]
+nodeJS -[dashed]-> app.js : <<deploy>>
 
 artifact CaddyFile <<artefact>>
-CADDY -[dashed]-> CaddyFile : [dashed]
+CADDY -[dashed]-> CaddyFile : <<deploy>>
 
 
 navegador -- CADDY : <<https>>
@@ -42,7 +42,7 @@ node googleServicePC <<device>>{
     }
 }
 
-googleapis -- nodeJS : https
+googleapis -- nodeJS : <<https>>
 
 
 node emailServicePC <<device>>{
@@ -53,6 +53,6 @@ node emailServicePC <<device>>{
     }
 }
 
-mailersend -- nodeJS : https
+mailersend -- nodeJS : <<https>>
 
 @enduml
