@@ -1,8 +1,9 @@
 <%- include('includes/_navbarP')%>
 
 <body class="fullHeight">
-  <section class="section">
-    <div class="title has-text-weight-semibold">Aspirante</div>
+  <section class="section has-background-warning">
+    <div class="container is-max-tablet">
+    <div class="title is-1 has-text-weight-semibold mt-3">Aspirantes</div>
 
     <div class="columns">
       <div class="column"></div>
@@ -24,11 +25,13 @@
   <section>
     <div class="container is-align-items-center">
       <div class="field has-addons">
-        <div class="control" style="position: relative; left: 50%; transform: translateX(-50%);">
+        <div
+          class="control"
+          style="position: relative; left: 50%; transform: translateX(-50%)">
           <input
             id="barra_buscar"
             name="barra_buscar"
-            class="input"
+            class="input is-primary is-focused is-medium"
             type="text"
             placeholder="Ingresa el parámetro"
             autocomplete="off" />
@@ -38,21 +41,23 @@
       <div
         id="contenedor-Sugerencias"
         class="contenedor-Sugerencias"
-        style="display: none"></div>
+        style="display: none ; z-index: 20;"></div>
     </div>
-    <div class="contenedorDatos" style="display: flex; justify-content: center; margin-top: 20px">
-      <table id="datos-aspirante" class="table">
-        <thead>
-          <tr>
+    <div
+      class="contenedorDatos"
+      style="display: flex; justify-content: center; margin-top: 20px;  font-size: 1.1em;">
+      <table id="datos-aspirante" class="table is-striped is-narrow">
+        <thead style="position: sticky; top: 0; z-index: 10;">
+          <tr class="is-info">
             <th>Nombre</th>
             <th>Codigo de Identidad</th>
             <th>Teléfono</th>
             <th>Lugar de Origen</th>
             <th>Correo</th>
             <th>Universidad de Procedencia</th>
-            <th>Modificar</th>
-            <th>Documentos</th>
-            <th>Eliminar</th>
+            <th class="has-text-centered">Modificar</th>
+            <th class="has-text-centered">Documentos</th>
+            <th class="has-text-centered">Eliminar</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -60,10 +65,10 @@
     </div>
     <br /><br /><br />
 
-    <div style="display: flex; justify-content: center; margin-top: 20px">
-      <table id="pruebas-aspirante" class="table">
+    <div style="display: flex; justify-content: center; margin-top: 20px; font-size: 1.2em;">
+      <table id="pruebas-aspirante" class="table is-striped">
         <thead>
-          <tr>
+          <tr class="is-info">
             <th>Prueba</th>
             <th>Fecha Límite</th>
             <th>Tiempo</th>
@@ -74,10 +79,11 @@
         <tbody></tbody>
       </table>
     </div>
+  </div>
   </section>
 
   <script>
-    function mostrarPruebas(aspirante){
+    function mostrarPruebas(aspirante) {
       const tableBody = document
         .getElementById("datos-aspirante")
         .getElementsByTagName("tbody")[0];
@@ -93,7 +99,12 @@
       const documentos = row.insertCell(7);
       const eliminar = row.insertCell(8);
 
-      (nombreAspirante.textContent = aspirante.nombres + " " + aspirante.apellidoPaterno + " " + aspirante.apellidoMaterno);
+      nombreAspirante.textContent =
+        aspirante.nombres +
+        " " +
+        aspirante.apellidoPaterno +
+        " " +
+        aspirante.apellidoMaterno;
       codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
       telefonoAspirante.textContent = aspirante.numTelefono;
       lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
@@ -112,7 +123,7 @@
           <i class="fa-regular fa-file" style="color: #000000;"></i>
           </button></a>`;
 
-          //"https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
+      //"https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
       eliminar.innerHTML = `<a href="aspirante/confirmacion/${aspirante.idUsuario}">
         <button class="image-button">
                       <img
@@ -120,9 +131,8 @@
               alt=""
               width="20px" />
           </button></a>`;
-          contenedorSugerencias.style.display = "none";
-      pruebas = document
-        .getElementById("pruebas-aspirante");
+      contenedorSugerencias.style.display = "none";
+      pruebas = document.getElementById("pruebas-aspirante");
       bodyPrueba = document
         .getElementById("pruebas-aspirante")
         .getElementsByTagName("tbody")[0];
@@ -144,17 +154,13 @@
             fechaPrueba.textContent = prueba.fecha;
             estatusPrueba.textContent = prueba.estatus;
             if (prueba.idPrueba == 1) {
-              fetch(
-                "/psicologa/kostickActiva/" + aspirante.idUsuario,
-                {
-                  method: "GET",
-                }
-              )
+              fetch("/psicologa/kostickActiva/" + aspirante.idUsuario, {
+                method: "GET",
+              })
                 .then((result) => result.json())
                 .then((data) => {
                   nombrePrueba.textContent = "Kostick";
-                  tiempoPrueba.textContent =
-                    data.kostickTiempo.tiempo + " hrs";
+                  tiempoPrueba.textContent = data.kostickTiempo.tiempo + " hrs";
                   respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/1">
                                             <button class="image-button">
                                               <img
@@ -171,8 +177,7 @@
                 .then((result) => result.json())
                 .then((data) => {
                   nombrePrueba.textContent = "16PF";
-                  tiempoPrueba.textContent =
-                    data.P16PFTiempo.tiempo + " hrs";
+                  tiempoPrueba.textContent = data.P16PFTiempo.tiempo + " hrs";
                   respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/2">
                                             <button class="image-button">
                                               <img
@@ -182,53 +187,53 @@
                                               /></button
                                           ></a>`;
                 });
-              }
-        }
-      });
+            }
+          }
+        });
     }
   </script>
 
   <script>
     function aspirantesCompletos() {
-    fetch("/psicologa/buscar/", {
-      method: "GET",
-    })
-    .then((result) => result.json())
-    .then((data) => {
-      const aspirantes = data.aspirantes;
+      fetch("/psicologa/buscar/", {
+        method: "GET",
+      })
+        .then((result) => result.json())
+        .then((data) => {
+          const aspirantes = data.aspirantes;
 
-      const tableBody = document
-        .getElementById("datos-aspirante")
-        .getElementsByTagName("tbody")[0];
+          const tableBody = document
+            .getElementById("datos-aspirante")
+            .getElementsByTagName("tbody")[0];
 
-      tableBody.innerHTML = "";
+          tableBody.innerHTML = "";
 
-      aspirantes.forEach((aspirante) => {
-        const row = tableBody.insertRow();
+          aspirantes.forEach((aspirante) => {
+            const row = tableBody.insertRow();
 
-        const nombreAspirante = row.insertCell(0);
-        const codigoIdentidadAspirante = row.insertCell(1);
-        const telefonoAspirante = row.insertCell(2);
-        const lugarOrigenAspirante = row.insertCell(3);
-        const correoAspirante = row.insertCell(4);
-        const universidadAspirante = row.insertCell(5);
-        const modificarAspirante = row.insertCell(6);
-        const documentos = row.insertCell(7);
-        const eliminar = row.insertCell(8);
+            const nombreAspirante = row.insertCell(0);
+            const codigoIdentidadAspirante = row.insertCell(1);
+            const telefonoAspirante = row.insertCell(2);
+            const lugarOrigenAspirante = row.insertCell(3);
+            const correoAspirante = row.insertCell(4);
+            const universidadAspirante = row.insertCell(5);
+            const modificarAspirante = row.insertCell(6);
+            const documentos = row.insertCell(7);
+            const eliminar = row.insertCell(8);
 
-        nombreAspirante.textContent = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
-        codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
-        telefonoAspirante.textContent = aspirante.numTelefono;
-        lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
-        correoAspirante.textContent = aspirante.correo;
-        universidadAspirante.textContent = aspirante.universidadOrigen;
+            nombreAspirante.textContent = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
+            codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
+            telefonoAspirante.textContent = aspirante.numTelefono;
+            lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
+            correoAspirante.textContent = aspirante.correo;
+            universidadAspirante.textContent = aspirante.universidadOrigen;
 
-        nombreAspirante.style.cursor = "pointer";
-        nombreAspirante.onclick = () => {
-          mostrarPruebas(aspirante);
-        };
+            nombreAspirante.style.cursor = "pointer";
+            nombreAspirante.onclick = () => {
+              mostrarPruebas(aspirante);
+            };
 
-        modificarAspirante.innerHTML = `
+            modificarAspirante.innerHTML = `
           <a href="modificarAspirante/${aspirante.idUsuario}">
             <button class="image-button">
               <img
@@ -239,29 +244,28 @@
           </a>
         `;
 
-        documentos.innerHTML = `
+            documentos.innerHTML = `
           <a href="reporteAspirante/${aspirante.idUsuario}">
             <button class="image-button">
               <i class="fa-regular fa-file" style="color: #000000;"></i>
             </button>
           </a>
         `;
-        eliminar.innerHTML = `<a href="aspirante/confirmacion/${aspirante.idUsuario}">
+            eliminar.innerHTML = `<a href="aspirante/confirmacion/${aspirante.idUsuario}">
         <button class="image-button">
                       <img
               src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
               alt=""
               width="20px" />
           </button></a>`;
-      });
-    })
-    .catch((error) => {
-      console.error("Error al cargar aspirantes:", error);
-    });
-    const pruebas = document
-        .getElementById("pruebas-aspirante");
+          });
+        })
+        .catch((error) => {
+          console.error("Error al cargar aspirantes:", error);
+        });
+      const pruebas = document.getElementById("pruebas-aspirante");
       pruebas.style.display = "none";
-  }
+    }
   </script>
 
   <script>
@@ -303,7 +307,7 @@
               sugerencia.classList.add("sugerencia-item");
               sugerencia.innerHTML = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
               sugerencia.onclick = () => {
-                mostrarPruebas(aspirante)
+                mostrarPruebas(aspirante);
               };
               contenedorSugerencias.appendChild(sugerencia);
             });
@@ -341,8 +345,8 @@
 
     .contenedor-Sugerencias {
       position: absolute;
-      left: 50%; transform:
-      translateX(-50%);
+      left: 50%;
+      transform: translateX(-50%);
       border: 1px solid #ddd;
       max-height: 200px;
       overflow-y: auto;
