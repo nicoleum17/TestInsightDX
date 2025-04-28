@@ -12,7 +12,8 @@
       action="/psicologa/grupo/confirmarCreacion"
       method="POST"
       enctype="multipart/form-data">
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
       <label class="label">Institución:</label>
       <input
         type="text"
@@ -37,17 +38,6 @@
         placeholder="ingresa la generación"
         required />
       <br /><br />
-
-      <!-- Subir archivo y fecha límite -->
-      <!-- <label class="label">Subir Archivo</label>
-    <div class="file">
-      <label class="file-label">
-        <input class="file-input" type="file" name="resume" accept=".csv" />
-        <span class="file-cta">
-          <span class="file-label"> Selecciona un archivo </span>
-        </span>
-      </label>
-    </div> -->
 
       <label class="label">Fecha Límite Pruebas:</label>
       <input
@@ -133,6 +123,25 @@
                 placeholder="ingresa un link"
                 required />
             </div>
+          </div>
+        </div>
+        <br>
+        <div class="columns">
+          <div class="column is-4">
+            <label class="label">Archivo de aspirantes: </label>
+            <span>Archivos permitidos: xlsx</span>
+          </div>
+          <div class="column file has-name is-fullwidth">
+            <label class="file-label">
+              <input class="file-input" type="file" name="archivoExcel" id="excelAspirantes" accept="xlsx" required/>
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label"> Elige un archivo </span>
+              </span>
+              <span class="file-name">  </span>
+            </label>
           </div>
         </div>
       </section>
@@ -235,6 +244,23 @@
       );
     }
   });
+
+  const excel = document.getElementById('excelAspirantes');
+  const fileName = document.querySelector('.file-name');
+
+  excel.addEventListener('change', function() {
+    const archivo = excel.files[0];
+    if (archivo) {
+      fileName.textContent = archivo.name; 
+    } else {
+      fileName.textContent = 'No hay archivo seleccionado'; 
+    }
+  });
+
+  excel.addEventListener('change', async function () {
+    const content = await readXlsxFile(excel.files[0]);
+  });
+
 </script>
 
 <%- include('includes/_footer') %>

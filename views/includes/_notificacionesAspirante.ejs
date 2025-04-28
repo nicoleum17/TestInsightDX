@@ -1,17 +1,71 @@
 <style>
   .fullHeight {
-    min-height: 90vh;
+    min-height: 70vh;
     margin-top: 20px;
   }
 </style>
-<section class="section fullHeight">
-  <div class="container">
-    <div class="test1 columns is-vcentered ml-5">
-      <div class="column">
-        <li>Aplicación de prueba grupal: 05/03/2025 11:00</li>
-        <li>Entrevista individual: 05/03/2025 13:00</li>
-        <li>Recuerda subir tu CV</li>
+<section class="section fullHeight has-background-warning">
+  <div class="container is-max-tablet">
+    <br />
+    <h1 class="title is-3 has-text-weight-semibold">Recordatorios</h1>
+    <div class="container">
+      <div class="test1 columns is-vcentered ml-5">
+        <div id="pg" class="column" style="font-size: large"></div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  function calculateDaysUntilFutureDate(futureDate) {
+    const currentDate = new Date();
+    const endDate = new Date(futureDate);
+    const timeDifference = endDate - currentDate;
+    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+    return daysDifference;
+  }
+
+  const prueba = `<%= pruebaGrupal %>`;
+  const zoomIndividual = `<%= zoomIndividual %>`;
+  const limitePrueba = `<%= limitePrueba %>`;
+
+  if (prueba) {
+    let futureDate = `<%= pruebaGrupal.toISOString().split('T')[0] %>`;
+    const daysLeft = calculateDaysUntilFutureDate(futureDate);
+    if (daysLeft >= 0) {
+      const pg = document.getElementById("pg");
+      pg.innerHTML += `<article class="message is-info">
+  <div class="message-body">
+      <p class="has-text-black">Aplicación de prueba grupal: <strong> ${futureDate} </strong>(${daysLeft} días restantes)</p>
+      </div>
+      </article>
+      `;
+    }
+  }
+
+  if (zoomIndividual) {
+    const futureDate = `<%= zoomIndividual.toISOString().split('T')[0] %>`;
+    const daysLeft = calculateDaysUntilFutureDate(futureDate);
+    if (daysLeft >= 0) {
+      const pg = document.getElementById("pg");
+      pg.innerHTML += `<article class="message is-info">
+  <div class="message-body">
+      <p class="has-text-black">Entrevista individual: <strong>${futureDate} </strong>(${daysLeft} días restantes)\ <br><strong>Recuerda subir tu CV y Kardex antes de la Entrevista</strong></p>
+            </div>
+      </article>`;
+    }
+  }
+
+  if (limitePrueba) {
+    const futureDate = `<%= limitePrueba.toISOString().split('T')[0] %>`;
+    const daysLeft = calculateDaysUntilFutureDate(futureDate);
+    if (daysLeft >= 0) {
+      const pg = document.getElementById("pg");
+      pg.innerHTML += `<article class="message is-info">
+  <div class="message-body">
+      <p class="has-text-black">Limite para realizar las pruebas:<strong> ${futureDate} </strong> (${daysLeft} días restantes)</p>
+      </div>
+      </article>`;
+    }
+  }
+</script>

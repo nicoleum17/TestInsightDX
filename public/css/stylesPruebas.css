@@ -1,0 +1,102 @@
+/* Custom styles for Hartman Test */
+body {
+  background-color: #f5f5f5;
+  font-family: "Arial", sans-serif;
+}
+
+.progress-container {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+progress.custom-progress::-webkit-progress-value {
+  background-color: #778377;
+}
+
+.progress-text {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: #778377;
+}
+
+.question-box {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+  transition: all 0.3s ease;
+}
+
+.question-box:hover {
+  background-color: #fafafa;
+}
+
+.question-number {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  color: #778377;
+}
+
+.question-text {
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.instructions {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #ebf3dc;
+  border-radius: 6px;
+  border-left: 4px solid #778377;
+}
+
+.instructions-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: rgb(40, 40, 40);
+}
+
+.ranking-select {
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+  margin-top: 2rem;
+  text-align: center;
+}
+.button.is-info.is-medium {
+  background-color: #778377;
+}
+
+.is-selected {
+  background-color: #ebf3dc;
+  border-left: 4px solid #778377;
+}
+
+.has-duplicate {
+  background-color: #fff3f3;
+  border-left: 4px solid #ff3860;
+  box-shadow: 0 0 5px rgba(255, 56, 96, 0.4);
+  color: rgb(92, 7, 24);
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+#error-message {
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .question-container {
+    flex-direction: column;
+  }
+
+  .question-box {
+    padding: 0.75rem;
+  }
+}

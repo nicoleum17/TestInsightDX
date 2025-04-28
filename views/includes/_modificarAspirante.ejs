@@ -9,7 +9,7 @@
       <!-- Título -->
       <h2 class="title is-3 mt-5 has-text-weight-semibold">Modificar Aspirante</h2>
       <form action="/psicologa/modificarAspirante/<%= aspirante.idUsuario%> " method="POST" enctype="multipart/form-data">
-<!--CSRF TOKEN-->
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <input type="hidden" name="idUsuario" value="<%= aspirante.idUsuario%>" />
       <div class="box has-background-info has-text-white">
         <label class="label">Nombre(s):</label>
@@ -29,6 +29,9 @@
         <br><br>
         <label class="label">Número de Teléfono:</label>
         <input type="text" class="input" name="numTelefono" value="<%= aspirante.numTelefono %>" required>
+        <br><br>
+        <label for="genero" class="label">Género:</label>
+        <input type="text" class="input" name="genero" value="<%= aspirante.genero %>" required>
         <br><br>
         <label class="label">Lugar de origen:</label>
         <input type="text" class="input" name="lugarOrigen" value="<%= aspirante.lugarOrigen %>" required>

@@ -1,0 +1,31 @@
+@startuml   consultaCalendario
+
+actor       Psicologa              as a1
+actor       Google                 as a2
+control psicologa.controllers      as a3
+boundary    psicologa.routes       as a4
+boundary calendarioPsicologa.ejs   as a5
+
+activate a1
+a1 -> a4: GET/calendario/eventos
+deactivate a1
+activate a4
+a4 -> a3: getEventoCalendario(request, response)
+deactivate a4
+activate a3
+a3 -> a2: google.calendar({ version: "v3", auth: oauth2Client })
+activate a2
+a3 ->> a2: calendario.events.list()
+a2 -->> a3: data
+deactivate a2
+a3 -> a5: response.render("calendarioPsicologa")
+deactivate a3
+activate a5
+a5 -> a1: HTML
+deactivate a5
+activate a1
+
+
+
+
+@enduml

@@ -9,6 +9,7 @@ module.exports = class Aspirante {
     mi_apellidoPaterno,
     mi_apellidoMaterno,
     mi_numTelefono,
+    mi_genero,
     mi_lugarOrigen,
     mi_correo,
     mi_universidadOrigen
@@ -19,13 +20,14 @@ module.exports = class Aspirante {
     this.apellidoPaterno = mi_apellidoPaterno;
     this.apellidoMaterno = mi_apellidoMaterno;
     this.numTelefono = mi_numTelefono;
+    this.genero = mi_genero;
     this.lugarOrigen = mi_lugarOrigen;
     this.correo = mi_correo;
     this.universidadOrigen = mi_universidadOrigen;
   }
   save() {
     return db.execute(
-      "INSERT INTO aspirantes (codigoIdentidad, idUsuario, nombres, apellidoPaterno, apellidoMaterno, numTelefono, lugarOrigen, correo, universidadOrigen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO aspirantes (codigoIdentidad, idUsuario, nombres, apellidoPaterno, apellidoMaterno, numTelefono, genero, lugarOrigen, correo, universidadOrigen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         this.codigoIdentidad,
         this.idUsuario,
@@ -33,6 +35,7 @@ module.exports = class Aspirante {
         this.apellidoPaterno,
         this.apellidoMaterno,
         this.numTelefono,
+        this.genero,
         this.lugarOrigen,
         this.correo,
         this.universidadOrigen,
@@ -47,6 +50,7 @@ module.exports = class Aspirante {
     apellidoPaterno,
     apellidoMaterno,
     numTelefono,
+    genero,
     lugarOrigen,
     correo,
     universidadOrigen,
@@ -54,13 +58,14 @@ module.exports = class Aspirante {
   ) {
     return db
       .execute(
-        "UPDATE aspirantes SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ? WHERE idUsuario = ?",
+        "UPDATE aspirantes SET codigoIdentidad = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, numTelefono = ?, genero = ?, lugarOrigen = ?, correo = ?, universidadOrigen = ? WHERE idUsuario = ?",
         [
           codigoIdentidad,
           nombres,
           apellidoPaterno,
           apellidoMaterno,
           numTelefono,
+          genero,
           lugarOrigen,
           correo,
           universidadOrigen,
@@ -71,8 +76,20 @@ module.exports = class Aspirante {
         return idUsuario;
       });
   }
+
+  static saveSexo(idUsuario, sexo) {
+    return db
+      .execute("UPDATE aspirantes SET sexo = ? WHERE idUsuario = ?", [
+        sexo,
+        idUsuario,
+      ])
+      .then(([result]) => {
+        return idUsuario;
+      });
+  }
+
   static fetchAll() {
-    return db.execute("SELECT * FROM aspirantes");
+    return db.execute("SELECT * FROM aspirantes WHERE hidden = 0");
   }
 
   static fetchOne(idUsuario) {
@@ -81,10 +98,17 @@ module.exports = class Aspirante {
     ]);
   }
 
+  static fetchByCI(codigoIdentidad) {
+    return db.execute(
+      "SELECT idUsuario FROM aspirantes WHERE codigoIdentidad = ?",
+      [codigoIdentidad]
+    );
+  }
+
   static find(valor) {
     return db.execute(
       `SELECT *
-        FROM aspirantes a`
+        FROM aspirantes a WHERE hidden = 0`
     );
   }
 
@@ -115,6 +139,28 @@ module.exports = class Aspirante {
     return db.execute(
       "UPDATE `pertenecegrupo` SET `reporte` = ? WHERE `idUsuario` = ?",
       [reporte, idUsuario]
+    );
+  }
+
+  static notificacion(idUsuario) {
+    return db.execute(
+      `SELECT g.fechaPruebaGrupal as pruebaGrupal, pg.fechaZoomIndividual as zoomIndividual, tp.fechaLimitePrueba as limitePrueba
+    FROM perteneceGrupo pg
+    JOIN grupos g ON g.idGrupo = pg.idGrupo
+    JOIN tienePruebas tp ON g.idGrupo = tp.idGrupo
+    WHERE pg.idUsuario = ?`,
+      [idUsuario]
+    );
+  }
+
+  static async borrarAspirante(idAspirante) {
+    await db.execute(
+      "UPDATE `aspirantes` SET `hidden` = ? WHERE `idUsuario` = ?;",
+      [1, idAspirante]
+    );
+    return db.execute(
+      "UPDATE `usuarios` SET `hidden` = ? WHERE `idUsuario` = ?",
+      [1, idAspirante]
     );
   }
 };

@@ -19,7 +19,7 @@
           enctype="multipart/form-data">
           <div class="file is-boxed">
             <label class="file-label">
-              <!--CSRF TOKEN-->
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
               <input
                 class="file-input"
                 type="file"

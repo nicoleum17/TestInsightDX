@@ -28,7 +28,7 @@
       </progress>
       <% if (pregunta) { %>
       <p class="subtitle is-2 mt-3" id="numero-pregunta">
-        Pregunta <%= pregunta.numeroPreguntaKostick %>
+        Par <%= pregunta.numeroPreguntaKostick %>
       </p>
       <input
         type="hidden"
@@ -49,7 +49,7 @@
       </div>
       <% }) %> <% } %> <% } %>
 
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input
         type="hidden"
         id="idUsuario"
@@ -100,7 +100,7 @@
       </div>
       <% }) %> <% } %> <% } %>
 
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input
         type="hidden"
         id="idUsuario1"
@@ -166,7 +166,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //CSRF
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
         },
         body: JSON.stringify(data),
       })
@@ -185,7 +185,7 @@
           const questionNumberElement =
             document.getElementById("numero-pregunta");
           html += `<p class="subtitle is-2 mt-3" id="numero-pregunta">
-                    Pregunta ${data.pregunta.numeroPreguntaKostick}
+                    Par ${data.pregunta.numeroPreguntaKostick}
                     </p>
                           <input
         type="hidden"
@@ -206,7 +206,8 @@
                             `;
             });
           }
-          html += ` <!--CSRF TOKEN-->
+          html += `                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
                 <input
         type="hidden"
         id="idUsuario"
@@ -283,7 +284,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //CSRF TOKEN
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
         },
         body: JSON.stringify(data),
       })
@@ -346,7 +347,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //CSRF
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
         },
         body: JSON.stringify(data),
       })
@@ -389,7 +390,8 @@
                             `;
             });
           }
-          html += ` <!--CSRF TOKEN-->
+          html += `                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
                 <input
         type="hidden"
         id="idUsuario1"
@@ -466,7 +468,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //CSRF
+          "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
         },
         body: JSON.stringify(data),
       })
@@ -501,5 +503,16 @@
             document.getElementById("cronometro").innerHTML = "TIME UP";
         }
     }, 1000);
+  </script>
+
+  <script>
+    // Bloquear boton de regresar
+    window.addEventListener("load", function () {
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+        alert("No puedes regresar durante la prueba.");
+      });
+    });
   </script>
 </body>

@@ -7,7 +7,7 @@
 </style>
 <section class="section fullHeight">
   <div class="container">
-    <div class="title">Subir Kardex</div>
+    <div class="title has-text-weight-semibold">Subir Kardex</div>
     <div class="columns is-mobile">
       <div class="column">
         <div class="has-text-weight-bold">Subir Archivos</div>
@@ -19,7 +19,7 @@
           enctype="multipart/form-data">
           <div class="file is-boxed">
             <label class="file-label">
-              <!--CSRF TOKEN-->
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
               <input
                 class="file-input"
                 type="file"

@@ -14,6 +14,8 @@ let tiempoInicioPregunta = null;
 // Llamar a la funciónes
 cargarPreguntas();
 cronometro(valorTemporizador);
+// Ocultar el botón de enviar respuestas inicialmente
+enviarRespuestas.classList.add("d-none");
 
 // Función del temporizador
 function cronometro(tiempo) {
@@ -106,7 +108,13 @@ let preguntas = []; // Arreglo para poder tener las preguntas
 // Función para cargar las preguntas desde la base de datos
 async function cargarPreguntas() {
   try {
-    const response = await fetch("/aspirante/prueba-otis", { method: "POST" });
+    const response = await fetch("/aspirante/prueba-otis", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
+      },
+    });
     const data = await response.json();
     preguntas = data.preguntas;
     if (preguntas.length > 0) {
@@ -122,6 +130,7 @@ async function cargarPreguntas() {
 
 // Función para enseñar cada pregunta junto con su número
 function ensenarPregunta(index) {
+  const progresoOtis = document.querySelector(".progresoOtis");
   const areaTexto = document.querySelector(".areaTexto");
   const pregTexto = document.querySelector(".pregtext");
   const optLista = document.querySelector(".optionList");
@@ -129,9 +138,15 @@ function ensenarPregunta(index) {
   const pregunta = preguntas[index];
 
   tiempoInicioPregunta = Date.now();
-
+  progresoOtis.innerHTML = `                <progress
+                  class="progress is-link"
+                  max="75"
+                  value="${preguntas.numeroPregunta}"
+                  id="progressBar">
+                  ${preguntas.numeroPregunta}
+                </progress>
+              </div>`;
   // Mostrar área
-  areaTexto.innerHTML = `<h5>${pregunta.nombreAreaOtis}</h5><hr>`;
 
   // Mostrar la pregunta
   let pregTag = `<span>${pregunta.num}. ${pregunta.pregunta}</span>`;
@@ -141,9 +156,9 @@ function ensenarPregunta(index) {
   let optTag = "";
   if (pregunta.opciones && pregunta.opciones.length > 0) {
     pregunta.opciones.forEach((opcion) => {
-      optTag += `<div class="option" data-idPregunta="${pregunta.idPreguntaOtis}">
+      optTag += `<div class="option subtitle is-4 mx-5" data-idPregunta="${pregunta.idPreguntaOtis}">
                 <input type="radio" name="pregunta${index}" value="${opcion.idOpcionOtis}">
-                <span>${opcion.descripcionOpcion}</span>
+                <span>${opcion.opcionOtis}.- ${opcion.descripcionOpcion}</span>
             </div>`;
     });
   } else {
@@ -181,14 +196,6 @@ function opcionSeleccionada(element) {
 
 // Tener un contador de en qué pregunta vas (progreso)
 function pregContador(index) {
-  const barra = document.getElementById("barraProgreso");
-  const texto = document.getElementById("textoProgreso");
-
-  if (!barra || !texto || preguntas.length === 0) {
-    console.error("No se encontró el elemento de progreso o no hay preguntas.");
-    return;
-  }
-
   let porcentaje = Math.floor((index / preguntas.length) * 100);
 
   barra.style.width = porcentaje + "%";
@@ -196,9 +203,6 @@ function pregContador(index) {
 }
 
 let respuestasSeleccionadas = [];
-
-// Ocultar el botón de enviar respuestas inicialmente
-enviarRespuestas.classList.add("d-none");
 
 const idUsuario = sessionStorage.getItem("idUsuario");
 const idGrupo = sessionStorage.getItem("idGrupo");
@@ -254,6 +258,7 @@ async function sendRespuestas() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-Token": document.querySelector('input[name="_csrf"]').value,
     },
     body: JSON.stringify(datosRespuestas),
   })

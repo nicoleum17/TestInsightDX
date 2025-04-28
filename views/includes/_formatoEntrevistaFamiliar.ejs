@@ -7,7 +7,7 @@
     <br />
     <div class="interviewFormat columns is-vcentered ml-5"></div>
     <form action="<%= rutaPost %>" method="POST">
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
       <input type="hidden" name="familia" value="<%= familia %>" />
       <div class="box" id="contenedorFamiliares">
@@ -89,13 +89,15 @@
                         </div>
                         <div class="column">
                             <label for="genero" class="label">Género:</label>
-                            <input
-                            class="input"
-                            type="text"
-                            placeholder="Hombre"
-                            id="genero"
-                            name="genero"
-                            required />
+                            <div class="select is-primary">
+                              <select name="genero" id="genero" required>
+                                <option value="" disabled hidden selected>
+                                            Seleccione una opción
+                                </option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                                <option value="Otro">Otro</option>
+                              </select>
                         </div>
                     </div>
                     <div class="columns is-vcentered ml-5">
@@ -114,6 +116,8 @@
                             </div>
                         </div>
                         <div class="has-text-right">
+                          <br>
+                          <br>
                             <button class="button mr-3" onclick="eliminarFamiliar(this)">
                                 <img src="https://static.thenounproject.com/png/2456540-200.png" width="25px" height="25px" />
                             </button>

@@ -1,5 +1,5 @@
 // Importa la configuración de la base de datos
-const db = require("../../util/database.js");
+const db = require("../../util/database");
 
 // Define la clase Hartman, encargada de manejar operaciones relacionadas con la prueba Hartman
 class Hartman {
@@ -44,7 +44,7 @@ class Hartman {
             SELECT idPreguntaHartman, respuestaAbierta, tiempoRespuesta
             FROM respuestashartman
             WHERE idUsuario = ? AND idGrupo = ?
-            GROUP BY idPreguntaHartman
+            GROUP BY idPreguntaHartman, respuestaAbierta, tiempoRespuesta
             ORDER BY idPreguntaHartman ASC
           `;
       const [rows] = await db.execute(query, [idUsuario, idGrupo]);

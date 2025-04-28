@@ -27,8 +27,9 @@
   <div class="columns">
     <div class="interviewFormat column has-text-centered">
     <form action="formatoEntrevistaFamilia" method="POST">
-<!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
+      <input type="hidden" name="idFamilia" value="<%= familia ? familia : "" %>" />
       <div class="block"></div>
       <button
         class="button has-background-primary has-text-warning"

@@ -1,7 +1,7 @@
 <%- include('includes/_navbarP') %>
 <style>
   .fullHeight {
-    min-height: 200vh;
+    min-height: 210vh;
     margin-top: 60px;
   }
 </style>
@@ -14,7 +14,7 @@
         action="registrarAspirante"
         method="POST"
         enctype="multipart/form-data">
-        <!--CSRF token-->
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <div class="subtitle">Grupo:</div>
         <div class="select is-fullwidth">
           <select name="grupo" required>
@@ -34,7 +34,7 @@
             type="text"
             class="input"
             name="nombre"
-            placeholder="ingresa los nombres"
+            placeholder="Ingresa el o los nombres"
             required />
           <br /><br />
           <label class="label">Apellido Paterno:</label>
@@ -42,7 +42,7 @@
             type="text"
             class="input"
             name="apellidoP"
-            placeholder="ingresa el apellido paterno"
+            placeholder="Ingresa el apellido paterno"
             required />
           <br /><br />
           <label class="label">Apellido Materno:</label>
@@ -50,7 +50,7 @@
             type="text"
             class="input"
             name="apellidoM"
-            placeholder="ingresa el apellido materno"
+            placeholder="Ingresa el apellido materno"
             required />
           <br /><br />
           <label class="label">Código de Identidad:</label>
@@ -58,7 +58,7 @@
             type="text"
             class="input"
             name="codigoI"
-            placeholder="ingresa el codigo de Identidad"
+            placeholder="Ingresa el codigo de Identidad"
             required />
           <br /><br />
           <label class="label">Correo Electrónico:</label>
@@ -66,7 +66,7 @@
             type="text"
             class="input"
             name="correo"
-            placeholder="ingresa el correo electrónico"
+            placeholder="Ingresa el correo electrónico"
             required />
           <br /><br />
           <label class="label">Número de Teléfono:</label>
@@ -74,29 +74,54 @@
             type="text"
             class="input"
             name="numeroTel"
-            placeholder="ingresa el número telefónico"
+            placeholder="Ingresa el número telefónico"
             required />
+          <br />
+          <br />
+          <label for="genero" class="label">Género:</label>
+          <div class="select is-primary">
+            <select name="genero" id="genero" required>
+              <option value="" disabled hidden selected>
+                Seleccione una opción
+              </option>
+              <option value="Hombre">Hombre</option>
+              <option value="Mujer">Mujer</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
           <br /><br />
-          <label class="label">Lugar de origen:</label>
-          <input
-            type="text"
-            class="input"
-            name="lugarO"
-            placeholder="ingresa el lugar de origen"
-            required />
-          <br /><br />
+          <div class="columns">
+            <div class="column">
+              <label class="label">País:</label>
+              <input
+                type="text"
+                class="input"
+                name="pais"
+                placeholder="Ingresa el país de origen"
+                required />
+            </div>
+            <div class="column">
+              <label class="label">Estado:</label>
+              <input
+                type="text"
+                class="input"
+                name="estado"
+                placeholder="Ingresa el estado de origen"
+                required />
+            </div>
+          </div>
           <label class="label">Universidad de Procedencia:</label>
           <input
             type="text"
             class="input"
             name="universidad"
-            placeholder="ingresa la universidad de procedencia"
+            placeholder="Ingresa la universidad de procedencia"
             required />
           <br /><br />
         </div>
         <br /><br />
         <section id="SesionIndividual">
-          <div class="title">Sesión Individual</div>
+          <div class="title has-text-weight-semibold">Sesión Individual</div>
           <div class="box has-background-info">
             <label class="label">Fecha</label>
             <input

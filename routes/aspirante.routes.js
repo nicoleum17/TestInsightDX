@@ -303,6 +303,8 @@ router.get(
   aspiranteController.get_documentos_activos
 );
 
+router.get("/pdf/:filename", isAuth, aspiranteController.getPdfFile);
+
 router.get(
   "/formatoEntrevista/:id",
   isAuth,
@@ -310,17 +312,6 @@ router.get(
 );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-router.get("/instrucciones-otis", aspiranteController.getIntruccionesOtis);
-router.post("/instrucciones-otis", aspiranteController.postInstruccionesOtis);
-router.get(
-  "/datos-personales-otis",
-  aspiranteController.getDatosPersonalesOtis
-);
-router.post(
-  "/datos-personales-otis",
-  aspiranteController.postDatosPersonalesOtis
-);
 
 router.get("/prueba-otis", isAuth, aspiranteController.getPruebaOtis);
 router.post("/prueba-otis", isAuth, aspiranteController.obtenerPreguntas);
@@ -335,31 +326,45 @@ router.get(
   aspiranteController.getPruebaCompletada
 );
 
-router.get(
-  "/instrucciones-colores",
-  aspiranteController.getInstruccionesColores
-);
-router.post(
-  "/instrucciones-colores",
-  aspiranteController.postInstruccionesColores
-);
-router.get(
-  "/datos-personales-colores",
-  aspiranteController.getDatosPersonalesColores
-);
-router.post(
-  "/datos-personales-colores",
-  aspiranteController.postDatosPersonalesColores
-);
-
-router.get("/prueba-colores", aspiranteController.getPruebaColores);
-router.post("/prueba-colores", aspiranteController.postPruebaColores);
+router.get("/prueba-colores", isAuth, aspiranteController.getPruebaColores);
+router.post("/prueba-colores", isAuth, aspiranteController.postPruebaColores);
 router.post(
   "/guardar-selecciones-colores",
+  isAuth,
   aspiranteController.postGuardarSeleccionesColores
 );
 router.get("/prueba-completada", aspiranteController.getPruebaCompletada);
 
 router.get("/respuestas-enviadas", aspiranteController.getRespuestasEnviadas);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+router.get("/hartman/fase1", isAuth, aspiranteController.get_HartmanFase1);
+
+router.post("/hartman/fase1", isAuth, aspiranteController.post_HartmanFase1);
+
+// Ruta GET para mostrar la segunda fase de la prueba de Hartman
+router.get("/hartman/fase2", isAuth, aspiranteController.get_HartmanFase2);
+
+// Ruta POST para enviar las respuestas de la segunda fase de la prueba de Hartman
+router.post("/hartman/fase2", isAuth, aspiranteController.post_HartmanFase2);
+
+router.get(
+  "/responder/terman",
+  isAuth,
+  aspiranteController.get_responderTerman
+);
+
+router.get(
+  "/responder/terman/serie/:idSerie",
+  isAuth,
+  aspiranteController.get_infoSerie
+);
+
+router.post(
+  "/responder/terman/serie/:idSerie",
+  isAuth,
+  aspiranteController.post_respuestasSerie
+);
 
 module.exports = router;

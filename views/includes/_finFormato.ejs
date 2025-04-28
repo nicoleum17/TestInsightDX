@@ -12,7 +12,7 @@
     </div>
   </div>
   <FORM action="confirmacion" method="POST">
-    <!--CSRF TOKEN-->
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
     <input type="hidden" name="idFormato" value="<%= formato %>" />
     <input type="hidden" name="user" value="<%= usuario %>" />
 

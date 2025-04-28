@@ -151,11 +151,13 @@
           <form action="/login" method="POST" class="formLogin">
             <div class="columns usuario">
               <div class="column usuarioColumn is-two-thirds">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
                 <label for="usuario" class="label">Nombre de usuario</label>
                 <input
                   class="input"
                   type="text"
-                  placeholder="AALF031220MMCNRA8"
+                  placeholder="RODL810710HDFDNN3"
                   id="usuario"
                   name="usuario" />
               </div>

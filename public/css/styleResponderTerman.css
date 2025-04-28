@@ -1,0 +1,154 @@
+.site {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* -- Contenido en main --  */
+
+.site main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrado vertical */
+  align-items: center; /* Centrado horizontal */
+}
+
+/* -- Elementos generales */
+
+button {
+  background-color: #778377 !important;
+}
+
+/* -- BARRA DE PROGRESO -- */
+
+progress::-webkit-progress-value {
+  transition: width 0.5s ease;
+}
+
+#progreso-texto {
+  margin-bottom: 20px !important;
+}
+
+/* -- CONTENDEDOR DE ADVERTENCIA -- */
+
+#advertencia-inicial div {
+  background-color: #ebf3dc;
+}
+
+#botones-inicio {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+#volver-prueba,
+#no-contestar {
+  background-color: #f5756a !important;
+}
+/*  CONTENDEDOR DE SERIES 
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+*/
+
+#contenedor-serie {
+  width: 100%;
+  max-width: 960px; /* Controlas que no se extienda demasiado en pantallas grandes */
+  margin: 0 auto; /* Centrado horizontal */
+  padding: 1rem;
+}
+
+#cronometro {
+  background-color: #ebf3dc;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+#instrucciones-serie {
+  background-color: #ebf3dc;
+}
+
+#instrucciones-serie p {
+  font-size: large;
+  color: #222; /* si quieres darle un tono suave y profesional */
+}
+
+/* -- PREGUNTAS --*/
+
+.botones-preguntas {
+  margin-top: 20px;
+}
+
+#preguntas-serie p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+#preguntas-serie label {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Serie genérica: */
+#preguntas-serie input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #778377;
+  cursor: pointer;
+}
+
+/* Serie 4: */
+
+#preguntas-serie input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #778377;
+  cursor: pointer;
+}
+
+/* Serie 5: */
+
+#respuestaTexto {
+  width: 180px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Serie 10: */
+#serie10-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#serie10-input input[type="text"] {
+  width: 120px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#serie10-input .separador {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #444;
+}
+
+#error-seleccion {
+  color: red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

@@ -19,7 +19,7 @@
   <div class="container">
     <h1 class="title is-3 has-text-weight-semibold ml-3">Preguntas</h1>
     <form method="POST" action="formatoEntrevistaPreguntasDL">
-      <!--CSRF TOKEN-->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <input type="hidden" name="idFormato" value="<%= formato %>" />
       <div class="columns is-vcentered ml-5">
         <div class="column is-three-thirds">
@@ -33,6 +33,7 @@
             placeholder="Escribe aquí tu respuesta..."
             id="respuesta1"
             name="respuesta1"
+            value="<%= (respuesta[0] && respuesta[0][0] && respuesta[0][0].respuesta) ? respuesta[0][0].respuesta : '' %>"
             required />
         </div>
       </div>
@@ -48,6 +49,7 @@
             placeholder="Escribe aquí tu respuesta..."
             id="respuesta2"
             name="respuesta2"
+            value="<%= (respuesta[1] && respuesta[1][0] && respuesta[1][0].respuesta) ? respuesta[1][0].respuesta : '' %>"
             required />
         </div>
       </div>
@@ -64,6 +66,7 @@
             placeholder="Escribe aquí tu respuesta..."
             id="respuesta3"
             name="respuesta3"
+            value="<%= (respuesta[2] && respuesta[2][0] && respuesta[2][0].respuesta) ? respuesta[2][0].respuesta : '' %>"
             required />
         </div>
       </div>
@@ -80,6 +83,7 @@
             placeholder="Escribe aquí tu respuesta..."
             id="respuesta4"
             name="respuesta4"
+            value="<%= (respuesta[3] && respuesta[3][0] && respuesta[3][0].respuesta) ? respuesta[3][0].respuesta : '' %>"
             required />
         </div>
       </div>
@@ -96,6 +100,7 @@
             placeholder="Escribe aquí tu respuesta..."
             id="respuesta5"
             name="respuesta5"
+            value="<%= (respuesta[4] && respuesta[4][0] && respuesta[4][0].respuesta) ? respuesta[4][0].respuesta : '' %>"
             required />
         </div>
       </div>
@@ -112,6 +117,7 @@
             placeholder="Escribe aquí tu respuesta..."
             id="respuesta6"
             name="respuesta6"
+            value="<%= (respuesta[5] && respuesta[5][0] && respuesta[5][0].respuesta) ? respuesta[5][0].respuesta : '' %>"
             required />
         </div>
       </div>

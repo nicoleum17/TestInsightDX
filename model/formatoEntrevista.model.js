@@ -69,7 +69,13 @@ module.exports = class formatoEntrevista {
         return this.idFormato;
       });
   }
-
+  static fetch(idFormato) {
+    return db.execute(
+      "SELECT nombre, apellidoP, apellidoM, fechaNacimiento, genero, nacionalidad, edad, " +
+        "estadoCivil, origen, telefono, celular, correo, direccionA FROM formatoentrevista WHERE idFormato = ?",
+      [idFormato]
+    );
+  }
   static saveDA(
     mi_nombreLicenciatura,
     mi_institucion,
@@ -105,6 +111,14 @@ module.exports = class formatoEntrevista {
       });
   }
 
+  static fetchDA(idFormato) {
+    return db.execute(
+      "SELECT nombreLicenciatura, institucion, promedio, generacion, gradoMax, maestria, institucionMaestria," +
+        " promedioMaestria, cursos, idiomas FROM formatoentrevista WHERE idFormato=?",
+      [idFormato]
+    );
+  }
+
   static saveDL(
     mi_lugarTrabajo,
     mi_empresa,
@@ -134,6 +148,12 @@ module.exports = class formatoEntrevista {
       });
   }
 
+  static fetchDL(idFormato) {
+    return db.execute(
+      "SELECT lugarTrabajo, empresa, puesto, años, actividades, sueldo, personal FROM formatoentrevista WHERE idFormato=?",
+      [idFormato]
+    );
+  }
   static finish(mi_idFormato) {
     return db
       .execute("UPDATE formatoentrevista SET estatus=? WHERE idFormato=?", [
@@ -152,5 +172,11 @@ module.exports = class formatoEntrevista {
       WHERE idUsuario = ?`,
       [idUsuario]
     );
+  }
+
+  static fetchOne(idUsuario) {
+    return db.execute(`SELECT * FROM formatoentrevista WHERE idUsuario = ? `, [
+      idUsuario,
+    ]);
   }
 };

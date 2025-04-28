@@ -2,18 +2,24 @@ const { response, request } = require("express");
 const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+const readXlsxFile = require("read-excel-file/node");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
+const FormatoEntrevista = require("../model/formatoEntrevista.model");
+const ConsultaResultados = require("../model/hartman/consultaResultados.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
+const PerteneceGrupoParcial = require("../model/perteneceGrupoParcial.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
 const PruebaV = require("../model/vaultTech/prueba.model");
 const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
+const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
+const RespuestasPreguntasFormato = require("../model/respuestasPreguntasFormato.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -22,6 +28,11 @@ const oauth2Client = new google.auth.OAuth2(
 );
 const evento = require("../model/event.model");
 const eventoGoogle = require("../model/event.model");
+const PreguntaKostick = require("../model/kostick/preguntasKostick.model");
+const OpcionKostick = require("../model/kostick/opcionesKostick.model");
+const InterpretacionKostick = require("../model/kostick/interpretacionKostick.model");
+const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
+const Opcion16PF = require("../model/16pf/opciones16pf.model");
 
 exports.inicio_psicologa = (request, response, next) => {
   const mensajeBorrado = request.session.infoBorrado;
@@ -36,7 +47,7 @@ exports.inicio_psicologa = (request, response, next) => {
   response.render("inicioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     infoBorrado: mensajeBorrado,
     infoAspirante: mensajeAspirante,
@@ -47,7 +58,7 @@ exports.notificaciones_psicologa = (request, response, next) => {
   response.render("notificacionesPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -55,7 +66,7 @@ exports.calendario_psicologa = (request, response, next) => {
   response.render("calendarioPsicologa", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -64,10 +75,48 @@ exports.get_prueba = (request, response, next) => {
     response.render("consultaPrueba", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       pruebas: rows,
     });
+  });
+};
+
+exports.get_preguntas = (request, response, next) => {
+  const idPrueba = parseInt(request.params.id);
+
+  Prueba.fetchOne(idPrueba).then(([pruebaInfo]) => {
+    if (idPrueba === 1) {
+      PreguntaKostick.fetchAll().then(([preguntasKostick]) => {
+        OpcionKostick.fetchAll().then(([opcionesKostick]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntasKostick,
+            opciones: opcionesKostick,
+          });
+        });
+      });
+    } else if (idPrueba === 2) {
+      Pregunta16PF.fetchAll().then(([preguntas16PF]) => {
+        Opcion16PF.fetchAll().then(([opciones16Pf]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntas16PF,
+            opciones: opciones16Pf,
+          });
+        });
+      });
+    } else {
+      response.status(404).send("Tipo de prueba no reconocido.");
+    }
   });
 };
 
@@ -76,7 +125,7 @@ exports.registrarAspirante = (request, response, next) => {
     response.render("registrarAspirante", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupos: rows,
     });
@@ -91,7 +140,8 @@ exports.post_registrarAspirante = (request, response, next) => {
     request.body.apellidoP,
     request.body.apellidoM,
     request.body.numeroTel,
-    request.body.lugarO,
+    request.body.genero,
+    request.body.estado + ", " + request.body.pais,
     request.body.correo,
     request.body.universidad
   );
@@ -179,7 +229,7 @@ exports.get_aspirantes = (request, response, next) => {
       response.render("consultaAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        //csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
         aspirantes: rows,
         info: mensaje,
         privilegios: request.session.privilegios || [],
@@ -210,16 +260,22 @@ exports.get_respuestasA = (request, response, next) => {
         if (idPrueba == 1) {
           ResultadosKostick.fetchAll(rows[0].idGrupo, idUsuario).then(
             (resultados) => {
-              response.render("consultaRespuestasAspirante", {
-                isLoggedIn: request.session.isLoggedIn || false,
-                usuario: request.session.usuario || "",
-                //csrfToken: request.csrfToken(),
-                privilegios: request.session.privilegios || [],
-                prueba: "El inventario de Percepción Kostick",
-                grupo: grupoRows[0],
-                valores: resultados[0][0],
-                datos: datosAspirante[0],
-              });
+              InterpretacionKostick.fetchAll().then(
+                (interpretacionesKostick) => {
+                  console.log(interpretacionesKostick[0]);
+                  response.render("consultaRespuestasAspirante", {
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    usuario: request.session.usuario || "",
+                    csrfToken: request.csrfToken(),
+                    privilegios: request.session.privilegios || [],
+                    prueba: "El inventario de Percepción Kostick",
+                    grupo: grupoRows[0],
+                    valores: resultados[0][0],
+                    datos: datosAspirante[0],
+                    interpretaciones: interpretacionesKostick[0],
+                  });
+                }
+              );
             }
           );
         } else if (idPrueba == 2) {
@@ -228,12 +284,13 @@ exports.get_respuestasA = (request, response, next) => {
               response.render("consultaRespuestasAspirante", {
                 isLoggedIn: request.session.isLoggedIn || false,
                 usuario: request.session.usuario || "",
-                //csrfToken: request.csrfToken(),
+                csrfToken: request.csrfToken(),
                 privilegios: request.session.privilegios || [],
                 prueba: "Personalidad 16 Factores (16 PF)",
                 grupo: grupoRows[0],
                 valores: resultados[0][0],
                 datos: datosAspirante[0],
+                interpretaciones: null,
               });
             }
           );
@@ -279,7 +336,7 @@ exports.get_respuestasG = (request, response, next) => {
   response.render("consultaRespuestasGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
   });
 };
@@ -289,20 +346,20 @@ exports.crear_grupo = (request, response, next) => {
     response.render("crearGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       pruebas: rows,
     });
   });
 };
 
-exports.post_grupo = (request, response, next) => {
+exports.post_grupo = async (request, response, next) => {
   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
   const fechaGrupoInicioIOS = `${request.body.fechaPruebaGrupal}T${request.body.horaPruebaGrupal}:00`;
   const inicioDateGrupo = new Date(fechaGrupoInicioIOS);
   const finalDateGrupo = new Date(inicioDateGrupo.getTime() + 90 * 60000);
   const fechaGrupoFinalIOS = finalDateGrupo.toISOString();
-  //TRABAJO AQUI
+
   const mi_grupo = new Grupo(
     request.body.institucion,
     request.body.posgrado,
@@ -310,76 +367,141 @@ exports.post_grupo = (request, response, next) => {
     request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal,
     request.body.enlaceZoom
   );
-  const eventoNuevo = new eventoGoogle(
-    `Sesion Grupal de: ${request.body.institucion} para el posgrado ${request.body.posgrado}`,
-    "Zoom",
-    `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
-    fechaGrupoInicioIOS,
-    fechaGrupoFinalIOS
-  );
-  const eventoCreado = {
-    summary: eventoNuevo.nombre,
-    location: eventoNuevo.lugar,
-    description: eventoNuevo.descripcion,
-    start: {
-      dateTime: eventoNuevo.inicio,
-      timeZone: "America/Mexico_City",
-    },
-    end: {
-      dateTime: eventoNuevo.final,
-      timeZone: "America/Mexico_City",
-    },
-  };
-  calendar.events.insert(
-    {
-      calendarId: "primary",
-      resource: eventoCreado,
-    },
-    (err, ev) => {
-      if (err) {
-        console.error("Error creando evento: " + err);
-      } else {
-        console.log("EXITO AL CREAR EVENTO");
+
+  try {
+    await mi_grupo.save();
+
+    const excelFile = request.files.find(
+      (file) => file.fieldname === "archivoExcel"
+    );
+
+    if (excelFile) {
+      const path = excelFile.path;
+      const rows = await readXlsxFile(path);
+
+      for (let i = 1; i < rows.length; i++) {
+        const [
+          nombres,
+          apellidoPaterno,
+          apellidoMaterno,
+          codigoIdentidad,
+          correo,
+          telefono,
+          genero,
+          pais,
+          estado,
+          universidadProcedencia,
+        ] = rows[i];
+
+        const mi_aspirante = new Aspirante(
+          codigoIdentidad,
+          nombres,
+          apellidoPaterno,
+          apellidoMaterno,
+          telefono,
+          genero,
+          estado + " " + pais,
+          correo,
+          universidadProcedencia
+        );
+
+        await mi_aspirante.save();
+
+        const mi_perteneceGrupoParcial = new PerteneceGrupoParcial(
+          mi_grupo.idGrupo,
+          mi_aspirante.idUsuario
+        );
+
+        await mi_perteneceGrupoParcial.saveParcial();
+
+        const nombreUsuario =
+          mi_aspirante.codigoIdentidad + new Date().getFullYear();
+        const contraseñaBase = uuidv4();
+
+        console.log("Usuario", nombreUsuario);
+        console.log("Contraseña Base: " + contraseñaBase);
+
+        const mi_usuario = new Usuario(
+          mi_aspirante.idUsuario,
+          nombreUsuario,
+          contraseñaBase,
+          "2"
+        );
+
+        await mi_usuario.save();
       }
+    } else {
+      console.error("No se encontró el archivo de Excel.");
     }
-  );
-  mi_grupo
-    .save()
-    .then(() => {
-      const pruebas = Array.isArray(request.body.pruebasOpcion)
-        ? request.body.pruebasOpcion
-        : [request.body.pruebasOpcion];
 
-      const promesas = pruebas.map((prueba) => {
-        return Prueba.fetchOneNombre(prueba).then(([rows]) => {
-          const idPrueba = rows[0]?.idPrueba;
+    const eventoNuevo = new eventoGoogle(
+      `Sesion Grupal de: ${request.body.institucion} para el posgrado ${request.body.posgrado}`,
+      "Zoom",
+      `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
+      fechaGrupoInicioIOS,
+      fechaGrupoFinalIOS
+    );
 
-          const mi_tienePruebas = new TienePruebas(
-            mi_grupo.idGrupo,
-            idPrueba,
-            request.body.fechaLimite
-          );
+    const eventoCreado = {
+      summary: eventoNuevo.nombre,
+      location: eventoNuevo.lugar,
+      description: eventoNuevo.descripcion,
+      start: {
+        dateTime: eventoNuevo.inicio,
+        timeZone: "America/Mexico_City",
+      },
+      end: {
+        dateTime: eventoNuevo.final,
+        timeZone: "America/Mexico_City",
+      },
+    };
 
-          return mi_tienePruebas.save();
-        });
+    calendar.events.insert(
+      {
+        calendarId: "primary",
+        resource: eventoCreado,
+      },
+      (err, ev) => {
+        if (err) {
+          console.error("Error creando evento: " + err);
+        } else {
+          console.log("EXITO AL CREAR EVENTO");
+        }
+      }
+    );
+
+    const pruebas = Array.isArray(request.body.pruebasOpcion)
+      ? request.body.pruebasOpcion
+      : [request.body.pruebasOpcion];
+
+    const promesas = pruebas.map((prueba) => {
+      return Prueba.fetchOneNombre(prueba).then(([rows]) => {
+        const idPrueba = rows[0]?.idPrueba;
+
+        const mi_tienePruebas = new TienePruebas(
+          mi_grupo.idGrupo,
+          idPrueba,
+          request.body.fechaLimite
+        );
+
+        return mi_tienePruebas.save();
       });
-
-      return Promise.all(promesas);
-    })
-    .then(() => {
-      request.session.info = "Grupo creado exitosamente";
-      request.session.grupoCreado = {
-        id: mi_grupo.idGrupo,
-        posgrado: mi_grupo.posgrado,
-        generacion: mi_grupo.generacion,
-        institucion: mi_grupo.institucion,
-      };
-      response.redirect("/psicologa/grupo/confirmarCreacion");
-    })
-    .catch((error) => {
-      console.log("Error al crear grupo o asignar pruebas:", error);
-      response.status(500).send("Error al procesar la creación del grupo.");
     });
+
+    await Promise.all(promesas);
+
+    request.session.info = "Grupo creado exitosamente";
+    request.session.grupoCreado = {
+      id: mi_grupo.idGrupo,
+      posgrado: mi_grupo.posgrado,
+      generacion: mi_grupo.generacion,
+      institucion: mi_grupo.institucion,
+    };
+    response.redirect("/psicologa/grupo/confirmarCreacion");
+  } catch (error) {
+    console.log("Error al crear grupo o asignar pruebas:", error);
+    response.status(500).send("Error al procesar la creación del grupo.");
+  }
 };
 
 exports.confirmar_creacion_grupo = (request, response, next) => {
@@ -393,7 +515,7 @@ exports.confirmar_creacion_grupo = (request, response, next) => {
   response.render("confirmarCreacionGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     privilegios: request.session.privilegios || [],
     info: info,
     grupo: grupo,
@@ -407,7 +529,7 @@ exports.elegir_grupo = (request, response, next) => {
     response.render("elegirGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupos: rows,
       infoBorrado: mensaje,
@@ -421,7 +543,7 @@ exports.get_grupo = (request, response, next) => {
     response.render("consultaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
@@ -434,7 +556,7 @@ exports.registra_reporte_grupo = (request, response, next) => {
     response.render("registrarReporteGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
@@ -456,7 +578,7 @@ exports.registra_foda_grupo = (request, response, next) => {
     response.render("registrarFodaGrupo", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       grupo: rows[0],
     });
@@ -477,11 +599,11 @@ exports.get_modificarGrupo = (request, response, next) => {
   const idGrupo = request.params.id;
   Prueba.fetchAll().then(([pruebas]) => {
     Grupo.fetchOneId(idGrupo).then(([rows]) => {
-      TienePruebas.getFechaLimite(idGrupo).then(([tienePruebas]) => {
+      TienePruebas.getFecha(idGrupo).then(([tienePruebas]) => {
         response.render("modificarGrupo", {
           isLoggedIn: request.session.isLoggedIn || false,
           usuario: request.session.usuario || "",
-          //csrfToken: request.csrfToken(),
+          csrfToken: request.csrfToken(),
           privilegios: request.session.privilegios || [],
           grupo: rows[0],
           pruebas: pruebas,
@@ -527,7 +649,7 @@ exports.get_modificarAspirante = (request, response, next) => {
       response.render("modificarAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        //csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         aspirante: aspirante[0],
         perteneceGrupo: perteneceGrupo[0],
@@ -545,6 +667,7 @@ exports.post_modificarAspirante = (request, response, next) => {
   apellidoMaterno = request.body.apellidoMaterno;
   codigoIdentidad = request.body.codigoIdentidad;
   numTelefono = request.body.numTelefono;
+  genero = request.body.genero;
   lugarOrigen = request.body.lugarOrigen;
   correo = request.body.correo;
   universidadOrigen = request.body.universidadOrigen;
@@ -558,6 +681,7 @@ exports.post_modificarAspirante = (request, response, next) => {
     apellidoPaterno,
     apellidoMaterno,
     numTelefono,
+    genero,
     lugarOrigen,
     correo,
     universidadOrigen,
@@ -580,7 +704,7 @@ exports.get_reporteAspirante = (request, response, next) => {
     response.render("reporteAspirante", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       aspirante: aspirante[0],
       idUsuario: request.session.idUsuario,
@@ -596,7 +720,7 @@ exports.get_consultarReporteAspirante = (request, response, next) => {
       response.render("consultarReporteAspirante", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        //csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         aspirante: aspirante[0],
         idUsuario: request.session.idUsuario,
@@ -630,7 +754,7 @@ exports.getPreguntaSeguridad = (request, response, next) => {
   response.render("preguntaSeguridadBorrado.ejs", {
     isLoggedIn: request.session.isLoggedIn || false,
     usuario: request.session.usuario || "",
-    //csrfToken: request.csrfToken(),
+    csrfToken: request.csrfToken(),
     grupo: idGrupo,
   });
 };
@@ -753,7 +877,7 @@ exports.getEventoCalendario = (request, response, next) => {
       response.render("calendarioPsicologa", {
         isLoggedIn: request.session.isLoggedIn || false,
         usuario: request.session.usuario || "",
-        //csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
         privilegios: request.session.privilegios || [],
         idUsuario: request.session.idUsuario || "",
         infoEventos: request.session.eventos,
@@ -768,7 +892,7 @@ exports.registraReporte = (request, response, next) => {
     response.render("registraReporte", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
-      //csrfToken: request.csrfToken(),
+      csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       aspirante: aspirante[0],
       idUsuario: request.session.idUsuario || "",
@@ -782,6 +906,30 @@ exports.post_registraReporte = (request, response, next) => {
   Aspirante.update_subirReporte(idUsuario, reporte).then(() => {
     response.redirect("/psicologa/reporteAspirante/" + idUsuario);
   });
+};
+
+exports.get_formatoEntrevista = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
+    FormatoEntrevista.fetchOne(idUsuario).then(([formatoEntrevista]) => {
+      /*RespuestasPreguntasFormato.fetchOne(idUsuario).then(
+        ([respuestasPreguntas]) => {
+          RespuestasPreguntasFormato.getPreguntas().then(([preguntas]) => {*/
+      response.render("consultarFormatoEntrevista", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        idUsuario: request.session.idUsuario || "",
+        formatoEntrevista: formatoEntrevista[0],
+        //respuestasPreguntas: respuestasPreguntas[0],
+        //preguntas: preguntas,
+      });
+    });
+  });
+  //});
+  // });
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1424,4 +1572,216 @@ function interpretarMovilidad(movilidad) {
   } else {
     return "PERSONA INESTABLE";
   }
+}
+exports.get_interpretaciones16PF = (request, response, next) => {
+  let columna = request.params.columna;
+  let nivel = request.params.nivel;
+  Interpretaciones16PF.interpretacion(columna, nivel).then(([rows]) => {
+    if (rows.length > 0) {
+      inter = rows[0].resp;
+      response.status(200).json({ inter });
+    }
+  });
+};
+exports.getPreguntaSeguridadAspirante = (request, response, next) => {
+  const idAspirante = request.params.id;
+  response.render("preguntaSeguridadBorradoAspirante.ejs", {
+    isLoggedIn: request.session.isLoggedIn || false,
+    usuario: request.session.usuario || "",
+    csrfToken: request.csrfToken(),
+    aspirante: idAspirante,
+  });
+};
+
+exports.postPreguntaSeguridadAspirante = (request, response, next) => {
+  console.log(request.body);
+  Usuario.fetchOne(request.body.usuario).then(([rows, fieldData]) => {
+    if (rows.length > 0) {
+      const bcrypt = require("bcryptjs");
+      bcrypt
+        .compare(request.body.contra, rows[0].contraseña)
+        .then((doMatch) => {
+          if (doMatch) {
+            Aspirante.borrarAspirante(request.body.aspirante);
+            request.session.infoBorrado = "Aspirante borrado exitosamente";
+            response.redirect("/psicologa/inicio");
+            console.log("Aspirante borrado");
+          } else {
+            request.session.infoBorrado =
+              "Lo siento, la contraseña es incorrecta! Intenta nuevamente.";
+            response.redirect("/psicologa/grupo/elegir");
+            console.log("Grupo no borrado");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  });
+};
+
+const {
+  buscarValor, // Importa la función
+  DIM,
+  DIF,
+  dimGeneral,
+  dimPorcentaje,
+  INT,
+  DI,
+  DIS,
+  VQ,
+  Equilibrio_BQR,
+  Equilibrio_BQA,
+  Equilibrio_CQ1,
+  Equilibrio_CQ2,
+} = require("../public/js/encuentraValor");
+
+/*
+ *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
+ */
+
+exports.get_analisisHartman = async (request, response, next) => {
+  const idAspirante = request.params.idAspirante;
+  const idGrupo = request.params.idGrupo;
+  console.log("Analisis Hartman");
+
+  try {
+    const [rows] = await ConsultaResultados.fetchHartmanAspirante(
+      idAspirante,
+      idGrupo
+    );
+    console.log("Datos de la base de datos:", rows);
+
+    if (!rows || rows.length === 0) {
+      return response
+        .status(404)
+        .send("No se encontraron resultados de Hartman.");
+    }
+
+    // Procesa los datos del analisis de hartman para poder graficarlos
+    const analisisProcesado = {
+      MundoInterno: {
+        DimI: rows[0].citaDimI != null ? buscarValor(rows[0].citaDimI, DIM) : 0,
+        DimE: rows[0].citaDimE != null ? buscarValor(rows[0].citaDimE, DIM) : 0,
+        DimS: rows[0].citaDimS != null ? buscarValor(rows[0].citaDimS, DIM) : 0,
+        DiF: rows[0].citaDif != null ? buscarValor(rows[0].citaDif, DIF) : 0,
+        DimGeneral:
+          rows[0].citaDimGeneral != null
+            ? buscarValor(rows[0].citaDimGeneral, dimGeneral)
+            : 0,
+        DimPorcentaje:
+          rows[0].citaDimPorcentaje != null
+            ? buscarValor(rows[0].citaDimPorcentaje, dimPorcentaje)
+            : 0,
+        IntI: rows[0].citaIntI != null ? buscarValor(rows[0].citaIntI, INT) : 0,
+        IntE: rows[0].citaIntE != null ? buscarValor(rows[0].citaIntE, INT) : 0,
+        IntS: rows[0].citaIntS != null ? buscarValor(rows[0].citaIntS, INT) : 0,
+        IntGeneral:
+          rows[0].citaIntGeneral != null
+            ? buscarValor(rows[0].citaIntGeneral, DIM)
+            : 0,
+        IntPorcentaje:
+          rows[0].citaIntPorcentaje != null
+            ? buscarValor(rows[0].citaIntPorcentaje, dimPorcentaje)
+            : 0,
+        Di: rows[0].citaDi != null ? buscarValor(rows[0].citaDi, DI) : 0,
+        Dis: rows[0].citaDIS != null ? buscarValor(rows[0].citaDIS, DIS) : 0,
+        Sq1: rows[0].citaSQ1 != null ? buscarValor(rows[0].citaSQ1, VQ) : 0,
+        Sq2: rows[0].citaSQ2 != null ? buscarValor(rows[0].citaSQ2, DIM) : 0,
+      },
+      MundoExterno: {
+        DimI:
+          rows[0].fraseDimI != null ? buscarValor(rows[0].fraseDimI, DIM) : 0,
+        DimE:
+          rows[0].fraseDimE != null ? buscarValor(rows[0].fraseDimE, DIM) : 0,
+        DimS:
+          rows[0].fraseDimS != null ? buscarValor(rows[0].fraseDimS, DIM) : 0,
+        DiF: rows[0].fraseDif != null ? buscarValor(rows[0].fraseDif, DIF) : 0,
+        DimGeneral:
+          rows[0].fraseDimGeneral != null
+            ? buscarValor(rows[0].fraseDimGeneral, dimGeneral)
+            : 0,
+        DimPorcentaje:
+          rows[0].fraseDimPorcentaje != null
+            ? buscarValor(rows[0].fraseDimPorcentaje, dimPorcentaje)
+            : 0,
+        IntI:
+          rows[0].fraseIntI != null ? buscarValor(rows[0].fraseIntI, INT) : 0,
+        IntE:
+          rows[0].fraseIntE != null ? buscarValor(rows[0].fraseIntE, INT) : 0,
+        IntS:
+          rows[0].fraseIntS != null ? buscarValor(rows[0].fraseIntS, INT) : 0,
+        IntGeneral:
+          rows[0].fraseIntGeneral != null
+            ? buscarValor(rows[0].fraseIntGeneral, DIM)
+            : 0,
+        IntPorcentaje:
+          rows[0].fraseIntPorcentaje != null
+            ? buscarValor(rows[0].fraseIntPorcentaje, dimPorcentaje)
+            : 0,
+        Di: rows[0].fraseDi != null ? buscarValor(rows[0].fraseDi, DI) : 0,
+        Dis: rows[0].fraseDIS != null ? buscarValor(rows[0].fraseDIS, DIS) : 0,
+        Vq1: rows[0].fraseVQ1 != null ? buscarValor(rows[0].fraseVQ1, VQ) : 0,
+        Vq2: rows[0].fraseVQ2 != null ? buscarValor(rows[0].fraseVQ2, DIM) : 0,
+      },
+      Equilibrio: {
+        Bqr1:
+          rows[0].BQr1 != null ? buscarValor(rows[0].BQr1, Equilibrio_BQR) : 0,
+        Bqr2:
+          rows[0].BQr2 != null ? buscarValor(rows[0].BQr2, Equilibrio_BQR) : 0,
+        Bqa1:
+          rows[0].BQa1 != null ? buscarValor(rows[0].BQa1, Equilibrio_BQA) : 0,
+        Bqa2: rows[0].BQa2 != null ? buscarValor(rows[0].BQa2, DIM) : 0,
+        Cq1: rows[0].CQ1 != null ? buscarValor(rows[0].CQ1, Equilibrio_CQ1) : 0,
+        Cq2: rows[0].CQ2 != null ? buscarValor(rows[0].CQ2, Equilibrio_CQ2) : 0,
+      },
+    };
+
+    console.log("Datos procesados para la gráfica:", analisisProcesado);
+
+    response.render("pruebas/hartman/analisisHartman.pug", {
+      csrfToken: request.csrfToken(),
+      datos: analisisProcesado,
+      analisisHartman: rows,
+    });
+  } catch (error) {
+    console.error("Error al obtener o procesar los datos de Hartman:", error);
+    response.status(500).send("Error al procesar el análisis de Hartman");
+  }
+};
+
+async function obtenerCalificacion(idUsuario, grupoId) {
+  try {
+    const [rows, fields] = await ConsultaResultados.fetchCalificacionTerman(
+      idUsuario,
+      grupoId
+    );
+    return { filas: rows, campos: fields };
+  } catch (error) {
+    console.error("Error al obtener la calificación:", error);
+    return null;
+  }
+}
+
+async function obtenerSerie(idUsuario, grupoId, serieId, calificacionId) {
+  try {
+    const [rows] = await ConsultaResultados.fetchResultadosSerieTerman(
+      idUsuario,
+      grupoId,
+      serieId,
+      calificacionId
+    );
+    if (rows.length > 0) {
+      return { puntuacion: rows[0].puntuacion, rango: rows[0].rango };
+    } else {
+      return { puntuacion: 0, rango: "" };
+    }
+  } catch (error) {
+    console.error("Error al obtener los resultados de la serie:", error);
+    return { puntuacion: 0, rango: "" };
+  }
+}
+
+function reglaDeTres(num, max) {
+  return (num * 100) / max;
 }
