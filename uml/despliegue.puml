@@ -42,7 +42,7 @@ node googleServicePC <<device>>{
     }
 }
 
-googleapis -- nodeJS
+googleapis -- nodeJS : https
 
 
 node emailServicePC <<device>>{
@@ -53,6 +53,6 @@ node emailServicePC <<device>>{
     }
 }
 
-mailersend -- nodeJS
+mailersend -- nodeJS : https
 
 @enduml
