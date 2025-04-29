@@ -19,7 +19,7 @@ const PruebaV = require("../model/vaultTech/prueba.model");
 const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
-const RespuestasPreguntasFormato = require("../model/respuestasPreguntasFormato.model");
+const PreguntasFormato = require("../model/preguntasFormato.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -879,20 +879,26 @@ exports.get_formatoEntrevista = async (request, response, next) => {
   try{
     const [[aspirantes]] = await Aspirante.fetchOne(idUsuario);
     const[[formatoEntrevista]] = await FormatoEntrevista.fetchOne(idUsuario);
+
+    const promesasPreguntas = [];
     const promesasRespuestas = [];
+    console.log(formatoEntrevista.idFormato)
     for (let i = 1; i < 20; i++) {
-      promesasRespuestas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
+      promesasRespuestas.push(PreguntasFormato.fetchPregunta(i, formatoEntrevista.idFormato));
+      promesasPreguntas.push(PreguntasFormato.fetchPreguntaTexto(i));
     }
-    const respuestas = await Promise.all(promesas);
+    const respuestas = await Promise.all(promesasRespuestas);
+    const preguntas = await Promise.all(promesasPreguntas);
+    console.log(formatoEntrevista);
     response.render("consultarFormatoEntrevista", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
-      aspirante: aspirante[0],
+      aspirante: aspirantes,
       idUsuario: request.session.idUsuario || "",
-      formatoEntrevista: formatoEntrevista[0],
-      respuestasPreguntas: promesasRespuestas[0],
+      formatoEntrevista: formatoEntrevista,
+      respuestasPreguntas:respuestas,
       preguntas: preguntas,
     });
   } catch(error){

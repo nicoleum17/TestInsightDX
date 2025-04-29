@@ -16,3 +16,11 @@ module.exports = class eventoGoogle{
         this.conferenceID = uuidv4();
     }
 }
+
+
+
+
+
+
+
+
