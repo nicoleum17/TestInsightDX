@@ -79,10 +79,10 @@
         </div>
         <div class="box has-background-info has-text-centered pt-1 pb-0">
           <button onclick="agregarPrueba()" id="button-agregar" type="button">
-              <img
-                src="https://img.icons8.com/m_rounded/512/plus.png"
-                width="30"
-                height="30" />
+            <img
+              src="https://img.icons8.com/m_rounded/512/plus.png"
+              width="30"
+              height="30" />
           </button>
         </div>
       </div>
@@ -116,18 +116,20 @@
         </div>
         <div>
           <div class="field">
-            <label class="label">Link</label>
+            <label class="label"
+              >Link para la aplicación de la prueba grupal</label
+            >
             <div class="control">
               <input
                 class="input"
                 type="text"
                 name="enlaceZoom"
-                placeholder="ingresa un link"
+                placeholder="https://zoom.us/j/5551112222."
                 required />
             </div>
           </div>
         </div>
-        <br>
+        <br />
         <div class="columns">
           <div class="column is-4">
             <label class="label">Archivo de aspirantes: </label>
@@ -135,14 +137,20 @@
           </div>
           <div class="column file has-name is-fullwidth">
             <label class="file-label">
-              <input class="file-input" type="file" name="archivo" id="excelAspirantes" accept="xlsx" required/>
+              <input
+                class="file-input"
+                type="file"
+                name="archivo"
+                id="excelAspirantes"
+                accept="xlsx"
+                required />
               <span class="file-cta">
                 <span class="file-icon">
                   <i class="fas fa-upload"></i>
                 </span>
                 <span class="file-label"> Elige un archivo </span>
               </span>
-              <span class="file-name">  </span>
+              <span class="file-name"> </span>
             </label>
           </div>
         </div>
@@ -247,22 +255,21 @@
     }
   });
 
-  const excel = document.getElementById('excelAspirantes');
-  const fileName = document.querySelector('.file-name');
+  const excel = document.getElementById("excelAspirantes");
+  const fileName = document.querySelector(".file-name");
 
-  excel.addEventListener('change', function() {
+  excel.addEventListener("change", function () {
     const archivo = excel.files[0];
     if (archivo) {
-      fileName.textContent = archivo.name; 
+      fileName.textContent = archivo.name;
     } else {
-      fileName.textContent = 'No hay archivo seleccionado'; 
+      fileName.textContent = "No hay archivo seleccionado";
     }
   });
 
-  excel.addEventListener('change', async function () {
+  excel.addEventListener("change", async function () {
     const content = await readXlsxFile(excel.files[0]);
   });
-
 </script>
 
 <%- include('includes/_footer') %>
