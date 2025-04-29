@@ -1941,7 +1941,6 @@ const config = {
 
           const y40 = chart.scales.y.getPixelForValue(39);
           const y60 = chart.scales.y.getPixelForValue(60);
-          const y50 = chart.scales.y.getPixelForValue(50);
           const chartArea = chart.chartArea;
 
           ctx.save();
@@ -1955,13 +1954,8 @@ const config = {
           ctx.stroke();
 
           ctx.beginPath();
-          ctx.moveTo(chartArea.left + (chartArea.right / 16), y60);
+          ctx.moveTo(chartArea.left, y60);
           ctx.lineTo(chartArea.right, y60);
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.moveTo(chartArea.left, y50);
-          ctx.lineTo(chartArea.left + (chartArea.right / 16), y50);
           ctx.stroke();
 
           ctx.restore();
