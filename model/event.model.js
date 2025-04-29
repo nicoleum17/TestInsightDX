@@ -1,4 +1,5 @@
 const db = require("../util/database.js");
+const { v4: uuidv4 } = require("uuid");
 module.exports = class eventoGoogle{
     constructor(
         miNombre,
@@ -12,5 +13,6 @@ module.exports = class eventoGoogle{
         this.descripcion = miDescripcion;
         this.inicio = miInicio;
         this.final = miFinal;
+        this.conferenceID = uuidv4();
     }
 }

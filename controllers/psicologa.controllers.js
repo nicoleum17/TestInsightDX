@@ -161,24 +161,11 @@ exports.post_registrarAspirante = (request, response, next) => {
   const eventoNuevo = new eventoGoogle(
     `Sesion Individual de: ${request.body.nombre} ${request.body.apellidoP}`,
     "Zoom",
-    `Sesion Individual con ${request.body.nombre}`,
+    `Sesion Individual con ${request.body.nombre}. \n LINK: ${request.body.enlaceZoom}`,
     fechaInicioIOS,
     fechaFinalIOS
   );
-
-  const eventoCreado = {
-    summary: eventoNuevo.nombre,
-    location: eventoNuevo.lugar,
-    description: eventoNuevo.descripcion,
-    start: {
-      dateTime: eventoNuevo.inicio,
-      timeZone: "America/Mexico_City",
-    },
-    end: {
-      dateTime: eventoNuevo.final,
-      timeZone: "America/Mexico_City",
-    },
-  };
+  
   calendar.events.insert(
     {
       calendarId: "primary",
@@ -416,24 +403,24 @@ exports.post_grupo = async (request, response, next) => {
     const eventoNuevo = new eventoGoogle(
       `Sesion Grupal de: ${request.body.institucion} para el posgrado ${request.body.posgrado}`,
       "Zoom",
-      `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}`,
+      `Sesion Grupal con ${request.body.posgrado}, ${request.body.institucion}. \n LINK: ${request.body.enlaceZoom}`,
       fechaGrupoInicioIOS,
       fechaGrupoFinalIOS
     );
 
-    const eventoCreado = {
-      summary: eventoNuevo.nombre,
-      location: eventoNuevo.lugar,
-      description: eventoNuevo.descripcion,
-      start: {
-        dateTime: eventoNuevo.inicio,
-        timeZone: "America/Mexico_City",
-      },
-      end: {
-        dateTime: eventoNuevo.final,
-        timeZone: "America/Mexico_City",
-      },
-    };
+      const eventoCreado = {
+        summary: eventoNuevo.nombre,
+        location: eventoNuevo.lugar,
+        description: eventoNuevo.descripcion,
+        start: {
+          dateTime: eventoNuevo.inicio,
+          timeZone: "America/Mexico_City",
+        },
+        end: {
+          dateTime: eventoNuevo.final,
+          timeZone: "America/Mexico_City",
+        },
+      };
 
     calendar.events.insert(
       {
