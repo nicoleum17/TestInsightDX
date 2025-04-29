@@ -703,7 +703,7 @@ exports.formato_entrevista_preguntasP = async (request, response, next) => {
   }
   try {
     const respuestas = await Promise.all(promesas);
-    console.log(respuestas);
+
     response.render("formatoEntrevistaPreguntasP", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
@@ -712,7 +712,7 @@ exports.formato_entrevista_preguntasP = async (request, response, next) => {
       formato: request.session.idFormato,
     });
   } catch (error) {
-    console.error("Error al guardar preguntas:", error);
+    console.error("Error al sacar preguntas:", error);
   }
 };
 

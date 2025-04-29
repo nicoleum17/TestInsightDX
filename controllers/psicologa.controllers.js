@@ -165,7 +165,19 @@ exports.post_registrarAspirante = (request, response, next) => {
     fechaInicioIOS,
     fechaFinalIOS
   );
-  
+  const eventoCreado = {
+    summary: eventoNuevo.nombre,
+    location: eventoNuevo.lugar,
+    description: eventoNuevo.descripcion,
+    start: {
+      dateTime: eventoNuevo.inicio,
+      timeZone: "America/Mexico_City",
+    },
+    end: {
+      dateTime: eventoNuevo.final,
+      timeZone: "America/Mexico_City",
+    },
+  };
   calendar.events.insert(
     {
       calendarId: "primary",
@@ -862,28 +874,30 @@ exports.post_registraReporte = (request, response, next) => {
   });
 };
 
-exports.get_formatoEntrevista = (request, response, next) => {
+exports.get_formatoEntrevista = async (request, response, next) => {
   const idUsuario = request.params.idUsuario;
-  Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
-    FormatoEntrevista.fetchOne(idUsuario).then(([formatoEntrevista]) => {
-      /*RespuestasPreguntasFormato.fetchOne(idUsuario).then(
-        ([respuestasPreguntas]) => {
-          RespuestasPreguntasFormato.getPreguntas().then(([preguntas]) => {*/
-      response.render("consultarFormatoEntrevista", {
-        isLoggedIn: request.session.isLoggedIn || false,
-        usuario: request.session.usuario || "",
-        csrfToken: request.csrfToken(),
-        privilegios: request.session.privilegios || [],
-        aspirante: aspirante[0],
-        idUsuario: request.session.idUsuario || "",
-        formatoEntrevista: formatoEntrevista[0],
-        //respuestasPreguntas: respuestasPreguntas[0],
-        //preguntas: preguntas,
-      });
+  try{
+    const [[aspirantes]] = await Aspirante.fetchOne(idUsuario);
+    const[[formatoEntrevista]] = await FormatoEntrevista.fetchOne(idUsuario);
+    const promesasRespuestas = [];
+    for (let i = 1; i < 20; i++) {
+      promesasRespuestas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
+    }
+    const respuestas = await Promise.all(promesas);
+    response.render("consultarFormatoEntrevista", {
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      aspirante: aspirante[0],
+      idUsuario: request.session.idUsuario || "",
+      formatoEntrevista: formatoEntrevista[0],
+      respuestasPreguntas: promesasRespuestas[0],
+      preguntas: preguntas,
     });
-  });
-  //});
-  // });
+  } catch(error){
+    console.error("Error al sacar preguntas:", error);
+  }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
