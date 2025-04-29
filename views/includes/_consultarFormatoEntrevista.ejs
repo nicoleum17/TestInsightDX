@@ -144,47 +144,63 @@
         <div class="column">
           <h1 class="title is-4 has-text-weight-semibold">Preguntas personales</h1>
         </div>
-      </div>
-  
-      <div class="box has-background-info has-text-white">
-        <div class="columns">
-          <div class="column is-half">
-            <label class="label"> :</label>
-            <span type="text" class="input" name="fechaActual">
-             
-            </span>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-half">
-            <label class="label">Nombre(s):</label>
-            <span type="text" class="input" name="nombre">
-              <%= formatoEntrevista.nombre %>
-            </span>
-          </div>
-          <div class="column is-half">
-            <label class="label">Apellido Paterno:</label>
-            <span type="text" class="input" name="apellidoP">
-              <%= formatoEntrevista.apellidoP %>
-            </span>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-half">
-            <label class="label">Apellido Materno:</label>
-            <span type="text" class="input" name="apellidoM">
-              <%= formatoEntrevista.apellidoM%>
-            </span>
-          </div>
-          <div class="column is-half">
-            <label class="label">Fecha de nacimiento:</label>
-            <span type="text" class="input" name="fechaNacimiento">
-              <%= formatoEntrevista.fechaNacimiento.toISOString().split('T')[0] %>
-            </span>
-          </div>
-        </div>
-        </div>
 
+    </div>
+
+    <div class="box has-background-info has-text-white">
+
+      <div class="field mb-4">
+        <label class="label">
+          <%= (preguntas[0] && preguntas[0][0] && preguntas[0][0].pregunta) ? preguntas[0][0].pregunta : '' %>
+        </label>
+        <div class="control">
+          <span type="text" class="input" name="fechaActual">
+            <%= (respuestasPreguntas[0] && respuestasPreguntas[0][0] && respuestasPreguntas[0][0].respuesta) ? respuestasPreguntas[0][0].respuesta : '' %>
+          </span>
+        </div>
+      </div>
+    
+      <div class="field mb-4">
+        <label class="label">
+          <%= (preguntas[0] && preguntas[1][0] && preguntas[1][0].pregunta) ? preguntas[1][0].pregunta : '' %>
+        </label>
+        <div class="control">
+          <span type="text" class="input" name="fechaActual">
+            <%= (respuestasPreguntas[0] && respuestasPreguntas[1][0] && respuestasPreguntas[1][0].respuesta) ? respuestasPreguntas[1][0].respuesta : '' %>
+          </span>
+        </div>
+      </div>
+    
+      <div class="field mb-4">
+        <label class="label"><%= (preguntas[0] && preguntas[2][0] && preguntas[2][0].pregunta) ? preguntas[2][0].pregunta : '' %></label>
+        <div class="control">
+          <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[2][0] && respuestasPreguntas[2][0].respuesta) ? respuestasPreguntas[2][0].respuesta : '' %></span>
+        </div>
+      </div>
+      
+      <div class="field mb-4">
+        <label class="label"><%= (preguntas[0] && preguntas[3][0] && preguntas[3][0].pregunta) ? preguntas[3][0].pregunta : '' %></label>
+        <div class="control">
+          <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[3][0] && respuestasPreguntas[3][0].respuesta) ? respuestasPreguntas[3][0].respuesta : '' %></span>
+        </div>
+      </div>
+
+      <div class="field mb-4">
+        <label class="label"><%= (preguntas[0] && preguntas[4][0] && preguntas[4][0].pregunta) ? preguntas[4][0].pregunta : '' %></label>
+        <div class="control">
+          <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[4][0] && respuestasPreguntas[4][0].respuesta) ? respuestasPreguntas[4][0].respuesta : '' %></span>
+        </div>
+      </div>
+
+      <div class="field mb-4">
+        <label class="label"><%= (preguntas[0] && preguntas[5][0] && preguntas[5][0].pregunta) ? preguntas[5][0].pregunta : '' %></label>
+        <div class="control">
+          <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[5][0] && respuestasPreguntas[5][0].respuesta) ? respuestasPreguntas[5][0].respuesta : '' %></span>
+        </div>
+      </div>
+    
+    </div>
+  
     <div class="columns">
       <div class="column">
         <h1 class="title is-4 has-text-weight-semibold">Datos académicos</h1>
@@ -267,6 +283,75 @@
       </div>
     </div>
     <br />
+
+    <div class="columns">
+      <div class="column">
+        <h1 class="title is-4 has-text-weight-semibold">Preguntas Academicas</h1>
+      </div>
+
+  </div>
+
+  <div class="box has-background-info has-text-white">
+
+    <div class="field mb-4">
+      <label class="label">
+        <%= (preguntas[0] && preguntas[6][0] && preguntas[6][0].pregunta) ? preguntas[6][0].pregunta : '' %>
+      </label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual">
+          <%= (respuestasPreguntas[0] && respuestasPreguntas[6][0] && respuestasPreguntas[6][0].respuesta) ? respuestasPreguntas[6][0].respuesta : '' %>
+        </span>
+      </div>
+    </div>
+  
+    <div class="field mb-4">
+      <label class="label">
+        <%= (preguntas[0] && preguntas[7][0] && preguntas[7][0].pregunta) ? preguntas[7][0].pregunta : '' %>
+      </label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual">
+          <%= (respuestasPreguntas[0] && respuestasPreguntas[7][0] && respuestasPreguntas[7][0].respuesta) ? respuestasPreguntas[7][0].respuesta : '' %>
+        </span>
+      </div>
+    </div>
+  
+    <div class="field mb-4">
+      <label class="label"><%= (preguntas[0] && preguntas[8][0] && preguntas[8][0].pregunta) ? preguntas[8][0].pregunta : '' %></label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[8][0] && respuestasPreguntas[8][0].respuesta) ? respuestasPreguntas[8][0].respuesta : '' %></span>
+      </div>
+    </div>
+    
+    <div class="field mb-4">
+      <label class="label"><%= (preguntas[0] && preguntas[9][0] && preguntas[9][0].pregunta) ? preguntas[9][0].pregunta : '' %></label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[9][0] && respuestasPreguntas[9][0].respuesta) ? respuestasPreguntas[9][0].respuesta : '' %></span>
+      </div>
+    </div>
+
+    <div class="field mb-4">
+      <label class="label"><%= (preguntas[0] && preguntas[10][0] && preguntas[10][0].pregunta) ? preguntas[10][0].pregunta : '' %></label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[10][0] && respuestasPreguntas[10][0].respuesta) ? respuestasPreguntas[10][0].respuesta : '' %></span>
+      </div>
+    </div>
+
+    <div class="field mb-4">
+      <label class="label"><%= (preguntas[0] && preguntas[11][0] && preguntas[11][0].pregunta) ? preguntas[11][0].pregunta : '' %></label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[11][0] && respuestasPreguntas[11][0].respuesta) ? respuestasPreguntas[11][0].respuesta : '' %></span>
+      </div>
+    </div>
+
+    <div class="field mb-4">
+      <label class="label"><%= (preguntas[0] && preguntas[12][0] && preguntas[12][0].pregunta) ? preguntas[12][0].pregunta : '' %></label>
+      <div class="control">
+        <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[12][0] && respuestasPreguntas[12][0].respuesta) ? respuestasPreguntas[12][0].respuesta : '' %></span>
+      </div>
+    </div>
+  
+  </div>
+
     <div class="columns">
       <div class="column">
         <h1 class="title is-4 has-text-weight-semibold">Datos laborales</h1>
@@ -328,4 +413,64 @@
       
   </div>
   <br>
+
+  <div class="columns">
+    <div class="column">
+      <h1 class="title is-4 has-text-weight-semibold">Preguntas Laborales</h1>
+    </div>
+
+</div>
+
+<div class="box has-background-info has-text-white">
+
+  <div class="field mb-4">
+    <label class="label">
+      <%= (preguntas[0] && preguntas[13][0] && preguntas[13][0].pregunta) ? preguntas[13][0].pregunta : '' %>
+    </label>
+    <div class="control">
+      <span type="text" class="input" name="fechaActual">
+        <%= (respuestasPreguntas[0] && respuestasPreguntas[13][0] && respuestasPreguntas[13][0].respuesta) ? respuestasPreguntas[13][0].respuesta : '' %>
+      </span>
+    </div>
+  </div>
+
+  <div class="field mb-4">
+    <label class="label">
+      <%= (preguntas[0] && preguntas[14][0] && preguntas[14][0].pregunta) ? preguntas[14][0].pregunta : '' %>
+    </label>
+    <div class="control">
+      <span type="text" class="input" name="fechaActual">
+        <%= (respuestasPreguntas[0] && respuestasPreguntas[14][0] && respuestasPreguntas[14][0].respuesta) ? respuestasPreguntas[14][0].respuesta : '' %>
+      </span>
+    </div>
+  </div>
+
+  <div class="field mb-4">
+    <label class="label"><%= (preguntas[0] && preguntas[15][0] && preguntas[15][0].pregunta) ? preguntas[15][0].pregunta : '' %></label>
+    <div class="control">
+      <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[15][0] && respuestasPreguntas[15][0].respuesta) ? respuestasPreguntas[15][0].respuesta : '' %></span>
+    </div>
+  </div>
+  
+  <div class="field mb-4">
+    <label class="label"><%= (preguntas[0] && preguntas[16][0] && preguntas[16][0].pregunta) ? preguntas[16][0].pregunta : '' %></label>
+    <div class="control">
+      <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[16][0] && respuestasPreguntas[16][0].respuesta) ? respuestasPreguntas[16][0].respuesta : '' %></span>
+    </div>
+  </div>
+
+  <div class="field mb-4">
+    <label class="label"><%= (preguntas[0] && preguntas[17][0] && preguntas[17][0].pregunta) ? preguntas[17][0].pregunta : '' %></label>
+    <div class="control">
+      <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[17][0] && respuestasPreguntas[17][0].respuesta) ? respuestasPreguntas[17][0].respuesta : '' %></span>
+    </div>
+  </div>
+
+  <div class="field mb-4">
+    <label class="label"><%= (preguntas[0] && preguntas[18][0] && preguntas[18][0].pregunta) ? preguntas[18][0].pregunta : '' %></label>
+    <div class="control">
+      <span type="text" class="input" name="fechaActual"><%= (respuestasPreguntas[0] && respuestasPreguntas[18][0] && respuestasPreguntas[18][0].respuesta) ? respuestasPreguntas[18][0].respuesta : '' %></span>
+    </div>
+  </div>
+</div>
 </section>
