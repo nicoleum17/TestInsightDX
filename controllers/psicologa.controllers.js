@@ -262,7 +262,6 @@ exports.get_respuestasA = (request, response, next) => {
             (resultados) => {
               InterpretacionKostick.fetchAll().then(
                 (interpretacionesKostick) => {
-                  console.log(interpretacionesKostick[0]);
                   response.render("consultaRespuestasAspirante", {
                     isLoggedIn: request.session.isLoggedIn || false,
                     usuario: request.session.usuario || "",
