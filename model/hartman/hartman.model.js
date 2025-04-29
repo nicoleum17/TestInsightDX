@@ -54,6 +54,10 @@ class Hartman {
       throw error;
     }
   }
+
+  static fetchAll() {
+    return db.execute("SELECT * FROM  preguntashartman");
+  }
 }
 
 // Exporta la clase para que pueda ser utilizada en otros módulos
