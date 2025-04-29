@@ -49,10 +49,16 @@
   const eventos = <%- JSON.stringify(infoEventos) %>;
 
   eventos.map(evento => {
-    mostrarEvento(evento.summary, evento.start.dateTime);
+    mostrarEvento(evento.summary, evento.start.dateTime, evento.description);
   });
+  function links(text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url) {
+    return `<a href="${url}" target="_blank">${url}</a>`;
+  });
+}
 
-  function mostrarEvento(nombre, fecha) {
+  function mostrarEvento(nombre, fecha, texto) {
     const _dia = new Date(fecha).toLocaleString("es-MX", {
       month: "short",
       day: "numeric",
@@ -66,6 +72,7 @@
       timeZone: "America/Mexico_City"
     });
 
+    const textoProcesado = links(texto);
     const contenedor = document.getElementById("contenedorEventos");
     const nuevoEvento = document.createElement("div");
     nuevoEvento.classList.add("event-card", "mb-4");
@@ -82,6 +89,7 @@
           <strong>Hora de inicio:</strong> ${_hora}
         </div>
       </div>
+      ${textoProcesado}
     `;
 
     contenedor.appendChild(nuevoEvento);
