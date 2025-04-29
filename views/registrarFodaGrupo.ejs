@@ -32,6 +32,7 @@
                 class="file-input"
                 type="file"
                 name="archivo"
+                id="archivo"
                 accept=".pdf"
                 required
               />
@@ -42,6 +43,7 @@
                 </span>
                 <span class="file-label"> Elige un archivo </span>
               </span>
+              <span class="file-name"> </span>
             </label>
           </div>
           <br />
@@ -64,5 +66,19 @@
     </div>
   </div>
 </section>
+
+<script>
+  const file = document.getElementById("archivo");
+  const fileName = document.querySelector(".file-name");
+
+  file.addEventListener("change", function () {
+    const archivo = file.files[0];
+    if (archivo) {
+      fileName.textContent = archivo.name;
+    } else {
+      fileName.textContent = "No hay archivo seleccionado";
+    }
+  });
+</script>
 
 <%- include('includes/_footer')%>
