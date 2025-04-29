@@ -38,7 +38,9 @@
 
 <section class="section fullHeight">
   <div class="container">
-    <h1 class="title is-3 has-text-centered mb-5">Próximos eventos</h1>
+    <h1 class="title is-3 has-text-centered mb-5 has-text-weight-semibold">
+      Próximos eventos
+    </h1>
     <div class="columns is-centered">
       <div class="column is-10" id="contenedorEventos"></div>
     </div>
@@ -46,52 +48,52 @@
 </section>
 
 <script>
-  const eventos = <%- JSON.stringify(infoEventos) %>;
+    const eventos = <%- JSON.stringify(infoEventos) %>;
 
-  eventos.map(evento => {
-    mostrarEvento(evento.summary, evento.start.dateTime, evento.description);
-  });
-  function links(text) {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, function(url) {
-    return `<a href="${url}" target="_blank">${url}</a>`;
-  });
-}
-
-  function mostrarEvento(nombre, fecha, texto) {
-    const _dia = new Date(fecha).toLocaleString("es-MX", {
-      month: "short",
-      day: "numeric",
-      timeZone: "America/Mexico_City"
+    eventos.map(evento => {
+      mostrarEvento(evento.summary, evento.start.dateTime, evento.description);
     });
-
-    const _hora = new Date(fecha).toLocaleString("es-MX", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-      timeZone: "America/Mexico_City"
+    function links(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+      return `<a href="${url}" target="_blank">${url}</a>`;
     });
-
-    const textoProcesado = links(texto);
-    const contenedor = document.getElementById("contenedorEventos");
-    const nuevoEvento = document.createElement("div");
-    nuevoEvento.classList.add("event-card", "mb-4");
-
-    nuevoEvento.innerHTML = `
-      <div class="columns is-vcentered">
-        <div class="column is-3 event-date">
-          ${_dia}
-        </div>
-        <div class="column is-6 event-name">
-          ${nombre}
-        </div>
-        <div class="column is-3 event-time">
-          <strong>Hora de inicio:</strong> ${_hora}
-        </div>
-      </div>
-      ${textoProcesado}
-    `;
-
-    contenedor.appendChild(nuevoEvento);
   }
+
+    function mostrarEvento(nombre, fecha, texto) {
+      const _dia = new Date(fecha).toLocaleString("es-MX", {
+        month: "short",
+        day: "numeric",
+        timeZone: "America/Mexico_City"
+      });
+
+      const _hora = new Date(fecha).toLocaleString("es-MX", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: "America/Mexico_City"
+      });
+
+      const textoProcesado = links(texto);
+      const contenedor = document.getElementById("contenedorEventos");
+      const nuevoEvento = document.createElement("div");
+      nuevoEvento.classList.add("event-card", "mb-4");
+
+      nuevoEvento.innerHTML = `
+        <div class="columns is-vcentered">
+          <div class="column is-3 event-date">
+            ${_dia}
+          </div>
+          <div class="column is-6 event-name">
+            ${nombre}
+          </div>
+          <div class="column is-3 event-time">
+            <strong>Hora de inicio:</strong> ${_hora}
+          </div>
+        </div>
+        ${textoProcesado}
+      `;
+
+      contenedor.appendChild(nuevoEvento);
+    }
 </script>
