@@ -165,7 +165,19 @@ exports.post_registrarAspirante = (request, response, next) => {
     fechaInicioIOS,
     fechaFinalIOS
   );
-  
+  const eventoCreado = {
+    summary: eventoNuevo.nombre,
+    location: eventoNuevo.lugar,
+    description: eventoNuevo.descripcion,
+    start: {
+      dateTime: eventoNuevo.inicio,
+      timeZone: "America/Mexico_City",
+    },
+    end: {
+      dateTime: eventoNuevo.final,
+      timeZone: "America/Mexico_City",
+    },
+  };
   calendar.events.insert(
     {
       calendarId: "primary",
