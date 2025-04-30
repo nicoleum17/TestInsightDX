@@ -23,6 +23,7 @@ const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const PreguntasFormato = require("../model/preguntasFormato.model");
+const interpretaciones = require("../public/js/interpretacionColores")
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -335,7 +336,12 @@ exports.get_respuestasA = (request, response, next) => {
               });
             }
           );
-        } else if (idPrueba == 5) {
+        } else if (idPrueba == 3) {
+          request.session.idUsuario = idUsuario;
+          request.session.idGrupoAspirante = rows[0].idGrupo;
+          response.redirect("/psicologa/analisisHartman")
+          //TRABAJAR AQUI
+        }else if (idPrueba == 5) {
           Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
             .then(([informacionAnalisis, fieldData]) => {
               // const informacionAnalisis = rows;
@@ -369,7 +375,7 @@ exports.get_respuestasA = (request, response, next) => {
             .catch((error) => {
               console.log(error);
             });
-        }
+        } 
       });
     });
   });
@@ -416,7 +422,7 @@ exports.post_grupo = async (request, response, next) => {
     await mi_grupo.save();
 
     const excelFile = request.files.find(
-      (file) => file.fieldname === "archivo"
+      (file) => file.fieldname === "archivoExcel"
     );
 
     if (excelFile) {
@@ -1134,43 +1140,44 @@ exports.getPruebaColores = (request, response, next) => {
  */
 exports.getCuadernilloColores = (request, response, next) => {
   // Obtener los datos personales del aspirante
-  PruebaV.getDatosPersonalesAspiranteColores(
-    request.params.idGrupo,
-    request.params.idUsuario
-  )
-    .then(([rows, fieldData]) => {
-      const datosPersonales = rows;
+  Aspirante.fetchOne(request.params.idUsuario).then(([aspirante]) => {
+    Usuario.getGrupo(request.params.idUsuario)
+      .then(([grupo]) => {
 
-      // Obtener todas las selecciones de colores
-      CuadernilloColores.getSeleccionesColores(
-        request.params.idGrupo,
-        request.params.idUsuario
-      )
-        .then(([rows, fieldData]) => {
-          // Separar las selecciones por fase
-          const seleccionesFase1 = rows
-            .filter((row) => row.fase === 1)
-            .sort((a, b) => a.posicion - b.posicion);
-          const seleccionesFase2 = rows
-            .filter((row) => row.fase === 2)
-            .sort((a, b) => a.posicion - b.posicion);
-
-          response.render("Psicologos/cuadernilloColores.ejs", {
-            datosPersonales: datosPersonales || [],
-            seleccionesFase1: seleccionesFase1 || [],
-            seleccionesFase2: seleccionesFase2 || [],
-            aspirante: request.params.idUsuario || null,
-            grupo: request.params.idGrupo || null,
-            idInstitucion: request.params.idInstitucion || null,
+        // Obtener todas las selecciones de colores
+        CuadernilloColores.getSeleccionesColores(
+          grupo[0].idGrupo,
+          request.params.idUsuario
+        )
+          .then(([rows, fieldData]) => {
+            // Separar las selecciones por fase
+            const seleccionesFase1 = rows
+              .filter((row) => row.fase === 1)
+              .sort((a, b) => a.posicion - b.posicion);
+            const seleccionesFase2 = rows
+              .filter((row) => row.fase === 2)
+              .sort((a, b) => a.posicion - b.posicion);
+              request.session.idGrupo = grupo[0].idGrupo;
+              request.session.idUsuario = request.params.idUsuario;
+            response.render("cuadernilloColores", {
+              seleccionesFase1: seleccionesFase1 || [],
+              seleccionesFase2: seleccionesFase2 || [],
+              aspirante: aspirante[0] || null,
+              grupo: grupo || null,
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+            });
+          })
+          .catch((error) => {
+            console.log(error);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 };
 
 /*
@@ -1439,12 +1446,9 @@ function obtenerParejasClasificadas(seleccionesFase1, seleccionesFase2) {
 }
 
 exports.getAnalisisColores = async (request, response, next) => {
-  const { idGrupo, idUsuario, idInstitucion } = request.params;
+  const idGrupo = request.session.idGrupo;
+  const idUsuario = request.session.idUsuario;
   try {
-    // Obtener información del aspirante
-    const [informacionAspiranteRows] =
-      await Prueba.getInformacionAspirante(idUsuario);
-
     // Obtener selecciones de colores completas
     const [seleccionesColoresRows] =
       await CuadernilloColores.getSeleccionesColores(idGrupo, idUsuario);
@@ -1560,9 +1564,9 @@ exports.getAnalisisColores = async (request, response, next) => {
 
     const parejasConInterpretaciones =
       agregarInterpretaciones(parejasNormalizadas);
-
+    Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
     // Renderizar la vista con todos los datos
-    response.render("Psicologos/analisisColores.ejs", {
+    response.render("analisisColores", {
       seleccionesFase1: seleccionesFase1 || [],
       seleccionesFase2: seleccionesFase2 || [],
       resultadosFase1,
@@ -1572,10 +1576,13 @@ exports.getAnalisisColores = async (request, response, next) => {
       parejas: parejasConInterpretaciones,
       idGrupo,
       idUsuario,
-      idInstitucion,
-      // nombre aspirante analisis
-      informacionAspirante: informacionAspiranteRows[0],
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      aspirante: aspirante[0],
     });
+  })
   } catch (error) {
     console.error("Error al obtener análisis de colores:", error);
   }
@@ -1631,6 +1638,8 @@ function interpretarMovilidad(movilidad) {
     return "PERSONA INESTABLE";
   }
 }
+
+
 exports.get_interpretaciones16PF = (request, response, next) => {
   let columna = request.params.columna;
   let nivel = request.params.nivel;
@@ -1693,14 +1702,20 @@ const {
   Equilibrio_CQ1,
   Equilibrio_CQ2,
 } = require("../public/js/encuentraValor");
+const { Console } = require("console");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
  */
 
 exports.get_analisisHartman = async (request, response, next) => {
-  const idAspirante = request.params.idAspirante;
-  const idGrupo = request.params.idGrupo;
+  console.log("Comienza_el_analisis");
+
+  const idAspirante = request.session.idUsuario;
+  const idGrupo = request.session.idGrupoAspirante;
+
+  console.log(idGrupo);
+
   console.log("Analisis Hartman");
 
   try {
@@ -1797,10 +1812,12 @@ exports.get_analisisHartman = async (request, response, next) => {
 
     console.log("Datos procesados para la gráfica:", analisisProcesado);
 
-    response.render("pruebas/hartman/analisisHartman.pug", {
+    response.render("analisisHartman", {
       csrfToken: request.csrfToken(),
       datos: analisisProcesado,
       analisisHartman: rows,
+      isLoggedIn: request.session.isLoggedIn,
+      usuario: request.session.usuario || ""
     });
   } catch (error) {
     console.error("Error al obtener o procesar los datos de Hartman:", error);
@@ -1843,3 +1860,17 @@ async function obtenerSerie(idUsuario, grupoId, serieId, calificacionId) {
 function reglaDeTres(num, max) {
   return (num * 100) / max;
 }
+
+exports.get_HartmanActiva = (request, response, next)=>{
+  Prueba.hartmanActiva(request.params.valor)
+  .then(([rows]) => {
+    const hartmanTiempo = {
+      tiempo: rows[0].tiempo || "N/A",
+    };
+    response.status(200).json({ hartmanTiempo });
+  })
+  .catch((error) => {
+    response.status(500).json({ message: "Sin pruebas" });
+  });
+}
+// TRABAJO AQUI

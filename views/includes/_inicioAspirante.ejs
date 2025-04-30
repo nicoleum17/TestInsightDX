@@ -87,6 +87,35 @@
     "<%= fechaLimite.fechaLimitePrueba.toISOString().split('T')[0] %>"; // Ensure this is in a valid date format
   const daysLeft = calculateDaysUntilFutureDate(futureDate);
 
-  // Render the days left in the HTML
-  document.getElementById("days-left").textContent = daysLeft;
+  // Check if there are no days left
+  if (daysLeft <= 0) {
+    // Clear the content of the main section
+    document.querySelector('.fullHeight').innerHTML = ` 
+    <section class="section fullHeight has-background-warning">
+  <div class="container mt-5 is-max-desktop">
+    <div class="columns">
+      <div class="column">
+        <% if (aspirante) { %>
+          <h1 class="title is-1 has-text-weight-semibold">
+            ¡Hola <%= aspirante.nombres %>!
+          </h1>
+        <% } %>
+      </div>
+    </div>
+    <br>
+    <div class="columns">
+      <div class="column">
+        <div>
+          <h1 class="title has-text-centered has-text-weight-semibold">
+            No hay pruebas asignadas.
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`;
+  } else {
+    // Render the days left in the HTML
+    document.getElementById("days-left").textContent = daysLeft;
+  }
 </script>

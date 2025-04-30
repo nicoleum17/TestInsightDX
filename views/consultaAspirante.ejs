@@ -200,7 +200,39 @@
                                               /></button
                                           ></a>`;
                 });
+            } else if (prueba.idPrueba === 6) {
+                nombrePrueba.textContent = "Colores de Lüscher";
+                tiempoPrueba.textContent = "N/A";
+                respuestasPrueba.innerHTML = `<a href="consultaRespuestasColoresAspirante/${aspirante.idUsuario}/6">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+              
+            } else if(prueba.idPrueba == 3){
+              fetch("/psicologa/hartmanActiva/"+ aspirante.idUsuario, {
+                method: "GET",
+              }).then((result) => result.json())
+                .then((data) => {
+                  console.log(data);
+                  nombrePrueba.textContent = "Hartman";
+                  tiempoPrueba.textContent = data.hartmanTiempo.tiempo + " hrs";
+                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/3">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+                });
             }
+
+
+
           }
         });
     }

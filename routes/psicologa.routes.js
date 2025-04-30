@@ -257,13 +257,25 @@ router.get(
 
 // Vista con el análisis de la prueba Colores del aspirante
 router.get(
-  "/analisis-colores/:idGrupo/:idUsuario/:idInstitucion",
+  "/analisis-colores/:idUsuario",
   isAuth,
   psicologaController.getAnalisisColores
 );
 // CUADERNILLO COLORES
 router.get(
-  "/cuadernillo-colores/:idGrupo/:idUsuario/:idInstitucion",
+  "/consultaRespuestasColoresAspirante/:idUsuario/6",
   isAuth,
   psicologaController.getCuadernilloColores
+);
+
+router.get(
+  "/analisisHartman",
+  isAuth,
+  psicologaController.get_analisisHartman
+);
+
+router.get(
+  "/hartmanActiva/:valor",
+  isAuth,
+  psicologaController.get_HartmanActiva
 );
