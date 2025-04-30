@@ -191,6 +191,7 @@ exports.post_registrarAspirante = (request, response, next) => {
       }
     }
   );
+
   const nombreUsuario = mi_aspirante.codigoIdentidad + new Date().getFullYear();
   const contraseñaBase = uuidv4();
 
@@ -335,6 +336,7 @@ exports.post_grupo = async (request, response, next) => {
   );
 
   try {
+    let idAspirantes = [];
     await mi_grupo.save();
 
     const excelFile = request.files.find(
@@ -395,6 +397,7 @@ exports.post_grupo = async (request, response, next) => {
         );
 
         await mi_usuario.save();
+        idAspirantes.push(mi_aspirante.idUsuario);
       }
     } else {
       console.error("No se encontró el archivo de Excel.");
@@ -443,6 +446,10 @@ exports.post_grupo = async (request, response, next) => {
     const promesas = pruebas.map((prueba) => {
       return Prueba.fetchOneNombre(prueba).then(([rows]) => {
         const idPrueba = rows[0]?.idPrueba;
+        
+        for (let i = 0; i < idAspirantes.length; i++) {
+          Aspirante.asignaPruebas(idAspirantes[i], mi_grupo.idGrupo, idPrueba);
+      }
 
         const mi_tienePruebas = new TienePruebas(
           mi_grupo.idGrupo,
