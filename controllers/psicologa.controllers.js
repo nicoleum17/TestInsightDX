@@ -370,8 +370,7 @@ exports.get_respuestasA = (request, response, next) => {
             .catch((error) => {
               console.log(error);
             });
-        } else if (idPrueba == 6) {
-        }
+        } 
       });
     });
   });

@@ -35,7 +35,8 @@
   }
 
   /* AJUSTES DEL CONTENEDOR PRINCIPAL */
-  .main {
+  section{
+    background-color: white !important;
     width: 100% !important;
     display: block !important;
     margin: 0 !important;
@@ -75,29 +76,12 @@
     width: 100% !important;
   }
 
-  /* TITULOS DE LAS SECCIONES */
-  .titulo-seccion {
-    color: var(--secondary) !important;
-    font-size: 18pt !important;
-    margin-top: 30px !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
 
   hr {
     border: 1px solid #ddd !important;
     margin: 10px 0 20px 0 !important;
   }
 
-  /* SECCION PRUEBA DE COLORES */
-  .fase-titulo {
-    color: var(--secondary) !important;
-    font-size: 16pt !important;
-    margin-top: 25px !important;
-    margin-bottom: 15px !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
 
   /* Fila de cuadros de colores */
   .colores-row {
@@ -246,7 +230,7 @@
   .comparison-table th {
     border: 1px solid #ddd !important;
     font-size: 10pt !important;
-    color: var(--secondary) !important;
+    color: #000000 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     text-transform: uppercase !important;
@@ -255,7 +239,7 @@
   /* Estilo significado */
   .significado-cell {
     font-weight: 500 !important;
-    color: var(--secondary) !important;
+    color: #000000 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -291,7 +275,9 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-
+  .significados{
+    color:#000000
+  }
   /* Porcentajes */
   .percent-value {
     font-weight: 600 !important;
