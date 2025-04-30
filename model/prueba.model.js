@@ -67,6 +67,15 @@ module.exports = class Prueba {
     );
   }
 
+  static hartmanActiva(idUsuario){
+    return db.execute(
+      `SELECT SEC_TO_TIME(FLOOR(MAX(tiempoRespuesta))) as tiempo
+      FROM respuestashartman
+      WHERE idUsuario = ?`,
+      [idUsuario]
+    );
+  }
+
   //Otras Pruebas
 
   //~ OTIS
