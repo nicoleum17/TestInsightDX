@@ -417,7 +417,7 @@ exports.post_grupo = async (request, response, next) => {
     await mi_grupo.save();
 
     const excelFile = request.files.find(
-      (file) => file.fieldname === "archivo"
+      (file) => file.fieldname === "archivoExcel"
     );
 
     if (excelFile) {
