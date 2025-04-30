@@ -175,6 +175,12 @@ router.get(
   psicologaController.get_consultarReporteAspirante
 );
 
+router.get(
+  "/resultadosAspiranteK/:idUsuario",
+  isAuth,
+  psicologaController.get_resultadosAspiranteK
+)
+
 router.get("/pdf/:filename", isAuth, psicologaController.getPdfFile);
 
 router.get("/cerrar_sesion", psicologaController.get_logout);

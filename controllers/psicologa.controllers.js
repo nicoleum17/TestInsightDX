@@ -381,6 +381,37 @@ exports.get_respuestasA = (request, response, next) => {
   });
 };
 
+exports.get_resultadosAspiranteK = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+        PreguntaKostick.fetchAll().then(([preguntasKostick]) => {
+          RespondeKostick.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then((resultados) => {
+            console.log(datosAspirante)
+            console.log(rows)
+            console.log(preguntasKostick)
+            console.log(resultados)
+            response.render("respuestasAspirante", {
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+              prueba: "El inventario de Percepción Kostick",
+              grupo: grupoRows[0],
+              valores: resultados[0][0],
+              datos: datosAspirante[0],
+              preguntas: preguntasKostick,
+              opciones: resultados,
+              aspirante: datosAspirante[0],
+            });
+          });
+      });
+    });
+  });
+})
+};
+
 exports.get_respuestasG = (request, response, next) => {
   response.render("consultaRespuestasGrupo", {
     isLoggedIn: request.session.isLoggedIn || false,
@@ -1703,6 +1734,7 @@ const {
   Equilibrio_CQ2,
 } = require("../public/js/encuentraValor");
 const { Console } = require("console");
+const RespondeKostick = require("../model/kostick/respondeKostick.model");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
