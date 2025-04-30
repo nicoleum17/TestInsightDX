@@ -313,6 +313,11 @@ exports.get_respuestasA = (request, response, next) => {
                     valores: resultados[0][0],
                     datos: datosAspirante[0],
                     interpretaciones: interpretacionesKostick[0],
+                    idUsuario: idUsuario,
+                    idPrueba: idPrueba,
+                    respuestasCorrectas: null,
+                    tiempoTotal: null,
+                    respuestasAspitanteOtis: null,
                   });
                 }
               );
@@ -331,35 +336,94 @@ exports.get_respuestasA = (request, response, next) => {
                 valores: resultados[0][0],
                 datos: datosAspirante[0],
                 interpretaciones: null,
+                idUsuario: idUsuario,
+                idPrueba: idPrueba,
+                respuestasCorrectas: null,
+                tiempoTotal: null,
+                respuestasAspitanteOtis: null,
               });
             }
           );
         } else if (idPrueba == 5) {
-          Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
-            .then(([informacionAnalisis, fieldData]) => {
-              // const informacionAnalisis = rows;
-              Prueba.getPuntajeBrutoOtis(idUsuario, rows[0].idGrupo)
-                .then(([puntaje, fieldData]) => {
-                  console.log(idUsuario);
-                  const puntajeBruto = puntaje[0].puntajeBruto;
-                  console.log("Informacion Analisis: ", informacionAnalisis);
-                  console.log("Puntaje Bruto: ", puntajeBruto);
-                  response.render("consultaRespuestasAspirante", {
-                    isLoggedIn: request.session.isLoggedIn || false,
-                    usuario: request.session.usuario || "",
-                    //csrfToken: request.csrfToken(),
-                    privilegios: request.session.privilegios || [],
-                    prueba: "OTIS",
-                    grupo: grupoRows[0],
-                    datos: datosAspirante[0],
-                    informacionAnalisis: informacionAnalisis || [],
-                    puntajeBruto: puntajeBruto || 0,
-                    idAspirante: idUsuario || null,
-                    idGrupo: rows[0].idGrupo || null,
-                    idInstitucion: rows[0].institucion || null,
-                    valores: null,
-                    interpretaciones: null,
-                  });
+          // Obtiene las respuestas correctas del aspirante
+          Cuadernillo.getRespuestasCorrectas(rows[0].idGrupo, idUsuario)
+            .then(([correctasOtis, fieldData]) => {
+              const respuestasCorrectas = correctasOtis[0].RespuestasCorrectas;
+              // Obtiene el tiempo total que tomo el aspirante para completar la prueba
+              Cuadernillo.getTiempoTotal(rows[0].idGrupo, idUsuario)
+                .then(([tt, fieldData]) => {
+                  const tiempoTotal = tt[0].Tiempo;
+                  // Obtiene las preguntas, opciones y la respuesta del aspirante
+                  Cuadernillo.getRespuestasOtisAspirante(
+                    rows[0].idGrupo,
+                    idUsuario
+                  )
+                    .then(([respuestasOtisAspirante, fieldData]) => {
+                      const preguntasAgrupadas = {};
+
+                      respuestasOtisAspirante.forEach((row) => {
+                        // Creamos el objeto de pregunta si este no existe
+                        if (!preguntasAgrupadas[row.idPreguntaOtis]) {
+                          preguntasAgrupadas[row.idPreguntaOtis] = {
+                            idPreguntaOtis: row.idPreguntaOtis,
+                            numeroPregunta: row.numeroPregunta,
+                            preguntaOtis: row.preguntaOtis,
+                            opciones: [],
+                            esCorrecta: false,
+                            tiempoRespuesta: 0,
+                            contestada: null,
+                          };
+                        }
+                        // Vamos añadiendo las opciones de la pregunta correspondiente
+                        preguntasAgrupadas[row.idPreguntaOtis].opciones.push({
+                          idOpcionOtis: row.idOpcionOtis,
+                          opcionOtis: row.opcionOtis,
+                          descripcionOpcion: row.descripcionOpcion,
+                          esCorrecta: row.esCorrecta === 1,
+                          seleccionada: row.opcionSeleccionada === 1,
+                        });
+
+                        if (row.opcionSeleccionada === 1) {
+                          preguntasAgrupadas[
+                            row.idPreguntaOtis
+                          ].tiempoRespuesta = row.tiempoRespuesta;
+                          preguntasAgrupadas[row.idPreguntaOtis].contestada =
+                            true;
+                          preguntasAgrupadas[row.idPreguntaOtis].esCorrecta =
+                            row.esCorrecta === 1;
+                        }
+
+                        if (
+                          !preguntasAgrupadas[row.idPreguntaOtis].contestada
+                        ) {
+                          preguntasAgrupadas[row.idPreguntaOtis].esCorrecta =
+                            null;
+                        }
+                      });
+
+                      const respuestasAspitanteOtis =
+                        Object.values(preguntasAgrupadas);
+
+                      response.render("consultaRespuestasAspirante", {
+                        isLoggedIn: request.session.isLoggedIn || false,
+                        usuario: request.session.usuario || "",
+                        csrfToken: request.csrfToken(),
+                        privilegios: request.session.privilegios || [],
+                        idUsuario: idUsuario,
+                        prueba: "OTIS",
+                        idPrueba: idPrueba,
+                        grupo: grupoRows[0],
+                        valores: null,
+                        datos: datosAspirante[0],
+                        interpretaciones: null,
+                        respuestasCorrectas: respuestasCorrectas || 0,
+                        tiempoTotal: tiempoTotal || 0,
+                        respuestasAspitanteOtis: respuestasAspitanteOtis || [],
+                      });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 })
                 .catch((error) => {
                   console.log(error);
@@ -369,6 +433,48 @@ exports.get_respuestasA = (request, response, next) => {
               console.log(error);
             });
         }
+      });
+    });
+  });
+};
+
+exports.get_analisisOtis = (request, response, next) => {
+  const idUsuario = request.params.idusuario;
+  Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+        Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
+          .then(([informacionAnalisis, fieldData]) => {
+            Prueba.getPuntajeBrutoOtis(idUsuario, rows[0].idGrupo)
+              .then(([puntaje, fieldData]) => {
+                // console.log(idUsuario);
+                const puntajeBruto = puntaje[0].puntajeBruto;
+                // console.log("Informacion Analisis: ", informacionAnalisis);
+                // console.log("Puntaje Bruto: ", puntajeBruto);
+                response.render("analisisOtis", {
+                  isLoggedIn: request.session.isLoggedIn || false,
+                  usuario: request.session.usuario || "",
+                  csrfToken: request.csrfToken(),
+                  privilegios: request.session.privilegios || [],
+                  prueba: "OTIS",
+                  grupo: grupoRows[0],
+                  datos: datosAspirante[0],
+                  informacionAnalisis: informacionAnalisis || [],
+                  puntajeBruto: puntajeBruto || 0,
+                  idAspirante: idUsuario || null,
+                  idGrupo: rows[0].idGrupo || null,
+                  idInstitucion: rows[0].institucion || null,
+                  valores: null,
+                  interpretaciones: null,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
     });
   });
@@ -1686,6 +1792,7 @@ const {
   Equilibrio_CQ1,
   Equilibrio_CQ2,
 } = require("../public/js/encuentraValor");
+const preguntasFormato = require("../model/preguntasFormato.model");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
