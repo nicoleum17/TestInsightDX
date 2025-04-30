@@ -4,62 +4,143 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cuadernillo de respuestas Colores de Lüscher</title>
-
-    <!-- Link css -->
-    <link rel="stylesheet" href="/css/psicologos/cuadernilloColores.css" />
   </head>
+  <style>
+    :root {
+      --bulma-primary-h: 227deg;
+      --bulma-primary-s: 54%;
+      --bulma-primary-l: 44%;
+      --bulma-link-h: 224deg;
+      --bulma-link-s: 84%;
+      --bulma-link-l: 20%;
+      --bulma-info-h: 216deg;
+      --bulma-info-l: 91%;
+      --bulma-success-h: 175deg;
+      --bulma-warning-h: 34deg;
+      --bulma-warning-l: 99%;
+    }
+
+    .fullHeight {
+      min-height: 110vh;
+    }
+    .container {
+      flex: 1;
+      padding: 20px 40px;
+      margin: 0 auto;
+      width: 100%;
+      transition: margin-left 0.5s;
+    }
+
+    .container.expanded {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .text-center {
+      font-size: 40px;
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .titulo-seccion {
+      color: var(--secondary);
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 1.5rem;
+    }
+
+    .datos-personales {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .dato-titulo {
+      color: var(--secondary);
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .dato {
+      color: #000;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .datos-secundarios {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .prueba-colores-container {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    .fase-titulo {
+      font-size: 1.8rem;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 500;
+      color: var(--secondary);
+    }
+
+    .colores-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 30px;
+      margin-bottom: 50px;
+      width: 100%;
+    }
+
+    .color-item-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80px;
+    }
+
+    .color-box {
+      width: 80px;
+      height: 80px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    .color-number {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+  </style>
+  <%- include('includes/_navBarColores.ejs') %>
   <body>
-    <div class="main">
-      <!-- Navside -->
-      <%- include('includes/_navbarP.ejs') %>
-
-      <div class="container">
-        <!-- Boton de cerrar sesión -->
-        <%- include('../includes/_buttonCerrarSesion.ejs') %>
-
-        <h1 class="text-center mb-4">Prueba De Colores De Lüscher</h1>
-
-        <h5 class="titulo-seccion">Datos Personales</h5>
-        <hr />
-
-        <% if(datosPersonales && datosPersonales.length > 0) { %> <% for(dato of
-        datosPersonales) { %>
-        <div class="datos-personales">
-          <div class="aspirante-nombre">
-            <h5 class="dato-titulo">Nombre</h5>
-            <p class="dato"><%= dato.nombre %></p>
-          </div>
-          <div class="aspirante-apellidoP">
-            <h5 class="dato-titulo">Apellido Paterno</h5>
-            <p class="dato"><%= dato.apellidoPaterno %></p>
-          </div>
-          <div class="aspirante-apellidoM">
-            <h5 class="dato-titulo">Apellido Materno</h5>
-            <p class="dato"><%= dato.apellidoMaterno %></p>
+    <section class="section fullHeight has-background-warning">
+      <div class="container is-max-desktop">
+        <div class="columns has-text-centered">
+          <div class="column">
+            <h1 class="title is-2 has-text-weight-semibold">
+              Prueba De Colores De Lüscher
+            </h1>
           </div>
         </div>
-        <div class="datos-secundarios">
-          <div class="aspirante-puestoS">
-            <h5 class="dato-titulo">Puesto solicitado</h5>
-            <p class="dato"><%= dato.puestoSolicitado %></p>
-          </div>
-          <div class="aspirante-fecha">
-            <h5 class="dato-titulo">Fecha</h5>
-            <% const fecha = new Date(dato.fecha); const fechaFormato =
-            `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`;
-            %>
-            <p class="dato"><%= fechaFormato %></p>
+        <br />
+        <div class="columns">
+          <div class="column">
+            <h5 class="title is-3 has-text-weight-semibold">
+              Respuestas de: <%=aspirante.nombres%>
+              <%=aspirante.apellidoPaterno%> <%=aspirante.apellidoMaterno%>
+            </h5>
           </div>
         </div>
-        <% } %> <% } else { %>
-        <p class="alert alert-warning">
-          No se encontraron datos personales del aspirante
-        </p>
-        <% } %>
 
         <div class="prueba-colores-container">
-          <h5 class="titulo-seccion">Selecciones Aspirante</h5>
-          <hr />
+          <h5 class="titulo-seccion">Selección del aspirante</h5>
 
           <h2 class="fase-titulo">Fase 1</h2>
           <div class="colores-row">
@@ -95,21 +176,25 @@
         </div>
 
         <!-- Botones finales -->
-        <div class="d-flex justify-content-between mt-5">
-          <a
-            href="/psicologo/aspirantes/<%= aspirante %>/<%= grupo %>/<%= idInstitucion %>"
-            class="btn btn-regresar"
-            >Regresar</a
-          >
-
-          <a
-            href="/psicologo/analisis-colores/<%= grupo %>/<%= aspirante %>/<%= idInstitucion %>"
-            class="btn btn-ver-analisis"
-            >Ver Análisis</a
-          >
+        <div class="columns has-text-centered">
+          <div class="column">
+            <a href="/psicologa/consultaAspirante %>">
+              <button class="is-narrow button is-primary has-text-warning">
+                Regresar
+              </button>
+            </a>
+          </div>
+          <div class="column">
+            <a href="/psicologa/analisis-colores/<%= aspirante.idUsuario %>">
+              <button class="is-narrow button is-primary has-text-warning">
+                Ver Análisis
+              </button>
+            </a>
+          </div>
         </div>
+        <br />
       </div>
-    </div>
+    </section>
 
     <!-- Script para poner colores desde data-color -->
     <script>

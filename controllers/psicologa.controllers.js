@@ -23,6 +23,7 @@ const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const PreguntasFormato = require("../model/preguntasFormato.model");
+const interpretaciones = require("../public/js/interpretacionColores")
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -368,6 +369,7 @@ exports.get_respuestasA = (request, response, next) => {
             .catch((error) => {
               console.log(error);
             });
+        } else if (idPrueba == 6) {
         }
       });
     });
@@ -1127,43 +1129,44 @@ exports.getPruebaColores = (request, response, next) => {
  */
 exports.getCuadernilloColores = (request, response, next) => {
   // Obtener los datos personales del aspirante
-  PruebaV.getDatosPersonalesAspiranteColores(
-    request.params.idGrupo,
-    request.params.idUsuario
-  )
-    .then(([rows, fieldData]) => {
-      const datosPersonales = rows;
+  Aspirante.fetchOne(request.params.idUsuario).then(([aspirante]) => {
+    Usuario.getGrupo(request.params.idUsuario)
+      .then(([grupo]) => {
 
-      // Obtener todas las selecciones de colores
-      CuadernilloColores.getSeleccionesColores(
-        request.params.idGrupo,
-        request.params.idUsuario
-      )
-        .then(([rows, fieldData]) => {
-          // Separar las selecciones por fase
-          const seleccionesFase1 = rows
-            .filter((row) => row.fase === 1)
-            .sort((a, b) => a.posicion - b.posicion);
-          const seleccionesFase2 = rows
-            .filter((row) => row.fase === 2)
-            .sort((a, b) => a.posicion - b.posicion);
-
-          response.render("Psicologos/cuadernilloColores.ejs", {
-            datosPersonales: datosPersonales || [],
-            seleccionesFase1: seleccionesFase1 || [],
-            seleccionesFase2: seleccionesFase2 || [],
-            aspirante: request.params.idUsuario || null,
-            grupo: request.params.idGrupo || null,
-            idInstitucion: request.params.idInstitucion || null,
+        // Obtener todas las selecciones de colores
+        CuadernilloColores.getSeleccionesColores(
+          grupo[0].idGrupo,
+          request.params.idUsuario
+        )
+          .then(([rows, fieldData]) => {
+            // Separar las selecciones por fase
+            const seleccionesFase1 = rows
+              .filter((row) => row.fase === 1)
+              .sort((a, b) => a.posicion - b.posicion);
+            const seleccionesFase2 = rows
+              .filter((row) => row.fase === 2)
+              .sort((a, b) => a.posicion - b.posicion);
+              request.session.idGrupo = grupo[0].idGrupo;
+              request.session.idUsuario = request.params.idUsuario;
+            response.render("cuadernilloColores", {
+              seleccionesFase1: seleccionesFase1 || [],
+              seleccionesFase2: seleccionesFase2 || [],
+              aspirante: aspirante[0] || null,
+              grupo: grupo || null,
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+            });
+          })
+          .catch((error) => {
+            console.log(error);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 };
 
 /*
@@ -1432,12 +1435,9 @@ function obtenerParejasClasificadas(seleccionesFase1, seleccionesFase2) {
 }
 
 exports.getAnalisisColores = async (request, response, next) => {
-  const { idGrupo, idUsuario, idInstitucion } = request.params;
+  const idGrupo = request.session.idGrupo;
+  const idUsuario = request.session.idUsuario;
   try {
-    // Obtener información del aspirante
-    const [informacionAspiranteRows] =
-      await Prueba.getInformacionAspirante(idUsuario);
-
     // Obtener selecciones de colores completas
     const [seleccionesColoresRows] =
       await CuadernilloColores.getSeleccionesColores(idGrupo, idUsuario);
@@ -1553,9 +1553,10 @@ exports.getAnalisisColores = async (request, response, next) => {
 
     const parejasConInterpretaciones =
       agregarInterpretaciones(parejasNormalizadas);
-
+    Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
+      console.log(aspirante)
     // Renderizar la vista con todos los datos
-    response.render("Psicologos/analisisColores.ejs", {
+    response.render("analisisColores", {
       seleccionesFase1: seleccionesFase1 || [],
       seleccionesFase2: seleccionesFase2 || [],
       resultadosFase1,
@@ -1565,10 +1566,13 @@ exports.getAnalisisColores = async (request, response, next) => {
       parejas: parejasConInterpretaciones,
       idGrupo,
       idUsuario,
-      idInstitucion,
-      // nombre aspirante analisis
-      informacionAspirante: informacionAspiranteRows[0],
+      isLoggedIn: request.session.isLoggedIn || false,
+      usuario: request.session.usuario || "",
+      csrfToken: request.csrfToken(),
+      privilegios: request.session.privilegios || [],
+      aspirante: aspirante[0],
     });
+  })
   } catch (error) {
     console.error("Error al obtener análisis de colores:", error);
   }
@@ -1624,6 +1628,8 @@ function interpretarMovilidad(movilidad) {
     return "PERSONA INESTABLE";
   }
 }
+
+
 exports.get_interpretaciones16PF = (request, response, next) => {
   let columna = request.params.columna;
   let nivel = request.params.nivel;
@@ -1686,6 +1692,7 @@ const {
   Equilibrio_CQ1,
   Equilibrio_CQ2,
 } = require("../public/js/encuentraValor");
+const { Console } = require("console");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
