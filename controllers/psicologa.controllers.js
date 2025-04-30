@@ -1560,7 +1560,6 @@ exports.getAnalisisColores = async (request, response, next) => {
     const parejasConInterpretaciones =
       agregarInterpretaciones(parejasNormalizadas);
     Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-      console.log(aspirante)
     // Renderizar la vista con todos los datos
     response.render("analisisColores", {
       seleccionesFase1: seleccionesFase1 || [],
