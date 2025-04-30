@@ -165,6 +165,6 @@ module.exports = class Aspirante {
   }
 
   static asignaPruebas(idUsuario, idGrupo, idPrueba) {
-    db.execute(`INSERT INTO pruebasAspirante (idUsuario, idGrupo, idPrueba, estatus) VALUE (?, ?, ?, 'Por comenzar')`, [idUsuario, idGrupo, idPrueba]);
+    db.execute(`INSERT INTO pruebasaspirante (idUsuario, idGrupo, idPrueba, estatus) VALUE (?, ?, ?, 'Por comenzar')`, [idUsuario, idGrupo, idPrueba]);
   }
 };

@@ -42,7 +42,7 @@ module.exports = class Prueba {
   static pruebasActivas(idUsuario) {
     return db.execute(
       `SELECT pa.idPrueba as idPrueba, DATE_FORMAT(fechaLimitePrueba, '%Y-%m-%d %H:%i:%s') as fecha, pa.estatus as estatus
-        FROM pruebasAspirante pa
+        FROM pruebasaspirante pa
         JOIN tienepruebas tp ON pa.idGrupo = tp.idGrupo AND pa.idPrueba = tp.idPrueba
         WHERE pa.idUsuario = ?`,
       [idUsuario]
