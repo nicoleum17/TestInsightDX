@@ -9,6 +9,8 @@ const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
 const FormatoEntrevista = require("../model/formatoEntrevista.model");
 const ConsultaResultados = require("../model/hartman/consultaResultados.model");
+const Hartman = require("../model/hartman/hartman.model");
+const Terman = require("../model/terman/terman.model");
 const TienePruebas = require("../model/tienePruebas.model");
 const Usuario = require("../model/usuarios.model");
 const PerteneceGrupo = require("../model/perteneceGrupo.model");
@@ -16,10 +18,11 @@ const PerteneceGrupoParcial = require("../model/perteneceGrupoParcial.model");
 const ResultadosKostick = require("../model/kostick/resultadosKostick.model");
 const Resultados16PF = require("../model/16pf/resultados16PF.model");
 const PruebaV = require("../model/vaultTech/prueba.model");
+const OpcionesOtis = require("../model/vaultTech/opcionOtis.model");
 const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
-const RespuestasPreguntasFormato = require("../model/respuestasPreguntasFormato.model");
+const PreguntasFormato = require("../model/preguntasFormato.model");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -111,6 +114,45 @@ exports.get_preguntas = (request, response, next) => {
             prueba: pruebaInfo[0],
             preguntas: preguntas16PF,
             opciones: opciones16Pf,
+          });
+        });
+      });
+    } else if (idPrueba === 3) {
+      Hartman.fetchAll().then(([preguntasHartman]) => {
+        response.render("preguntasYopciones", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+          prueba: pruebaInfo[0],
+          preguntas: preguntasHartman,
+        });
+      });
+    } else if (idPrueba === 4) {
+      Terman.fetchAll().then(([preguntasTerman]) => {
+        Terman.fetchOpciones().then(([opcionesTerman]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntasTerman,
+            opciones: opcionesTerman,
+          });
+        });
+      });
+    } else if (idPrueba === 5) {
+      PruebaV.getPreguntasOtis().then(([preguntasOtis]) => {
+        OpcionesOtis.fetchAll().then(([opcionesOtis]) => {
+          response.render("preguntasYopciones", {
+            isLoggedIn: request.session.isLoggedIn || false,
+            usuario: request.session.usuario || "",
+            csrfToken: request.csrfToken(),
+            privilegios: request.session.privilegios || [],
+            prueba: pruebaInfo[0],
+            preguntas: preguntasOtis,
+            opciones: opcionesOtis,
           });
         });
       });
@@ -293,6 +335,40 @@ exports.get_respuestasA = (request, response, next) => {
               });
             }
           );
+        } else if (idPrueba == 5) {
+          Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
+            .then(([informacionAnalisis, fieldData]) => {
+              // const informacionAnalisis = rows;
+              Prueba.getPuntajeBrutoOtis(idUsuario, rows[0].idGrupo)
+                .then(([puntaje, fieldData]) => {
+                  console.log(idUsuario);
+                  const puntajeBruto = puntaje[0].puntajeBruto;
+                  console.log("Informacion Analisis: ", informacionAnalisis);
+                  console.log("Puntaje Bruto: ", puntajeBruto);
+                  response.render("consultaRespuestasAspirante", {
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    usuario: request.session.usuario || "",
+                    //csrfToken: request.csrfToken(),
+                    privilegios: request.session.privilegios || [],
+                    prueba: "OTIS",
+                    grupo: grupoRows[0],
+                    datos: datosAspirante[0],
+                    informacionAnalisis: informacionAnalisis || [],
+                    puntajeBruto: puntajeBruto || 0,
+                    idAspirante: idUsuario || null,
+                    idGrupo: rows[0].idGrupo || null,
+                    idInstitucion: rows[0].institucion || null,
+                    valores: null,
+                    interpretaciones: null,
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }
       });
     });
@@ -411,19 +487,19 @@ exports.post_grupo = async (request, response, next) => {
       fechaGrupoFinalIOS
     );
 
-      const eventoCreado = {
-        summary: eventoNuevo.nombre,
-        location: eventoNuevo.lugar,
-        description: eventoNuevo.descripcion,
-        start: {
-          dateTime: eventoNuevo.inicio,
-          timeZone: "America/Mexico_City",
-        },
-        end: {
-          dateTime: eventoNuevo.final,
-          timeZone: "America/Mexico_City",
-        },
-      };
+    const eventoCreado = {
+      summary: eventoNuevo.nombre,
+      location: eventoNuevo.lugar,
+      description: eventoNuevo.descripcion,
+      start: {
+        dateTime: eventoNuevo.inicio,
+        timeZone: "America/Mexico_City",
+      },
+      end: {
+        dateTime: eventoNuevo.final,
+        timeZone: "America/Mexico_City",
+      },
+    };
 
     calendar.events.insert(
       {
@@ -883,26 +959,33 @@ exports.post_registraReporte = (request, response, next) => {
 
 exports.get_formatoEntrevista = async (request, response, next) => {
   const idUsuario = request.params.idUsuario;
-  try{
+  try {
     const [[aspirantes]] = await Aspirante.fetchOne(idUsuario);
-    const[[formatoEntrevista]] = await FormatoEntrevista.fetchOne(idUsuario);
+    const [[formatoEntrevista]] = await FormatoEntrevista.fetchOne(idUsuario);
+
+    const promesasPreguntas = [];
     const promesasRespuestas = [];
+    console.log(formatoEntrevista.idFormato);
     for (let i = 1; i < 20; i++) {
-      promesasRespuestas.push(preguntasFormato.fetchPregunta(i, request.session.idFormato));
+      promesasRespuestas.push(
+        preguntasFormato.fetchPregunta(i, request.session.idFormato)
+      );
     }
-    const respuestas = await Promise.all(promesas);
+    const respuestas = await Promise.all(promesasRespuestas);
+    const preguntas = await Promise.all(promesasPreguntas);
+    console.log(formatoEntrevista);
     response.render("consultarFormatoEntrevista", {
       isLoggedIn: request.session.isLoggedIn || false,
       usuario: request.session.usuario || "",
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
-      aspirante: aspirante[0],
+      aspirante: aspirantes,
       idUsuario: request.session.idUsuario || "",
-      formatoEntrevista: formatoEntrevista[0],
-      respuestasPreguntas: promesasRespuestas[0],
+      formatoEntrevista: formatoEntrevista,
+      respuestasPreguntas: respuestas,
       preguntas: preguntas,
     });
-  } catch(error){
+  } catch (error) {
     console.error("Error al sacar preguntas:", error);
   }
 };

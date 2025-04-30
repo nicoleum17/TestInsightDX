@@ -32,6 +32,14 @@ class terman {
     );
     return opcionesCorrectas;
   }
+
+  static fetchAll() {
+    return db.execute("SELECT * FROM preguntasterman ");
+  }
+
+  static fetchOpciones() {
+    return db.execute("SELECT * FROM opcionesterman");
+  }
 }
 
 module.exports = terman;
