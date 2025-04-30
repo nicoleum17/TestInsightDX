@@ -335,7 +335,12 @@ exports.get_respuestasA = (request, response, next) => {
               });
             }
           );
-        } else if (idPrueba == 5) {
+        } else if (idPrueba == 3) {
+          request.session.idUsuario = idUsuario;
+          request.session.idGrupoAspirante = rows[0].idGrupo;
+          response.redirect("/psicologa/analisisHartman")
+          //TRABAJAR AQUI
+        }else if (idPrueba == 5) {
           Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
             .then(([informacionAnalisis, fieldData]) => {
               // const informacionAnalisis = rows;
@@ -1699,8 +1704,13 @@ const {
  */
 
 exports.get_analisisHartman = async (request, response, next) => {
-  const idAspirante = request.params.idAspirante;
-  const idGrupo = request.params.idGrupo;
+  console.log("Comienza_el_analisis");
+
+  const idAspirante = request.session.idUsuario;
+  const idGrupo = request.session.idGrupoAspirante;
+
+  console.log(idGrupo);
+
   console.log("Analisis Hartman");
 
   try {
@@ -1797,10 +1807,12 @@ exports.get_analisisHartman = async (request, response, next) => {
 
     console.log("Datos procesados para la gráfica:", analisisProcesado);
 
-    response.render("pruebas/hartman/analisisHartman.pug", {
+    response.render("analisisHartman", {
       csrfToken: request.csrfToken(),
       datos: analisisProcesado,
       analisisHartman: rows,
+      isLoggedIn: request.session.isLoggedIn,
+      usuario: request.session.usuario || ""
     });
   } catch (error) {
     console.error("Error al obtener o procesar los datos de Hartman:", error);
@@ -1843,3 +1855,17 @@ async function obtenerSerie(idUsuario, grupoId, serieId, calificacionId) {
 function reglaDeTres(num, max) {
   return (num * 100) / max;
 }
+
+exports.get_HartmanActiva = (request, response, next)=>{
+  Prueba.hartmanActiva(request.params.valor)
+  .then(([rows]) => {
+    const hartmanTiempo = {
+      tiempo: rows[0].tiempo || "N/A",
+    };
+    response.status(200).json({ hartmanTiempo });
+  })
+  .catch((error) => {
+    response.status(500).json({ message: "Sin pruebas" });
+  });
+}
+// TRABAJO AQUI

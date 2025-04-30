@@ -267,3 +267,15 @@ router.get(
   isAuth,
   psicologaController.getCuadernilloColores
 );
+
+router.get(
+  "/analisisHartman",
+  isAuth,
+  psicologaController.get_analisisHartman
+);
+
+router.get(
+  "/hartmanActiva/:valor",
+  isAuth,
+  psicologaController.get_HartmanActiva
+);
