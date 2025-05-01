@@ -390,7 +390,7 @@ exports.get_resultadosAspiranteK = (request, response, next) => {
           RespondeKostick.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then(([resultados]) => {
             const opciones = resultados.map(r => r.opcionKostick);
             const descripcionOpciones = resultados.map(r => r.descripcionOpcionKostick);
-            response.render("respuestasAspirante", {
+            response.render("respuestasAspiranteK", {
               isLoggedIn: request.session.isLoggedIn || false,
               usuario: request.session.usuario || "",
               csrfToken: request.csrfToken(),
@@ -400,6 +400,36 @@ exports.get_resultadosAspiranteK = (request, response, next) => {
               valores: resultados[0][0],
               datos: datosAspirante[0],
               preguntas: preguntasKostick,
+              opciones: opciones,
+              descripcion: descripcionOpciones,
+              aspirante: datosAspirante[0],
+            });
+          });
+      });
+    });
+  });
+})
+};
+
+exports.get_resultadosAspirante16 = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+        Pregunta16PF.fetchAll().then(([preguntas16PF]) => {
+          Responde16PF.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then(([resultados]) => {
+            const opciones = resultados.map(r => r.opcion16PF);
+            const descripcionOpciones = resultados.map(r => r.descripcionOpcion16PF);
+            response.render("respuestasAspirante16", {
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+              prueba: "Personalidad 16 Factores (16 PF)",
+              grupo: grupoRows[0],
+              valores: resultados[0][0],
+              datos: datosAspirante[0],
+              preguntas: preguntas16PF,
               opciones: opciones,
               descripcion: descripcionOpciones,
               aspirante: datosAspirante[0],
@@ -1734,6 +1764,7 @@ const {
 } = require("../public/js/encuentraValor");
 const { Console } = require("console");
 const RespondeKostick = require("../model/kostick/respondeKostick.model");
+const Responde16PF = require("../model/16pf/responde16pf.model");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS

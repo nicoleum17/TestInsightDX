@@ -33,4 +33,11 @@ module.exports = class Responde16PF {
         return this.idUsuario;
       });
   }
+
+  static fetchRespuestasAspirante(idGrupo, idUsuario) {
+      return db.execute(
+        "SELECT * FROM opciones16pf WHERE idOpcion16PF IN ( SELECT idOpcion16PF FROM responde16pf WHERE idGrupo = ? AND idUsuario = ?)",
+            [idGrupo, idUsuario] 
+          );
+        }
 };
