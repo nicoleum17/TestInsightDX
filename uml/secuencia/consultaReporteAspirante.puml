@@ -1,5 +1,0 @@
-@startuml consultarReporteGrupo 12
-actor Psicologa              as a1
-boundary psicologa.routes    as a2
-control  psicologa.controllers  as a3
-
