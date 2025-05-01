@@ -147,7 +147,7 @@ module.exports = class Aspirante {
       `SELECT g.fechaPruebaGrupal as pruebaGrupal, pg.fechaZoomIndividual as zoomIndividual, tp.fechaLimitePrueba as limitePrueba
     FROM pertenecegrupo pg
     JOIN grupos g ON g.idGrupo = pg.idGrupo
-    JOIN tienePruebas tp ON g.idGrupo = tp.idGrupo
+    JOIN tienepruebas tp ON g.idGrupo = tp.idGrupo
     WHERE pg.idUsuario = ?`,
       [idUsuario]
     );
@@ -171,7 +171,7 @@ module.exports = class Aspirante {
   static asignaPruebasAspirante(idUsuario, idGrupo) {
     db.execute(`INSERT INTO pruebasaspirante (idUsuario, idGrupo, idPrueba, estatus)
                 SELECT ?, ?, idPrueba, 'Por comenzar'
-                FROM tienePruebas
+                FROM tienepruebas
                 WHERE idGrupo = ?`,
     [idUsuario, idGrupo, idGrupo]);
   }
