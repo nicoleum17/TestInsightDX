@@ -70,6 +70,12 @@ router.get(
 );
 
 router.get(
+  "/consultaRespuestasAspirante/:idusuario/:idprueba/analisisOtis",
+  isAuth,
+  consultarRespuestasAspirante,
+  psicologaController.get_analisisOtis
+);
+router.get(
   "/interpretacion/:columna/:nivel",
   isAuth,
   psicologaController.get_interpretaciones16PF
@@ -175,6 +181,18 @@ router.get(
   psicologaController.get_consultarReporteAspirante
 );
 
+router.get(
+  "/resultadosAspiranteK/:idUsuario",
+  isAuth,
+  psicologaController.get_resultadosAspiranteK
+)
+
+router.get(
+  "/resultadosAspirante16/:idUsuario",
+  isAuth,
+  psicologaController.get_resultadosAspirante16
+)
+
 router.get("/pdf/:filename", isAuth, psicologaController.getPdfFile);
 
 router.get("/cerrar_sesion", psicologaController.get_logout);
@@ -246,11 +264,6 @@ module.exports = router;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Cuadernillo de respuestas de la prueba OTIS por aspirante
-router.get(
-  "/cuadernillo-otis/:idGrupo/:idUsuario/:idInstitucion",
-  isAuth,
-  psicologaController.getCuadernilloOtis
-);
 
 // Vista con el análisis de la prueba otis del aspirante
 router.get(

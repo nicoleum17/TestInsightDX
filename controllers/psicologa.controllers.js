@@ -7,6 +7,7 @@ const readXlsxFile = require("read-excel-file/node");
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
+const Familiar = require("../model/familiar.model");
 const FormatoEntrevista = require("../model/formatoEntrevista.model");
 const ConsultaResultados = require("../model/hartman/consultaResultados.model");
 const Hartman = require("../model/hartman/hartman.model");
@@ -23,7 +24,7 @@ const Cuadernillo = require("../model/vaultTech/cuadernilloOtis.model");
 const CuadernilloColores = require("../model/vaultTech/cuadernilloColores.model");
 const Interpretaciones16PF = require("../model/16pf/interpretaciones.model");
 const PreguntasFormato = require("../model/preguntasFormato.model");
-const interpretaciones = require("../public/js/interpretacionColores")
+const interpretaciones = require("../public/js/interpretacionColores");
 const { google } = require("googleapis");
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -317,6 +318,11 @@ exports.get_respuestasA = (request, response, next) => {
                     valores: resultados[0][0],
                     datos: datosAspirante[0],
                     interpretaciones: interpretacionesKostick[0],
+                    idUsuario: idUsuario,
+                    idPrueba: idPrueba,
+                    respuestasCorrectas: null,
+                    tiempoTotal: null,
+                    respuestasAspitanteOtis: null,
                   });
                 }
               );
@@ -335,40 +341,99 @@ exports.get_respuestasA = (request, response, next) => {
                 valores: resultados[0][0],
                 datos: datosAspirante[0],
                 interpretaciones: null,
+                idUsuario: idUsuario,
+                idPrueba: idPrueba,
+                respuestasCorrectas: null,
+                tiempoTotal: null,
+                respuestasAspitanteOtis: null,
               });
             }
           );
         } else if (idPrueba == 3) {
           request.session.idUsuario = idUsuario;
           request.session.idGrupoAspirante = rows[0].idGrupo;
-          response.redirect("/psicologa/analisisHartman")
+          response.redirect("/psicologa/analisisHartman");
           //TRABAJAR AQUI
-        }else if (idPrueba == 5) {
-          Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
-            .then(([informacionAnalisis, fieldData]) => {
-              // const informacionAnalisis = rows;
-              Prueba.getPuntajeBrutoOtis(idUsuario, rows[0].idGrupo)
-                .then(([puntaje, fieldData]) => {
-                  console.log(idUsuario);
-                  const puntajeBruto = puntaje[0].puntajeBruto;
-                  console.log("Informacion Analisis: ", informacionAnalisis);
-                  console.log("Puntaje Bruto: ", puntajeBruto);
-                  response.render("consultaRespuestasAspirante", {
-                    isLoggedIn: request.session.isLoggedIn || false,
-                    usuario: request.session.usuario || "",
-                    //csrfToken: request.csrfToken(),
-                    privilegios: request.session.privilegios || [],
-                    prueba: "OTIS",
-                    grupo: grupoRows[0],
-                    datos: datosAspirante[0],
-                    informacionAnalisis: informacionAnalisis || [],
-                    puntajeBruto: puntajeBruto || 0,
-                    idAspirante: idUsuario || null,
-                    idGrupo: rows[0].idGrupo || null,
-                    idInstitucion: rows[0].institucion || null,
-                    valores: null,
-                    interpretaciones: null,
-                  });
+        } else if (idPrueba == 5) {
+          // Obtiene las respuestas correctas del aspirante
+          Cuadernillo.getRespuestasCorrectas(rows[0].idGrupo, idUsuario)
+            .then(([correctasOtis, fieldData]) => {
+              const respuestasCorrectas = correctasOtis[0].RespuestasCorrectas;
+              // Obtiene el tiempo total que tomo el aspirante para completar la prueba
+              Cuadernillo.getTiempoTotal(rows[0].idGrupo, idUsuario)
+                .then(([tt, fieldData]) => {
+                  const tiempoTotal = tt[0].Tiempo;
+                  // Obtiene las preguntas, opciones y la respuesta del aspirante
+                  Cuadernillo.getRespuestasOtisAspirante(
+                    rows[0].idGrupo,
+                    idUsuario
+                  )
+                    .then(([respuestasOtisAspirante, fieldData]) => {
+                      const preguntasAgrupadas = {};
+
+                      respuestasOtisAspirante.forEach((row) => {
+                        // Creamos el objeto de pregunta si este no existe
+                        if (!preguntasAgrupadas[row.idPreguntaOtis]) {
+                          preguntasAgrupadas[row.idPreguntaOtis] = {
+                            idPreguntaOtis: row.idPreguntaOtis,
+                            numeroPregunta: row.numeroPregunta,
+                            preguntaOtis: row.preguntaOtis,
+                            opciones: [],
+                            esCorrecta: false,
+                            tiempoRespuesta: 0,
+                            contestada: null,
+                          };
+                        }
+                        // Vamos añadiendo las opciones de la pregunta correspondiente
+                        preguntasAgrupadas[row.idPreguntaOtis].opciones.push({
+                          idOpcionOtis: row.idOpcionOtis,
+                          opcionOtis: row.opcionOtis,
+                          descripcionOpcion: row.descripcionOpcion,
+                          esCorrecta: row.esCorrecta === 1,
+                          seleccionada: row.opcionSeleccionada === 1,
+                        });
+
+                        if (row.opcionSeleccionada === 1) {
+                          preguntasAgrupadas[
+                            row.idPreguntaOtis
+                          ].tiempoRespuesta = row.tiempoRespuesta;
+                          preguntasAgrupadas[row.idPreguntaOtis].contestada =
+                            true;
+                          preguntasAgrupadas[row.idPreguntaOtis].esCorrecta =
+                            row.esCorrecta === 1;
+                        }
+
+                        if (
+                          !preguntasAgrupadas[row.idPreguntaOtis].contestada
+                        ) {
+                          preguntasAgrupadas[row.idPreguntaOtis].esCorrecta =
+                            null;
+                        }
+                      });
+
+                      const respuestasAspitanteOtis =
+                        Object.values(preguntasAgrupadas);
+
+                      response.render("consultaRespuestasAspirante", {
+                        isLoggedIn: request.session.isLoggedIn || false,
+                        usuario: request.session.usuario || "",
+                        csrfToken: request.csrfToken(),
+                        privilegios: request.session.privilegios || [],
+                        idUsuario: idUsuario,
+                        prueba: "OTIS",
+                        idPrueba: idPrueba,
+                        grupo: grupoRows[0],
+                        valores: null,
+                        datos: datosAspirante[0],
+                        interpretaciones: null,
+                        respuestasCorrectas: respuestasCorrectas || 0,
+                        tiempoTotal: tiempoTotal || 0,
+                        respuestasAspitanteOtis: respuestasAspitanteOtis || [],
+                      });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 })
                 .catch((error) => {
                   console.log(error);
@@ -377,10 +442,112 @@ exports.get_respuestasA = (request, response, next) => {
             .catch((error) => {
               console.log(error);
             });
-        } 
+        }
       });
     });
   });
+};
+
+exports.get_analisisOtis = (request, response, next) => {
+  const idUsuario = request.params.idusuario;
+  Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+        Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
+          .then(([informacionAnalisis, fieldData]) => {
+            Prueba.getPuntajeBrutoOtis(idUsuario, rows[0].idGrupo)
+              .then(([puntaje, fieldData]) => {
+                // console.log(idUsuario);
+                const puntajeBruto = puntaje[0].puntajeBruto;
+                // console.log("Informacion Analisis: ", informacionAnalisis);
+                // console.log("Puntaje Bruto: ", puntajeBruto);
+                response.render("analisisOtis", {
+                  isLoggedIn: request.session.isLoggedIn || false,
+                  usuario: request.session.usuario || "",
+                  csrfToken: request.csrfToken(),
+                  privilegios: request.session.privilegios || [],
+                  prueba: "OTIS",
+                  grupo: grupoRows[0],
+                  datos: datosAspirante[0],
+                  informacionAnalisis: informacionAnalisis || [],
+                  puntajeBruto: puntajeBruto || 0,
+                  idAspirante: idUsuario || null,
+                  idGrupo: rows[0].idGrupo || null,
+                  idInstitucion: rows[0].institucion || null,
+                  valores: null,
+                  interpretaciones: null,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    });
+  });
+};
+
+exports.get_resultadosAspiranteK = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+        PreguntaKostick.fetchAll().then(([preguntasKostick]) => {
+          RespondeKostick.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then(([resultados]) => {
+            const opciones = resultados.map(r => r.opcionKostick);
+            const descripcionOpciones = resultados.map(r => r.descripcionOpcionKostick);
+            response.render("respuestasAspiranteK", {
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+              prueba: "El inventario de Percepción Kostick",
+              grupo: grupoRows[0],
+              valores: resultados[0][0],
+              datos: datosAspirante[0],
+              preguntas: preguntasKostick,
+              opciones: opciones,
+              descripcion: descripcionOpciones,
+              aspirante: datosAspirante[0],
+            });
+          });
+      });
+    });
+  });
+})
+};
+
+exports.get_resultadosAspirante16 = (request, response, next) => {
+  const idUsuario = request.params.idUsuario;
+  Aspirante.fetchOne(idUsuario).then(([datosAspirante, fieldData]) => {
+    PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
+      Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
+        Pregunta16PF.fetchAll().then(([preguntas16PF]) => {
+          Responde16PF.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then(([resultados]) => {
+            const opciones = resultados.map(r => r.opcion16PF);
+            const descripcionOpciones = resultados.map(r => r.descripcionOpcion16PF);
+            response.render("respuestasAspirante16", {
+              isLoggedIn: request.session.isLoggedIn || false,
+              usuario: request.session.usuario || "",
+              csrfToken: request.csrfToken(),
+              privilegios: request.session.privilegios || [],
+              prueba: "Personalidad 16 Factores (16 PF)",
+              grupo: grupoRows[0],
+              valores: resultados[0][0],
+              datos: datosAspirante[0],
+              preguntas: preguntas16PF,
+              opciones: opciones,
+              descripcion: descripcionOpciones,
+              aspirante: datosAspirante[0],
+            });
+          });
+      });
+    });
+  });
+})
 };
 
 exports.get_respuestasG = (request, response, next) => {
@@ -530,10 +697,10 @@ exports.post_grupo = async (request, response, next) => {
     const promesas = pruebas.map((prueba) => {
       return Prueba.fetchOneNombre(prueba).then(([rows]) => {
         const idPrueba = rows[0]?.idPrueba;
-        
+
         for (let i = 0; i < idAspirantes.length; i++) {
           Aspirante.asignaPruebas(idAspirantes[i], mi_grupo.idGrupo, idPrueba);
-      }
+        }
 
         const mi_tienePruebas = new TienePruebas(
           mi_grupo.idGrupo,
@@ -757,14 +924,18 @@ exports.post_modificarAspirante = (request, response, next) => {
 exports.get_reporteAspirante = (request, response, next) => {
   const idUsuario = request.params.idUsuario;
   Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
-    request.session.idUsuario = idUsuario;
-    response.render("reporteAspirante", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      aspirante: aspirante[0],
-      idUsuario: request.session.idUsuario,
+    FormatoEntrevista.fetchOne(idUsuario).then(([formatoEntrevista])=>{
+      console.log("log ",formatoEntrevista)
+      request.session.idUsuario = idUsuario;
+      response.render("reporteAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        idUsuario: request.session.idUsuario,
+        formatoEntrevista: formatoEntrevista[0],
+    })
     });
   });
 };
@@ -1002,22 +1173,26 @@ exports.get_formatoEntrevista = async (request, response, next) => {
     console.log(formatoEntrevista.idFormato);
     for (let i = 1; i < 20; i++) {
       promesasRespuestas.push(
-        preguntasFormato.fetchPregunta(i, request.session.idFormato)
+        PreguntasFormato.fetchPregunta(i, formatoEntrevista.idFormato)
       );
     }
     const respuestas = await Promise.all(promesasRespuestas);
     const preguntas = await Promise.all(promesasPreguntas);
-    console.log(formatoEntrevista);
-    response.render("consultarFormatoEntrevista", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      aspirante: aspirantes,
-      idUsuario: request.session.idUsuario || "",
-      formatoEntrevista: formatoEntrevista,
-      respuestasPreguntas: respuestas,
-      preguntas: preguntas,
+    Familiar.fetchFamiliares(formatoEntrevista.idFormato).then(([familiares])=>{
+      response.render("consultarFormatoEntrevista", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirantes,
+        idUsuario: request.session.idUsuario || "",
+        formatoEntrevista: formatoEntrevista,
+        respuestasPreguntas: respuestas,
+        preguntas: preguntas,
+        familia: familiares,
+    })
+    
+    
     });
   } catch (error) {
     console.error("Error al sacar preguntas:", error);
@@ -1171,7 +1346,6 @@ exports.getCuadernilloColores = (request, response, next) => {
   Aspirante.fetchOne(request.params.idUsuario).then(([aspirante]) => {
     Usuario.getGrupo(request.params.idUsuario)
       .then(([grupo]) => {
-
         // Obtener todas las selecciones de colores
         CuadernilloColores.getSeleccionesColores(
           grupo[0].idGrupo,
@@ -1185,8 +1359,8 @@ exports.getCuadernilloColores = (request, response, next) => {
             const seleccionesFase2 = rows
               .filter((row) => row.fase === 2)
               .sort((a, b) => a.posicion - b.posicion);
-              request.session.idGrupo = grupo[0].idGrupo;
-              request.session.idUsuario = request.params.idUsuario;
+            request.session.idGrupo = grupo[0].idGrupo;
+            request.session.idUsuario = request.params.idUsuario;
             response.render("cuadernilloColores", {
               seleccionesFase1: seleccionesFase1 || [],
               seleccionesFase2: seleccionesFase2 || [],
@@ -1593,24 +1767,24 @@ exports.getAnalisisColores = async (request, response, next) => {
     const parejasConInterpretaciones =
       agregarInterpretaciones(parejasNormalizadas);
     Aspirante.fetchOne(request.session.idUsuario).then(([aspirante]) => {
-    // Renderizar la vista con todos los datos
-    response.render("analisisColores", {
-      seleccionesFase1: seleccionesFase1 || [],
-      seleccionesFase2: seleccionesFase2 || [],
-      resultadosFase1,
-      resultadosFase2,
-      movilidad,
-      interpretacionMovilidad,
-      parejas: parejasConInterpretaciones,
-      idGrupo,
-      idUsuario,
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      aspirante: aspirante[0],
+      // Renderizar la vista con todos los datos
+      response.render("analisisColores", {
+        seleccionesFase1: seleccionesFase1 || [],
+        seleccionesFase2: seleccionesFase2 || [],
+        resultadosFase1,
+        resultadosFase2,
+        movilidad,
+        interpretacionMovilidad,
+        parejas: parejasConInterpretaciones,
+        idGrupo,
+        idUsuario,
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+      });
     });
-  })
   } catch (error) {
     console.error("Error al obtener análisis de colores:", error);
   }
@@ -1666,7 +1840,6 @@ function interpretarMovilidad(movilidad) {
     return "PERSONA INESTABLE";
   }
 }
-
 
 exports.get_interpretaciones16PF = (request, response, next) => {
   let columna = request.params.columna;
@@ -1730,7 +1903,11 @@ const {
   Equilibrio_CQ1,
   Equilibrio_CQ2,
 } = require("../public/js/encuentraValor");
+const preguntasFormato = require("../model/preguntasFormato.model");
 const { Console } = require("console");
+const RespondeKostick = require("../model/kostick/respondeKostick.model");
+const Responde16PF = require("../model/16pf/responde16pf.model");
+const formatoEntrevista = require("../model/formatoEntrevista.model");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
@@ -1845,7 +2022,7 @@ exports.get_analisisHartman = async (request, response, next) => {
       datos: analisisProcesado,
       analisisHartman: rows,
       isLoggedIn: request.session.isLoggedIn,
-      usuario: request.session.usuario || ""
+      usuario: request.session.usuario || "",
     });
   } catch (error) {
     console.error("Error al obtener o procesar los datos de Hartman:", error);
@@ -1889,16 +2066,16 @@ function reglaDeTres(num, max) {
   return (num * 100) / max;
 }
 
-exports.get_HartmanActiva = (request, response, next)=>{
+exports.get_HartmanActiva = (request, response, next) => {
   Prueba.hartmanActiva(request.params.valor)
-  .then(([rows]) => {
-    const hartmanTiempo = {
-      tiempo: rows[0].tiempo || "N/A",
-    };
-    response.status(200).json({ hartmanTiempo });
-  })
-  .catch((error) => {
-    response.status(500).json({ message: "Sin pruebas" });
-  });
-}
+    .then(([rows]) => {
+      const hartmanTiempo = {
+        tiempo: rows[0].tiempo || "N/A",
+      };
+      response.status(200).json({ hartmanTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
 // TRABAJO AQUI

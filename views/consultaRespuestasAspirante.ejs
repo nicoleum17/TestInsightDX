@@ -1,7 +1,7 @@
 <%- include('includes/_navbarP')%>
 <style>
   .fullHeight {
-    min-height: 160vh;
+    min-height: auto;
     margin-top: 20px;
   }
   @media print {
@@ -80,12 +80,104 @@
         </table>
       </div>
     </div>
+    <%} 
+    else if(prueba === 'OTIS'){%>
+      <div class="columns">
+        <div class="column has-text-centered auto">
+          <a href="/psicologa/consultaRespuestasAspirante/<%=idUsuario%>/<%=idPrueba%>/analisisOtis">
+            <button class="button m-5 is-primary has-text-white">Consultar Análisis</button>
+          </a>
+        </div>
+      </div>
+      <div class="columns has-text-centered">
+        <div class="column card text-center p-4 m-4">
+          <div class="subtitle">Puntaje bruto:</div>
+          <p class="resultado"><%= respuestasCorrectas %></p>
+        </div>
+        <div class="column card text-center p-4 m-4">
+          <% 
+          const tiempoMin = Math.trunc(tiempoTotal/60)
+          const tiempoSeg = (tiempoTotal%60).toFixed(0)
+          %>
+          <div class="subtitle">Tiempo total en que se realizo la prueba:</div>
+          <p class="resultado">
+              <%= tiempoMin %> min
+              <%= tiempoSeg %> seg
+          </p>
+        </div>
+      </div>
+
+      <br>
+      <div class="subtitle">Respuestas del Aspirante</div>
+      <hr><br>
+      <div class="mb-3">
+        <% for (respuesta of respuestasAspitanteOtis) { %>
+          <div class="box">
+            <div class="columns is-vcentered">
+              <div class="column is-8">
+                <h5 class="title is-5 
+                  <% if (respuesta.esCorrecta === true) { %> 
+                    has-text-success 
+                  <% } else if (respuesta.esCorrecta === false) { %> 
+                    has-text-danger 
+                  <% } else { %> 
+                    has-text-grey 
+                  <% } %>">
+                  <%= respuesta.numeroPregunta %>.-
+                  <%= respuesta.preguntaOtis %>
+                  -
+                  <% if (respuesta.esCorrecta === null) { %>
+                    NO CONTESTADA
+                  <% } else if (respuesta.esCorrecta) { %>
+                    CORRECTA
+                  <% } else { %>
+                    INCORRECTA
+                  <% } %>
+                </h5>
+              </div>
+              <div class="column is-4 has-text-right">
+                <%  
+                  const min = Math.trunc(respuesta.tiempoRespuesta / 60);
+                  const seg = (respuesta.tiempoRespuesta % 60).toFixed(0);
+                %>
+                <p class="is-size-6">⏱ Tiempo en responder: 
+                  <strong><%= min %> min <%= seg %> seg</strong>
+                </p>
+              </div>
+            </div>
+
+            <div class="columns is-multiline mt-3">
+              <% for (opcion of respuesta.opciones) { %>
+                <div class="column is-6">
+                  <div class="box is-flex is-align-items-center">
+                    <p class="mr-2 has-text-weight-bold">
+                      <%= opcion.opcionOtis %>)
+                    </p>
+                    <span class="icon mr-2">
+                      <% if (opcion.seleccionada) { %>
+                        <i class="fas fa-check has-text-success"></i>
+                      <% } else { %>
+                        <i class="fas fa-times has-text-danger"></i>
+                      <% } %>
+                    </span>
+                    <p><%= opcion.descripcionOpcion %></p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %><br>
+
+    <% if(prueba === 'El inventario de Percepción Kostick' || prueba === "Personalidad 16 Factores (16 PF)"){%>
+      <div id="Interpretacion">
+        <div class="title has-text-weight-semibold">Interpretación</div>
+        <div id="textos"></div>
+      </div>
     <%}%>
 
-    <div id="Interpretacion">
-      <div class="title has-text-weight-semibold">Interpretación</div>
-      <div id="textos"></div>
-    </div>
+
   </div>
   <br />
   <div class="columns">
@@ -2018,7 +2110,10 @@
   const myChart = new Chart(document.getElementById("grafico16PF"), config);
   new Chart(ctx, config);
 
-  } else if(prueba === 'OTIS'){}
+  } 
+  else if(prueba === 'OTIS'){
+
+  }
 </script>
 
 <%- include('includes/_footer')%>
