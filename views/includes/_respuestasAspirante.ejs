@@ -1,0 +1,62 @@
+<style>
+    .fullHeight {
+      min-height: 160vh;
+      margin-top: 20px;
+    }
+    @media print {
+      .navbar,
+      .footer,
+      .descargar,
+      footer {
+        display: none;
+      }
+    }
+  </style>
+  <div class="section fullHeight">
+    <div class="container is-max-desktop mt-5">
+      <div class="title has-text-weight-semibold mb-2">
+        Respuestas de: <%= datos.nombres %> <%= datos.apellidoPaterno %> <%=
+        datos.apellidoMaterno %>
+      </div>
+      <div class="subtitle">
+        Grupo: <%= grupo.posgrado %> <%= grupo.generacion%>
+      </div>
+      <br />
+      <div class="subtitle has-text-centered"><%= prueba %></div>
+      <div class="preguntas-wrapper">
+        <% let i = 0 %>
+        <% preguntas.forEach(pregunta => { %>
+          <div class="pregunta-item">
+            <div class="numero-pregunta">
+              <%= pregunta.numeroPreguntaKostick %>. <%= opciones.find(opcion => opcion.idPreguntaKostick === pregunta.idPreguntaKostick); %>
+            </div>
+            <% if (opciones) { %>
+              <div class="opcion-item">
+                <%= opciones[i] %>.- <%= descripcion[i] %>
+              </div>
+            <% } else { %>
+              <div class="opcion-item">
+                No option selected.
+              </div>
+            <% } %>
+          </div>
+          <% i++ %>
+        <% }); %>
+      </div>
+    </div>
+    </div>
+    <br />
+    <div class="columns">
+      <div class="column has-text-centered">
+        <a href="/psicologa/consultaRespuestasAspirante/<%= aspirante.idUsuario %>/1">
+        <button
+          class="button is-narrow is-primary has-text-warning"
+          >
+          Análisis
+        </button>
+        <br><br><br><br>
+        </a>
+      </div>
+    </div>
+  </div>
+  
