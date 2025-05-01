@@ -63,7 +63,6 @@
             <th>Fecha Límite</th>
             <th>Tiempo Promedio</th>
             <th>Estatus</th>
-            <th>Respuestas</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -115,14 +114,6 @@
               .then((data) => {
                 nombrePrueba.textContent = "Kostick";
                 tiempoPrueba.textContent = data.kostickTiempo.tiempo + " hrs";
-                respuestasPrueba.innerHTML = `<a href="">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
               });
           } else if (prueba.idPrueba == 2) {
             fetch("/psicologa/P16PFTiempo/" + grupo.idGrupo, {
@@ -132,26 +123,10 @@
               .then((data) => {
                 nombrePrueba.textContent = "16PF";
                 tiempoPrueba.textContent = data.P16PFTiempo.tiempo + " hrs";
-                respuestasPrueba.innerHTML = `<a href="">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
               });
           } else if (prueba.idPrueba === 6) {
               nombrePrueba.textContent = "Colores de Lüscher";
-              tiempoPrueba.textContent = "N/A";
-              respuestasPrueba.innerHTML = `<a href="">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;            
+              tiempoPrueba.textContent = "N/A";          
           } else if(prueba.idPrueba == 3){
             fetch("/psicologa/hartmanTiempo/"+ grupo.idGrupo, {
               method: "GET",
@@ -160,14 +135,6 @@
                 console.log(data);
                 nombrePrueba.textContent = "Hartman";
                 tiempoPrueba.textContent = data.hartmanTiempo.tiempo + " hrs";
-                respuestasPrueba.innerHTML = `<a href="">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
               });
           } else if(prueba.idPrueba == 4){
             fetch("/psicologa/termanTiempo/"+ grupo.idGrupo, {
@@ -177,14 +144,6 @@
                 console.log(data);
                 nombrePrueba.textContent = "Terman";
                 tiempoPrueba.textContent = data.termanTiempo.tiempo + " hrs";
-                respuestasPrueba.innerHTML = `<a href="">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
               });
           } else if(prueba.idPrueba == 5){
             fetch("/psicologa/otisTiempo/"+ grupo.idGrupo, {
@@ -194,14 +153,6 @@
                 console.log(data);
                 nombrePrueba.textContent = "OTIS";
                 tiempoPrueba.textContent = data.otisTiempo.tiempo + " hrs";
-                respuestasPrueba.innerHTML = `<a href="">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
               });
           }
         }

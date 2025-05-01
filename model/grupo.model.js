@@ -96,15 +96,15 @@ module.exports = class Grupo {
       return db.execute(
         `SELECT tp.idPrueba, tp.fechaLimitePrueba as fechaLimite, 
         (SELECT COUNT(*) 
-          FROM pruebasAspirante pa 
+          FROM pruebasaspirante pa 
           WHERE pa.idGrupo = ?
             AND pa.idPrueba = tp.idPrueba) AS aspirantes,
         (SELECT COUNT(*) 
-          FROM pruebasAspirante pa 
+          FROM pruebasaspirante pa 
           WHERE pa.idGrupo = ? 
             AND pa.idPrueba = tp.idPrueba
             AND estatus = 'Completada') AS aspirantesCompletada
-      FROM tienePruebas tp
+      FROM tienepruebas tp
       WHERE tp.idGrupo = ?`,
         [idGrupo, idGrupo, idGrupo]
       );
@@ -125,7 +125,7 @@ module.exports = class Grupo {
       return db.execute(
         `SELECT SEC_TO_TIME(AVG(tiempos)) AS promedio
         FROM (SELECT FLOOR(MAX(tiempo)) AS tiempos
-            FROM responde16PF
+            FROM responde16pf
             WHERE idGrupo = ?
             GROUP BY idUsuario) AS maximos`,
         [idGrupo]
