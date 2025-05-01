@@ -34,4 +34,11 @@ module.exports = class familiares{
                 } 
               });
     }
+
+    static fetchFamiliares(idFormato){
+        console.log("idFormato",idFormato)
+        return db.execute(
+            "SELECT * FROM familiar JOIN familia ON familia.idFamilia = familiar.familia WHERE familia.idFormato = ?", [idFormato]
+        )
+    }
 }
