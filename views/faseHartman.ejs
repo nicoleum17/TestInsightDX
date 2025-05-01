@@ -3,6 +3,10 @@
     min-height: 110vh;
     margin-top: 30px;
   }
+  .selected-option {
+    background-color: #D0E3FF; /* Change this to your desired color */
+    color: black; /* Change text color if needed */
+}
   </style>
 <%- include('includes/_navBarPruebas') %>
   <body class="mt-6">
@@ -21,21 +25,20 @@
             class="progress is-link"
             value="<%= fase1 ? 50 : 100 %>"
             max="100"></progress>
-          <p class="progress-text subtitle is-5">Fase <%= fase1 ? 1 : 2 %> de 2</p>
+          <p class="progress-text subtitle is-5">Fase <%= fase1 ? 1  : 2 %> de 2: <%= fase1 ? 'Frases'  : 'Citas' %></p>
         </div>
 
         <!-- Instructions -->
         <div class="instructions">
           <h2 class="title is-4 has-text-weight-semibold mt-5">Instrucciones:</h2>
           <p class="subtitle is-5 mt-5">
-            Ordene las siguientes frases según su preferencia. Asigne el número
-            1 a la frase que más le agrade o identifique, y continúe en orden
+            Ordene las siguientes frases o citas según su preferencia. Asigne el número
+            1 a la frase o cita que más le agrade o identifique, y continúe en orden
             ascendente hasta el 18 para la que menos le agrade.
           </p>
           <p class="mb-5">
             <strong>Nota importante:</strong>
-            Cada número solo puede ser usado una vez. Una vez seleccionado, ese
-            número no estará disponible para otras frases.
+            Cada número solo puede ser usado una vez. 
           </p>
         </div>
 
@@ -46,7 +49,7 @@
               No puede continuar con respuestas duplicadas.
             </p>
             <p>
-              Por favor, revise las opciones marcadas en rojo y asigne un número
+              Por favor, revise las opciones y asigne un número
               único a cada pregunta.
             </p>
           </div>
@@ -178,24 +181,31 @@
     const selects = Array.from(document.querySelectorAll(".dynamic-select"));
 
     function getSelectedValues() {
-      return selects
-        .map((select) => select.value)
-        .filter((value) => value !== "");
+        return selects
+            .map((select) => select.value)
+            .filter((value) => value !== "");
     }
 
     const selectedValues = getSelectedValues();
 
     selects.forEach((select) => {
-      const currentValue = select.value;
-      const allOptions = Array.from(select.options);
+        const currentValue = select.value;
+        const allOptions = Array.from(select.options);
 
-      allOptions.forEach((opt) => {
-        if (opt.value === "") return; // No tocar la opción vacía
-        opt.disabled =
-          selectedValues.includes(opt.value) && opt.value !== currentValue;
-      });
+        allOptions.forEach((opt) => {
+            if (opt.value === "") return; // Skip the empty option
+
+            // Check if the option is selected in any select
+            if (selectedValues.includes(opt.value) && opt.value !== currentValue) {
+                // Apply the CSS class to change the color
+                opt.classList.add('selected-option');
+            } else {
+                // Remove the CSS class if the option is not selected
+                opt.classList.remove('selected-option');
+            }
+        });
     });
-  }
+}
 
   // Initialize the function when the page loads
   document.addEventListener("DOMContentLoaded", () => {
@@ -208,5 +218,6 @@
     });
   });
 </script>
+<script src="/../js/respondeHartman.js"></script>
   </body>
 </html>
