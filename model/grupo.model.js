@@ -91,4 +91,79 @@ module.exports = class Grupo {
       idGrupo,
     ]);
   }
+
+  static pruebasGrupo(idGrupo) {
+      return db.execute(
+        `SELECT tp.idPrueba, tp.fechaLimitePrueba as fechaLimite, 
+        (SELECT COUNT(*) 
+          FROM pruebasAspirante pa 
+          WHERE pa.idGrupo = ?
+            AND pa.idPrueba = tp.idPrueba) AS aspirantes,
+        (SELECT COUNT(*) 
+          FROM pruebasAspirante pa 
+          WHERE pa.idGrupo = ? 
+            AND pa.idPrueba = tp.idPrueba
+            AND estatus = 'Completada') AS aspirantesCompletada
+      FROM tienePruebas tp
+      WHERE tp.idGrupo = ?`,
+        [idGrupo, idGrupo, idGrupo]
+      );
+    }
+
+  static kostickTiempo(idGrupo) {
+      return db.execute(
+        `SELECT SEC_TO_TIME(AVG(tiempos)) AS promedio
+        FROM (SELECT FLOOR(MAX(tiempo)) AS tiempos
+            FROM respondekostick
+            WHERE idGrupo = ?
+            GROUP BY idUsuario) AS maximos`,
+        [idGrupo]
+      );
+    }
+  
+    static P16PFTiempo(idGrupo) {
+      return db.execute(
+        `SELECT SEC_TO_TIME(AVG(tiempos)) AS promedio
+        FROM (SELECT FLOOR(MAX(tiempo)) AS tiempos
+            FROM responde16PF
+            WHERE idGrupo = ?
+            GROUP BY idUsuario) AS maximos`,
+        [idGrupo]
+      );
+    }
+  
+    static hartmanTiempo(idGrupo){
+      return db.execute(
+        `SELECT SEC_TO_TIME(AVG(tiempo)) AS promedio
+          FROM (SELECT SUM(tiempoRespuesta) as tiempo
+            FROM respuestashartman
+            WHERE idGrupo = ?
+            GROUP BY idUsuario) AS maximos;`,
+        [idGrupo]
+      );
+    }
+  
+    static termanTiempo(idGrupo){
+      return db.execute(
+        `SELECT SEC_TO_TIME(AVG(tiempo)) AS promedio
+          FROM (SELECT SUM(tiempoRespuesta) as tiempo
+            FROM respuestashartman
+            WHERE idGrupo = ?
+            GROUP BY idUsuario) AS maximos`,
+        [idGrupo]
+      );
+    }
+  
+    static otisTiempo(idGrupo){
+      return db.execute(
+        `SELECT SEC_TO_TIME(AVG(tiempo)) AS promedio
+          FROM (SELECT SUM(tiempoRespuesta) as tiempo
+            FROM respuestashartman
+            WHERE idGrupo = ?
+            GROUP BY idUsuario) AS maximos`,
+        [idGrupo]
+      );
+    }
+
+  
 };

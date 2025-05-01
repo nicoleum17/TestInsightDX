@@ -15,35 +15,312 @@
   <div class="container is-max-desktop mt-5">
     <br />
 
-    <% if (infoBorrado) { %>
-      <article class="message is-warning">
-        <div class="message-header">
-          <p>Error</p>
-          <button class="delete" aria-label="delete" onclick="this.parentElement.parentElement.remove()"></button>
-        </div>
-        <div class="message-body">
-          <%= infoBorrado %>
-        </div>
-      </article>
-    <% } %>
-    <br>
-      <div class="title has-text-weight-semibold">Elegir Grupo</div>
-        <br>
-        <% grupos.forEach(grupo => {%>
-          <div class="columns">
-            <div class="column subtitle">
-              <%= grupo.posgrado %> - <%=grupo.generacion%>
-            </div>
-            <div class="column is-2">
-              <a href="/psicologa/grupo/<%= grupo.idGrupo%>">
-                <button class="button m-5 is-primary has-text-white">Consultar</button>
-              </a>
-            </div>
-          </div>
-        <%})%>
-        
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column is-2" id = botones>
+      </div>
+    </div>
+    <br>      
 
+      <div class="container is-align-items-center">
+        <div class="field has-addons">
+          <div
+            class="control"
+            style="position: relative; left: 50%; transform: translateX(-50%)">
+            <input
+              id="barra_buscar"
+              name="barra_buscar"
+              class="input is-primary is-focused is-medium"
+              type="text"
+              placeholder="Ingresa el parámetro"
+              autocomplete="off" />
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 20px; font-size: 1.2em;">
+          <table id="sugerencias-grupos" class="table is-striped">
+            <thead>
+              <tr class="is-info">
+                <th>Grupo</th>
+                <th>Generación</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+      <br><br>
+
+      <div
+      style="display: flex; justify-content: center; margin-top: 20px;  font-size: 1.1em;">
+      <table id="pruebas-grupo" class="table is-striped is-narrow">
+        <thead style="position: sticky; top: 0; z-index: 10;">
+          <tr class="is-info">
+            <th>Prueba</th>
+            <th>Fecha Límite</th>
+            <th>Tiempo Promedio</th>
+            <th>Estatus</th>
+            <th>Respuestas</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
       </table>
+    </div>
+    <br><br><br>
 </section>
+
+<script>
+  const grupos = <%- JSON.stringify(grupos) %>;
+  function mostrarPruebas(grupo) {
+    const tableBody = document
+      .getElementById("pruebas-grupo")
+      .getElementsByTagName("tbody")[0];
+    tableBody.innerHTML = "";
+    const row = tableBody.insertRow();
+    const posgrado = row.insertCell(0);
+    const generacion = row.insertCell(1);
+    
+    posgrado.textContent = grupo.posgrado;
+    generacion.textContent = grupo.generacion;
+  
+    pruebas = document.getElementById("pruebas-grupo");
+    bodyPrueba = document
+      .getElementById("pruebas-grupo")
+      .getElementsByTagName("tbody")[0];
+    pruebas.style.display = "";
+    bodyPrueba.innerHTML = "";
+    fetch("/psicologa/pruebasGrupo/" + grupo.idGrupo, {
+      method: "GET",
+    })
+      .then((result) => result.json())
+      .then((data) => {
+        for (let prueba of data.pruebas) {
+          const filaPrueba = bodyPrueba.insertRow();
+          const nombrePrueba = filaPrueba.insertCell(0);
+          const fechaPrueba = filaPrueba.insertCell(1);
+          const tiempoPrueba = filaPrueba.insertCell(2);
+          const estatusPrueba = filaPrueba.insertCell(3);
+          const respuestasPrueba = filaPrueba.insertCell(4);
+
+          fechaPrueba.textContent = prueba.fechaLimite;
+          estatusPrueba.textContent = prueba.aspirantesCompletada + "/" + prueba.aspirantes;
+          if (prueba.idPrueba == 1) {
+            fetch("/psicologa/kostickTiempo/" + grupo.idGrupo, {
+              method: "GET",
+            })
+              .then((result) => result.json())
+              .then((data) => {
+                nombrePrueba.textContent = "Kostick";
+                tiempoPrueba.textContent = data.kostickTiempo.tiempo + " hrs";
+                respuestasPrueba.innerHTML = `<a href="">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+              });
+          } else if (prueba.idPrueba == 2) {
+            fetch("/psicologa/P16PFTiempo/" + grupo.idGrupo, {
+              method: "GET",
+            })
+              .then((result) => result.json())
+              .then((data) => {
+                nombrePrueba.textContent = "16PF";
+                tiempoPrueba.textContent = data.P16PFTiempo.tiempo + " hrs";
+                respuestasPrueba.innerHTML = `<a href="">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+              });
+          } else if (prueba.idPrueba === 6) {
+              nombrePrueba.textContent = "Colores de Lüscher";
+              tiempoPrueba.textContent = "N/A";
+              respuestasPrueba.innerHTML = `<a href="">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;            
+          } else if(prueba.idPrueba == 3){
+            fetch("/psicologa/hartmanTiempo/"+ grupo.idGrupo, {
+              method: "GET",
+            }).then((result) => result.json())
+              .then((data) => {
+                console.log(data);
+                nombrePrueba.textContent = "Hartman";
+                tiempoPrueba.textContent = data.hartmanTiempo.tiempo + " hrs";
+                respuestasPrueba.innerHTML = `<a href="">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+              });
+          } else if(prueba.idPrueba == 4){
+            fetch("/psicologa/termanTiempo/"+ grupo.idGrupo, {
+              method: "GET",
+            }).then((result) => result.json())
+              .then((data) => {
+                console.log(data);
+                nombrePrueba.textContent = "Terman";
+                tiempoPrueba.textContent = data.termanTiempo.tiempo + " hrs";
+                respuestasPrueba.innerHTML = `<a href="">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+              });
+          } else if(prueba.idPrueba == 5){
+            fetch("/psicologa/otisTiempo/"+ grupo.idGrupo, {
+              method: "GET",
+            }).then((result) => result.json())
+              .then((data) => {
+                console.log(data);
+                nombrePrueba.textContent = "OTIS";
+                tiempoPrueba.textContent = data.otisTiempo.tiempo + " hrs";
+                respuestasPrueba.innerHTML = `<a href="">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+              });
+          }
+        }
+      });
+  }
+
+  function sugerencias(grupo) {
+    const tableBody = document
+      .getElementById("sugerencias-grupos")
+      .getElementsByTagName("tbody")[0];
+
+    tableBody.innerHTML = "";
+    const row = tableBody.insertRow();
+    const posgradoCell = row.insertCell(0);
+    const generacionCell = row.insertCell(1);
+    posgradoCell.textContent = grupo.posgrado;
+    generacionCell.textContent = grupo.generacion;
+
+    const botones = document.getElementById("botones");
+
+    botones.innerHTML = `
+    <a href="registra_reporte/${grupo.idGrupo}">
+          <button class="image-button">
+            <span class="icon">
+              <i class="fa-solid fa-file-pdf fa-2xl" style="color: black;"></i>
+            </span></button
+        ></a>
+        <a href="registra_foda/${grupo.idGrupo}">
+          <button class="image-button">
+            <span class="icon">
+            <i class="fa-solid fa-file-excel fa-2xl" style="color: black;"></i>
+            </span></a>
+          </button>
+        <a href="/psicologa/grupo/${grupo.idGrupo}/modificar">
+          <button class="image-button">
+            <span class="icon">
+              <i class="fa-solid fa-pen fa-xl" style="color: black;"></i>
+            </span>
+            </button
+        ></a>
+        <a href="confirmacion/${grupo.idGrupo}">
+          <button class="image-button">
+            <img
+              src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
+              alt=""
+              width="30px"
+            />
+          </button>
+        </a>`;
+  }
+</script>
+
+<script>
+  function gruposCompletos() {
+    const tableBody = document
+        .getElementById("sugerencias-grupos")
+        .getElementsByTagName("tbody")[0];
+      tableBody.innerHTML = "";
+
+      grupos.forEach((grupo) => {
+        const row = tableBody.insertRow();
+        const posgrado = row.insertCell(0);
+        const generacion = row.insertCell(1);
+        
+        posgrado.textContent = grupo.posgrado;
+        generacion.textContent = grupo.generacion;
+
+        row.style.cursor = "pointer";
+        row.onclick = () => {
+          mostrarPruebas(grupo);
+          sugerencias(grupo);
+      };
+      });
+      const datosGrupo = document.getElementById("pruebas-grupo");
+      datosGrupo.style.display = "none";
+  }
+</script>
+<script>
+  gruposCompletos();
+  const buscar = document.getElementById("barra_buscar");
+
+  buscar.addEventListener("input", function () {
+      const query = buscar.value.trim();
+
+      if (query.length > 0) {
+        const gruposFiltrados = grupos.filter((grupo) => {
+          return (
+            grupo.posgrado.toLowerCase().includes(query.toLowerCase()) ||
+            grupo.generacion
+              .toLowerCase()
+              .includes(query.toLowerCase())
+          );
+        });
+
+        const tableBody = document
+          .getElementById("sugerencias-grupos")
+          .getElementsByTagName("tbody")[0];
+
+        tableBody.innerHTML = "";
+
+        gruposFiltrados.forEach((grupo) => {
+            const row = tableBody.insertRow();
+
+            const posgrado = row.insertCell(0);
+            const generacion = row.insertCell(1);
+            
+            posgrado.textContent = grupo.posgrado;
+            generacion.textContent = grupo.generacion;
+
+            row.style.cursor = "pointer";
+            row.onclick = () => {
+            mostrarPruebas(grupo);
+            sugerencias(grupo);
+          };
+        });
+      } else {
+        gruposCompletos();
+      }
+    });
+</script>
 
 <%- include('includes/_footer')%>

@@ -296,3 +296,39 @@ router.get(
   isAuth,
   psicologaController.get_HartmanActiva
 );
+
+router.get(
+  "/pruebasGrupo/:valor",
+  isAuth,
+  psicologaController.get_pruebasGrupo
+);
+
+router.get(
+  "/kostickTiempo/:valor",
+  isAuth,
+  psicologaController.get_kostickTiempo
+);
+
+router.get(
+  "/P16PFTiempo/:valor",
+  isAuth,
+  psicologaController.get_P16PFTiempo
+);
+
+router.get(
+  "/hartmanTiempo/:valor",
+  isAuth,
+  psicologaController.get_hartmanTiempo
+);
+
+router.get(
+  "/termanTiempo/:valor",
+  isAuth,
+  psicologaController.get_termanTiempo
+);
+
+router.get(
+  "/otisTiempo/:valor",
+  isAuth,
+  psicologaController.get_otisTiempo
+);

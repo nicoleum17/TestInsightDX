@@ -1028,7 +1028,7 @@ exports.get_kostickActiva = (request, response, next) => {
   Prueba.kostickActiva(request.params.valor)
     .then(([rows]) => {
       const kostickTiempo = {
-        tiempo: rows[0].tiempo || "N/A",
+        tiempo: rows[0].tiempo || "-",
       };
       response.status(200).json({ kostickTiempo });
     })
@@ -1041,7 +1041,7 @@ exports.get_P16PFActiva = (request, response, next) => {
   Prueba.P16PFActiva(request.params.valor)
     .then(([rows]) => {
       const P16PFTiempo = {
-        tiempo: rows[0].tiempo || "N/A",
+        tiempo: rows[0].tiempo || "-",
       };
       response.status(200).json({ P16PFTiempo });
     })
@@ -1054,7 +1054,7 @@ exports.get_termanActiva = (request, response, next) => {
   Prueba.termanActiva(request.params.valor)
     .then(([rows]) => {
       const termanTiempo = {
-        tiempo: rows[0].tiempo || "N/A",
+        tiempo: rows[0].tiempo || "-",
       };
       response.status(200).json({ termanTiempo });
     })
@@ -1067,7 +1067,7 @@ exports.get_otisActiva = (request, response, next) => {
   Prueba.otisActiva(request.params.valor)
     .then(([rows]) => {
       const otisTiempo = {
-        tiempo: rows[0].tiempo || "N/A",
+        tiempo: rows[0].tiempo || "-",
       };
       response.status(200).json({ otisTiempo });
     })
@@ -2070,7 +2070,7 @@ exports.get_HartmanActiva = (request, response, next) => {
   Prueba.hartmanActiva(request.params.valor)
     .then(([rows]) => {
       const hartmanTiempo = {
-        tiempo: rows[0].tiempo || "N/A",
+        tiempo: rows[0].tiempo || "-",
       };
       response.status(200).json({ hartmanTiempo });
     })
@@ -2079,3 +2079,78 @@ exports.get_HartmanActiva = (request, response, next) => {
     });
 };
 // TRABAJO AQUI
+
+exports.get_pruebasGrupo = (request, response, next) => {
+  Grupo.pruebasGrupo(request.params.valor)
+    .then(([rows]) => {
+      response.status(200).json({ pruebas: rows });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_kostickTiempo = (request, response, next) => {
+  Grupo.kostickTiempo(request.params.valor)
+    .then(([rows]) => {
+      const kostickTiempo = {
+        tiempo: rows[0].promedio || "-",
+      };
+      response.status(200).json({ kostickTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_P16PFTiempo = (request, response, next) => {
+  Grupo.P16PFTiempo(request.params.valor)
+    .then(([rows]) => {
+      const P16PFTiempo = {
+        tiempo: rows[0].promedio || "-",
+      };
+      response.status(200).json({ P16PFTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_hartmanTiempo = (request, response, next) => {
+  Grupo.hartmanTiempo(request.params.valor)
+    .then(([rows]) => {
+      const hartmanTiempo = {
+        tiempo: rows[0].promedio || "-",
+      };
+      response.status(200).json({ hartmanTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_termanTiempo = (request, response, next) => {
+  Grupo.termanTiempo(request.params.valor)
+    .then(([rows]) => {
+      const termanTiempo = {
+        tiempo: rows[0].promedio || "-",
+      };
+      response.status(200).json({ termanTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_otisTiempo = (request, response, next) => {
+  Grupo.otisTiempo(request.params.valor)
+    .then(([rows]) => {
+      const otisTiempo = {
+        tiempo: rows[0].promedio || "-",
+      };
+      response.status(200).json({ otisTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};

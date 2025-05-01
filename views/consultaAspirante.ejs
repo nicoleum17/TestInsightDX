@@ -51,14 +51,7 @@
             autocomplete="off" />
         </div>
       </div>
-
-      <div
-        id="contenedor-Sugerencias"
-        class="contenedor-Sugerencias"
-        style="display: none ; z-index: 20;"></div>
-    </div>
     <div
-      class="contenedorDatos"
       style="display: flex; justify-content: center; margin-top: 20px;  font-size: 1.1em;">
       <table id="datos-aspirante" class="table is-striped is-narrow">
         <thead style="position: sticky; top: 0; z-index: 10;">
@@ -146,7 +139,6 @@
               alt=""
               width="20px" />
           </button></a>`;
-      contenedorSugerencias.style.display = "none";
       pruebas = document.getElementById("pruebas-aspirante");
       bodyPrueba = document
         .getElementById("pruebas-aspirante")
@@ -176,14 +168,16 @@
                 .then((data) => {
                   nombrePrueba.textContent = "Kostick";
                   tiempoPrueba.textContent = data.kostickTiempo.tiempo + " hrs";
-                  respuestasPrueba.innerHTML = `<a href="resultadosAspiranteK/${aspirante.idUsuario}">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
+                  if (prueba.estatus == 'Completada'){
+                    respuestasPrueba.innerHTML = `<a href="resultadosAspiranteK/${aspirante.idUsuario}">
+                                              <button class="image-button">
+                                                <img
+                                                  src="https://img.icons8.com/ios7/512/plus.png"
+                                                  alt=""
+                                                  width="25px"
+                                                /></button
+                                            ></a>`;
+                  }
                 });
             } else if (prueba.idPrueba == 2) {
               fetch("/psicologa/P16PFActiva/" + aspirante.idUsuario, {
@@ -193,26 +187,30 @@
                 .then((data) => {
                   nombrePrueba.textContent = "16PF";
                   tiempoPrueba.textContent = data.P16PFTiempo.tiempo + " hrs";
-                  respuestasPrueba.innerHTML = `<a href="resultadosAspirante16/${aspirante.idUsuario}">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
+                  if (prueba.estatus == 'Completada'){
+                    respuestasPrueba.innerHTML = `<a href="resultadosAspirante16/${aspirante.idUsuario}">
+                                              <button class="image-button">
+                                                <img
+                                                  src="https://img.icons8.com/ios7/512/plus.png"
+                                                  alt=""
+                                                  width="25px"
+                                                /></button
+                                            ></a>`;
+                  }
                 });
             } else if (prueba.idPrueba === 6) {
                 nombrePrueba.textContent = "Colores de Lüscher";
                 tiempoPrueba.textContent = "N/A";
-                respuestasPrueba.innerHTML = `<a href="consultaRespuestasColoresAspirante/${aspirante.idUsuario}/6">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
+                if (prueba.estatus == 'Completada'){
+                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasColoresAspirante/${aspirante.idUsuario}/6">
+                                              <button class="image-button">
+                                                <img
+                                                  src="https://img.icons8.com/ios7/512/plus.png"
+                                                  alt=""
+                                                  width="25px"
+                                                /></button
+                                            ></a>`;
+                }
               
             } else if(prueba.idPrueba == 3){
               fetch("/psicologa/hartmanActiva/"+ aspirante.idUsuario, {
@@ -222,14 +220,16 @@
                   console.log(data);
                   nombrePrueba.textContent = "Hartman";
                   tiempoPrueba.textContent = data.hartmanTiempo.tiempo + " hrs";
-                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/3">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
+                  if (prueba.estatus == 'Completada'){
+                    respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/3">
+                                              <button class="image-button">
+                                                <img
+                                                  src="https://img.icons8.com/ios7/512/plus.png"
+                                                  alt=""
+                                                  width="25px"
+                                                /></button
+                                            ></a>`;
+                  }
                 });
             } else if(prueba.idPrueba == 4){
               fetch("/psicologa/termanActiva/"+ aspirante.idUsuario, {
@@ -239,14 +239,16 @@
                   console.log(data);
                   nombrePrueba.textContent = "Terman";
                   tiempoPrueba.textContent = data.termanTiempo.tiempo + " hrs";
-                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/4">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
+                  if (prueba.estatus == 'Completada'){
+                    respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/4">
+                                              <button class="image-button">
+                                                <img
+                                                  src="https://img.icons8.com/ios7/512/plus.png"
+                                                  alt=""
+                                                  width="25px"
+                                                /></button
+                                            ></a>`;
+                  }
                 });
             } else if(prueba.idPrueba == 5){
               fetch("/psicologa/otisActiva/"+ aspirante.idUsuario, {
@@ -256,19 +258,18 @@
                   console.log(data);
                   nombrePrueba.textContent = "OTIS";
                   tiempoPrueba.textContent = data.otisTiempo.tiempo + " hrs";
-                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/5">
-                                            <button class="image-button">
-                                              <img
-                                                src="https://img.icons8.com/ios7/512/plus.png"
-                                                alt=""
-                                                width="25px"
-                                              /></button
-                                          ></a>`;
+                  if (prueba.estatus == 'Completada'){
+                    respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/5">
+                                              <button class="image-button">
+                                                <img
+                                                  src="https://img.icons8.com/ios7/512/plus.png"
+                                                  alt=""
+                                                  width="25px"
+                                                /></button
+                                            ></a>`;
+                  }
                 });
             }
-
-
-
           }
         });
     }
@@ -352,9 +353,6 @@
   <script>
     aspirantesCompletos();
     const buscar = document.getElementById("barra_buscar");
-    const contenedorSugerencias = document.getElementById(
-      "contenedor-Sugerencias"
-    );
 
     buscar.addEventListener("input", function () {
       const query = buscar.value.trim();
@@ -365,8 +363,6 @@
         })
           .then((result) => result.json())
           .then((data) => {
-            contenedorSugerencias.innerHTML = "";
-
             const aspirantesFiltrados = data.aspirantes.filter((aspirante) => {
               return (
                 aspirante.nombres.toLowerCase().includes(query.toLowerCase()) ||
@@ -383,77 +379,72 @@
               );
             });
 
-            aspirantesFiltrados.forEach((aspirante) => {
-              const sugerencia = document.createElement("div");
-              sugerencia.classList.add("sugerencia-item");
-              sugerencia.innerHTML = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
-              sugerencia.onclick = () => {
-                mostrarPruebas(aspirante);
-              };
-              contenedorSugerencias.appendChild(sugerencia);
-            });
+            const tableBody = document
+              .getElementById("datos-aspirante")
+              .getElementsByTagName("tbody")[0];
 
-            if (aspirantesFiltrados.length > 0) {
-              contenedorSugerencias.style.display = "block";
-            } else {
-              contenedorSugerencias.style.display = "none";
-            }
+            tableBody.innerHTML = "";
+
+            aspirantesFiltrados.forEach((aspirante) => {
+                const row = tableBody.insertRow();
+
+                const nombreAspirante = row.insertCell(0);
+                const codigoIdentidadAspirante = row.insertCell(1);
+                const telefonoAspirante = row.insertCell(2);
+                const lugarOrigenAspirante = row.insertCell(3);
+                const correoAspirante = row.insertCell(4);
+                const universidadAspirante = row.insertCell(5);
+                const modificarAspirante = row.insertCell(6);
+                const documentos = row.insertCell(7);
+                const eliminar = row.insertCell(8);
+
+                nombreAspirante.textContent = `${aspirante.nombres} ${aspirante.apellidoPaterno} ${aspirante.apellidoMaterno}`;
+                codigoIdentidadAspirante.textContent = aspirante.codigoIdentidad;
+                telefonoAspirante.textContent = aspirante.numTelefono;
+                lugarOrigenAspirante.textContent = aspirante.lugarOrigen;
+                correoAspirante.textContent = aspirante.correo;
+                universidadAspirante.textContent = aspirante.universidadOrigen;
+
+                nombreAspirante.style.cursor = "pointer";
+                nombreAspirante.onclick = () => {
+                  mostrarPruebas(aspirante);
+                };
+
+                modificarAspirante.innerHTML = `
+              <a href="modificarAspirante/${aspirante.idUsuario}">
+                <button class="image-button">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/764/764599.png"
+                    alt="Modificar"
+                    width="20px" />
+                </button>
+              </a>
+            `;
+
+                documentos.innerHTML = `
+              <a href="reporteAspirante/${aspirante.idUsuario}">
+                <button class="image-button">
+                  <i class="fa-regular fa-file" style="color: #000000;"></i>
+                </button>
+              </a>
+            `;
+                eliminar.innerHTML = `<a href="aspirante/confirmacion/${aspirante.idUsuario}">
+            <button class="image-button">
+                          <img
+                  src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-an-x-in-the-middle-of-a-white-circle-vector-png-image_15892532.png"
+                  alt=""
+                  width="20px" />
+              </button></a>`;
+            });
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
-        contenedorSugerencias.style.display = "none";
         aspirantesCompletos();
       }
     });
-
-    document.addEventListener("click", function (event) {
-      if (
-        !contenedorSugerencias.contains(event.target) &&
-        event.target !== buscar
-      ) {
-        contenedorSugerencias.style.display = "none";
-      }
-    });
   </script>
-
-  <style>
-    .contenedorDatos {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .contenedor-Sugerencias {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 1px solid #ddd;
-      max-height: 200px;
-      overflow-y: auto;
-      background-color: white;
-      z-index: 10;
-      border-radius: 5px;
-    }
-
-    .sugerencia-item {
-      padding: 8px;
-      cursor: pointer;
-    }
-
-    .sugerencia-item:hover {
-      background-color: #f0f0f0;
-    }
-
-    .sugerencia-item a {
-      text-decoration: none;
-      color: black;
-    }
-
-    .container {
-      position: relative;
-    }
-  </style>
 
   <%- include('includes/_footer')%>
 </body>
