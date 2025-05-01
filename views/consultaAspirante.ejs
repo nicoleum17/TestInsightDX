@@ -93,6 +93,7 @@
       </table>
     </div>
   </div>
+  <br><br><br><br>
   </section>
 
   <script>
@@ -221,6 +222,40 @@
                   nombrePrueba.textContent = "Hartman";
                   tiempoPrueba.textContent = data.hartmanTiempo.tiempo + " hrs";
                   respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/3">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+                });
+            } else if(prueba.idPrueba == 4){
+              fetch("/psicologa/termanActiva/"+ aspirante.idUsuario, {
+                method: "GET",
+              }).then((result) => result.json())
+                .then((data) => {
+                  console.log(data);
+                  nombrePrueba.textContent = "Terman";
+                  tiempoPrueba.textContent = data.termanTiempo.tiempo + " hrs";
+                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/4">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+                });
+            } else if(prueba.idPrueba == 5){
+              fetch("/psicologa/otisActiva/"+ aspirante.idUsuario, {
+                method: "GET",
+              }).then((result) => result.json())
+                .then((data) => {
+                  console.log(data);
+                  nombrePrueba.textContent = "OTIS";
+                  tiempoPrueba.textContent = data.otisTiempo.tiempo + " hrs";
+                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/5">
                                             <button class="image-button">
                                               <img
                                                 src="https://img.icons8.com/ios7/512/plus.png"

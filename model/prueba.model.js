@@ -76,6 +76,24 @@ module.exports = class Prueba {
     );
   }
 
+  static termanActiva(idUsuario){
+    return db.execute(
+      `SELECT SEC_TO_TIME(SUM(tiempoRespuesta)) as tiempo
+      FROM respuestashartman
+      WHERE idUsuario = ?`,
+      [idUsuario]
+    );
+  }
+
+  static otisActiva(idUsuario){
+    return db.execute(
+      `SELECT SEC_TO_TIME(SUM(tiempoRespuesta)) as tiempo
+      FROM respuestaOtisAspirante
+      WHERE idUsuario = ?`,
+      [idUsuario]
+    );
+  }
+
   //Otras Pruebas
 
   //~ OTIS

@@ -250,6 +250,8 @@ exports.post_registrarAspirante = (request, response, next) => {
     "2"
   );
 
+  Aspirante.asignaPruebasAspirante(mi_aspirante.idUsuario, mi_perteneceGrupo.idGrupo);
+
   mi_aspirante.save().then(() => {
     mi_perteneceGrupo.save().then(() => {
       request.session.infoAspirante = "Aspirante registrado exitosamente";
@@ -871,6 +873,32 @@ exports.get_P16PFActiva = (request, response, next) => {
         tiempo: rows[0].tiempo || "N/A",
       };
       response.status(200).json({ P16PFTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_termanActiva = (request, response, next) => {
+  Prueba.termanActiva(request.params.valor)
+    .then(([rows]) => {
+      const termanTiempo = {
+        tiempo: rows[0].tiempo || "N/A",
+      };
+      response.status(200).json({ termanTiempo });
+    })
+    .catch((error) => {
+      response.status(500).json({ message: "Sin pruebas" });
+    });
+};
+
+exports.get_otisActiva = (request, response, next) => {
+  Prueba.otisActiva(request.params.valor)
+    .then(([rows]) => {
+      const otisTiempo = {
+        tiempo: rows[0].tiempo || "N/A",
+      };
+      response.status(200).json({ otisTiempo });
     })
     .catch((error) => {
       response.status(500).json({ message: "Sin pruebas" });

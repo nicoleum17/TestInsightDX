@@ -238,6 +238,10 @@ router.get(
 
 router.get("/P16PFActiva/:valor", isAuth, psicologaController.get_P16PFActiva);
 
+router.get("/termanActiva/:valor", isAuth, psicologaController.get_termanActiva);
+
+router.get("/otisActiva/:valor", isAuth, psicologaController.get_otisActiva);
+
 module.exports = router;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
