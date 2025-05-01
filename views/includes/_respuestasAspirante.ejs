@@ -24,17 +24,15 @@
       <br />
       <div class="subtitle has-text-centered"><%= prueba %></div>
       <div class="preguntas-wrapper">
+        <% let i = 0 %>
         <% preguntas.forEach(pregunta => { %>
           <div class="pregunta-item">
             <div class="numero-pregunta">
               <%= pregunta.numeroPreguntaKostick %>. <%= opciones.find(opcion => opcion.idPreguntaKostick === pregunta.idPreguntaKostick); %>
             </div>
-            <% 
-              const selectedOpcion = opciones.find(opcion => opcion.idPreguntaKostick === pregunta.idPreguntaKostick);
-            %>
-            <% if (selectedOpcion) { %>
+            <% if (opciones) { %>
               <div class="opcion-item">
-                <%= selectedOpcion.opcionKostick %>.- <%= selectedOpcion.descripcionOpcionKostick %>
+                <%= opciones[i] %>.- <%= descripcion[i] %>
               </div>
             <% } else { %>
               <div class="opcion-item">
@@ -42,6 +40,7 @@
               </div>
             <% } %>
           </div>
+          <% i++ %>
         <% }); %>
       </div>
     </div>
@@ -55,6 +54,7 @@
           >
           Análisis
         </button>
+        <br><br><br><br>
         </a>
       </div>
     </div>
