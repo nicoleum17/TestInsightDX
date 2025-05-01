@@ -67,13 +67,13 @@ exports.post_login = (request, response, next) => {
                         );
                         newOTP.save().then((uuid) => {
                           console.log("OTP saved successfully:", otp);
-                          return MS.sendEmail(
+                          /*return MS.sendEmail(
                               aspiranteDatos.correo,
                               aspiranteDatos.nombres,
                               otp
                             );
                           })
-                          .then((response) => {
+                          .then((response) => {*/
                         });
                         Usuario.getGrupo(rows[0].idUsuario).then(([grupo]) => {
                           (request.session.grupo = grupo[0].idGrupo),
