@@ -1,0 +1,114 @@
+@startuml 11 - Registra un Grupo.
+actor       Psicologa                   as a1
+boundary    psicologa.routes            as a2
+boundary    vistas__crearGrupo.ejs     as a3
+boundary    vistas__confirmarCreacionGrupo.ejs     as a32
+control     psicologa.controllers       as a4
+
+
+
+
+
+
+
+
+autonumber
+activate a1
+a1->a2: GET /psicologa/grupo
+deactivate a1
+activate a2
+a2->a4: get_crear_grupo(response, request)
+deactivate a2
+activate a4
+a4->a3: response.render('crear_grupo.ejs')
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+
+
+
+
+
+
+
+
+activate a1
+a1->a2: POST /psicologa/grupo
+deactivate a1
+activate a2
+a2->a4: post_crear_grupo(reponse, request)
+deactivate a2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create entity      Grupo                       as a5
+activate a4
+a4->a5: new Grupo (request.body.posgrado, \n request.body.generacion)
+activate a5
+a4->>a5: save()
+
+
+
+
+
+
+
+
+database    mysql                       as a6
+a5->>a6: execute "INSERT INTO Grupos (idGrupo, posgrado,\n generacion) VALUES (?, ?, ?)",  [ this.idGrupo, \n this.posgrado, this.generacion])
+activate a6
+a6-->>a5: Query OK
+deactivate a6
+a5-->>a4: promesa
+deactivate a5
+
+
+
+
+
+
+
+
+create entity      Prueba               as a7
+loop for each prueba
+    a4->a7: new TienePruebas( mi_grupo.idGrupo, idPrueba, request.body.fechaLimite, \n request.body.fechaPruebaGrupal + " " + request.body.horaPruebaGrupal, request.body.enlaceZoom)
+    activate a7
+    a4->>a7: save()
+    
+    
+    a7->>a6: execute("INSERT INTO tienePruebas (idGrupo,\n idPrueba, fechaLimitePrueba, fechaPruebaGrupal,\n enlaceZoom) VALUES (?, ?, ?, ?, ?)", [this.idGrupo,\n this.idPrueba, this.fechaLimitePrueba,\n this.fechaPruebaGrupal, this.enlaceZoom ])
+    activate a6
+    a6-->>a7: Query OK
+    deactivate a6
+    a7-->>a4: promesa
+deactivate a7
+end
+
+
+
+
+a4-->>a2: response.redirect('/psicologa/grupo/confirmarCreacion')
+deactivate a4
+activate a2
+a2->a4: confirmar_creacion_grupo(response, request)
+deactivate a2
+activate a4
+a4->a32: response.render("confirmarCreacionGrupo")
+deactivate a4
+activate a32
+a32->a1: HTML
+deactivate a32

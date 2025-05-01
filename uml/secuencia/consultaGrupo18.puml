@@ -1,0 +1,70 @@
+@startuml 18 - Consulta Grupo
+actor       Psicologa                    as a1
+boundary    psicologa.routes             as a2
+boundary    vistas__consultar_grupo.ejs as a3
+control     psicologa.controllers        as a4
+entity      model                        as a5
+database    mysql                        as a6
+
+
+
+
+autonumber
+activate a1
+a1->a2: GET /psicologa/grupo
+deactivate a1
+activate a2
+a2->a4: get_consultarGrupo(response, request)
+deactivate a2
+
+
+activate a4
+a4->>a5: fetchAll()
+activate a5
+a5->>a6: execute("SELECT * FROM Grupos")
+activate a6
+a6-->>a5: rows
+deactivate a6
+a5-->>a4: rows
+deactivate a5
+
+
+a4->a3: response.render('consultar_grupo.ejs')
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+activate a1
+
+
+
+
+a1->a2: GET /psicologa/grupo/id_grupo
+deactivate a1
+activate a2
+a2->a4: get_consultarUnGrupo(response, request)
+deactivate a2
+
+
+activate a4
+a4->>a5: fetchAll()
+activate a5
+a5->>a6: execute("SELECT * FROM Grupos WHERE id_grupo = ?", this.id_grupo)
+activate a6
+a6-->>a5: rows
+deactivate a6
+a5-->>a4: rows
+deactivate a5
+
+
+a4->a3: response.render('consultar_grupo.ejs')
+deactivate a4
+activate a3
+a3->a1: HTML
+deactivate a3
+activate a1
+
+
+
+
+@enduml

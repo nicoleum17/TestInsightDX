@@ -1,0 +1,36 @@
+@startuml 13 - Consulta Pruebas
+actor       Psicologa                    as a1
+boundary    psicologa.routes             as a2
+boundary    vistas__consultar_prueba.ejs as a3
+control     psicologa.controllers        as a4
+entity      modelo                       as a5
+database    mysql                        as a6
+
+
+autonumber
+activate a1
+a1->a2: GET /psicologa/prueba
+deactivate a1
+activate a2
+a2->a4: get_consultarPrueba(response, request)
+deactivate a2
+
+activate a4
+a4->>a5: fetchAll()
+activate a5
+
+a5->>a6: execute("SELECT * FROM pruebas")
+activate a6
+a6-->>a5: rows
+deactivate a6
+a5-->>a4: rows
+deactivate a5
+
+a4->a3: response.render('consultar_prueba.ejs')
+deactivate a4
+a3->a1: HTML
+deactivate a3
+activate a1
+
+
+@enduml
