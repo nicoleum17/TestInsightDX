@@ -590,9 +590,7 @@ exports.post_grupo = async (request, response, next) => {
     let idAspirantes = [];
     await mi_grupo.save();
 
-    const excelFile = request.files.find(
-      (file) => file.fieldname === "archivoExcel"
-    );
+    const excelFile = request.file;
 
     if (excelFile) {
       const path = excelFile.path;
