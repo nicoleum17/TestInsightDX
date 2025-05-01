@@ -45,16 +45,28 @@
         <div class="title">Sesión Individual</div>
         <div class="box has-background-info" >
             <label class="label">Fecha</label>
+            <% if (perteneceGrupo.fechaZoomIndividual === null || perteneceGrupo.fechaZoomIndividual === '') {%>
+              <input class="input" type="date" name="fechaZoomIndividual" value = "" required/>
+              <% } else {%>
             <input class="input" type="date" name="fechaZoomIndividual" value = "<%= perteneceGrupo.fechaZoomIndividual.toISOString().split('T')[0]%>" required/>
+            <% } %>
             <br><br>
             <label class="label">Hora</label>
+            <% if (perteneceGrupo.fechaZoomIndividual === null || perteneceGrupo.fechaZoomIndividual === '') {%>
+              <input class="input" type="time" name="horaSesionIndividual" value = "" required/>
+              <% } else {%>
             <% const dateTime = new Date(perteneceGrupo.fechaZoomIndividual); const
             hours = String(dateTime.getHours()).padStart(2, '0'); const
             minutes = String(dateTime.getMinutes()).padStart(2, '0'); %>
             <input class="input" type="time" name="horaSesionIndividual" value="<%= hours %>:<%= minutes %>" required/>
+            <%}%>
             <br><br>
             <label class="label">Link</label>
+            <% if (perteneceGrupo.fechaZoomIndividual === null || perteneceGrupo.fechaZoomIndividual === '') {%>
+              <input class="input" type="text" name="enlaceZoom" placeholder="https://zoom.us/j/5551112222" required/>
+              <% } else {%>
             <input class="input" type="text" name="enlaceZoom" value="<%= perteneceGrupo.enlaceZoom %>" required/>
+            <%}%>
         </div>
     </section> 
     <div class="columns">
