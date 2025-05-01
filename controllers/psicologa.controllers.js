@@ -7,6 +7,7 @@ const readXlsxFile = require("read-excel-file/node");
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
 const Aspirante = require("../model/aspirante.model");
+const Familiar = require("../model/familiar.model");
 const FormatoEntrevista = require("../model/formatoEntrevista.model");
 const ConsultaResultados = require("../model/hartman/consultaResultados.model");
 const Hartman = require("../model/hartman/hartman.model");
@@ -815,14 +816,18 @@ exports.post_modificarAspirante = (request, response, next) => {
 exports.get_reporteAspirante = (request, response, next) => {
   const idUsuario = request.params.idUsuario;
   Aspirante.fetchOne(idUsuario).then(([aspirante]) => {
-    request.session.idUsuario = idUsuario;
-    response.render("reporteAspirante", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      aspirante: aspirante[0],
-      idUsuario: request.session.idUsuario,
+    FormatoEntrevista.fetchOne(idUsuario).then(([formatoEntrevista])=>{
+      console.log("log ",formatoEntrevista)
+      request.session.idUsuario = idUsuario;
+      response.render("reporteAspirante", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirante[0],
+        idUsuario: request.session.idUsuario,
+        formatoEntrevista: formatoEntrevista[0],
+    })
     });
   });
 };
@@ -1034,22 +1039,26 @@ exports.get_formatoEntrevista = async (request, response, next) => {
     console.log(formatoEntrevista.idFormato);
     for (let i = 1; i < 20; i++) {
       promesasRespuestas.push(
-        preguntasFormato.fetchPregunta(i, request.session.idFormato)
+        PreguntasFormato.fetchPregunta(i, formatoEntrevista.idFormato)
       );
     }
     const respuestas = await Promise.all(promesasRespuestas);
     const preguntas = await Promise.all(promesasPreguntas);
-    console.log(formatoEntrevista);
-    response.render("consultarFormatoEntrevista", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      aspirante: aspirantes,
-      idUsuario: request.session.idUsuario || "",
-      formatoEntrevista: formatoEntrevista,
-      respuestasPreguntas: respuestas,
-      preguntas: preguntas,
+    Familiar.fetchFamiliares(formatoEntrevista.idFormato).then(([familiares])=>{
+      response.render("consultarFormatoEntrevista", {
+        isLoggedIn: request.session.isLoggedIn || false,
+        usuario: request.session.usuario || "",
+        csrfToken: request.csrfToken(),
+        privilegios: request.session.privilegios || [],
+        aspirante: aspirantes,
+        idUsuario: request.session.idUsuario || "",
+        formatoEntrevista: formatoEntrevista,
+        respuestasPreguntas: respuestas,
+        preguntas: preguntas,
+        familia: familiares,
+    })
+    
+    
     });
   } catch (error) {
     console.error("Error al sacar preguntas:", error);
@@ -1765,6 +1774,7 @@ const {
 const { Console } = require("console");
 const RespondeKostick = require("../model/kostick/respondeKostick.model");
 const Responde16PF = require("../model/16pf/responde16pf.model");
+const formatoEntrevista = require("../model/formatoEntrevista.model");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS

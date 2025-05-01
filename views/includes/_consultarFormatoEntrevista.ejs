@@ -473,4 +473,18 @@
     </div>
   </div>
 </div>
+  <div class="columns is-multiline">
+    <% familia.forEach(function(familiar) { %>
+      <div class="column is-one-third">
+        <div class="box">
+          <h3 class="title is-5"><%= familiar.nombre %></h3>
+          <p><strong>Edad:</strong> <%= familiar.edad %></p>
+          <p><strong>Género:</strong> <%= familiar.genero %></p>
+          <p><strong>Estado Civil:</strong> <%= familiar.estadoCivil %></p>
+          <p><strong>Relación con Aspirante:</strong> <%= familiar.relacionAspirante %></p>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</div>
 </section>

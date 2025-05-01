@@ -64,7 +64,11 @@
               </div>
             </a>
           </div>
-
+          <% if (formatoEntrevista.estatus != "Finalizado"){%>
+            <div class="column is narrow">
+              El aspirante aún no ha <br>respondido el formato de entrevista
+            </div>
+            <%} else {%>
           <div class="column is-narrow">
             <a href="/psicologa/formatoEntrevista/<%= aspirante.idUsuario%>">
               <div class="card card-option has-text-centered">
@@ -81,8 +85,12 @@
               </div>
             </a>
           </div>
+          <%}%>
         </div>
       </div>
     </div>
   </div>
 </section>
+<script>
+  console.log("Estatus:", "<%= formatoEntrevista.estatus %>");
+</script>
