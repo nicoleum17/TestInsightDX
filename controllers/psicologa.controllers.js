@@ -387,11 +387,9 @@ exports.get_resultadosAspiranteK = (request, response, next) => {
     PerteneceGrupo.fetchOne(idUsuario).then(([rows, fieldData]) => {
       Grupo.fetchOneId(rows[0].idGrupo).then(([grupoRows, fieldData]) => {
         PreguntaKostick.fetchAll().then(([preguntasKostick]) => {
-          RespondeKostick.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then((resultados) => {
-            console.log(datosAspirante)
-            console.log(rows)
-            console.log(preguntasKostick)
-            console.log(resultados)
+          RespondeKostick.fetchRespuestasAspirante(rows[0].idGrupo, idUsuario).then(([resultados]) => {
+            const opciones = resultados.map(r => r.opcionKostick);
+            const descripcionOpciones = resultados.map(r => r.descripcionOpcionKostick);
             response.render("respuestasAspirante", {
               isLoggedIn: request.session.isLoggedIn || false,
               usuario: request.session.usuario || "",
@@ -402,7 +400,8 @@ exports.get_resultadosAspiranteK = (request, response, next) => {
               valores: resultados[0][0],
               datos: datosAspirante[0],
               preguntas: preguntasKostick,
-              opciones: resultados,
+              opciones: opciones,
+              descripcion: descripcionOpciones,
               aspirante: datosAspirante[0],
             });
           });
