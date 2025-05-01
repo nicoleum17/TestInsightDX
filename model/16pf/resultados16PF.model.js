@@ -77,7 +77,7 @@ module.exports = class Resultados16PF {
 
   static fetchAll(idGrupo, idUsuario) {
     return db.execute(
-      "SELECT * FROM parametros16PF WHERE idGrupo = ? AND idUsuario = ?",
+      "SELECT * FROM parametros16pf WHERE idGrupo = ? AND idUsuario = ?",
       [idGrupo, idUsuario]
     );
   }

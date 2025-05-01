@@ -21,7 +21,7 @@ module.exports = class OpcionKostick {
 
   static fetchOne(idPreguntaKostick) {
     return db.execute(
-      "SELECT * FROM opcionesKostick WHERE idPreguntakostick = ?",
+      "SELECT * FROM opcioneskostick WHERE idPreguntakostick = ?",
       [idPreguntaKostick]
     );
   }

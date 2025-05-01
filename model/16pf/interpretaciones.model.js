@@ -28,11 +28,11 @@ module.exports = class Interpretaciones16PF {
 
   static interpretacion(columna, nivel) {
     if (nivel == 1){
-        return db.execute("SELECT nivel1 as resp FROM interpretaciones16PF WHERE parametro = ?",
+        return db.execute("SELECT nivel1 as resp FROM interpretaciones16pf WHERE parametro = ?",
             [columna]
         );
     } else if (nivel == 3){
-        return db.execute("SELECT nivel3 as resp FROM interpretaciones16PF WHERE parametro = ?",
+        return db.execute("SELECT nivel3 as resp FROM interpretaciones16pf WHERE parametro = ?",
             [columna]
         );
     }

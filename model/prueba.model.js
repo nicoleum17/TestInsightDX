@@ -61,7 +61,7 @@ module.exports = class Prueba {
   static P16PFActiva(idUsuario) {
     return db.execute(
       `SELECT SEC_TO_TIME(FLOOR(MAX(tiempo))) as tiempo
-      FROM responde16PF
+      FROM responde16pf
       WHERE idUsuario = ?`,
       [idUsuario]
     );
@@ -88,7 +88,7 @@ module.exports = class Prueba {
   static otisActiva(idUsuario){
     return db.execute(
       `SELECT SEC_TO_TIME(SUM(tiempoRespuesta)) as tiempo
-      FROM respuestaOtisAspirante
+      FROM respuestaotisaspirante
       WHERE idUsuario = ?`,
       [idUsuario]
     );
