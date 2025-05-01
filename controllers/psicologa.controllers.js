@@ -3,6 +3,7 @@ const db = require("../util/database");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
 const readXlsxFile = require("read-excel-file/node");
+const MSI = require("../util/emailSenderInicial");
 
 const Prueba = require("../model/prueba.model");
 const Grupo = require("../model/grupo.model");
@@ -241,24 +242,28 @@ exports.post_registrarAspirante = (request, response, next) => {
 
   console.log("Usuario", nombreUsuario);
   console.log("Contraseña Base: " + contraseñaBase);
+  
+  return MSI.sendEmail(
+    mi_aspirante.correo, mi_aspirante.nombres, nombreUsuario, contraseñaBase
+  ).then((emailSend) => {
+    const fehcaZoom = new Date(request.body.fechaSesionIndividual);
 
-  const fehcaZoom = new Date(request.body.fechaSesionIndividual);
+    const mi_usuario = new Usuario(
+      mi_aspirante.idUsuario,
+      nombreUsuario,
+      contraseñaBase,
+      "2"
+    );
 
-  const mi_usuario = new Usuario(
-    mi_aspirante.idUsuario,
-    nombreUsuario,
-    contraseñaBase,
-    "2"
-  );
+    Aspirante.asignaPruebasAspirante(mi_aspirante.idUsuario, mi_perteneceGrupo.idGrupo);
 
-  Aspirante.asignaPruebasAspirante(mi_aspirante.idUsuario, mi_perteneceGrupo.idGrupo);
-
-  mi_aspirante.save().then(() => {
-    mi_perteneceGrupo.save().then(() => {
-      request.session.infoAspirante = "Aspirante registrado exitosamente";
-      mi_usuario.save().then(() => {
-        mi_usuario.correo;
-        response.redirect("inicio");
+    mi_aspirante.save().then(() => {
+      mi_perteneceGrupo.save().then(() => {
+        request.session.infoAspirante = "Aspirante registrado exitosamente";
+        mi_usuario.save().then(() => {
+          mi_usuario.correo;
+          response.redirect("inicio");
+        });
       });
     });
   });
@@ -637,6 +642,13 @@ exports.post_grupo = async (request, response, next) => {
 
         console.log("Usuario", nombreUsuario);
         console.log("Contraseña Base: " + contraseñaBase);
+
+        await MSI.sendEmail(
+          mi_aspirante.correo,
+          mi_aspirante.nombres,
+          nombreUsuario,
+          contraseñaBase
+        );
 
         const mi_usuario = new Usuario(
           mi_aspirante.idUsuario,
