@@ -28,7 +28,7 @@
         <% preguntas.forEach(pregunta => { %>
           <div class="pregunta-item">
             <div class="numero-pregunta">
-              <%= pregunta.numeroPregunta16PF %>. <%= opciones.find(opcion => opcion.idPregunta16PF === pregunta.idPregunta16PF); %>
+              <%= pregunta.numeroPregunta16PF %>. <%= pregunta.pregunta16PF %> <%= opciones.find(opcion => opcion.idPregunta16PF === pregunta.idPregunta16PF); %>
             </div>
             <% if (opciones) { %>
               <div class="opcion-item">
