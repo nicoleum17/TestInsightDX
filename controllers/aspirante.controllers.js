@@ -112,7 +112,7 @@ exports.get_notificacionA = (request, response, next) => {
       csrfToken: request.csrfToken(),
       privilegios: request.session.privilegios || [],
       pruebaGrupal: rows[0].pruebaGrupal || null,
-      zoomIndividual: rows[0].zoomIndividual || null,
+      zoomIndividual: rows[0].zoomIndividual,
       limitePrueba: rows[0].limitePrueba || null,
     });
   });

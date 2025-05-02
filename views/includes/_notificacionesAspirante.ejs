@@ -43,25 +43,7 @@
     }
   }
 
-  if (zoomIndividual) {
-    const futureDate = `<%= zoomIndividual.toISOString().split('T')[0] %>`;
-    const daysLeft = calculateDaysUntilFutureDate(futureDate);
-    if (daysLeft >= 0) {
-      const pg = document.getElementById("pg");
-      pg.innerHTML += `<article class="message is-info">
-  <div class="message-body">
-      <p class="has-text-black">Entrevista individual: <strong>${futureDate} </strong>(${daysLeft} días restantes)\ <br><strong>Recuerda subir tu CV y Kardex antes de la Entrevista</strong></p>
-            </div>
-      </article>`;
-    }
-  } else {
-    pg.innerHTML += `<article class="message is-info">
-    <div class="message-body">
-        <p class="has-text-black">Aún no se ha programado tu entrevista clínica</p>
-              </div>
-        </article>`;
-  }
-
+  
   if (limitePrueba) {
     const futureDate = `<%= limitePrueba.toISOString().split('T')[0] %>`;
     const daysLeft = calculateDaysUntilFutureDate(futureDate);
@@ -74,4 +56,37 @@
       </article>`;
     }
   }
+
+  if (zoomIndividual === null || zoomIndividual === undefined || zoomIndividual === '') {
+    pg.innerHTML += `<article class="message is-info">
+    <div class="message-body">
+        <p class="has-text-black">Aún no se ha programado tu entrevista clínica</p>
+    </div>
+    </article>`;
+} else {
+    // Assuming zoomIndividual is a Date object or a valid date string
+    const dateObject = new Date(zoomIndividual);
+    
+    // Check if the date is valid
+    if (!isNaN(dateObject.getTime())) {
+        const futureDate = dateObject.toISOString().split('T')[0]; // Use zoomIndividual directly
+        const daysLeft = calculateDaysUntilFutureDate(futureDate);
+        if (daysLeft >= 0) {
+            pg.innerHTML += `<article class="message is-info">
+            <div class="message-body">
+                <p class="has-text-black">Entrevista individual: <strong>${futureDate} </strong>(${daysLeft} días restantes)<br><strong>Recuerda subir tu CV y Kardex antes de la Entrevista</strong></p>
+            </div>
+            </article>`;
+        }
+    } else {
+        // Handle the case where zoomIndividual is not a valid date
+        pg.innerHTML += `<article class="message is-info">
+        <div class="message-body">
+            <p class="has-text-black">La fecha de la entrevista es inválida.</p>
+        </div>
+        </article>`;
+    }
+}
+
+
 </script>
