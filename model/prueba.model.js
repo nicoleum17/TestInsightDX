@@ -128,7 +128,7 @@ module.exports = class Prueba {
 
                   JOIN usuarios u ON a.idUsuario = u.idUsuario
 
-                  JOIN perteneceGrupo ga ON a.idUsuario = ga.idUsuario 
+                  JOIN pertenecegrupo ga ON a.idUsuario = ga.idUsuario 
                   AND ga.idGrupo = ?
 
                   LEFT JOIN respuestaotisaspirante ra ON 
