@@ -279,3 +279,15 @@ router.get(
   isAuth,
   psicologaController.get_HartmanActiva
 );
+
+router.get(
+  "/TermanActiva/:valor",
+  isAuth,
+  psicologaController.get_TermanActiva
+);
+
+router.get(
+  "/analisisTerman",
+  isAuth,
+  psicologaController.get_analisisTerman
+)

@@ -1,156 +1,117 @@
 <!DOCTYPE html>
-<html lang="esp">
+<html class="has-navbar-fixed-top" lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Consulta Aspirantes</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/my.css" />
     <link rel="stylesheet" href="/css/stylesLayout.css" />
     <link rel="stylesheet" href="/css/stylesAnalisisTerman.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/js/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
   </head>
-  <body>
-    <div class="site">
-      <header><%- include('../../includes/navbar') %></header>
 
-      <main>
-        <div class="maestro"></div>
-        <div class="container" id="loggin">
-          <h2 class="title has-text-centered">Análisis Terman</h2>
+  <body class="has-background-warning">
+    <%- include('includes/_navbarP') %>
 
-          <% if (datos) { %>
-          <h3 class="subtitle has-text-centered">
-            <%= datos.nombreAspirante %> <%= datos.apellidoPaternoAspirante %>
-            <%= datos.apellidoMaternoAspirante %>
-          </h3>
-          <% } else { %>
-          <h3 class="subtitle has-text-centered">
-            Información del aspirante no disponible
-          </h3>
-          <% } %>
+    <section class="section pt-6 mt-6">
+      <div class="container" id="Terman">
+        <h2 class="title has-text-centered">Análisis Terman</h2>
+        <h3 class="subtitle has-text-centered mb-2" id="nombre-aspirante">
+          <%= resumen.nombreCompleto %>
+        </h3>
+        <h3 class="subtitle has-text-centered mb-5">
+          Estatus de la prueba: <%= estatusPrueba %>
+        </h3>
 
-          <div class="contenedor-principal">
-            <div class="grafica-container">
-              <canvas id="chart"></canvas>
-
-              <table class="table is-bordered">
-                <tbody>
-                  <tr>
-                    <th>Puntos Totales</th>
-                    <td><%= datos.puntosTotales %></td>
-                  </tr>
-                  <tr>
-                    <th>Rango</th>
-                    <td><%= datos.rango %></td>
-                  </tr>
-                  <tr>
-                    <th>C.I.</th>
-                    <td><%= datos.coeficienteIntelectual %></td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <table class="table is-bordered is-striped is-fullwidth">
-                <thead>
-                  <tr>
-                    <th>Serie</th>
-                    <th>Categoría</th>
-                    <th>Puntuación</th>
-                    <th>Rango</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>I</td>
-                    <td>Información</td>
-                    <td><%= analisisTerman.serie1.puntuacion %></td>
-                    <td><%= analisisTerman.serie1.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>II</td>
-                    <td>Juicio</td>
-                    <td><%= analisisTerman.serie2.puntuacion %></td>
-                    <td><%= analisisTerman.serie2.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>III</td>
-                    <td>Vocabulario</td>
-                    <td><%= analisisTerman.serie3.puntuacion %></td>
-                    <td><%= analisisTerman.serie3.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>IV</td>
-                    <td>Síntesis</td>
-                    <td><%= analisisTerman.serie4.puntuacion %></td>
-                    <td><%= analisisTerman.serie4.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>V</td>
-                    <td>Concentración</td>
-                    <td><%= analisisTerman.serie5.puntuacion %></td>
-                    <td><%= analisisTerman.serie5.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>VI</td>
-                    <td>Análisis</td>
-                    <td><%= analisisTerman.serie6.puntuacion %></td>
-                    <td><%= analisisTerman.serie6.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>VII</td>
-                    <td>Abstracción</td>
-                    <td><%= analisisTerman.serie7.puntuacion %></td>
-                    <td><%= analisisTerman.serie7.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>VIII</td>
-                    <td>Planeación</td>
-                    <td><%= analisisTerman.serie8.puntuacion %></td>
-                    <td><%= analisisTerman.serie8.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>IX</td>
-                    <td>Organización</td>
-                    <td><%= analisisTerman.serie9.puntuacion %></td>
-                    <td><%= analisisTerman.serie9.rango %></td>
-                  </tr>
-                  <tr>
-                    <td>X</td>
-                    <td>Atención</td>
-                    <td><%= analisisTerman.serie10.puntuacion %></td>
-                    <td><%= analisisTerman.serie10.rango %></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <div class="box">
+          <div class="mb-5" id="grafica-container">
+            <canvas id="chart"></canvas>
           </div>
-        </div>
-      </main>
 
-      <footer></footer>
-    </div>
+          <table class="table is-bordered is-fullwidth">
+            <tbody>
+              <tr>
+                <th>Serie</th>
+                <% resultados.forEach(serie => { %>
+                  <td><%= serie.categoria %></td>
+                <% }); %>
+              </tr>
+              <tr>
+                <th>%</th>
+                <% resultados.forEach(serie => { %>
+                  <td><%= serie.porcentaje.toFixed(2) %> %</td>
+                <% }); %>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table is-bordered is-fullwidth mt-4">
+            <tbody>
+              <tr>
+                <th>Puntos Totales</th>
+                <td><%= resumen.puntosTotales %></td>
+              </tr>
+              <tr>
+                <th>Rango</th>
+                <td><%= resumen.rango %></td>
+              </tr>
+              <tr>
+                <th>C.I.</th>
+                <td><%= resumen.coeficienteIntelectual %></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table is-bordered is-striped is-fullwidth mt-4">
+            <thead>
+              <tr>
+                <th>Serie</th>
+                <th>Categoría</th>
+                <th>Puntuación</th>
+                <th>Rango</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% resultados.forEach(serie => { %>
+                <tr>
+                  <td><%= serie.numero %></td>
+                  <td><%= serie.categoria %></td>
+                  <td><%= serie.puntuacion %></td>
+                  <td><%= serie.rango %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="has-text-centered mt-5">
+          <button class="button is-info mr-3" id="generarPDF">Descargar como PDF</button>
+          <a class="button is-light is-link" href="javascript:void(0)" onclick="window.history.back()">
+            ← Regresar
+          </a>
+        </div>
+      </div>
+    </section>
 
     <script>
-      const termanChartData = {
-        labels: ['Información', 'Juicio', 'Vocabulario', 'Síntesis', 'Concentración', 'Análisis', 'Abstracción', 'Planeación', 'Organización', 'Atención'],
-        data: <%- JSON.stringify([
-          res?.serie1 || 0,
-          res?.serie2 || 0,
-          res?.serie3 || 0,
-          res?.serie4 || 0,
-          res?.serie5 || 0,
-          res?.serie6 || 0,
-          res?.serie7 || 0,
-          res?.serie8 || 0,
-          res?.serie9 || 0,
-          res?.serie10 || 0
-        ]) %>
-      };
+      const resultadosTerman = <%- resultadosJSON %>;
     </script>
+
+    <script src="../js/graficaTerman.js"></script>
+    <script src="/js/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </body>
 </html>

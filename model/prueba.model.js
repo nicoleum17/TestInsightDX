@@ -76,6 +76,23 @@ module.exports = class Prueba {
     );
   }
 
+  static termanActiva(idUsuario){
+    return db.execute(
+      `SELECT SEC_TO_TIME(FLOOR(MAX(tiempoRespuesta))) as tiempo
+      FROM respuestasterman
+      WHERE idUsuario = ?`,
+      [idUsuario]
+    );
+  }
+
+  static termanEstatus(idUsuario,idGrupo,idPrueba){
+    return db.execute(
+      `SELECT estatus
+      FROM pruebasaspirante
+      WHERE idUsuario = ? AND idGrupo = ? AND idPrueba = ?`,
+      [idUsuario, idGrupo, idPrueba]
+    );
+  }
   //Otras Pruebas
 
   //~ OTIS

@@ -37,6 +37,13 @@ const OpcionKostick = require("../model/kostick/opcionesKostick.model");
 const InterpretacionKostick = require("../model/kostick/interpretacionKostick.model");
 const Pregunta16PF = require("../model/16pf/preguntas16pf.model");
 const Opcion16PF = require("../model/16pf/opciones16pf.model");
+const respuestasTermanModel = require('../model/terman/respuestasTerman.model.js');
+const calificacionesTerman = require('../model/terman/calificacionesTerman.model.js');
+const calificacionTerman = new calificacionesTerman();
+const resultadosSeriesTerman = require('../model/terman/resultadosSeriesTerman.model.js');
+const calificarSerieTerman = require("../model/terman/calificarTerman");
+const resultadoSerieTerman = new resultadosSeriesTerman();
+const modeloTerman = new Terman();
 
 exports.inicio_psicologa = (request, response, next) => {
   const mensajeBorrado = request.session.infoBorrado;
@@ -340,7 +347,14 @@ exports.get_respuestasA = (request, response, next) => {
           request.session.idUsuario = idUsuario;
           request.session.idGrupoAspirante = rows[0].idGrupo;
           response.redirect("/psicologa/analisisHartman")
-          //TRABAJAR AQUI
+        }else if (idPrueba == 4){
+          //TRABAJO AQUI
+          respuestasTerman = new respuestasTermanModel();
+          request.session.idUsuarioAspirante = idUsuario;
+          request.session.idGrupoAspirante = rows[0].idGrupo;
+
+          response.redirect("/psicologa/analisisTerman");
+
         }else if (idPrueba == 5) {
           Prueba.getRespuestasOtis(idUsuario, rows[0].idGrupo)
             .then(([informacionAnalisis, fieldData]) => {
@@ -968,13 +982,14 @@ exports.get_formatoEntrevista = async (request, response, next) => {
   try {
     const [[aspirantes]] = await Aspirante.fetchOne(idUsuario);
     const [[formatoEntrevista]] = await FormatoEntrevista.fetchOne(idUsuario);
+    console.log(formatoEntrevista);
 
     const promesasPreguntas = [];
     const promesasRespuestas = [];
     console.log(formatoEntrevista.idFormato);
     for (let i = 1; i < 20; i++) {
       promesasRespuestas.push(
-        preguntasFormato.fetchPregunta(i, request.session.idFormato)
+        preguntasFormato.fetchPregunta(i,formatoEntrevista)
       );
     }
     const respuestas = await Promise.all(promesasRespuestas);
@@ -1703,6 +1718,7 @@ const {
   Equilibrio_CQ2,
 } = require("../public/js/encuentraValor");
 const { Console } = require("console");
+const preguntasFormato = require("../model/preguntasFormato.model");
 
 /*
  *   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
@@ -1713,7 +1729,7 @@ exports.get_analisisHartman = async (request, response, next) => {
 
   const idAspirante = request.session.idUsuario;
   const idGrupo = request.session.idGrupoAspirante;
-
+  console.log(idAspirante);
   console.log(idGrupo);
 
   console.log("Analisis Hartman");
@@ -1873,4 +1889,150 @@ exports.get_HartmanActiva = (request, response, next)=>{
     response.status(500).json({ message: "Sin pruebas" });
   });
 }
-// TRABAJO AQUI
+exports.get_TermanActiva = (request, response, next)=>{
+  Prueba.termanActiva(request.params.valor)
+  .then(([rows]) => {
+    const hartmanTiempo = {
+      tiempo: rows[0].tiempo || "N/A",
+    };
+    response.status(200).json({ hartmanTiempo });
+  })
+  .catch((error) => {
+    response.status(500).json({ message: "Sin pruebas" });
+  });
+}
+function obtenerTotalPorSerie(numeroSerie) {
+    const totales = {
+        1: 16, 2: 22, 3: 30, 4: 18, 5: 24,
+        6: 20, 7: 20, 8: 17, 9: 18, 10: 22
+    };
+    return totales[numeroSerie] || 1; // Por si acaso
+}
+
+function reglaDeTres(valor, totalMaximo) {
+    return (valor / totalMaximo) * 100;
+}
+
+//Aqui Esta Terman
+exports.get_analisisTerman = async (request, response, next) => {
+  console.log(request.session.idUsuario);
+  const idAspirante = request.session.idUsuarioAspirante;
+  const idGrupo = request.session.idGrupoAspirante;
+  const idPrueba = 4;
+  const sesionAspirante = await Prueba.termanEstatus( idAspirante, idGrupo, idPrueba );
+
+  try {
+      // 1. Buscar calificación
+      const calificacionExistente = await calificacionTerman.fetchCalificacionById(idAspirante, idGrupo);
+
+      // 2. Si NO existe, hacemos la calificación
+      if (!calificacionExistente || calificacionExistente.length === 0) {
+          console.log('No existe análisis previo. Calificando...');
+
+          const sesionAspirante = await sesionPruebaModel.fetchById({ idAspirante, idGrupo, idPrueba });
+
+          if (!sesionAspirante || sesionAspirante.length === 0) {
+              return response.status(403).send("No hay una prueba Terman asignada a este aspirante.")
+          }
+
+          const progreso = await progresoTermanModel.fetchProgresoById(idAspirante, idGrupo);
+
+          if (progreso.length > 0) {
+              const updatedAt = new Date(progreso[0].updatedAt);
+              const ahora = new Date();
+              const diferenciaHoras = (ahora - updatedAt) / (1000 * 60 * 60);
+
+              console.log("Diferencia Horas: ", diferenciaHoras)
+
+              if (diferenciaHoras > 4 && sesionAspirante[0].estatus === "En progreso") {
+                  await sesionPruebaModel.updateSesionPrueba({
+                      estatus: 1, // Incompleto
+                      idAspirante,
+                      idGrupo,
+                      idPrueba
+                  });
+              }
+
+              if (diferenciaHoras < 4 && sesionAspirante[0].estatus === "En progreso") {
+                return response.status(403).send("El aspirante sigue en progreso.")
+              }
+
+              if (sesionAspirante[0].estatus === "No iniciado") {
+                return response.status(403).send("El aspirante nunca contesto la Prueba.")
+              }
+
+          // Calificar series
+          const series = [1,2,3,4,5,6,7,8,9,10];
+
+          for (const idSerie of series) {
+              const respuestasAspirante = await respuestasTerman.fetchRespuestasSerieById(idAspirante, idGrupo, idSerie);
+
+              if (idSerie >= 1 && idSerie <= 9) {
+                  for (const resp of respuestasAspirante) {
+                      if (typeof resp.respuestaAbierta === 'string') {
+                          resp.respuestaAbierta = parseInt(resp.respuestaAbierta, 10);
+                      }
+                  }
+              }
+
+              if (respuestasAspirante.length > 0) {
+                  await calificarSerieTerman(idSerie, idAspirante, idGrupo, respuestasAspirante);
+              }
+          }
+      }
+  }
+
+      // 3. Buscar usuario y análisis ya guardado
+      const [rows] = await Aspirante.fetchOne(idAspirante);
+      const usuarioData = rows[0];
+      const calificacion = await calificacionTerman.fetchCalificacionById(idAspirante, idGrupo);
+      const series = await resultadoSerieTerman.fetchSeriesById(idAspirante, idGrupo);
+
+      /*
+      console.log("UsuarioData: ", usuarioData)
+      console.log("calificacion: ", calificacion)
+      console.log("series: ", series)
+      */
+      if (!usuarioData || !calificacion || !series || series.length === 0) {
+          console.log("Sin resultados")
+          return response.status(404).send("No hay datos para el analisis.")
+      }
+
+      const resultados = series.map(serie => ({
+          numero: serie.idSerieTerman,
+          categoria: serie.categoria,
+          puntuacion: serie.puntuacion,
+          rango: serie.rango,
+          porcentaje: reglaDeTres(serie.puntuacion, obtenerTotalPorSerie(serie.idSerieTerman))
+      })); 
+
+      const resumen = {
+          nombreCompleto: `${usuarioData.nombres} ${usuarioData.apellidoPaterno} ${usuarioData.apellidoMaterno}`,
+          puntosTotales: calificacion[0].puntosTotales,
+          rango: calificacion[0].rango,
+          coeficienteIntelectual: calificacion[0].coeficienteIntelectual
+      };
+      
+      console.log(sesionAspirante);
+      // 4. Renderizar
+      console.log(usuarioData);
+      return response.render('analisisTerman', {
+          csrfToken: request.csrfToken(),
+          resumen,
+          resultados,
+          analisisTerman: resultados,
+          datos: usuarioData,
+          resultadosJSON: JSON.stringify(resultados),
+          estatusPrueba: sesionAspirante[0].estatus,
+          isLoggedIn: request.session.isLoggedIn,
+          usuarioA: idAspirante,
+          usuario: request.session.usuario,
+          estatusPrueba: sesionAspirante[0][0].estatus
+      });
+      
+
+  } catch (error) {
+      console.error('Error en get_analisisTerman:', error);
+      return response.status(500).render('error/error.pug', { message: "Ocurrió un error al analizar los resultados del Terman." });
+  }
+};

@@ -18,4 +18,7 @@ module.exports = class PruebaAspirante {
       idUsuario,
     ]);
   }
+  static fetchTerman(){
+    
+  }
 };

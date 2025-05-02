@@ -34,6 +34,18 @@ class resultadosSeriesTerman {
     );
     return resultado;
   }
-}
+  
+  async fetchSeriesById(idUsuario, idGrupo) {
+    const [series] = await db.execute(
+        'SELECT * FROM resultadosseriesterman WHERE idUsuario = ? AND idGrupo = ?',
+        [
+            idUsuario,
+            idGrupo
+        ]
+    );
+    return series;
+};
+};
+
 
 module.exports = resultadosSeriesTerman;
