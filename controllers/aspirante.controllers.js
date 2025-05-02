@@ -106,14 +106,23 @@ exports.get_root = (request, response, next) => {
 /* Función que sirve como controlador para obtener las notificaciones que tiene el aspirante */
 exports.get_notificacionA = (request, response, next) => {
   Aspirante.notificacion(request.session.idUsuario).then(([rows]) => {
-    response.render("notificacionesAspirante", {
-      isLoggedIn: request.session.isLoggedIn || false,
-      usuario: request.session.usuario || "",
-      csrfToken: request.csrfToken(),
-      privilegios: request.session.privilegios || [],
-      pruebaGrupal: rows[0].pruebaGrupal || null,
-      zoomIndividual: rows[0].zoomIndividual,
-      limitePrueba: rows[0].limitePrueba || null,
+    Usuario.getGrupo(request.session.idUsuario).then(([idGrupo])=>{
+      Grupo.fetchOneId(idGrupo[0].idGrupo).then(([grupo])=>{
+        response.render("notificacionesAspirante", {
+          isLoggedIn: request.session.isLoggedIn || false,
+          usuario: request.session.usuario || "",
+          csrfToken: request.csrfToken(),
+          privilegios: request.session.privilegios || [],
+          pruebaGrupal: rows[0].pruebaGrupal || null,
+          zoomIndividual: rows[0].zoomIndividual,
+          limitePrueba: rows[0].limitePrueba || null,
+          idGrupo: idGrupo[0].idGrupo,
+          grupo: grupo[0],
+          enlaceZoom: rows[0].enlaceZoomIndividual,
+      })
+
+    })
+
     });
   });
 };

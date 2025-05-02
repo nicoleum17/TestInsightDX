@@ -36,7 +36,9 @@
       const pg = document.getElementById("pg");
       pg.innerHTML += `<article class="message is-info">
   <div class="message-body">
-      <p class="has-text-black">Aplicación de prueba grupal: <strong> ${futureDate} </strong>(${daysLeft} días restantes)</p>
+      <p class="has-text-black">Aplicación de prueba grupal: <strong> ${futureDate} </strong>(${daysLeft} días restantes)
+      <br>
+      Enlace a la prueba:<a href="<%= grupo.enlaceZoom %>"> <%= grupo.enlaceZoom %> </a> 
       </div>
       </article>
       `;
@@ -74,7 +76,10 @@
         if (daysLeft >= 0) {
             pg.innerHTML += `<article class="message is-info">
             <div class="message-body">
-                <p class="has-text-black">Entrevista individual: <strong>${futureDate} </strong>(${daysLeft} días restantes)<br><strong>Recuerda subir tu CV y Kardex antes de la Entrevista</strong></p>
+                <p class="has-text-black">Entrevista individual: <strong>${futureDate} </strong>(${daysLeft} días restantes)
+                  <br>
+                  Enlace a la prueba: <a href="<%= enlaceZoom %>"> <%= enlaceZoom %> </a> 
+                  <br><strong>Recuerda subir tu CV y Kardex antes de la Entrevista</strong></p>
             </div>
             </article>`;
         }
