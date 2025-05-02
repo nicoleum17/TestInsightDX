@@ -298,6 +298,18 @@ router.get(
 );
 
 router.get(
+  "/TermanActiva/:valor",
+  isAuth,
+  psicologaController.get_TermanActiva
+);
+
+router.get(
+  "/analisisTerman",
+  isAuth,
+  psicologaController.get_analisisTerman
+)
+
+router.get(
   "/pruebasGrupo/:valor",
   isAuth,
   psicologaController.get_pruebasGrupo

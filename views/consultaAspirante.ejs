@@ -255,6 +255,24 @@
                                             ></a>`;
                   }
                 });
+            } else if(prueba.idPrueba == 4){
+              fetch("/psicologa/termanActiva/"+ aspirante.idUsuario, {
+                method: "GET",
+              }).then((result) => result.json())
+                .then((data) => {
+                  console.log(data);
+                  nombrePrueba.textContent = "Terman";
+                  tiempoPrueba.textContent = data.hartmanTiempo.tiempo + " hrs";
+                  respuestasPrueba.innerHTML = `<a href="consultaRespuestasAspirante/${aspirante.idUsuario}/4">
+                                            <button class="image-button">
+                                              <img
+                                                src="https://img.icons8.com/ios7/512/plus.png"
+                                                alt=""
+                                                width="25px"
+                                              /></button
+                                          ></a>`;
+                }); 
+              
             }
           }
         });
